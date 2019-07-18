@@ -1,0 +1,7 @@
+docs/build
+
+run.log
+
+__pycache__/*
+
+*.pyc

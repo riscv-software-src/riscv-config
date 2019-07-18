@@ -1,0 +1,12 @@
+release:
+    script:
+        - python setup.py sdist
+        - python -m twine upload --username $pypiusername --password $pypipassword dist/*
+        - python /scratch/version-extract.py
+    only:
+        refs:
+            - master
+    tags:
+        - incore-group
+    except:
+      - schedules
