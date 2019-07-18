@@ -5,17 +5,26 @@ Installation and Setup
 ^^^^^^^^^^^^^^^^^^^^^^^
 1. Install rifle
 
-    Before proceding further please ensure *pip* and *python* is installed and configured.
+    Before proceding further please ensure *pip* and *python (>3.7.0)* is installed and configured.
 
-    You can check the python version by using 
+    In case you have issues installing python-3.7, we recommend using `pyenv`. 
     
+    Installing instructions for pyenv:
+
     .. code-block:: bash
 
-        python3 --version
+        #!/bin/sh
+        curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+        echo "export PATH=\"/home/dracarys/.pyenv/bin:$PATH\"" >> ~/.bashrc
+        pyenv install 3.7.0
+        pyenv global 3.7.0
+        pip install --upgrade pip
+        
+    You can simply use pip and python for 3.7 by default.
 
     *Support exists for python versions > 3.7.0 only. Please ensure correct version before proceding further.*
 
-    * Install using pip(For users-**WIP**):
+    * Install using pip(For users):
 
     .. code-block:: bash
 
@@ -33,7 +42,7 @@ Installation and Setup
 Usage
 ^^^^^
 
-* For users-**WIP**
+* For users
 
 .. code-block:: bash
 
@@ -75,9 +84,11 @@ Usage
 Example
 ^^^^^^^
 
-    * For users-**WIP**
+    * For users
 
     .. code-block:: bash
+
+        git clone https://gitlab.com/incoresemi/rifle.git
 
         cd rifle/
 
@@ -86,5 +97,7 @@ Example
     * For developers
     
     .. code-block:: bash
+
+        cd rifle/
 
         python3 -m rifle.main -ispec ./Examples/template_isa.yaml -pspec ./Examples/templates_platform.yaml
