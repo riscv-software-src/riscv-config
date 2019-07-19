@@ -1,5 +1,6 @@
+##################
 Code Documentation
-------------------
+##################
 
 .. automodule:: rifle.checker
    :members: 
@@ -13,7 +14,7 @@ Code Documentation
 
 
 Utils
-^^^^^^
+-----
 
 .. automodule:: rifle.utils
    :members: 
