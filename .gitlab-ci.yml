@@ -1,4 +1,9 @@
-release:
+stages:
+    - deploy
+    - doc
+
+deploy:
+    stage: deploy
     script:
         - python setup.py sdist
         - python -m twine upload --username $pypiusername --password $pypipassword dist/*
@@ -7,6 +12,23 @@ release:
         refs:
             - master
     tags:
-        - incore-group
+        - incore-group 
     except:
       - schedules
+
+doc:
+    stage: doc
+    script:
+      - cd docs
+      - make latexpdf
+      - cd ..
+      - mv docs/build/latex/RIFLE.pdf .
+    only:
+      refs:
+        - master
+    artifacts:
+      name: RIFLE
+      paths: 
+        - ./RIFLE.pdf
+    tags:
+      - incore-group

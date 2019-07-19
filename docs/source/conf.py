@@ -23,12 +23,12 @@ sys.setrecursionlimit(1500)
 
 project = u'RIFLE'
 copyright = '2019 InCore Semiconductors, IIT Madras'
-author = 'InCore Semiconductors'
+author = 'InCore Semiconductors Pvt. Ltd.'
 
 # The short X.Y version
 version = '1.2.0'
 # The full version, including alpha/beta/rc tags
-release = ':latest'
+release = 'beta'
 
 
 # -- General configuration ---------------------------------------------------
@@ -176,7 +176,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'RIFLE.tex', 'RISC-V Feature Legalizer Documentation',
-     'InCore Semiconductors', 'manual'),
+     'InCore Semiconductors Pvt. Ltd.', 'manual'),
 ]
 
 
