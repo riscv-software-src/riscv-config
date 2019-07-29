@@ -1,6 +1,6 @@
-User_Spec_Version: 2.3
-ISA: "RV64IMFADCZifenceiZicsrUS"
-Privilege_Spec_Version: 1.11
+User_Spec_Version: "2.3"
+ISA: "RV64IMFADCSUZicsr_Zifencei"
+Privilege_Spec_Version: "1.11"
 misa:
   implemented: True
   MXL:
@@ -20,9 +20,7 @@ marchid:
 mimpid:
   implemented: True
   id: 0x987562
-mhartids:
-  implemented: True
-  id: [0,1,25,669994]
+mhartid: 0x669994
 mstatus:
   XS:
     is_hardwired: False

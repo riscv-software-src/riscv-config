@@ -4,3 +4,8 @@ mstatus:
     range:
       rangelist: [[3]]
       mode: "Unchanged"
+mhartid: 0
+mepc:
+  bitmask:
+    mask: 0xFFFFFFFE
+    default: 0x00

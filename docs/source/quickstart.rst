@@ -16,7 +16,7 @@ Installation and Setup
 
         #!/bin/sh
         curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-        echo "export PATH=\"/home/dracarys/.pyenv/bin:$PATH\"" >> ~/.bashrc
+        echo "export PATH=\"/home/$USER/.pyenv/bin:$PATH\"" >> ~/.bashrc
         pyenv install 3.7.0
         pyenv global 3.7.0
         pip install --upgrade pip
@@ -29,7 +29,7 @@ Installation and Setup
 
     .. code-block:: bash
 
-        pip3 install -r rifle
+        pip3 install rifle
 
 
     * Clone from git(For developers):
@@ -93,7 +93,7 @@ Example
 
         cd rifle/
 
-        rifle -ispec ./Examples/template_isa.yaml -pspec ./Examples/templates_platform.yaml
+        rifle -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml
 
     * For developers
     
@@ -101,4 +101,4 @@ Example
 
         cd rifle/
 
-        python3 -m rifle.main -ispec ./Examples/template_isa.yaml -pspec ./Examples/templates_platform.yaml
+        python3 -m rifle.main -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml

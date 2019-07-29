@@ -1,4 +1,64 @@
 ### 
+# **Description**: Stores the value for the reset vector. It can either be a label or an address.
+#       - label: A string field equal to the label in the assembly code.
+#       - address: A value equal to the absolute address where the vector is present.
+# 
+# **Examples**: 
+# 
+# .. code-block:: none
+#
+#   reset:
+#      label: reset_vector
+# 
+#   reset:
+#      address: 0x8000000
+#
+# **Constraints**: 
+#       - None
+#
+# `------------------------------------------------------------------------------------------------------------------------------`
+#
+reset:
+  type: dict
+  schema:
+    label:
+      type: string
+      excludes: ['address']
+    address:
+      type: integer
+      excludes: ['label']
+  required: True
+### 
+# **Description**: Stores the value for the nmi vector. It can either be a label or an address.
+#       - label: A string field equal to the label in the assembly code.
+#       - address: A value equal to the absolute address where the vector is present.
+# 
+# **Examples**: 
+# 
+# .. code-block:: none
+#
+#   nmi:
+#      label: nmi_vector
+# 
+#   nmi:
+#      address: 0x8000000
+#
+# **Constraints**: 
+#       - None
+#
+# `------------------------------------------------------------------------------------------------------------------------------`
+#
+nmi:
+  type: dict
+  schema:
+    label:
+      type: string
+      excludes: ['address']
+    address:
+      type: integer
+      excludes: ['label']
+  required: True
+### 
 # **Description**: Stores the fields for memory mapped *mtime* register.
 #       - implemented: A boolean field indicating that the register has been implemented.
 #       - address: A value equal to the physical address at which the register is present.
