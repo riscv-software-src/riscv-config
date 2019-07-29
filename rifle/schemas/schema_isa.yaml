@@ -1,3 +1,38 @@
+### 
+# **Description**: Vendor name.
+#
+# **Examples**:
+#
+# .. code-block:: none
+#
+#   Vendor: Shakti
+#   Vendor: Incoresemi
+#
+# **Constraints**:
+#   - None
+#
+# `------------------------------------------------------------------------------------------------------------------------------`
+#
+Vendor: 
+    type: string
+
+### 
+# **Description**: Device Name.
+#
+# **Examples**:
+#
+# .. code-block:: none
+#
+#   Device: E-Class
+#   Device: C-Class
+#
+# **Constraints**:
+#   - None
+#
+# `------------------------------------------------------------------------------------------------------------------------------`
+#
+Device:
+    type: string
 
 ###
 # **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
@@ -13,75 +48,57 @@
 #
 # **Constraints**: 
 #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
-#
+#   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
+# 
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 ISA: 
     type: string
-    regex: '^RV(32|64|128)([ACDEFGIJLMNPQSTUVX]|Zifencei|Zicsr|Ztso|Zam)*'
+    regex: '^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$'
     required: True
     check_with: capture_isa_specifics
 
 ### 
-# **Description**: Version number of User/Non-priveleged ISA specification. Can be specified as a decimal value.
+# **Description**: Version number of User/Non-priveleged ISA specification as string.
 #
 # **Examples**:
 #
 # .. code-block:: none
 #
-#   User_Spec_Version: 2.1
-#   User_Spec_Version: 2.3
+#   User_Spec_Version: "2.2"
+#   User_Spec_Version: "2.3"
 #
 # **Constraints**:
-#   - should be greater than or equal to 2.2
+#   - should be a valid version later than 2.2
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 User_Spec_Version:
-    type: float
-    min: 2.2 
-    default: 2.2
+    type: string
+    default: "2.2"
     required: True
+    check_with: user_version_check
 
 ### 
-# **Description**: Version number of Priveleged ISA specification. Can be specified as a decimal value.
+# **Description**: Version number of Priveleged ISA specification as string.
 #
 # **Examples**:
 #
 # .. code-block:: none
 #
-#   Privilege_Spec_Version: 1.10
-#   Privilege_Spec_Version: 1.11
+#   Privilege_Spec_Version: "1.10"
+#   Privilege_Spec_Version: "1.11"
 #
 # **Constraints**:
-#   - should be greater than or equal to 1.10 
+#   - should be a valid version later than 1.10 
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 Privilege_Spec_Version:
-    type: float
-    min: 1.10
-    default: 1.10
+    type: string
+    default: "1.10"
     required: True
-
-###
-# **Description**: A boolean value indicating whether hardware support for misaligned instruction fetch exists.
-# 
-# **Examples**:
-# 
-# .. code-block:: none
-# 
-#    hw_ins_misaligned_support: True
-#    hw_ins_misaligned_support: False
-# 
-# **Constraints**:
-# - None
-# 
-# `------------------------------------------------------------------------------------------------------------------------------`
-# 
-hw_ins_misaligned_support:
-    type: boolean
-    default: False
+    check_with: priv_version_check
 
 ###
 # **Description**: A boolean value indicating whether hardware support for misaligned load/store requests exists.
@@ -102,6 +119,10 @@ hw_data_misaligned_support:
     type: boolean
     default: False
 
+xlen:
+    type: integer
+    allowed: [32,64,128]
+    readonly: True
 
 ### 
 # **Description**: Describes the fields of the *misa* CSR. A user needs to provide the following
@@ -281,36 +302,23 @@ mimpid:
         implemented: False
 
 ### 
-# **Description**: Specifies the Hart Ids in multi-core systems.
-#       - implemented: A boolean field indicating that the register has been implemented.
-#       - id: a list of integer values equal to the Hart Ids.
+# **Description**: Specifies the Hart Id of the current specs.
 # 
 # **Examples**:
 #
 # .. code-block:: none
 # 
-#   mhartids:
-#      implemented: True
-#      id: [0,125,458]
+#   mhartid: 0
 #
 # **Constraints**: 
-#       - Atleast one id must be equal to zero.
-#       - The values field should be only XLEN bits wide.
+#       - The value should be less than the maximum value supported by XLEN bits.
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
-mhartids:
-    type: dict
-    schema: 
-        implemented: 
-            type: boolean
-            default: False
-        id:
-            type: list
-            default: [0]
-            check_with: hart_check
-    default:
-        implemented: False
+mhartid:
+    required: True
+    type: integer
+    check_with: max_length
 
 ### 
 # **Description**: Specifies the fields of the *mstatus* register.
@@ -655,7 +663,7 @@ mtvec:
                                 type: list
                                 schema:
                                     type: integer
-                                    max: 2
+                                    max: 1
                         mode:
                             type: string
                             allowed: ["Unchanged","Nextup","Nextdown","Nearup","Neardown","Largest","Smallest","Addr"]
@@ -987,16 +995,16 @@ mcounteren:
         hardwired_val: 0
 
 ### 
-# **Description**: needs to be described as *range-warl-func* indicating allowed range for the register.
+# **Description**:
 #       - is_hardwired: a string indicating whether the register is hardwired or not.
 #
-# Other counters (mhpmcounter4 - mhpmcounter31) are analogously defined.
+# Other counters (minstret,mhpmcounter3 - mhpmcounter31) are analogously defined.
 # 
 # **Examples**:
 #
 # .. code-block:: none
 # 
-#   mhpmcounter3:
+#   mcycle:
 #       is_hardwired: True
 #       hardwired_val: 0
 # 
@@ -1005,7 +1013,7 @@ mcounteren:
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
-mhpmcounter3: &id001
+mcycle: &id001
     type: dict
     schema:
         is_hardwired:
@@ -1019,8 +1027,10 @@ mhpmcounter3: &id001
             default: True
             readonly: True
     default:
-        is_hardwired: False
+        is_hardwired: True
         hardwired_val: 0
+minstret: *id001
+mhpmcounter3: *id001
 mhpmcounter4: *id001
 mhpmcounter5: *id001
 mhpmcounter6: *id001

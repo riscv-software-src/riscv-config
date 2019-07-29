@@ -1,3 +1,7 @@
+nmi:
+  address: 0x3000
+reset:
+  address: 0x4000
 mtime:
   address: 0x5000
   implemented: True

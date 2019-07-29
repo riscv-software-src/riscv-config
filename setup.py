@@ -20,8 +20,7 @@ with open("README.rst", "r") as fh:
 
 setup(name="rifle",
       version=rifle.__version__,
-      description=
-      "RISC-V Featrue Legalizer by Incoresemi Ltd.",
+      description="RISC-V Featrue Legalizer by Incoresemi Ltd.",
       long_description=long_description,
       classifiers=[
           "Programming Language :: Python :: 3.7",
@@ -36,7 +35,7 @@ setup(name="rifle",
       install_package_data=True,
       package_dir={'rifle': 'rifle/'},
       package_data={'rifle': ['schemas/*']},
-      install_requires=['Cerberus>=1.3.1', 'oyaml>=0.9'],
+      install_requires=['Cerberus>=1.3.1', 'ruamel.yaml>=0.16.0'],
       python_requires=">=3.7.0",
       entry_points={
           "console_scripts": ["rifle=rifle.main:main"],

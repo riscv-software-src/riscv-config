@@ -5,3 +5,5 @@ run.log
 __pycache__/*
 
 *.pyc
+
+rifle_work/*

@@ -2,12 +2,12 @@ import os
 import logging
 
 from cerberus import Validator
-import oyaml as yaml
 
 import rifle.utils as utils
 from rifle.errors import ValidationError
 from rifle.schemaValidator import schemaValidator
 import rifle.constants as constants
+from rifle.utils import yaml
 
 logger = logging.getLogger(__name__)
 
@@ -124,6 +124,21 @@ def satpset():
     return {'MODE': {'range': {'rangelist': [[0]]}}}
 
 
+def findxlen():
+    global inp_yaml
+    if "32" in inp_yaml['ISA']:
+        xlen = 32
+    elif "64" in inp_yaml['ISA']:
+        xlen = 64
+    elif "128" in inp_yaml['ISA']:
+        xlen = 128
+    return xlen
+
+
+def xlenset():
+    return findxlen()
+
+
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     schema_yaml['mstatus']['schema']['SXL']['schema']['implemented'][
@@ -172,10 +187,46 @@ def add_def_setters(schema_yaml):
         'default_setter'] = lambda doc: simpset()
     schema_yaml['satp']['schema']['implemented'][
         'default_setter'] = lambda doc: simpset()
+    schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
     return schema_yaml
 
 
-def check_specs(isa_spec, platform_spec):
+def imp_normalise(foo):
+    '''
+        Function to trim the dictionary. Any node with implemented field set to false is trimmed of all the other nodes.
+        
+        :param foo: The dictionary to be trimmed.
+        
+        :type foo: dict
+
+        :return: The trimmed dictionary.
+    '''
+    for key in foo.keys():
+        if isinstance(foo[key], dict):
+            foo[key] = imp_normalise(foo[key])
+        if key == 'implemented':
+            if not foo[key]:
+                foo = {'implemented': False}
+                break
+    return foo
+
+
+def errPrint(foo, space=' '):
+    '''
+        Function to petty print the error from cerberus.
+    '''
+    error = ''
+    for key in foo.keys():
+        error += space + str(key) + ":"
+        if isinstance(foo[key][0], dict):
+            error += "\n" + errPrint(foo[key][0], space + space)
+        else:
+            error += str(foo[key][0])
+        error += "\n"
+    return error.rstrip()
+
+
+def check_specs(isa_spec, platform_spec, work_dir):
     ''' 
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -191,6 +242,9 @@ def check_specs(isa_spec, platform_spec):
 
         :raise ValidationError: It is raised when the specifications violate the 
             schema rules.
+        
+        :return: A tuple with the first entry being the path to normalized isa file 
+            and the second being path to the platform spec file.
     '''
     global inp_yaml
 
@@ -211,19 +265,12 @@ def check_specs(isa_spec, platform_spec):
     schema_yaml = utils.load_yaml(schema)
 
     #Extract xlen
-    if "32" in inp_yaml['ISA']:
-        xlen = 32
-    elif "64" in inp_yaml['ISA']:
-        xlen = 64
-    elif "128" in inp_yaml['ISA']:
-        xlen = 128
+    xlen = findxlen()
 
     schema_yaml = add_def_setters(schema_yaml)
-    validator = schemaValidator(
-        schema_yaml,
-        xlen=xlen,
-    )
+    validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
+    validator.purge_readonly = True
     normalized = validator.normalized(inp_yaml, schema_yaml)
 
     # Perform Validation
@@ -235,15 +282,18 @@ def check_specs(isa_spec, platform_spec):
         logger.info('No Syntax errors in Input ISA Yaml. :)')
     else:
         error_list = validator.errors
-        logger.error(str(error_list))
+        logger.error("Error in " + foo + "\n" + errPrint(error_list))
         raise ValidationError(
             "Error in ISA Yaml. Refer to logs for more details.")
 
-    file_name_split = foo.split('.')
-    output_filename = file_name_split[0] + '_checked.' + file_name_split[1]
+    file_name = os.path.split(foo)
+    file_name_split = file_name[1].split('.')
+    output_filename = os.path.join(
+        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+    ifile = output_filename
     outfile = open(output_filename, 'w')
     logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(normalized, outfile, default_flow_style=False, allow_unicode=True)
+    yaml.dump(imp_normalise(normalized), outfile)
 
     logger.info('Input-Platform file')
 
@@ -253,11 +303,11 @@ def check_specs(isa_spec, platform_spec):
       Read the input-platform foo (yaml file) and validate with schema-platform for feature values
       and constraints
     """
-    inputfile = open(foo, 'r')
-    schemafile = open(schema, 'r')
     # Load input YAML file
     logger.info('Loading input file: ' + str(foo))
     inp_yaml = utils.load_yaml(foo)
+    if inp_yaml is None:
+        inp_yaml = {'mtime': {'implemented': False}}
 
     # instantiate validator
     logger.info('Load Schema ' + str(schema))
@@ -265,6 +315,7 @@ def check_specs(isa_spec, platform_spec):
 
     validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
+    validator.purge_readonly = True
     normalized = validator.normalized(inp_yaml, schema_yaml)
 
     # Perform Validation
@@ -273,15 +324,19 @@ def check_specs(isa_spec, platform_spec):
 
     # Print out errors
     if valid:
-        logger.info('No Syntax errors in Input ISA Yaml. :)')
+        logger.info('No Syntax errors in Input Platform Yaml. :)')
     else:
         error_list = validator.errors
-        logger.error(str(error_list))
+        logger.error("Error in " + foo + "\n" + errPrint(error_list))
         raise ValidationError("Error in Platform\
              Yaml. Refer to logs for more details.")
 
-    file_name_split = foo.split('.')
-    output_filename = file_name_split[0] + '_checked.' + file_name_split[1]
+    file_name = os.path.split(foo)
+    file_name_split = file_name[1].split('.')
+    output_filename = os.path.join(
+        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+    pfile = output_filename
     outfile = open(output_filename, 'w')
     logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(normalized, outfile, default_flow_style=False, allow_unicode=True)
+    yaml.dump(imp_normalise(normalized), outfile)
+    return (ifile, pfile)

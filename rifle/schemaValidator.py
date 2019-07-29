@@ -1,4 +1,5 @@
 from cerberus import Validator
+import rifle.constants as constants
 
 
 class schemaValidator(Validator):
@@ -9,6 +10,22 @@ class schemaValidator(Validator):
         global extensions
         xlen = kwargs.get('xlen')
         super(schemaValidator, self).__init__(*args, **kwargs)
+
+    def _check_with_priv_version_check(self, field, value):
+        '''Function to check whether the Privileged spec version specified is valid or not.'''
+        if value not in constants.priv_versions:
+            self._error(
+                field,
+                "Invalid privilege spec version. Please select one of the following- "
+                + ", ".join(constants.priv_versions))
+
+    def _check_with_user_version_check(self, field, value):
+        '''Function to check whether the User spec version specified is valid or not.'''
+        if value not in constants.user_versions:
+            self._error(
+                field,
+                "Invalid User spec version. Please select one of the following- "
+                + ", ".join(constants.user_versions))
 
     def _check_with_capture_isa_specifics(self, field, value):
         '''
@@ -35,16 +52,16 @@ class schemaValidator(Validator):
             if 'D' in value and not 'F' in value:
                 self._error(field, "D cannot exist without F.")
             if 'Q' in value and not all(x in value for x in "FD"):
-                self._error(field, "D cannot exist without F and D.")
-            if 'Zicsr' in value and not all(x in value for x in "FD"):
-                self._error(field, "D cannot exist without F and D.")
+                self._error(field, "Q cannot exist without F and D.")
+            if 'F' in value and not "Zicsr" in value:
+                self._error(field, "F cannot exist without Zicsr.")
             if 'Zam' in value and not 'A' in value:
                 self._error(field, "Zam cannot exist without A.")
             if 'N' in value and not 'U' in value:
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Z' in value and not self.document['User_Spec_Version'] > 2.2:
+            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(field, "Z is not supported in the given version.")
         else:
             self._error(field, "Neither of E or I extensions are present.")
@@ -129,13 +146,6 @@ class schemaValidator(Validator):
                 self._error(
                     field,
                     "UXL cannot be hardwired to 0 when S mode is supported")
-
-    def _check_with_hart_check(self, field, value):
-        '''Function to check whether the hart ids are valid and atleast one is 0.'''
-        if max(value) > (2**xlen) - 1:
-            self._error(field, "Max width allowed is greater than xlen.")
-        if 0 not in value:
-            self.error(field, "Atleast one hart must have id as 0.")
 
     def _check_with_ext_check(self, field, value):
         '''Function to check whether the bitmask given for the Extensions field in misa is valid.'''

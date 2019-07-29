@@ -2,12 +2,23 @@ import logging
 import argparse
 import operator
 
-import oyaml as yaml
+import ruamel
+from ruamel.yaml import YAML
+
+yaml = YAML(typ="rt")
+yaml.default_flow_style = False
+yaml.allow_unicode = True
 
 
 def load_yaml(foo):
-    with open(foo, "r") as file:
-        return yaml.safe_load(file)
+    try:
+        with open(foo, "r") as file:
+            return yaml.load(file)
+    except ruamel.yaml.constructor.DuplicateKeyError as msg:
+        logger = logging.getLogger(__name__)
+        error = "\n".join(str(msg).split("\n")[2:-7])
+        logger.error(error)
+        raise SystemExit
 
 
 class ColoredFormatter(logging.Formatter):
@@ -63,11 +74,10 @@ class SortingHelpFormatter(argparse.HelpFormatter):
         super(SortingHelpFormatter, self).add_arguments(actions)
 
 
-def crisp_cmdline_args():
-    parser = argparse.ArgumentParser(
-        formatter_class=SortingHelpFormatter,
-        prog="rifle",
-        description="RISC-V Feature Legalizer")
+def rifle_cmdline_args():
+    parser = argparse.ArgumentParser(formatter_class=SortingHelpFormatter,
+                                     prog="rifle",
+                                     description="RISC-V Feature Legalizer")
     parser.add_argument('--isa_spec',
                         '-ispec',
                         type=str,
@@ -80,6 +90,12 @@ def crisp_cmdline_args():
                         metavar='YAML',
                         help='The YAML which contains the Platfrorm specs.',
                         required=True),
+    parser.add_argument(
+        '--work_dir',
+        type=str,
+        default="rifle_work",
+        metavar='DIR',
+        help='The name of the work dir to dump the output files to.'),
     parser.add_argument('--verbose',
                         action='store',
                         default='info',
