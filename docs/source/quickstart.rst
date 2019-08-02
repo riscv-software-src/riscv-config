@@ -49,7 +49,7 @@ Usage
 
     riscv-config [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
-    RISC-V Feature Legalizer
+    RISC-V Configuration Validator 
     
     optional arguments:
       --isa_spec YAML, -ispec YAML
@@ -70,7 +70,7 @@ Usage
     python3 -m riscv_config.main -h
     usage: [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
-    RISC-V Feature Legalizer
+    RISC-V Configuration Validator 
 
     optional arguments:
       --isa_spec YAML, -ispec YAML

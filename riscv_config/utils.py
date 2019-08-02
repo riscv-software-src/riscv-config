@@ -77,7 +77,7 @@ class SortingHelpFormatter(argparse.HelpFormatter):
 def riscv_config_cmdline_args():
     parser = argparse.ArgumentParser(formatter_class=SortingHelpFormatter,
                                      prog="riscv_config",
-                                     description="RISC-V Feature Legalizer")
+                                     description="RISC-V Configuration Validator")
     parser.add_argument('--isa_spec',
                         '-ispec',
                         type=str,
