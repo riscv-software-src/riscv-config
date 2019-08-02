@@ -175,7 +175,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'riscv_config.tex', 'RISC-V Feature Legalizer Documentation',
+    (master_doc, 'riscv_config.tex', 'RISC-V Configuration Validator Documentation',
      'InCore Semiconductors Pvt. Ltd.', 'manual'),
 ]
 
@@ -185,7 +185,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'riscvfeaturelegalizer', 'RISC-V Feature Legalizer Documentation',
+    (master_doc, 'riscvfeaturelegalizer', 'RISC-V Configuration Validator Documentation',
      [author], 1)
 ]
 
@@ -196,7 +196,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'riscv_config', 'RISC-V Feature Legalizer Documentation',
+    (master_doc, 'riscv_config', 'RISC-V Configuration Validator Documentation',
      author, 'InCore Semicondutors', 'One line description of project.',
      'Miscellaneous'),
 ]

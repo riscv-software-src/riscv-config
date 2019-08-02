@@ -1,7 +1,7 @@
 RISCV-Config
 ========
 
-RISC-V Feature Legalizer
+RISC-V Configuration Validator 
 
 LICENSE: BSD-3 Clause.
 
