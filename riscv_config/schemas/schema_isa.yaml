@@ -59,7 +59,7 @@ ISA:
     check_with: capture_isa_specifics
 
 ### 
-# **Description**: Version number of User/Non-priveleged ISA specification as string.
+# **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
 #
 # **Examples**:
 #
@@ -80,7 +80,7 @@ User_Spec_Version:
     check_with: user_version_check
 
 ### 
-# **Description**: Version number of Priveleged ISA specification as string.
+# **Description**: Version number of Priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
 #
 # **Examples**:
 #
