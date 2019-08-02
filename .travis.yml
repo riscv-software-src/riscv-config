@@ -1,0 +1,25 @@
+language: python
+sudo: required
+before_install:
+  - sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended latexmk
+script:
+  - export TAGNAME=$(grep -P "^## .*?" CHANGELOG.md -m1 | awk '{print $2}' |awk '{print $1}')
+  - cd docs/
+  - pip install -r requirements.txt
+  - make latexpdf
+  - cd ../
+#  - python setup.py sdist
+#  - python -m twine upload --username $pypiusername --password $pypipassword dist/*
+before_deploy:
+  - git tag $TAGNAME
+deploy:
+  provider: releases
+  api_key:
+    secure: $github_access_token
+  file_glob: true
+  file: docs/build/latex/*.pdf
+  skip_cleanup: true
+  on:
+    repo: neelgala/test-config
+    branch: master
+    tags: false
