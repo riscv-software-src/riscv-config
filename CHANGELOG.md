@@ -2,13 +2,13 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.1] - 2019-07-30
+## 0.1.1 - 2019-07-30
 ### Changed
 - Work directory isnt deleted if the directory exists, although the files of the same name will be overwritten.
 ### Fixed
 - Checked yaml passes validation too.
 
-## [0.1.0] - 2019-07-29
+## 0.1.0 - 2019-07-29
 ### Added
 - Added work_dir as arg and always outputs to that dir.
 - Added reset vector and nmi vector to platform.yaml
@@ -30,19 +30,19 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - remove *_checked.yaml files from Examples.
 - changed templates_platform.yaml to template_platform.yaml in docs.
 
-## [0.0.3] - 2019-07-19
+## 0.0.3 - 2019-07-19
 ### Fixed
 - doc update
 
-## [0.0.2] - 2019-07-19
+## 0.0.2 - 2019-07-19
 ### Fixed
 - pdf documentation
 - ci-cd to host pdf as well
 
-## [0.0.1] - 2019-07-18
+## 0.0.1 - 2019-07-18
 ### Added
 - Documentation to install and use pyenv 
 
-## [0.0.0] - 2019-07-18
+## 0.0.0 - 2019-07-18
 ### Added
 - Initial schemas for M mode and S mode csrs with constraints as specified in the spec.
