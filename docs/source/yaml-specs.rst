@@ -65,10 +65,10 @@ from the user and also the various constraints involved.
 
 All fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
 
-An elaborate example of the full-fledge ISA-YAML file can be found here: `ISA-YAML <https://gitlab.com/incoresemi/rifle/blob/master/examples/template_isa.yaml>`_
+An elaborate example of the full-fledge ISA-YAML file can be found here: `ISA-YAML <https://github.com/riscv/riscv_config/blob/master/examples/template_isa.yaml>`_
 
 
-.. autoyaml:: ../rifle/schemas/schema_isa.yaml
+.. autoyaml:: ../riscv_config/schemas/schema_isa.yaml
 
 .. _platform_yaml_spec:
 
@@ -78,9 +78,9 @@ Platform YAML Spec
 This section describes each node of the PLATFORM-YAML. For each node, we have identified the fields required
 from the user and also the various constraints involved.
 
-An eloborate example of the full-fledge PLATFORM-YAML file can be found here: `PLATFORM-YAML <https://gitlab.com/incoresemi/rifle/blob/master/examples/template_platform.yaml>`_
+An eloborate example of the full-fledge PLATFORM-YAML file can be found here: `PLATFORM-YAML <https://github.com/riscv/riscv_config/blob/master/examples/template_platform.yaml>`_
 
 
-.. autoyaml:: ../rifle/schemas/schema_platform.yaml
+.. autoyaml:: ../riscv_config/schemas/schema_platform.yaml
 
 

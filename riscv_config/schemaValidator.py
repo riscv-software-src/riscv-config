@@ -1,5 +1,5 @@
 from cerberus import Validator
-import rifle.constants as constants
+import riscv_config.constants as constants
 
 
 class schemaValidator(Validator):

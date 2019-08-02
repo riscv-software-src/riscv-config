@@ -2,12 +2,12 @@
 Code Documentation
 ##################
 
-.. automodule:: rifle.checker
+.. automodule:: riscv_config.checker
    :members: 
    :special-members:
    :private-members:
 
-.. automodule:: rifle.schemaValidator
+.. automodule:: riscv_config.schemaValidator
    :members: 
    :special-members:
    :private-members:
@@ -16,7 +16,7 @@ Code Documentation
 Utils
 -----
 
-.. automodule:: rifle.utils
+.. automodule:: riscv_config.utils
    :members: 
    :special-members:
    :private-members:

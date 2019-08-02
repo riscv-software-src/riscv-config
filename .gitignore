@@ -6,4 +6,4 @@ __pycache__/*
 
 *.pyc
 
-rifle_work/*
+riscv_config_work/*

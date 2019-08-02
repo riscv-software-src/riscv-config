@@ -2,9 +2,9 @@
 Overview
 ########
 
-The following diagram captures the overall-flow of RIFLE.
+The following diagram captures the overall-flow of RISCV-Config.
 
-.. image:: rifle-flow.png
+.. image:: riscv_config-flow.png
     :align: center
     :alt: riscof-flow
 

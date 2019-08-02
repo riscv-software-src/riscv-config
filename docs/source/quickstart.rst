@@ -4,7 +4,7 @@ Quickstart
 
 Installation and Setup
 ^^^^^^^^^^^^^^^^^^^^^^^
-1. Install rifle
+1. Install riscv_config
 
     Before proceding further please ensure *pip* and *python (>3.7.0)* is installed and configured.
 
@@ -29,15 +29,15 @@ Installation and Setup
 
     .. code-block:: bash
 
-        pip3 install rifle
+        pip3 install riscv_config
 
 
     * Clone from git(For developers):
 
     .. code-block:: bash
 
-        git clone https://gitlab.com/incoresemi/rifle.git
-        cd rifle
+        git clone https://gitlab.com/incoresemi/riscv_config.git
+        cd riscv_config
         pip3 install -r requirements.txt
 
 Usage
@@ -47,7 +47,7 @@ Usage
 
 .. code-block:: bash
 
-    rifle [-h] --isa_spec YAML --platform_spec YAML [--verbose]
+    riscv-config [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
     RISC-V Feature Legalizer
     
@@ -65,9 +65,9 @@ Usage
 
 .. code-block:: bash
 
-    cd rifle/
+    cd riscv_config/
 
-    python3 -m rifle.main -h
+    python3 -m riscv_config.main -h
     usage: [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
     RISC-V Feature Legalizer
@@ -89,16 +89,16 @@ Example
 
     .. code-block:: bash
 
-        git clone https://gitlab.com/incoresemi/rifle.git
+        git clone https://gitlab.com/incoresemi/riscv_config.git
 
-        cd rifle/
+        cd riscv_config/
 
-        rifle -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml
+        riscv-config -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml
 
     * For developers
     
     .. code-block:: bash
 
-        cd rifle/
+        cd riscv_config/
 
-        python3 -m rifle.main -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml
+        python3 -m riscv_config.main -ispec ./examples/template_isa.yaml -pspec ./examples/template_platform.yaml

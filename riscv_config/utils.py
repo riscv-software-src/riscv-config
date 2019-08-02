@@ -74,9 +74,9 @@ class SortingHelpFormatter(argparse.HelpFormatter):
         super(SortingHelpFormatter, self).add_arguments(actions)
 
 
-def rifle_cmdline_args():
+def riscv_config_cmdline_args():
     parser = argparse.ArgumentParser(formatter_class=SortingHelpFormatter,
-                                     prog="rifle",
+                                     prog="riscv_config",
                                      description="RISC-V Feature Legalizer")
     parser.add_argument('--isa_spec',
                         '-ispec',
@@ -93,7 +93,7 @@ def rifle_cmdline_args():
     parser.add_argument(
         '--work_dir',
         type=str,
-        default="rifle_work",
+        default="riscv_config_work",
         metavar='DIR',
         help='The name of the work dir to dump the output files to.'),
     parser.add_argument('--verbose',

@@ -21,7 +21,7 @@ sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = u'RIFLE'
+project = u'RISCV_Config'
 copyright = '2019 InCore Semiconductors, IIT Madras'
 author = 'InCore Semiconductors Pvt. Ltd.'
 
@@ -79,7 +79,7 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output -------------------------------------------------
 
-gitlab_url = 'https://gitlab.com/incoresemi/rifle'
+github_url = 'https://github.com/riscv/riscv-config'
 html_show_sourcelink = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -148,7 +148,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'RIFLEdoc'
+htmlhelp_basename = 'RISCV-Configdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -175,7 +175,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'RIFLE.tex', 'RISC-V Feature Legalizer Documentation',
+    (master_doc, 'riscv_config.tex', 'RISC-V Feature Legalizer Documentation',
      'InCore Semiconductors Pvt. Ltd.', 'manual'),
 ]
 
@@ -196,7 +196,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'RIFLE', 'RISC-V Feature Legalizer Documentation',
+    (master_doc, 'riscv_config', 'RISC-V Feature Legalizer Documentation',
      author, 'InCore Semicondutors', 'One line description of project.',
      'Miscellaneous'),
 ]

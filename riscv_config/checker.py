@@ -3,11 +3,11 @@ import logging
 
 from cerberus import Validator
 
-import rifle.utils as utils
-from rifle.errors import ValidationError
-from rifle.schemaValidator import schemaValidator
-import rifle.constants as constants
-from rifle.utils import yaml
+import riscv_config.utils as utils
+from riscv_config.errors import ValidationError
+from riscv_config.schemaValidator import schemaValidator
+import riscv_config.constants as constants
+from riscv_config.utils import yaml
 
 logger = logging.getLogger(__name__)
 

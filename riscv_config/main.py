@@ -2,17 +2,17 @@ import logging
 import os
 import shutil
 
-import rifle.checker as checker
-import rifle.utils as utils
-from rifle.errors import ValidationError
+import riscv_config.checker as checker
+import riscv_config.utils as utils
+from riscv_config.errors import ValidationError
 
 
 def main():
     '''
-        Entry point for rifle.
+        Entry point for riscv_config.
     '''
     # Set up the parser
-    parser = utils.rifle_cmdline_args()
+    parser = utils.riscv_config_cmdline_args()
     args = parser.parse_args()
 
     # Set up the logger

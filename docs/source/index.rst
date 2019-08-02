@@ -1,5 +1,5 @@
 ################
-Welcome to RIFLE 
+Welcome to RISCV-Config
 ################
 
 
