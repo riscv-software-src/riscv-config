@@ -1,2 +1,0 @@
-recursive-include schemas *.yaml
-exclude *.pyc
