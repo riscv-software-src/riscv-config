@@ -147,7 +147,8 @@ mcause:
 
 ### 
 # **Description**: Stores the fields for *mtval* register.
-#       - behaviour: A dictionary type to specify which of the exceptions modify the mtval reg
+#.       - implemented: A Boolean value indicating whether the register is implemented.      
+#        - behaviour: A dictionary type to specify which of the exceptions modify the mtval reg
 #           - e0: A string type describing the behaviour of exception 0.
 #           - e1: A string type describing the behaviour of exception 1.
 #           - e2: A string type describing the behaviour of exception 2.
@@ -215,17 +216,17 @@ mtval:
         e15:
           type: string
   default:
-    implemented: True
+    implemented: False
     
 
 ### 
-# **Description**: is a *warl-func* and can be specified as any of the three WARL functions.
+# **Description**: is a *warl-func* and can be specified as a range WARL functions.
+#       - bitmask:
+#           - mask  : a XLEN bit wide value providing the *mask* field of the *bitmask-warl-func*.
+#           - default : a XLEN bit wide value providing the *default* field of the *bitmask-warl-func*.
 #       - range: (range-warl-func)
 #           - rangelist: a list of 2 or 1 element lists which specify the lower and upper bounds of the disjoint set of values mphmevent3 can take.(Allowed [0,1,3])
 #           - mode : A string describing one of the *range-update-warl-func*.
-#       - distinct:
-#           - values: A list of legal values that the register can take.(Less than 2^XLEN)
-#           - mode : A string describing one of the *distinct-update-warl-func*.
 #       - is_hardwired: A boolean field indicating whether the register is hardwired or not.
 #
 #  Other event registers (mhpmevent4 - mhpmevent31) are analogously defined.
@@ -351,6 +352,7 @@ scause:
   
 ### 
 # **Description**: Stores the fields for *stval* register.
+#       - implemented: A Boolean value indicating whether the field is implemented.   
 #       - behaviour: A dictionary type to specify which of the exceptions modify the mtval reg
 #           - e0: A string type describing the behaviour of exception 0.
 #           - e1: A string type describing the behaviour of exception 1.
@@ -419,4 +421,4 @@ stval:
         e15:
           type: string
   default:
-    implemented: True
+    implemented: False
