@@ -20,7 +20,7 @@ with open("README.rst", "r") as fh:
 
 setup(name="riscv_config",
       version=riscv_config.__version__,
-      description="RISC-V Featrue Legalizer by Incoresemi Ltd.",
+      description="RISC-V Configuration Validator",
       long_description=long_description,
       classifiers=[
           "Programming Language :: Python :: 3.7",
