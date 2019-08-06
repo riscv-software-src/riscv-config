@@ -8,8 +8,8 @@ script:
   - pip install -r requirements.txt
   - make latexpdf
   - cd ../
-#  - python setup.py sdist
-#  - python -m twine upload --username $pypiusername --password $pypipassword dist/*
+  - python setup.py sdist
+  - python -m twine upload --username $pypiusername --password $pypipassword dist/*
 before_deploy:
   - git tag $TAGNAME
 deploy:
