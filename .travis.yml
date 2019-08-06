@@ -20,6 +20,6 @@ deploy:
   file: docs/build/latex/*.pdf
   skip_cleanup: true
   on:
-    repo: neelgala/test-config
+    repo: riscv/riscv-config
     branch: master
     tags: false
