@@ -11,7 +11,6 @@ from riscv_config.utils import yaml
 
 logger = logging.getLogger(__name__)
 
-
 def iset():
     '''Function to check and set defaults for all "implemented" fields which are dependent on 
         the xlen.'''
@@ -210,23 +209,7 @@ def imp_normalise(foo):
                 break
     return foo
 
-
-def errPrint(foo, space=' '):
-    '''
-        Function to petty print the error from cerberus.
-    '''
-    error = ''
-    for key in foo.keys():
-        error += space + str(key) + ":"
-        if isinstance(foo[key][0], dict):
-            error += "\n" + errPrint(foo[key][0], space + space)
-        else:
-            error += str(foo[key][0])
-        error += "\n"
-    return error.rstrip()
-
-
-def check_specs(isa_spec, platform_spec, work_dir):
+def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     ''' 
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -235,20 +218,25 @@ def check_specs(isa_spec, platform_spec, work_dir):
         :param isa_spec: The path to the DUT isa specification yaml file. 
 
         :param platform_spec: The path to the DUT platform specification yaml file.
+
+        :param logging: A boolean to indicate whether log is to be printed.
+
+        :type logging: bool
         
         :type isa_spec: str
 
         :type platform_spec: str
 
         :raise ValidationError: It is raised when the specifications violate the 
-            schema rules.
+            schema rules. It also contains the specific errors in each of the fields.
         
-        :return: A tuple with the first entry being the path to normalized isa file 
-            and the second being path to the platform spec file.
+        :return: A tuple with the first entry being the absolute path to normalized isa file 
+            and the second being the absolute path to the platform spec file.
     '''
     global inp_yaml
 
-    logger.info('Input-ISA file')
+    if logging:
+        logger.info('Input-ISA file')
 
     foo = isa_spec
     schema = constants.isa_schema
@@ -257,11 +245,13 @@ def check_specs(isa_spec, platform_spec, work_dir):
       and constraints
     """
     # Load input YAML file
-    logger.info('Loading input file: ' + str(foo))
+    if logging:
+        logger.info('Loading input file: ' + str(foo))
     inp_yaml = utils.load_yaml(foo)
 
     # instantiate validator
-    logger.info('Load Schema ' + str(schema))
+    if logging:
+        logger.info('Load Schema ' + str(schema))
     schema_yaml = utils.load_yaml(schema)
 
     #Extract xlen
@@ -274,17 +264,17 @@ def check_specs(isa_spec, platform_spec, work_dir):
     normalized = validator.normalized(inp_yaml, schema_yaml)
 
     # Perform Validation
-    logger.info('Initiating Validation')
+    if logging:
+        logger.info('Initiating Validation')
     valid = validator.validate(inp_yaml)
 
     # Print out errors
     if valid:
-        logger.info('No Syntax errors in Input ISA Yaml. :)')
+        if logging:
+            logger.info('No Syntax errors in Input ISA Yaml. :)')
     else:
         error_list = validator.errors
-        logger.error("Error in " + foo + "\n" + errPrint(error_list))
-        raise ValidationError(
-            "Error in ISA Yaml. Refer to logs for more details.")
+        raise ValidationError("Error in " + foo + ".",error_list)
 
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -292,10 +282,12 @@ def check_specs(isa_spec, platform_spec, work_dir):
         work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
     ifile = output_filename
     outfile = open(output_filename, 'w')
-    logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+    if logging:
+        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     yaml.dump(imp_normalise(normalized), outfile)
 
-    logger.info('Input-Platform file')
+    if logging:
+        logger.info('Input-Platform file')
 
     foo = platform_spec
     schema = constants.platform_schema
@@ -304,13 +296,15 @@ def check_specs(isa_spec, platform_spec, work_dir):
       and constraints
     """
     # Load input YAML file
-    logger.info('Loading input file: ' + str(foo))
+    if logging:
+        logger.info('Loading input file: ' + str(foo))
     inp_yaml = utils.load_yaml(foo)
     if inp_yaml is None:
         inp_yaml = {'mtime': {'implemented': False}}
 
     # instantiate validator
-    logger.info('Load Schema ' + str(schema))
+    if logging:
+        logger.info('Load Schema ' + str(schema))
     schema_yaml = utils.load_yaml(schema)
 
     validator = schemaValidator(schema_yaml, xlen=xlen)
@@ -319,17 +313,17 @@ def check_specs(isa_spec, platform_spec, work_dir):
     normalized = validator.normalized(inp_yaml, schema_yaml)
 
     # Perform Validation
-    logger.info('Initiating Validation')
+    if logging:
+        logger.info('Initiating Validation')
     valid = validator.validate(inp_yaml)
 
     # Print out errors
     if valid:
-        logger.info('No Syntax errors in Input Platform Yaml. :)')
+        if logging:
+            logger.info('No Syntax errors in Input Platform Yaml. :)')
     else:
         error_list = validator.errors
-        logger.error("Error in " + foo + "\n" + errPrint(error_list))
-        raise ValidationError("Error in Platform\
-             Yaml. Refer to logs for more details.")
+        raise ValidationError("Error in " + foo + ".",error_list)
 
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -337,6 +331,7 @@ def check_specs(isa_spec, platform_spec, work_dir):
         work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
     pfile = output_filename
     outfile = open(output_filename, 'w')
-    logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+    if logging:
+        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     yaml.dump(imp_normalise(normalized), outfile)
     return (ifile, pfile)

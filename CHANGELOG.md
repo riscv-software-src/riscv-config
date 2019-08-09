@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.1 - 2019-08-09
+### Changed
+- Log is generated only if specified(for API calls to checker.check_specs).
+
 ## 1.0.0 - 2019-07-30
 ### Changed
 - Work directory isnt deleted if the directory exists, although the files of the same name will be overwritten.
