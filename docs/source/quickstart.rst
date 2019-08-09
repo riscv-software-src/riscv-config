@@ -36,7 +36,7 @@ Installation and Setup
 
     .. code-block:: bash
 
-        git clone https://gitlab.com/incoresemi/riscv_config.git
+        git clone https://github.com/riscv/riscv-config.git
         cd riscv_config
         pip3 install -r requirements.txt
 
@@ -89,7 +89,7 @@ Example
 
     .. code-block:: bash
 
-        git clone https://gitlab.com/incoresemi/riscv_config.git
+        git clone https://github.com/riscv/riscv-config.git
 
         cd riscv_config/
 
