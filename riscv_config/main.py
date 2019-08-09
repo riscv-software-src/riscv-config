@@ -6,7 +6,6 @@ import riscv_config.checker as checker
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 
-
 def main():
     '''
         Entry point for riscv_config.
@@ -32,9 +31,9 @@ def main():
 
     try:
         checker.check_specs(os.path.abspath(args.isa_spec),
-                            os.path.abspath(args.platform_spec), work_dir)
+                            os.path.abspath(args.platform_spec), work_dir, True)
     except ValidationError as msg:
-        logger.error(msg)
+        logger.error(str(msg))
         return 1
 
 
