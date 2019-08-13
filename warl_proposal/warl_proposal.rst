@@ -24,9 +24,9 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
 
   Here the legal values of the field/register is defined using 4 fields:
 
-    .. code-block:: python
+  .. code-block:: python
 
-      [ mask, fixedval, lower, upper]
+    [ mask, fixedval, lower, upper]
 
 
   - **mask** : A bit with value 1 indicates that the bit is writable. A bit value of 0  indicates the bit is hardwired to a value corresponding to the same bit in the fixedval field.  
@@ -35,21 +35,23 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
   - **upper**: This defines the upper-bound of legal values.
 
   The *base* and *bound* values are defined as :
-    .. code-block:: python
+  
+  .. code-block:: python
 
       base  = (lower & mask) | (fixedval & ~mask)
       bound = (upper & mask) | (fixedval & ~mask)
 
   The value (val) to be written to the csr/register is defined as:
-    .. code-block:: python
+  
+  .. code-block:: python
 
       val = (write-val & mask) | (fixedval & ~mask)
 
   This value is legal only if it lies within the base and bound values:
 
-    .. code-block:: python
+  .. code-block:: python
    
-      base <= val <= bound
+    base <= val <= bound
 
 
   Now if val is an illegal value, the field/register should resort to a known legal value. There are multiple options possible and they defined using the **mode** field which can be any of the following:
@@ -62,14 +64,14 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
     - **smallest**: minimum of all legal values
     - **addr**: 
       
-        .. code-block:: python
+      .. code-block:: python
     
-          if ( val < base || val > bound)
-             return Flip-MSB of field
+        if ( val < base || val > bound)
+            return Flip-MSB of field
     
     - **bitmask**: The write for the register is masked with the mask specified in the set. This is a valid mode when only one set of 4 elements exists in the description.
 
-        .. code-block:: python
+      .. code-block:: python
 
             return val
         
@@ -98,24 +100,24 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
 YAML WARL Node definition(*warl*)
 =================================
 
-    This provides the structure for describing the WARL fields in riscv-config YAML
+This provides the structure for describing the WARL fields in riscv-config YAML
 
-    - **dependency_variables** : A list of fields/registers on whose value this particular WARL field depends. (Can be empty indicating no dependencies). The sub-fields within csrs can be specified as follows:
+  - **dependency_variables** : A list of fields/registers on whose value this particular WARL field depends. (Can be empty indicating no dependencies). The sub-fields within csrs can be specified as follows:
 
-       ..  code-block:: python
+    ..  code-block:: python
 
-           csr::field
+      csr::field
 
-    - **behaviour** : A list of dictionaries where each dictionary describes the value of the dependency_variables under which the field exhibts the corresponding *warl-func*. Each dictionary is structured as follows.
+  - **behaviour** : A list of dictionaries where each dictionary describes the value of the dependency_variables under which the field exhibts the corresponding *warl-func*. Each dictionary is structured as follows.
 
-       .. code-block:: yaml
+    .. code-block:: yaml
 
-         func:
-            dependency_values: A list of values which corresponding to each variable within the 
-                               dependency_variables list.          
-            warl-func:  A function conforming to the above warl-func definition above.
+      func:
+          dependency_values: A list of values which corresponding to each variable within the 
+                              dependency_variables list.          
+          warl-func:  A function conforming to the above warl-func definition above.
     
-     No legal value must exceed the maximum value which can be supported(based on the width of the field). Functions should be exhaustive with respect to all possible allowed values of dependencies i.e For each allowed value for a dependency variable any one of the functions defined should match and more than one function must not match for any possible combination of allowed values for the dependency variables.
+No legal value must exceed the maximum value which can be supported(based on the width of the field). Functions should be exhaustive with respect to all possible allowed values of dependencies i.e For each allowed value for a dependency variable any one of the functions defined should match and more than one function must not match for any possible combination of allowed values for the dependency variables.
 
     Examples:
 
