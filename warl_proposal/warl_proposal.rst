@@ -77,17 +77,20 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
 
     .. code-block:: yaml
 
-        # when it is 256 byte aligned and can lie between 0x80000000 to 0x40000000
+        # when it is 256 byte aligned and can lie between 
+        # 0x80000000 to 0x40000000
         warl-func:
             mode: unchanged
             legal: [0xFFFFFF00, 0x0, 0x40000000, 0x80000000]
         
-        # For complete bitmask type implementation(like for extensions in misa for RV64IMFADCSUZicsr_Zifencei)
+        # For complete bitmask type implementation
+        # (like for extensions in misa for RV64IMFADCSUZicsr_Zifencei)
         warl-func:
             mode: bitmask
             legal: [0x214102D, 0x100, 0x0, 0x3FFFFFF]
         
-        # For normal range type applications for a 24 bit field with a valid range of 0x500000 to 0x300000
+        # For normal range type applications for a 24 bit 
+        # field with a valid range of 0x500000 to 0x300000
         warl-func:
             mode: smallest
             legal: [0xFFFFFF, 0x0, 0x300000, 0x500000]
@@ -108,7 +111,8 @@ YAML WARL Node definition(*warl*)
        .. code-block:: python
 
          func:
-            dependency_values: A list of values which corresponding to each variable within the dependency_variables list.          
+            dependency_values: A list of values which corresponding to each variable within the 
+                               dependency_variables list.          
             warl-func:  A function conforming to the above warl-func definition above.
     
      No legal value must exceed the maximum value which can be supported(based on the width of the field). Functions should be exhaustive with respect to all possible allowed values of dependencies i.e For each allowed value for a dependency variable any one of the functions defined should match and more than one function must not match for any possible combination of allowed values for the dependency variables.
@@ -122,15 +126,15 @@ YAML WARL Node definition(*warl*)
           dependency_variables: [mtvec::mode]
           behavior:
             func1:
-              dependency_values: [0]                            # use this warl_func when mtvec:mode == 0
+              dependency_values: [0]                 # use this warl_func when mtvec:mode == 0
               warl_func: 
                 mode: "Unchanged"
-                legal: [[0x20000000], [0x20004000]]             # can take only 2 fixed values in direct mode.
+                legal: [[0x20000000], [0x20004000]]  # can take only 2 fixed values in direct mode.
             func2:
-              dependency_values: [1]                            # use this warl_func when mtvec:mode == 1
+              dependency_values: [1]                 # use this warl_func when mtvec:mode == 1
               warl_func: 
                 mode: "Unchanged"
-                legal: [[0xFFFFFF00, 0x0, 0x00000000,0x20000000]] # 256 byte aligned values only in vectored mode.
+                legal: [[0xFFFFFF00, 0x0, 0x00000000,0x20000000]] # 256 byte aligned values.
     
         # no dependencies. Mode field of mtvec can take only 2 legal values using four-value-tuples
         WARL:
@@ -142,7 +146,7 @@ YAML WARL Node definition(*warl*)
                 mode: "Unchanged"
                 legal: [[0x3,0x0,0x0,0x1]]
 
-        # no dependencies. Mode field of mtvec can take only 2 legal values using single-value-tuples
+        # no dependencies. using single-value-tuples
         WARL:
           dependency_variables: []
           behavior:
@@ -157,7 +161,7 @@ YAML WARL Node definition(*warl*)
             dependency_variables: [mtvec::mode,misa::extensions]
             behaviour:
                 - func1:
-                    dependency_values: [x, [0x4,0x0]] # x is for dont care. If extensions is either 0x4 or 0x0
+                    dependency_values: [x, [0x4,0x0]] # x is for dont care. 
                     warl-func: 
                         mode: Unchanged
                         legal: [0x80000000]
