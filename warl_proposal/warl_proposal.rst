@@ -49,7 +49,7 @@ This means that the respective csr can only take legal values: 0, 3, 19, ....
 
     .. code-block:: python
    
-      base <= val >= bound
+      base <= val <= bound
 
 
   Now if val is an illegal value, the field/register should resort to a known legal value. There are multiple options possible and they defined using the **mode** field which can be any of the following:
