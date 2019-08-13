@@ -108,7 +108,7 @@ YAML WARL Node definition(*warl*)
 
     - **behaviour** : A list of dictionaries where each dictionary describes the value of the dependency_variables under which the field exhibts the corresponding *warl-func*. Each dictionary is structured as follows.
 
-       .. code-block:: python
+       .. code-block:: yaml
 
          func:
             dependency_values: A list of values which corresponding to each variable within the 
@@ -119,7 +119,7 @@ YAML WARL Node definition(*warl*)
 
     Examples:
 
-    .. code-block:: python
+    .. code-block:: yaml
 
         # When base of mtvec depends on the mode field.
         WARL: 
@@ -157,7 +157,7 @@ YAML WARL Node definition(*warl*)
                 legal: [[0x0], [0x1]]
 
         # multi-field dependencies. A random example
-        warl:
+        WARL:
             dependency_variables: [mtvec::mode,misa::extensions]
             behaviour:
                 - func1:
