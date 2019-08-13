@@ -1,0 +1,120 @@
+############################################ Template description ############################################
+# csr template for csrs with subfields
+<name>:                                   # name of the csr
+  description: <text>                     # textual description of the csr
+  address: <hex>                          # address of the CSR
+  priv_mode: <D/M/H/S/U>                  # privilege mode that owns the register
+  reset-val: <hex>                        # Reset value of the register. This an accumulation of the all reset values of the sub-field 
+  rv32:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 1
+    exists: <boolean>                     # indicates if the csr exists in rv32 mode or not. When False, all fields below will be trimmed off in the checked yaml. False also indicates that access-exception should be generated
+    subfields:                            # a quick summary of the list of all subfields of the csr including a list of WPRI fields of the csr.
+      - <subfield_name1>
+      - <subfield_name2>
+      - wpri                              # contains a list of all WPRI fields within the csr. For csrs like mepc which do not have subfields this field should be empty
+        - [30-23]
+        - 6
+    <subfield_name1>:                     # name of the subfield
+      description: <text>                 # textual description of the csr
+      msb: <hex>                          # msb index of the subfield. max: 31, min:0
+      lsb: <hex>                          # lsb index of the subfield. min: 31, min:0
+      implemented: <boolean>              # indicates if the user has implemented this subfield or not. When False, all fields below this will be trimmed.
+      reset-val: <hex>                    # reset value of the subfield.
+      type:                               # indicates the type of the field. Can be one of the following only:
+        RO: <hex>                         # indicates the field is readonly with this value. This value should be the same as the reset-value.
+        WARL:                             # indicates this field is WARL type
+          dependency_variables: [list]    # lists the variables that the WARL function can depend on. These could be nodes within the YAML spec itself
+          behavior:
+            - func1:
+                dependency_values: [list] # actual values of the dependency variables
+                warl-func:
+                  mode: <string>          # Can be one of the following strings: Unchanged, NextUp, NextDown, NearUp, NearDown, Largest, Smallest, Bitmask
+                  legal: [list]           # can be a list of 4-tuples or a list of single-value-tuples or a mix of both. Described in detail in WARL defs.
+        WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
+  rv64:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    exists: <boolean>                     # indicates if this field exists in rv64 mode or not                          
+  rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    exists: <boolean>                     # indicates if this field exists in rv64 mode or not                          
+
+# csr template for csrs without subfields
+<name>:
+  description: <text>                   # textual description of the csr
+  address: <hex>                        # address of the CSR
+  priv_mode: <D/M/H/S/U>                # privilege mode that owns the register
+  reset-val: <hex>                      # Reset value of the register.
+  rv32:                                 # this node and its subsequent fields can exist if [M/S/U]XL value can be 1
+    exists: <boolean>                   # indicates if the csr exists in rv32 mode or not. When False, all fields below will be trimmed off in the checked yaml.False also indicates that access-exception should be generated
+    subfields:                          # This should be empty always since this csr does not have subfields
+    msb: <hex>                          # msb index of the csr. max: 31, min:0
+    lsb: <hex>                          # lsb index of the csr. min: 31, min:0
+    implemented: <boolean>              # indicates if the user has implemented this csr or not. When False, all fields below this will be trimmed.
+    reset-val: <hex>                    # reset value of the subfield.
+    type:                               # indicates the type of the field. Can be one of the following only:
+      RO: <hex>                         # indicates the field is readonly with this value. This value should be the same as the reset-value.
+      WARL:                             # indicates this field is WARL type
+        dependency_variables: [list]    # lists the variables that the WARL function can depend on. These could be nodes within the YAML spec itself
+        behavior:
+          - func1:
+              dependency_values: [list] # actual values of the dependency variables
+              warl-func:
+                mode: <string>          # Can be one of the following strings: Unchanged, NextUp, NextDown, NearUp, NearDown, Largest, Smallest, Bitmask
+                legal: [list]           # can be a list of 4-tuples or a list of single-value-tuples or a mix of both. Described in detail in WARL defs.
+      WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
+  rv64:                                 # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    exists: <boolean>                   # indicates if this field exists in rv64 mode or not                          
+  rv128:                                # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    exists: <boolean>                   # indicates if this field exists in rv64 mode or not                          
+##############################################################################################################
+
+############################################ Examples ############################################
+# example of csr with subfields
+mtvec:                                
+  description: Machine trap vector base address
+  address: 0x305         
+  priv_mode: M
+  reset-val: 0x00000001 
+  rv32:                                 
+    exists: True                        
+    subfields:                          
+      - mode
+      - base
+      - wpri                            # there is not wpri field in the mtvec 
+    mode:                   
+      description: trap handling mode
+      msb: 1
+      lsb: 0
+      implemented: True 
+      reset-val: 0x1
+      type:                             
+        WARL:
+          dependency_variables: []
+          behavior:
+            - func1: 
+                dependency_values: []
+                warl_func:
+                  mode: "Unchanged"
+                  legal: [[0x3,0x0,0x0,0x1]]
+    base:
+      description: vector base address
+      msb: 31
+      lsb: 2
+      implemented: True 
+      reset-val: 0x0
+      type:                             
+        WARL: 
+          dependency_variables: [mtvec::mode]
+          behavior:
+            - func1:
+                dependency_values: [0]
+                warl_func: 
+                  mode: "Unchanged"
+                  legal: [[0x20000000], [0x20004000]]             # can take only 2 fixed values in direct mode.
+            - func2:
+                dependency_values: [1]
+                warl_func: 
+                  mode: "Unchanged"
+                  legal: [[0xFFFFFFC0, 0x0, 0x00000000,0x20000000]] # 256 byte aligned values only in vectored mode.
+  rv64:                                 
+    exists: False                   
+  rv128:                                
+    exists: False
+
