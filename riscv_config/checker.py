@@ -11,6 +11,7 @@ from riscv_config.utils import yaml
 
 logger = logging.getLogger(__name__)
 
+
 def iset():
     '''Function to check and set defaults for all "implemented" fields which are dependent on 
         the xlen.'''
@@ -140,53 +141,53 @@ def xlenset():
 
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
-    schema_yaml['mstatus']['schema']['SXL']['schema']['implemented'][
-        'default_setter'] = lambda doc: iset()
-    schema_yaml['mstatus']['schema']['UXL']['schema']['implemented'][
-        'default_setter'] = lambda doc: iset()
-    schema_yaml['mstatus']['schema']['TVM'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['TSR'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['MXR'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SUM'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SPP'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SPIE'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SIE'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['UPIE'][
-        'default_setter'] = lambda doc: upieset(doc)
-    schema_yaml['mstatus']['schema']['UIE'][
-        'default_setter'] = lambda doc: uieset(doc)
-    schema_yaml['mstatus']['schema']['MPRV'][
-        'default_setter'] = lambda doc: nouset()
-    schema_yaml['mstatus']['schema']['TW'][
-        'default_setter'] = lambda doc: twset()
-    schema_yaml['mideleg']['schema']['implemented'][
-        'default_setter'] = lambda doc: miedelegset()
-    schema_yaml['medeleg']['schema']['implemented'][
-        'default_setter'] = lambda doc: miedelegset()
-    schema_yaml['mepc']['default_setter'] = lambda doc: mepcset()
-    schema_yaml['mtvec']['default_setter'] = lambda doc: xtvecset()
-    schema_yaml['stvec']['default_setter'] = lambda doc: xtvecset()
-    schema_yaml['satp']['default_setter'] = lambda doc: satpset()
-    schema_yaml['stvec']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sie']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sip']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['scounteren']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sepc']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['satp']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
+    # schema_yaml['mstatus']['schema']['SXL']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: iset()
+    # schema_yaml['mstatus']['schema']['UXL']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: iset()
+    # schema_yaml['mstatus']['schema']['TVM'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['TSR'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['MXR'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['SUM'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['SPP'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['SPIE'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['SIE'][
+    #     'default_setter'] = lambda doc: nosset()
+    # schema_yaml['mstatus']['schema']['UPIE'][
+    #     'default_setter'] = lambda doc: upieset(doc)
+    # schema_yaml['mstatus']['schema']['UIE'][
+    #     'default_setter'] = lambda doc: uieset(doc)
+    # schema_yaml['mstatus']['schema']['MPRV'][
+    #     'default_setter'] = lambda doc: nouset()
+    # schema_yaml['mstatus']['schema']['TW'][
+    #     'default_setter'] = lambda doc: twset()
+    # schema_yaml['mideleg']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: miedelegset()
+    # schema_yaml['medeleg']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: miedelegset()
+    # schema_yaml['mepc']['default_setter'] = lambda doc: mepcset()
+    # schema_yaml['mtvec']['default_setter'] = lambda doc: xtvecset()
+    # schema_yaml['stvec']['default_setter'] = lambda doc: xtvecset()
+    # schema_yaml['satp']['default_setter'] = lambda doc: satpset()
+    # schema_yaml['stvec']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['sie']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['sip']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['scounteren']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['sepc']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['satp']['schema']['implemented'][
+    #     'default_setter'] = lambda doc: simpset()
+    # schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
     return schema_yaml
 
 
@@ -209,7 +210,8 @@ def imp_normalise(foo):
                 break
     return foo
 
-def check_specs(isa_spec, platform_spec, work_dir,logging=False):
+
+def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     ''' 
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -257,7 +259,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     #Extract xlen
     xlen = findxlen()
 
-    schema_yaml = add_def_setters(schema_yaml)
+    # schema_yaml = add_def_setters(schema_yaml)
     validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
     validator.purge_readonly = True
@@ -274,7 +276,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
             logger.info('No Syntax errors in Input ISA Yaml. :)')
     else:
         error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".",error_list)
+        raise ValidationError("Error in " + foo + ".", error_list)
 
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -323,7 +325,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
             logger.info('No Syntax errors in Input Platform Yaml. :)')
     else:
         error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".",error_list)
+        raise ValidationError("Error in " + foo + ".", error_list)
 
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
