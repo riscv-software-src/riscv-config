@@ -129,7 +129,7 @@ misa:
   schema:
     description:
       type: string
-      default: This is a read-write register reporting the ISA supported by the hart.
+      default: misa is a read-write register reporting the ISA supported by the hart.
     address:
       type: integer
       default: 0x301
@@ -153,7 +153,10 @@ misa:
           schema:
             description:
               type: string
-              default: This field encodes the native base integer ISA width.
+              default: Encodes the native base integer ISA width.
+            shadow: 
+              type: string
+              default: none
             msb:
               type: integer
               default: 31
@@ -167,12 +170,17 @@ misa:
             implemented:
               type: boolean
               default: True
+          default:
+            implemented: True
         extensions:
           type: dict
           schema:
             description:
               type: string
-              default: The Extensions field encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+              default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+            shadow: 
+              type: string
+              default: none
             msb:
               type: integer
               default: 25
@@ -186,8 +194,9 @@ misa:
             implemented:
               type: boolean
               default: True
-      default:
-        exists: False
+          default:
+            implemented: True
+      required: True
     rv64:
       type: dict
       schema:
@@ -201,7 +210,10 @@ misa:
           schema:
             description:
               type: string
-              default: This field encodes the native base integer ISA width.
+              default: Encodes the native base integer ISA width.
+            shadow: 
+              type: string
+              default: none
             msb:
               type: integer
               default: 63
@@ -215,12 +227,17 @@ misa:
             implemented:
               type: boolean
               default: True
+          default:
+            implemented: True
         extensions:
           type: dict
           schema:
             description:
               type: string
-              default: The Extensions field encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+              default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+            shadow: 
+              type: string
+              default: none
             msb:
               type: integer
               default: 25
@@ -234,9 +251,28 @@ misa:
             implemented:
               type: boolean
               default: True
-      default:
-        exists: False
-    rv128:
+          default:
+            implemented: True
+      required: True
+  required: True
+
+mstatus:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mstatus register keeps track of and controls the hart’s current operating state.
+    address:
+      type: integer
+      default: 0x300
+      allowed: [0x300]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
       type: dict
       schema:
         exists:
@@ -244,35 +280,19 @@ misa:
           default: False
         fields:
           type: list
-        mxl:
+        uie:
           type: dict
           schema:
             description:
               type: string
-              default: This field encodes the native base integer ISA width.
-            msb:
-              type: integer
-              default: 127
-              allowed: [127]
-            lsb:
-              type: integer
-              default: 126
-              allowed: [126]
-            reset-val:
-              type: integer
-            implemented:
-              type: boolean
-              default: True
-        extensions:
-          type: dict
-          schema:
-            description:
+              default: Stores the state of the user mode interrupts.
+            shadow: 
               type: string
-              default: The Extensions field encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+              default: none
             msb:
               type: integer
-              default: 25
-              allowed: [25]
+              default: 0
+              allowed: [0]
             lsb:
               type: integer
               default: 0
@@ -282,7 +302,1512 @@ misa:
             implemented:
               type: boolean
               default: True
+          default:
+            implemented: True
+        sie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the supervisor mode interrupts.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the machine mode interrupts.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        upie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the user mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        spie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the supervisor mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mpie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the machine mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        spp:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the previous priority mode for supervisor.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mpp:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the previous priority mode for machine.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 12
+              allowed: [12]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        fs:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 14
+              allowed: [14]
+            lsb:
+              type: integer
+              default: 13
+              allowed: [13]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        xs:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the status of additional user-mode extensions and associated state.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 16
+              allowed: [16]
+            lsb:
+              type: integer
+              default: 15
+              allowed: [15]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mprv:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege level at which loads and stores execute in all privilege modes.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 17
+              allowed: [17]
+            lsb:
+              type: integer
+              default: 17
+              allowed: [17]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sum:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege with which S-mode loads and stores access virtual memory.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 18
+              allowed: [18]
+            lsb:
+              type: integer
+              default: 18
+              allowed: [18]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mxr:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege with which loads access virtual memory.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 19
+              allowed: [19]
+            lsb:
+              type: integer
+              default: 19
+              allowed: [19]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tvm:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting supervisor virtual-memory management operations.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 20
+              allowed: [20]
+            lsb:
+              type: integer
+              default: 20
+              allowed: [20]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tw:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting the WFI instruction.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 21
+              allowed: [21]
+            lsb:
+              type: integer
+              default: 21
+              allowed: [21]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tsr:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting the supervisor exception return instruction.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 22
+              allowed: [22]
+            lsb:
+              type: integer
+              default: 22
+              allowed: [22]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sd:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 31
+              allowed: [31]
+            lsb:
+              type: integer
+              default: 31
+              allowed: [31]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        uie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the user mode interrupts.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 0
+              allowed: [0]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the supervisor mode interrupts.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the machine mode interrupts.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        upie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the user mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        spie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the supervisor mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mpie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the state of the machine mode interrupts prior to the trap.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        spp:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the previous priority mode for supervisor.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mpp:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Stores the previous priority mode for machine.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 12
+              allowed: [12]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        fs:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 14
+              allowed: [14]
+            lsb:
+              type: integer
+              default: 13
+              allowed: [13]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        xs:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the status of additional user-mode extensions and associated state.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 16
+              allowed: [16]
+            lsb:
+              type: integer
+              default: 15
+              allowed: [15]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mprv:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege level at which loads and stores execute in all privilege modes.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 17
+              allowed: [17]
+            lsb:
+              type: integer
+              default: 17
+              allowed: [17]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sum:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege with which S-mode loads and stores access virtual memory.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 18
+              allowed: [18]
+            lsb:
+              type: integer
+              default: 18
+              allowed: [18]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mxr:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Modifies the privilege with which loads access virtual memory.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 19
+              allowed: [19]
+            lsb:
+              type: integer
+              default: 19
+              allowed: [19]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tvm:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting supervisor virtual-memory management operations.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 20
+              allowed: [20]
+            lsb:
+              type: integer
+              default: 20
+              allowed: [20]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tw:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting the WFI instruction.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 21
+              allowed: [21]
+            lsb:
+              type: integer
+              default: 21
+              allowed: [21]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        tsr:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supports intercepting the supervisor exception return instruction.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 22
+              allowed: [22]
+            lsb:
+              type: integer
+              default: 22
+              allowed: [22]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sxl:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Controls the value of xlen for Supervisor mode.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 35
+              allowed: [35]
+            lsb:
+              type: integer
+              default: 34
+              allowed: [34]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        uxl:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Controls the xlen for User mode.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 33
+              allowed: [33]
+            lsb:
+              type: integer
+              default: 32
+              allowed: [32]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        sd:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 63
+              allowed: [63]
+            lsb:
+              type: integer
+              default: 63
+              allowed: [63]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+      required: True
+  required: True
+
+mvendorid:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: 32-bit read-only register providing the JEDEC manufacturer ID of the provider of the core.
+    address:
+      type: integer
+      default: 0xF11
+      allowed: [0xF11]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+  required: True
+
+marchid:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: MXLEN-bit read-only register encoding the base microarchitecture of the hart.
+    address:
+      type: integer
+      default: 0xF12
+      allowed: [0xF12]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFFFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+  required: True
+
+mimpid:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Provides a unique encoding of the version of the processor implementation.
+    address:
+      type: integer
+      default: 0xF13
+      allowed: [0xF13]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFFFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+  required: True
+
+mhartid:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: MXLEN-bit read-only register containing the integer ID of the hardware thread running the code.
+    address:
+      type: integer
+      default: 0xF14
+      allowed: [0xF14]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+          allowed: [True]
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+        type:
+          type: dict
+          schema:
+            RO:
+              type: integer
+              max: 0xFFFFFFFFFFFFFFFF
+              default: 0x0
+          default:
+            RO: 0x0
+      required: True
+  required: True
+
+mtvec:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: MXLEN-bit read/write register that holds trap vector configuration.
+    address:
+      type: integer
+      default: 0x305
+      allowed: [0x305]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        base:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Vector base address.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 31
+              allowed: [31]
+            lsb:
+              type: integer
+              default: 2
+              allowed: [2]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mode:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Vector mode.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        base:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Vector base address.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 63
+              allowed: [63]
+            lsb:
+              type: integer
+              default: 2
+              allowed: [2]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mode:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Vector mode.
+            shadow: 
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+      required: True
+  required: True
+
+mideleg:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Machine Interrupt delegation Register.
+    address:
+      type: integer
+      default: 0x303
+      allowed: [0x303]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        reset-val:
+          type: integer
+        implemented:
+          type: boolean
+          default: True
       default:
-        exists: False
-  default:
-    address: 0x301
+        implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        reset-val:
+          type: integer
+        implemented:
+          type: boolean
+          default: True
+      default:
+        implemented: True
+      required: True
+  required: True
+
+medeleg:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Machine Exception delegation Register.
+    address:
+      type: integer
+      default: 0x302
+      allowed: [0x302]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        reset-val:
+          type: integer
+        implemented:
+          type: boolean
+          default: True
+      default:
+        implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        shadow: 
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        reset-val:
+          type: integer
+        implemented:
+          type: boolean
+          default: True
+      default:
+        implemented: True
+      required: True
+  required: True
+
+
+
+
+

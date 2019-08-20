@@ -8,3 +8,45 @@ misa:
     extensions:
       reset-val: 0x100
       implemented: True
+  rv64:
+    exists: False
+mstatus:
+  rv32:
+    exists: true
+  rv64:
+    exists: false
+mvendorid:
+  rv32:
+    exists: true
+  rv64:
+    exists: true
+marchid:
+  rv32:
+    exists: true
+  rv64:
+    exists: true
+mimpid:
+  rv32:
+    exists: true
+  rv64:
+    exists: true
+mhartid:
+  rv32:
+    exists: true
+  rv64:
+    exists: true
+mtvec:
+  rv32:
+    exists: true
+  rv64:
+    exists: true
+mideleg:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+medeleg:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
