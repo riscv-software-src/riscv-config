@@ -53,13 +53,16 @@ A WARL csr/field has the following skeleton in the riscv-config:
       legal: [list of warl-string]
       wr_illegal: [list of warl-string]
 
-- **dependency_fields** : A list of other csr/fields which whose values help define the set of legal values the 
+- **dependency_fields** : A list of other csrs/fields whose values define the set of legal values the 
   csr/field under question can take. We use `::` as a hierarchy separator. This field can be empty as well indicating 
   no other state affects this csr/field. The fields within csrs can be specified as follows:
 
   ..  code-block:: yaml
 
-    dependency_fields: [mtvec::mode, misa::mxl, mepc]
+    dependency_fields: [mtvec::mode]
+                 OR 
+    dependency_fields: [misa::mxl, mepc]
+    
 
 - **legal** : This field takes in a list of strings which define the WARL functions. Each string needs to adhere to the
   following syntax:
@@ -71,6 +74,10 @@ A WARL csr/field has the following skeleton in the riscv-config:
                                   OR
     
     [dependency-vals] -> field-name[index-hi:index-lo] bitmask [mask, fixedval]
+    
+    # if no dependency_fields exists then following is also allowed:
+    
+    field-name[index-hi:index-lo] bitmask [mask, fixedval]
     
   In short it means that under certain values of the dependency_fields the warl-field can take only the legal values 
   defined by either `[legal-values]` or by the `bitmask` function. 
@@ -89,9 +96,9 @@ A WARL csr/field has the following skeleton in the riscv-config:
     
       [dependency-vals] -> field-name[index-hi:index-lo] in [legal-values1] & field-name[index-lo-1:0] in [legal-values2]
     
-  - **in**: key-word indicating that the `field-name[index-hi:index-lo]` should takes values defined within `[legal_values]`.
+  - **in**: key-word indicating that `field-name[index-hi:index-lo]` should takes values defined within `[legal_values]`.
 
-  - **bitmask**: keyword indicating that the legal values are defined using a mask and fixedval variables.
+  - **bitmask**: keyword indicating that the legal values are defined using a mask and fixedval variables. The fixedval variable defines the default value of the masked bits.
 
   - **legal-values**: a list of value-descriptors indicating the set of legal values `field-name[index-hi:index-lo]` can 
     take.
@@ -135,9 +142,10 @@ A WARL csr/field has the following skeleton in the riscv-config:
               return Flip-MSB of field
 
 Restrictions on the WARL YAML node:
-1. No legal value must exceed the maximum value which can be supported(based on the width of the field). 
-2. Functions should be exhaustive with respect to every possible combination of the dependency values.
-3. within a string for `legal` all bits of the csr/field should be covered. No bits can be left undefined.
+
+    1. No legal value must exceed the maximum value which can be supported(based on the width of the field). 
+    2. Functions should be exhaustive with respect to every possible combination of the dependency values.
+    3. within a string for `legal` all bits of the csr/field should be covered. No bits must be left undefined.
 
 Example:
   
@@ -148,7 +156,18 @@ Example:
       dependency_fields: [mtvec::mode]
       legal:
         - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  # can take only 2 fixed values when mode==0.
-        - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned when mode==0
+        - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned when mode==1
+      wr_illegal:
+        - "[0] -> unchanged"
+        - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000" # predefined value if write value is
+        - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> unchanged"
+
+    # When base of mtvec depends on the mode field. Using bitmask instead of range
+    WARL: 
+      dependency_fields: [mtvec::mode]
+      legal:
+        - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  # can take only 2 fixed values when mode==0.
+        - "[1] -> base[29:0] bitmask [0x3FFFFFC0, 0x00000000]" # 256 byte aligned when mode==1
       wr_illegal:
         - "[0] -> unchanged"
         - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000" # predefined value if write value is
@@ -156,16 +175,16 @@ Example:
 
     # no dependencies. Mode field of mtvec can take only 2 legal values using range-descriptor
     WARL:
-      dependency_fields: []
+      dependency_fields:
       legal: 
-        - "[] -> mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+        - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
       wr_illegal:
-        - "[] -> 0x00"
+        - "0x00"
 
     # no dependencies. using single-value-descriptors
     WARL:
-      dependency_fields: []
+      dependency_fields:
       legal: 
-        - "[] -> mode[1:0] in [0x0,0x1] # Range of 0 to 1 (inclusive)"
+        - "mode[1:0] in [0x0,0x1] # Range of 0 to 1 (inclusive)"
       wr_illegal:
-        - "[] -> 0x00"
+        - "0x00"
