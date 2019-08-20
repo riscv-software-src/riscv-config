@@ -102,6 +102,17 @@ A WARL csr/field has the following skeleton in the riscv-config:
 
   - **legal-values**: a list of value-descriptors indicating the set of legal values `field-name[index-hi:index-lo]` can 
     take.
+    
+  Restrictions:
+  
+  1. No legal value must exceed the maximum value which can be supported (based on the width of the field). 
+  2. Functions should be exhaustive with respect to every possible combination of the dependency values.
+  3. within a string for `legal` all bits of the csr/field should be covered. No bits must be left undefined.
+  4. A legal string should not be a combination ranges split into parts or a simple bitmask function for the entire field. mixing bitmask and ranges it allowed. The following example is an invalid spec:
+
+  .. code-block:: yaml
+
+    [0] -> field[31:6] in [0x10000000: 0x3FFFFFF] & field[5:0] bitmask [0x30, 0x0F]
   
   
 - **wr_illegal** : This field takes in a list of strings which define the next legal value of the field when an illegal
@@ -141,11 +152,11 @@ A WARL csr/field has the following skeleton in the riscv-config:
           if ( val < base || val > bound)
               return Flip-MSB of field
 
-Restrictions on the WARL YAML node:
+  Restrictions:
+    
+    1. wr_illegal will not exists for a legal list defined as a bitmask.
 
-    1. No legal value must exceed the maximum value which can be supported(based on the width of the field). 
-    2. Functions should be exhaustive with respect to every possible combination of the dependency values.
-    3. within a string for `legal` all bits of the csr/field should be covered. No bits must be left undefined.
+
 
 Example:
   
@@ -169,9 +180,8 @@ Example:
         - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  # can take only 2 fixed values when mode==0.
         - "[1] -> base[29:0] bitmask [0x3FFFFFC0, 0x00000000]" # 256 byte aligned when mode==1
       wr_illegal:
-        - "[0] -> unchanged"
-        - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000" # predefined value if write value is
-        - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> unchanged"
+        - "[0] -> unchanged" # no illegal for bitmask defined legal strings.
+        
 
     # no dependencies. Mode field of mtvec can take only 2 legal values using range-descriptor
     WARL:
