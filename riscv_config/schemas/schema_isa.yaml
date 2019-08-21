@@ -1,4 +1,4 @@
-### 
+###
 # **Description**: Vendor name.
 #
 # **Examples**:
@@ -13,10 +13,10 @@
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
-Vendor: 
-    type: string
+Vendor:
+  type: string
 
-### 
+###
 # **Description**: Device Name.
 #
 # **Examples**:
@@ -32,33 +32,33 @@ Vendor:
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 Device:
-    type: string
+  type: string
 
 ###
 # **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
 # (other than Zext) should be mentioned in upper-case. Z extensions should begin with an upper-case
 # 'Z' followed by lower-case extension name (without Camel casing)
 #
-# **Examples**: 
+# **Examples**:
 #
 # .. code-block:: none
 #
-#   ISA: RV32IMA 
+#   ISA: RV32IMA
 #   ISA: RV64IMAFDCZifencei
 #
-# **Constraints**: 
+# **Constraints**:
 #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
 #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
-# 
+#
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
-ISA: 
-    type: string
-    regex: '^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$'
-    required: True
-    check_with: capture_isa_specifics
+ISA:
+  type: string
+  regex: '^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$'
+  required: True
+  check_with: capture_isa_specifics
 
-### 
+###
 # **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
 #
 # **Examples**:
@@ -74,12 +74,12 @@ ISA:
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 User_Spec_Version:
-    type: string
-    default: "2.2"
-    required: True
-    check_with: user_version_check
+  type: string
+  default: "2.2"
+  required: True
+  check_with: user_version_check
 
-### 
+###
 # **Description**: Version number of Priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
 #
 # **Examples**:
@@ -90,39 +90,39 @@ User_Spec_Version:
 #   Privilege_Spec_Version: "1.11"
 #
 # **Constraints**:
-#   - should be a valid version later than 1.10 
+#   - should be a valid version later than 1.10
 #
 # `------------------------------------------------------------------------------------------------------------------------------`
 #
 Privilege_Spec_Version:
-    type: string
-    default: "1.10"
-    required: True
-    check_with: priv_version_check
+  type: string
+  default: "1.10"
+  required: True
+  check_with: priv_version_check
 
 ###
 # **Description**: A boolean value indicating whether hardware support for misaligned load/store requests exists.
-# 
+#
 # **Examples**:
-# 
+#
 # .. code-block:: none
-# 
+#
 #    hw_data_misaligned_support: True
 #    hw_data_misaligned_support: False
-# 
+#
 # **Constraints**:
 # - None
-# 
+#
 # `------------------------------------------------------------------------------------------------------------------------------`
-# 
+#
 hw_data_misaligned_support:
-    type: boolean
-    default: False
+  type: boolean
+  default: False
 
 xlen:
-    type: integer
-    allowed: [32,64,128]
-    readonly: True
+  type: integer
+  allowed: [32,64,128]
+  readonly: True
 
 misa:
   type: dict
@@ -154,7 +154,7 @@ misa:
             description:
               type: string
               default: Encodes the native base integer ISA width.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -178,7 +178,7 @@ misa:
             description:
               type: string
               default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -211,7 +211,7 @@ misa:
             description:
               type: string
               default: Encodes the native base integer ISA width.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -235,7 +235,7 @@ misa:
             description:
               type: string
               default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -286,7 +286,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the user mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -310,7 +310,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the supervisor mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -334,7 +334,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the machine mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -358,7 +358,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the user mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -382,7 +382,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the supervisor mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -406,7 +406,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the machine mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -430,7 +430,7 @@ mstatus:
             description:
               type: string
               default: Stores the previous priority mode for supervisor.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -454,7 +454,7 @@ mstatus:
             description:
               type: string
               default: Stores the previous priority mode for machine.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -478,7 +478,7 @@ mstatus:
             description:
               type: string
               default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -502,7 +502,7 @@ mstatus:
             description:
               type: string
               default: Encodes the status of additional user-mode extensions and associated state.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -526,7 +526,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege level at which loads and stores execute in all privilege modes.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -550,7 +550,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege with which S-mode loads and stores access virtual memory.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -574,7 +574,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege with which loads access virtual memory.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -598,7 +598,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting supervisor virtual-memory management operations.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -622,7 +622,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting the WFI instruction.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -646,7 +646,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting the supervisor exception return instruction.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -670,7 +670,7 @@ mstatus:
             description:
               type: string
               default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -703,7 +703,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the user mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -727,7 +727,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the supervisor mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -751,7 +751,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the machine mode interrupts.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -775,7 +775,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the user mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -799,7 +799,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the supervisor mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -823,7 +823,7 @@ mstatus:
             description:
               type: string
               default: Stores the state of the machine mode interrupts prior to the trap.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -847,7 +847,7 @@ mstatus:
             description:
               type: string
               default: Stores the previous priority mode for supervisor.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -871,7 +871,7 @@ mstatus:
             description:
               type: string
               default: Stores the previous priority mode for machine.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -895,7 +895,7 @@ mstatus:
             description:
               type: string
               default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -919,7 +919,7 @@ mstatus:
             description:
               type: string
               default: Encodes the status of additional user-mode extensions and associated state.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -943,7 +943,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege level at which loads and stores execute in all privilege modes.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -967,7 +967,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege with which S-mode loads and stores access virtual memory.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -991,7 +991,7 @@ mstatus:
             description:
               type: string
               default: Modifies the privilege with which loads access virtual memory.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1015,7 +1015,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting supervisor virtual-memory management operations.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1039,7 +1039,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting the WFI instruction.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1063,7 +1063,7 @@ mstatus:
             description:
               type: string
               default: Supports intercepting the supervisor exception return instruction.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1087,7 +1087,7 @@ mstatus:
             description:
               type: string
               default: Controls the value of xlen for Supervisor mode.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1111,7 +1111,7 @@ mstatus:
             description:
               type: string
               default: Controls the xlen for User mode.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1135,7 +1135,7 @@ mstatus:
             description:
               type: string
               default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1181,7 +1181,7 @@ mvendorid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1218,7 +1218,7 @@ mvendorid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1274,7 +1274,7 @@ marchid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1312,7 +1312,7 @@ marchid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1368,7 +1368,7 @@ mimpid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1406,7 +1406,7 @@ mimpid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1462,7 +1462,7 @@ mhartid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1500,7 +1500,7 @@ mhartid:
           allowed: [True]
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1561,7 +1561,7 @@ mtvec:
             description:
               type: string
               default: Vector base address.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1585,7 +1585,7 @@ mtvec:
             description:
               type: string
               default: Vector mode.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1618,7 +1618,7 @@ mtvec:
             description:
               type: string
               default: Vector base address.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1642,7 +1642,7 @@ mtvec:
             description:
               type: string
               default: Vector mode.
-            shadow: 
+            shadow:
               type: string
               default: none
             msb:
@@ -1687,7 +1687,7 @@ mideleg:
           default: False
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1714,7 +1714,7 @@ mideleg:
           default: False
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1759,7 +1759,7 @@ medeleg:
           default: False
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
@@ -1786,7 +1786,7 @@ medeleg:
           default: False
         fields:
           type: list
-        shadow: 
+        shadow:
           type: string
           default: none
         msb:
