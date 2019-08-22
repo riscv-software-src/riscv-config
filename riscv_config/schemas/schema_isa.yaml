@@ -686,6 +686,14 @@ mstatus:
             implemented:
               type: boolean
               default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
           default:
             implemented: True
       required: True
@@ -1151,6 +1159,14 @@ mstatus:
             implemented:
               type: boolean
               default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
           default:
             implemented: True
       required: True
@@ -1203,12 +1219,12 @@ mvendorid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
     rv64:
       type: dict
@@ -1240,12 +1256,12 @@ mvendorid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
   required: True
 
@@ -1296,12 +1312,12 @@ marchid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
     rv64:
       type: dict
@@ -1334,12 +1350,12 @@ marchid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFFFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
   required: True
 
@@ -1390,12 +1406,12 @@ mimpid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
     rv64:
       type: dict
@@ -1428,12 +1444,12 @@ mimpid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFFFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
   required: True
 
@@ -1484,12 +1500,12 @@ mhartid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
     rv64:
       type: dict
@@ -1522,12 +1538,12 @@ mhartid:
         type:
           type: dict
           schema:
-            RO:
+            ro_constant:
               type: integer
               max: 0xFFFFFFFFFFFFFFFF
               default: 0x0
           default:
-            RO: 0x0
+            ro_constant: 0x0
       required: True
   required: True
 
@@ -1577,6 +1593,7 @@ mtvec:
             implemented:
               type: boolean
               default: True
+              allowed: [True]
           default:
             implemented: True
         mode:
@@ -1601,6 +1618,7 @@ mtvec:
             implemented:
               type: boolean
               default: True
+              allowed: [True]
           default:
             implemented: True
       required: True
@@ -1634,6 +1652,7 @@ mtvec:
             implemented:
               type: boolean
               default: True
+              allowed: [True]
           default:
             implemented: True
         mode:
@@ -1658,6 +1677,7 @@ mtvec:
             implemented:
               type: boolean
               default: True
+              allowed: [True]
           default:
             implemented: True
       required: True
@@ -1807,7 +1827,1597 @@ medeleg:
       required: True
   required: True
 
+mip:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mip register is an MXLEN-bit read/write register containing information on pending interrupts.
+    address:
+      type: integer
+      default: 0x344
+      allowed: [0x344]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        usip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 0
+              allowed: [0]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        ssip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        msip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        utip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        stip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mtip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        ueip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        seip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 9
+              allowed: [9]
+            lsb:
+              type: integer
+              default: 9
+              allowed: [9]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        meip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 11
+              allowed: [11]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        usip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 0
+              allowed: [0]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        ssip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        msip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Software Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        utip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        stip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mtip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Timer Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        ueip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        seip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 9
+              allowed: [9]
+            lsb:
+              type: integer
+              default: 9
+              allowed: [9]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        meip:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine External Interrupt Pending.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 11
+              allowed: [11]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+      required: True
+  required: True
 
+mie:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mie register is an MXLEN-bit read/write register containing interrupt enable bits.
+    address:
+      type: integer
+      default: 0x304
+      allowed: [0x304]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        usie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 0
+              allowed: [0]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        ssie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        msie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        utie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        stie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mtie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        ueie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        seie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 9
+              allowed: [9]
+            lsb:
+              type: integer
+              default: 9
+              allowed: [9]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        meie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 11
+              allowed: [11]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        usie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 0
+              allowed: [0]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        ssie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 1
+              allowed: [1]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        msie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Software Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 3
+              allowed: [3]
+            lsb:
+              type: integer
+              default: 3
+              allowed: [3]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        utie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 4
+              allowed: [4]
+            lsb:
+              type: integer
+              default: 4
+              allowed: [4]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        stie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 5
+              allowed: [5]
+            lsb:
+              type: integer
+              default: 5
+              allowed: [5]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        mtie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine Timer Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 7
+              allowed: [7]
+            lsb:
+              type: integer
+              default: 7
+              allowed: [7]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        ueie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: User External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 8
+              allowed: [8]
+            lsb:
+              type: integer
+              default: 8
+              allowed: [8]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+          default:
+            implemented: True
+        seie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Supervisor External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 9
+              allowed: [9]
+            lsb:
+              type: integer
+              default: 9
+              allowed: [9]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+        meie:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Machine External Interrupt enable.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 11
+              allowed: [11]
+            lsb:
+              type: integer
+              default: 11
+              allowed: [11]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+            type:
+              type: dict
+              schema:
+                ro_variable: 
+                  type: boolean
+                  default: True
+              default:
+                ro_variable: True
+          default:
+            implemented: True
+      required: True
+  required: True
 
+mtime:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Memory mapped timer register.
+    address:
+      type: integer
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+  required: True
+
+mtimecmp:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Memory mapped timer compare register.
+    address:
+      type: integer
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+  required: True
+
+mscratch:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mscratch register is an MXLEN-bit read/write register dedicated for use by machine mode.
+    address:
+      type: integer
+      default: 0x340
+      allowed: [0x340]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+  required: True
+
+mepc:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mepc is a WARL register that must be able to hold all valid physical and virtual addresses.
+    address:
+      type: integer
+      default: 0x341
+      allowed: [0x341]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+  required: True
+
+mtval:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mtval is a WARL register that holds the address of the instruction which caused the exception.
+    address:
+      type: integer
+      default: 0x343
+      allowed: [0x343]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          default: True
+        fields:
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+        implemented:
+          type: boolean
+          default: True
+          allowed: [True]
+        reset-val:
+          type: integer
+          default: 0x0
+          max: 0xFFFFFFFFFFFFFFFF
+      default:
+        exists: False
+      required: True
+  required: True
+
+mcause:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mcause register stores the information regarding the trap.
+    address:
+      type: integer
+      default: 0x342
+      allowed: [0x342]
+    priv_mode:
+      type: string
+      allowed: ['M']
+      default: 'M'
+    reset-val:
+      type: integer
+    rv32:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        interrupt:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Indicates whether the trap was due to an interrupt.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 31
+              allowed: [31]
+            lsb:
+              type: integer
+              default: 31
+              allowed: [31]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+              allowed: [True]
+          default:
+            implemented: True
+        exception_code:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the exception code.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 30
+              allowed: [30]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+              allowed: [True]
+            type:
+              type: dict
+              schema:
+                wlrl: 
+                  type: list
+              default:
+                wlrl: 
+                - (0,15)
+          default:
+            implemented: True
+      required: True
+    rv64:
+      type: dict
+      schema:
+        exists:
+          type: boolean
+          default: False
+        fields:
+          type: list
+        interrupt:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Indicates whether the trap was due to an interrupt.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 31
+              allowed: [31]
+            lsb:
+              type: integer
+              default: 31
+              allowed: [31]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+              allowed: [True]
+          default:
+            implemented: True
+        exception_code:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the exception code.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 30
+              allowed: [30]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            reset-val:
+              type: integer
+            implemented:
+              type: boolean
+              default: True
+              allowed: [True]
+            type:
+              type: dict
+              schema:
+                wlrl: 
+                  type: list
+              default:
+                wlrl: 
+                - (0,15)
+          default:
+            implemented: True
+      required: True
+  required: True
 
 

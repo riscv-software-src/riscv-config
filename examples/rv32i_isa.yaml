@@ -50,3 +50,43 @@ medeleg:
     exists: false
   rv64:
     exists: false
+mcause:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mepc:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mie:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mip:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mscratch:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mtime:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mtimecmp:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
+mtval:
+  rv32:
+    exists: false
+  rv64:
+    exists: false
