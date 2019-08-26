@@ -143,7 +143,7 @@ misa:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -167,9 +167,10 @@ misa:
               allowed: [30]
             reset-val:
               type: integer
+              default: [1]
             implemented:
               type: boolean
-              default: True
+              default: False
           default:
             implemented: True
         extensions:
@@ -191,16 +192,18 @@ misa:
               allowed: [0]
             reset-val:
               type: integer
+              default: [0]
             implemented:
               type: boolean
               default: True
           default:
             implemented: True
-      required: True
+      default: 
+        implemented: False
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -224,6 +227,7 @@ misa:
               allowed: [62]
             reset-val:
               type: integer
+              default: [2]
             implemented:
               type: boolean
               default: True
@@ -248,13 +252,14 @@ misa:
               allowed: [0]
             reset-val:
               type: integer
+              default: [0]
             implemented:
               type: boolean
               default: True
           default:
             implemented: True
-      required: True
-  required: True
+      default: 
+        implemented: False
 
 mstatus:
   type: dict
@@ -275,7 +280,7 @@ mstatus:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -299,6 +304,7 @@ mstatus:
               allowed: [0]
             reset-val:
               type: integer
+              default: 0
             implemented:
               type: boolean
               default: True
@@ -689,18 +695,19 @@ mstatus:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
                 ro_variable: True
           default:
             implemented: True
-      required: True
+      default:
+        implemented: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1162,7 +1169,7 @@ mstatus:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -1191,7 +1198,7 @@ mvendorid:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1229,7 +1236,7 @@ mvendorid:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
           allowed: [True]
         fields:
@@ -1284,7 +1291,7 @@ marchid:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1322,7 +1329,7 @@ marchid:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1378,7 +1385,7 @@ mimpid:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1416,7 +1423,7 @@ mimpid:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1472,7 +1479,7 @@ mhartid:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1510,7 +1517,7 @@ mhartid:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
           allowed: [True]
@@ -1566,7 +1573,7 @@ mtvec:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1625,7 +1632,7 @@ mtvec:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1702,7 +1709,7 @@ mideleg:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1729,7 +1736,7 @@ mideleg:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1774,7 +1781,7 @@ medeleg:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1801,7 +1808,7 @@ medeleg:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1846,7 +1853,7 @@ mip:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -1924,7 +1931,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2004,7 +2011,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2060,7 +2067,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2092,7 +2099,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2103,7 +2110,7 @@ mip:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -2181,7 +2188,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2261,7 +2268,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2317,7 +2324,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2349,7 +2356,7 @@ mip:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2378,7 +2385,7 @@ mie:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -2456,7 +2463,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2536,7 +2543,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2592,7 +2599,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2624,7 +2631,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2635,7 +2642,7 @@ mie:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -2713,7 +2720,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2793,7 +2800,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2849,7 +2856,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2881,7 +2888,7 @@ mie:
             type:
               type: dict
               schema:
-                ro_variable: 
+                ro_variable:
                   type: boolean
                   default: True
               default:
@@ -2908,7 +2915,7 @@ mtime:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
         fields:
@@ -2932,12 +2939,12 @@ mtime:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
         fields:
           type: list
@@ -2960,7 +2967,7 @@ mtime:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
   required: True
 
@@ -2981,7 +2988,7 @@ mtimecmp:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
         fields:
@@ -3005,12 +3012,12 @@ mtimecmp:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
         fields:
           type: list
@@ -3033,7 +3040,7 @@ mtimecmp:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
   required: True
 
@@ -3056,7 +3063,7 @@ mscratch:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
         fields:
@@ -3081,12 +3088,12 @@ mscratch:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
         fields:
           type: list
@@ -3110,7 +3117,7 @@ mscratch:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
   required: True
 
@@ -3133,7 +3140,7 @@ mepc:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
         fields:
@@ -3158,12 +3165,12 @@ mepc:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
         fields:
           type: list
@@ -3187,7 +3194,7 @@ mepc:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
   required: True
 
@@ -3210,7 +3217,7 @@ mtval:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: True
         fields:
@@ -3235,12 +3242,12 @@ mtval:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           default: True
         fields:
           type: list
@@ -3264,7 +3271,7 @@ mtval:
           default: 0x0
           max: 0xFFFFFFFFFFFFFFFF
       default:
-        exists: False
+        implemented: False
       required: True
   required: True
 
@@ -3287,7 +3294,7 @@ mcause:
     rv32:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -3343,10 +3350,10 @@ mcause:
             type:
               type: dict
               schema:
-                wlrl: 
+                wlrl:
                   type: list
               default:
-                wlrl: 
+                wlrl:
                 - (0,15)
           default:
             implemented: True
@@ -3354,7 +3361,7 @@ mcause:
     rv64:
       type: dict
       schema:
-        exists:
+        implemented:
           type: boolean
           default: False
         fields:
@@ -3410,10 +3417,10 @@ mcause:
             type:
               type: dict
               schema:
-                wlrl: 
+                wlrl:
                   type: list
               default:
-                wlrl: 
+                wlrl:
                 - (0,15)
           default:
             implemented: True
