@@ -165,9 +165,6 @@ misa:
               type: integer
               default: 30
               allowed: [30]
-            reset-val:
-              type: integer
-              default: [1]
             implemented:
               type: boolean
               default: False
@@ -190,9 +187,6 @@ misa:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
-              default: [0]
             implemented:
               type: boolean
               default: True
@@ -225,9 +219,6 @@ misa:
               type: integer
               default: 62
               allowed: [62]
-            reset-val:
-              type: integer
-              default: [2]
             implemented:
               type: boolean
               default: True
@@ -250,9 +241,6 @@ misa:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
-              default: [0]
             implemented:
               type: boolean
               default: True
@@ -302,9 +290,6 @@ mstatus:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
-              default: 0
             implemented:
               type: boolean
               default: True
@@ -327,8 +312,6 @@ mstatus:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -351,8 +334,6 @@ mstatus:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -375,8 +356,6 @@ mstatus:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -399,8 +378,6 @@ mstatus:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -423,8 +400,6 @@ mstatus:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -447,8 +422,6 @@ mstatus:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -471,8 +444,6 @@ mstatus:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -495,8 +466,6 @@ mstatus:
               type: integer
               default: 13
               allowed: [13]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -519,8 +488,6 @@ mstatus:
               type: integer
               default: 15
               allowed: [15]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -543,8 +510,6 @@ mstatus:
               type: integer
               default: 17
               allowed: [17]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -567,8 +532,6 @@ mstatus:
               type: integer
               default: 18
               allowed: [18]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -591,8 +554,6 @@ mstatus:
               type: integer
               default: 19
               allowed: [19]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -615,8 +576,6 @@ mstatus:
               type: integer
               default: 20
               allowed: [20]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -639,8 +598,6 @@ mstatus:
               type: integer
               default: 21
               allowed: [21]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -663,8 +620,6 @@ mstatus:
               type: integer
               default: 22
               allowed: [22]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -687,8 +642,6 @@ mstatus:
               type: integer
               default: 31
               allowed: [31]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -729,8 +682,6 @@ mstatus:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -753,8 +704,6 @@ mstatus:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -777,8 +726,6 @@ mstatus:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -801,8 +748,6 @@ mstatus:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -825,8 +770,6 @@ mstatus:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -849,8 +792,6 @@ mstatus:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -873,8 +814,6 @@ mstatus:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -897,8 +836,6 @@ mstatus:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -921,8 +858,6 @@ mstatus:
               type: integer
               default: 13
               allowed: [13]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -945,8 +880,6 @@ mstatus:
               type: integer
               default: 15
               allowed: [15]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -969,8 +902,6 @@ mstatus:
               type: integer
               default: 17
               allowed: [17]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -993,8 +924,6 @@ mstatus:
               type: integer
               default: 18
               allowed: [18]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1017,8 +946,6 @@ mstatus:
               type: integer
               default: 19
               allowed: [19]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1041,8 +968,6 @@ mstatus:
               type: integer
               default: 20
               allowed: [20]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1065,8 +990,6 @@ mstatus:
               type: integer
               default: 21
               allowed: [21]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1089,8 +1012,6 @@ mstatus:
               type: integer
               default: 22
               allowed: [22]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1113,8 +1034,6 @@ mstatus:
               type: integer
               default: 34
               allowed: [34]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1137,8 +1056,6 @@ mstatus:
               type: integer
               default: 32
               allowed: [32]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1161,8 +1078,6 @@ mstatus:
               type: integer
               default: 63
               allowed: [63]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1219,10 +1134,6 @@ mvendorid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFF
         type:
           type: dict
           schema:
@@ -1256,10 +1167,6 @@ mvendorid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFF
         type:
           type: dict
           schema:
@@ -1312,10 +1219,6 @@ marchid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFF
         type:
           type: dict
           schema:
@@ -1350,10 +1253,6 @@ marchid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
         type:
           type: dict
           schema:
@@ -1406,10 +1305,6 @@ mimpid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFF
         type:
           type: dict
           schema:
@@ -1444,10 +1339,6 @@ mimpid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
         type:
           type: dict
           schema:
@@ -1500,10 +1391,6 @@ mhartid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFF
         type:
           type: dict
           schema:
@@ -1538,10 +1425,6 @@ mhartid:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
         type:
           type: dict
           schema:
@@ -1595,8 +1478,6 @@ mtvec:
               type: integer
               default: 2
               allowed: [2]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1620,8 +1501,6 @@ mtvec:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1654,8 +1533,6 @@ mtvec:
               type: integer
               default: 2
               allowed: [2]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1679,8 +1556,6 @@ mtvec:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1725,8 +1600,6 @@ mideleg:
           type: integer
           default: 0
           allowed: [0]
-        reset-val:
-          type: integer
         implemented:
           type: boolean
           default: True
@@ -1752,8 +1625,6 @@ mideleg:
           type: integer
           default: 0
           allowed: [0]
-        reset-val:
-          type: integer
         implemented:
           type: boolean
           default: True
@@ -1797,8 +1668,6 @@ medeleg:
           type: integer
           default: 0
           allowed: [0]
-        reset-val:
-          type: integer
         implemented:
           type: boolean
           default: True
@@ -1824,8 +1693,6 @@ medeleg:
           type: integer
           default: 0
           allowed: [0]
-        reset-val:
-          type: integer
         implemented:
           type: boolean
           default: True
@@ -1875,8 +1742,6 @@ mip:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1899,8 +1764,6 @@ mip:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1923,8 +1786,6 @@ mip:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1955,8 +1816,6 @@ mip:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -1979,8 +1838,6 @@ mip:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2003,8 +1860,6 @@ mip:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2035,8 +1890,6 @@ mip:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2059,8 +1912,6 @@ mip:
               type: integer
               default: 9
               allowed: [9]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2091,8 +1942,6 @@ mip:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2132,8 +1981,6 @@ mip:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2156,8 +2003,6 @@ mip:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2180,8 +2025,6 @@ mip:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2212,8 +2055,6 @@ mip:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2236,8 +2077,6 @@ mip:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2260,8 +2099,6 @@ mip:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2292,8 +2129,6 @@ mip:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2316,8 +2151,6 @@ mip:
               type: integer
               default: 9
               allowed: [9]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2348,8 +2181,6 @@ mip:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2407,8 +2238,6 @@ mie:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2431,8 +2260,6 @@ mie:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2455,8 +2282,6 @@ mie:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2487,8 +2312,6 @@ mie:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2511,8 +2334,6 @@ mie:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2535,8 +2356,6 @@ mie:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2567,8 +2386,6 @@ mie:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2591,8 +2408,6 @@ mie:
               type: integer
               default: 9
               allowed: [9]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2623,8 +2438,6 @@ mie:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2664,8 +2477,6 @@ mie:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2688,8 +2499,6 @@ mie:
               type: integer
               default: 1
               allowed: [1]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2712,8 +2521,6 @@ mie:
               type: integer
               default: 3
               allowed: [3]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2744,8 +2551,6 @@ mie:
               type: integer
               default: 4
               allowed: [4]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2768,8 +2573,6 @@ mie:
               type: integer
               default: 5
               allowed: [5]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2792,8 +2595,6 @@ mie:
               type: integer
               default: 7
               allowed: [7]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2824,8 +2625,6 @@ mie:
               type: integer
               default: 8
               allowed: [8]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2848,8 +2647,6 @@ mie:
               type: integer
               default: 9
               allowed: [9]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2880,8 +2677,6 @@ mie:
               type: integer
               default: 11
               allowed: [11]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -2912,6 +2707,7 @@ mtime:
       default: 'M'
     reset-val:
       type: integer
+      default: 0x0
     rv32:
       type: dict
       schema:
@@ -2934,10 +2730,6 @@ mtime:
         implemented:
           type: boolean
           default: True
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -2962,10 +2754,6 @@ mtime:
         implemented:
           type: boolean
           default: True
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -2985,6 +2773,7 @@ mtimecmp:
       default: 'M'
     reset-val:
       type: integer
+      default: 0x0
     rv32:
       type: dict
       schema:
@@ -3007,10 +2796,6 @@ mtimecmp:
         implemented:
           type: boolean
           default: True
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3035,10 +2820,6 @@ mtimecmp:
         implemented:
           type: boolean
           default: True
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3060,6 +2841,7 @@ mscratch:
       default: 'M'
     reset-val:
       type: integer
+      default: 0x0
     rv32:
       type: dict
       schema:
@@ -3083,10 +2865,6 @@ mscratch:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3112,10 +2890,6 @@ mscratch:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3137,6 +2911,7 @@ mepc:
       default: 'M'
     reset-val:
       type: integer
+      default: 0x0
     rv32:
       type: dict
       schema:
@@ -3160,10 +2935,6 @@ mepc:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3189,10 +2960,6 @@ mepc:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3214,6 +2981,7 @@ mtval:
       default: 'M'
     reset-val:
       type: integer
+      default: 0x0
     rv32:
       type: dict
       schema:
@@ -3237,10 +3005,6 @@ mtval:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3266,10 +3030,6 @@ mtval:
           type: boolean
           default: True
           allowed: [True]
-        reset-val:
-          type: integer
-          default: 0x0
-          max: 0xFFFFFFFFFFFFFFFF
       default:
         implemented: False
       required: True
@@ -3316,8 +3076,6 @@ mcause:
               type: integer
               default: 31
               allowed: [31]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -3341,8 +3099,6 @@ mcause:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -3383,8 +3139,6 @@ mcause:
               type: integer
               default: 31
               allowed: [31]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
@@ -3408,8 +3162,6 @@ mcause:
               type: integer
               default: 0
               allowed: [0]
-            reset-val:
-              type: integer
             implemented:
               type: boolean
               default: True
