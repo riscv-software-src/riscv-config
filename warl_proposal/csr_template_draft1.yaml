@@ -27,8 +27,8 @@
       reset-val: <hex>                    # reset value of the field.
       type:                               # indicates the type of the field. Can be only one of the following
         WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
-        RO: <hex>                         # indicates the field is readonly with this value. This value should be the same 
-                                          # as the reset-value.
+        RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
+        RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
         WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
           dependency_fields: [list]    
           legal: [list of warl-string]
@@ -57,7 +57,8 @@
     reset-val: <hex>                    # reset value of the field.
     type:                               # indicates the type of the field. Can be only one of the following
       WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
-      RO: <hex>                         # indicates the field is readonly with this value. This value == reset-value.
+      RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
+      RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
       WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
         dependency_fields: [list]    
         legal: [list of warl-string]
