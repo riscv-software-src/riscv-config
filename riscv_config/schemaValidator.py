@@ -6,9 +6,19 @@ class schemaValidator(Validator):
     ''' Custom validator for schema having the custom rules necessary for implementation and checks.'''
 
     def __init__(self, *args, **kwargs):
-        global xlen
+        global rv32
+        global rv64
         global extensions
+        global xlen
         xlen = kwargs.get('xlen')
+        if 32 in xlen:
+            rv32 = True
+        else:
+            rv32 = False
+        if 64 in xlen:
+            rv64 = True
+        else:
+            rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
 
     def _check_with_priv_version_check(self, field, value):
@@ -70,6 +80,25 @@ class schemaValidator(Validator):
             if (x in ext):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
+        extensions = int("".join(extension_enc), 2)
+
+    def _check_with_rv32_check(self, field, value):
+        global xlen
+        if value:
+            if not rv32:
+                self._error(
+                    field,
+                    "Register cannot be implemented in rv32 mode due to unsupported xlen."
+                )
+
+    def _check_with_rv64_check(self, field, value):
+        global xlen
+        if value:
+            if not rv64:
+                self._error(
+                    field,
+                    "Register cannot be implemented in rv64 mode due to unsupported xlen."
+                )
 
     def _check_with_max_length(self, field, value):
         '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''

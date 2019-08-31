@@ -12,78 +12,52 @@ from riscv_config.utils import yaml
 logger = logging.getLogger(__name__)
 
 
-def iset():
-    '''Function to check and set defaults for all "implemented" fields which are dependent on 
-        the xlen.'''
-    global inp_yaml
-    if '32' in inp_yaml['ISA']:
-        return False
-    else:
-        return True
-
-
 def nosset():
     '''Function to check and set defaults for all fields which are dependent on 
-        the presence of 'S' extension and have a hardwired value of 0.'''
+        the presence of 'S' extension.'''
     global inp_yaml
-    if 'S' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+    if 'S' in inp_yaml['ISA']:
+        return {'implemented': True}
     else:
-        return {'is_hardwired': False}
+        return {'implemented': False}
 
 
 def nouset():
     '''Function to check and set defaults for all fields which are dependent on 
-        the presence of 'U' extension and have a hardwired value of 0.'''
+        the presence of 'U' extension.'''
     global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+    if 'U' in inp_yaml['ISA']:
+        return {'implemented': True}
     else:
-        return {'is_hardwired': False}
-
-
-def upieset(doc):
-    '''Function to check and set value for upie field in misa.'''
-    global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
-    elif 'UPIE' not in doc.keys():
-        return {'is_hardwired': False}
-    else:
-        return doc['UPIE']
-
-
-def uieset(doc):
-    '''Function to check and set value for uie field in misa.'''
-    global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
-    elif 'UIE' not in doc.keys():
-        return {'is_hardwired': False}
-    else:
-        return doc['UIE']
+        return {'implemented': False}
 
 
 def twset():
     '''Function to check and set value for tw field in misa.'''
     global inp_yaml
     if 'S' not in inp_yaml['ISA'] and 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+        return {'implemented': False}
     else:
-        return {'is_hardwired': False}
+        return {'implemented': False}
 
 
-def miedelegset():
+def delegset():
     '''Function to set "implemented" value for mideleg regisrer.'''
     # return True
     global inp_yaml
+    var = True
     if 'U' not in inp_yaml['ISA']:
-        return False
+        var = False
     elif (('U' in inp_yaml['ISA']) and
           not ('N' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA'])):
-        return False
-    else:
-        return True
+        var = False
+
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True and var
+    if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['implemented'] = True and var
+    return temp
 
 
 def mepcset():
@@ -124,19 +98,18 @@ def satpset():
     return {'MODE': {'range': {'rangelist': [[0]]}}}
 
 
-def findxlen():
-    global inp_yaml
-    if "32" in inp_yaml['ISA']:
-        xlen = 32
-    elif "64" in inp_yaml['ISA']:
-        xlen = 64
-    elif "128" in inp_yaml['ISA']:
-        xlen = 128
-    return xlen
-
-
 def xlenset():
     return findxlen()
+
+
+def regset():
+    global inp_yaml
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True
+    if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['implemented'] = True
+    return temp
 
 
 def add_def_setters(schema_yaml):
@@ -188,6 +161,122 @@ def add_def_setters(schema_yaml):
     # schema_yaml['satp']['schema']['implemented'][
     #     'default_setter'] = lambda doc: simpset()
     # schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
+    regsetter = lambda doc: regset()
+    schema_yaml['mstatus']['default_setter'] = regsetter
+    schema_yaml['mvendorid']['default_setter'] = regsetter
+    schema_yaml['marchid']['default_setter'] = regsetter
+    schema_yaml['mhartid']['default_setter'] = regsetter
+    schema_yaml['mtvec']['default_setter'] = regsetter
+    schema_yaml['mip']['default_setter'] = regsetter
+    schema_yaml['mie']['default_setter'] = regsetter
+    schema_yaml['mscratch']['default_setter'] = regsetter
+    schema_yaml['mepc']['default_setter'] = regsetter
+    schema_yaml['mtval']['default_setter'] = regsetter
+    schema_yaml['mcause']['default_setter'] = regsetter
+    usetter = lambda doc: nouset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['uie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['upie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['upie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['mprv'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['mprv'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['ueip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['ueip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['utip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['utip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['usip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['usip'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['ueie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['ueie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['utie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['utie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['usie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['usie'][
+        'default_setter'] = usetter
+
+    ssetter = lambda doc: nosset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tvm'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tvm'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sxl'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tsr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tsr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['ssie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['ssie'][
+        'default_setter'] = ssetter
+
+    twsetter = lambda doc: twset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tw'][
+        'default_setter'] = twsetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tw'][
+        'default_setter'] = twsetter
+    delegsetter = lambda doc: delegset()
+    schema_yaml['medeleg']['default_setter'] = delegsetter
+    schema_yaml['mideleg']['default_setter'] = delegsetter
     return schema_yaml
 
 
@@ -201,13 +290,13 @@ def imp_normalise(foo):
 
         :return: The trimmed dictionary.
     '''
-    for key in foo.keys():
-        if isinstance(foo[key], dict):
-            foo[key] = imp_normalise(foo[key])
-        if key == 'implemented':
-            if not foo[key]:
-                foo = {'implemented': False}
-                break
+    # for key in foo.keys():
+    #     if isinstance(foo[key], dict):
+    #         foo[key] = imp_normalise(foo[key])
+    #     if key == 'implemented':
+    #         if not foo[key]:
+    #             foo = {'implemented': False}
+    #             break
     return foo
 
 
@@ -254,10 +343,10 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = utils.load_yaml(schema)
+    schema_yaml = add_def_setters(utils.load_yaml(schema))
 
     #Extract xlen
-    xlen = findxlen()
+    xlen = inp_yaml['supported_xlen']
 
     # schema_yaml = add_def_setters(schema_yaml)
     validator = schemaValidator(schema_yaml, xlen=xlen)

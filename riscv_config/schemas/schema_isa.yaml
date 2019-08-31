@@ -54,9 +54,9 @@ Device:
 #
 ISA:
   type: string
-  regex: '^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$'
-  required: True
-  check_with: capture_isa_specifics
+  regex: ^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$
+  required: true
+  # check_with: capture_isa_specifics
 
 ###
 # **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
@@ -75,8 +75,8 @@ ISA:
 #
 User_Spec_Version:
   type: string
-  default: "2.2"
-  required: True
+  default: '2.2'
+  required: true
   check_with: user_version_check
 
 ###
@@ -96,8 +96,8 @@ User_Spec_Version:
 #
 Privilege_Spec_Version:
   type: string
-  default: "1.10"
-  required: True
+  default: '1.10'
+  required: true
   check_with: priv_version_check
 
 ###
@@ -117,12 +117,14 @@ Privilege_Spec_Version:
 #
 hw_data_misaligned_support:
   type: boolean
-  default: False
+  default: false
 
-xlen:
-  type: integer
-  allowed: [32,64,128]
-  readonly: True
+supported_xlen:
+  type: list
+  schema:
+    type: integer
+    allowed: [32, 64, 128]
+  required: true
 
 misa:
   type: dict
@@ -136,16 +138,18 @@ misa:
       allowed: [0x301]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
+      default: 0x00
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         mxl:
@@ -167,15 +171,16 @@ misa:
               allowed: [30]
             implemented:
               type: boolean
-              default: False
+              default: true
           default:
-            implemented: True
+            implemented: false
         extensions:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+              default: Encodes the presence of the standard extensions, with a single
+                bit per letter of the alphabet.
             shadow:
               type: string
               default: none
@@ -189,17 +194,16 @@ misa:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
-      default: 
-        implemented: False
+            implemented: false
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         mxl:
@@ -221,15 +225,16 @@ misa:
               allowed: [62]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         extensions:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the presence of the standard extensions, with a single bit per letter of the alphabet.
+              default: Encodes the presence of the standard extensions, with a single
+                bit per letter of the alphabet.
             shadow:
               type: string
               default: none
@@ -243,26 +248,30 @@ misa:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
-      default: 
-        implemented: False
+            implemented: false
+  default:
+    rv32:
+      implemented: false
+    rv64:
+      implemented: false
 
 mstatus:
   type: dict
   schema:
     description:
       type: string
-      default: The mstatus register keeps track of and controls the hart’s current operating state.
+      default: The mstatus register keeps track of and controls the hart’s current
+        operating state.
     address:
       type: integer
       default: 0x300
       allowed: [0x300]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -270,7 +279,8 @@ mstatus:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         uie:
@@ -292,9 +302,9 @@ mstatus:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sie:
           type: dict
           schema:
@@ -314,9 +324,9 @@ mstatus:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mie:
           type: dict
           schema:
@@ -336,9 +346,9 @@ mstatus:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         upie:
           type: dict
           schema:
@@ -358,15 +368,16 @@ mstatus:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         spie:
           type: dict
           schema:
             description:
               type: string
-              default: Stores the state of the supervisor mode interrupts prior to the trap.
+              default: Stores the state of the supervisor mode interrupts prior to
+                the trap.
             shadow:
               type: string
               default: none
@@ -380,15 +391,16 @@ mstatus:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mpie:
           type: dict
           schema:
             description:
               type: string
-              default: Stores the state of the machine mode interrupts prior to the trap.
+              default: Stores the state of the machine mode interrupts prior to the
+                trap.
             shadow:
               type: string
               default: none
@@ -402,9 +414,9 @@ mstatus:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         spp:
           type: dict
           schema:
@@ -424,9 +436,9 @@ mstatus:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mpp:
           type: dict
           schema:
@@ -446,15 +458,16 @@ mstatus:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         fs:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
+              default: Encodes the status of the floating-point unit, including the
+                CSR fcsr and floating-point data registers.
             shadow:
               type: string
               default: none
@@ -468,15 +481,16 @@ mstatus:
               allowed: [13]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         xs:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the status of additional user-mode extensions and associated state.
+              default: Encodes the status of additional user-mode extensions and associated
+                state.
             shadow:
               type: string
               default: none
@@ -490,15 +504,16 @@ mstatus:
               allowed: [15]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mprv:
           type: dict
           schema:
             description:
               type: string
-              default: Modifies the privilege level at which loads and stores execute in all privilege modes.
+              default: Modifies the privilege level at which loads and stores execute
+                in all privilege modes.
             shadow:
               type: string
               default: none
@@ -512,15 +527,16 @@ mstatus:
               allowed: [17]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sum:
           type: dict
           schema:
             description:
               type: string
-              default: Modifies the privilege with which S-mode loads and stores access virtual memory.
+              default: Modifies the privilege with which S-mode loads and stores access
+                virtual memory.
             shadow:
               type: string
               default: none
@@ -534,9 +550,9 @@ mstatus:
               allowed: [18]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mxr:
           type: dict
           schema:
@@ -556,15 +572,16 @@ mstatus:
               allowed: [19]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tvm:
           type: dict
           schema:
             description:
               type: string
-              default: Supports intercepting supervisor virtual-memory management operations.
+              default: Supports intercepting supervisor virtual-memory management
+                operations.
             shadow:
               type: string
               default: none
@@ -578,9 +595,9 @@ mstatus:
               allowed: [20]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tw:
           type: dict
           schema:
@@ -600,9 +617,9 @@ mstatus:
               allowed: [21]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tsr:
           type: dict
           schema:
@@ -622,15 +639,16 @@ mstatus:
               allowed: [22]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sd:
           type: dict
           schema:
             description:
               type: string
-              default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
+              default: Read-only bit that summarizes whether either the FS field or
+                XS field signals the presence of some dirty state.
             shadow:
               type: string
               default: none
@@ -644,25 +662,27 @@ mstatus:
               allowed: [31]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
+            implemented: true
       default:
-        implemented: True
+        implemented: true
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         uie:
@@ -684,9 +704,9 @@ mstatus:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sie:
           type: dict
           schema:
@@ -706,9 +726,9 @@ mstatus:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mie:
           type: dict
           schema:
@@ -728,9 +748,9 @@ mstatus:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         upie:
           type: dict
           schema:
@@ -750,15 +770,16 @@ mstatus:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         spie:
           type: dict
           schema:
             description:
               type: string
-              default: Stores the state of the supervisor mode interrupts prior to the trap.
+              default: Stores the state of the supervisor mode interrupts prior to
+                the trap.
             shadow:
               type: string
               default: none
@@ -772,15 +793,16 @@ mstatus:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mpie:
           type: dict
           schema:
             description:
               type: string
-              default: Stores the state of the machine mode interrupts prior to the trap.
+              default: Stores the state of the machine mode interrupts prior to the
+                trap.
             shadow:
               type: string
               default: none
@@ -794,9 +816,9 @@ mstatus:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         spp:
           type: dict
           schema:
@@ -816,9 +838,9 @@ mstatus:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mpp:
           type: dict
           schema:
@@ -838,15 +860,16 @@ mstatus:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         fs:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the status of the floating-point unit, including the CSR fcsr and floating-point data registers.
+              default: Encodes the status of the floating-point unit, including the
+                CSR fcsr and floating-point data registers.
             shadow:
               type: string
               default: none
@@ -860,15 +883,16 @@ mstatus:
               allowed: [13]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         xs:
           type: dict
           schema:
             description:
               type: string
-              default: Encodes the status of additional user-mode extensions and associated state.
+              default: Encodes the status of additional user-mode extensions and associated
+                state.
             shadow:
               type: string
               default: none
@@ -882,15 +906,16 @@ mstatus:
               allowed: [15]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mprv:
           type: dict
           schema:
             description:
               type: string
-              default: Modifies the privilege level at which loads and stores execute in all privilege modes.
+              default: Modifies the privilege level at which loads and stores execute
+                in all privilege modes.
             shadow:
               type: string
               default: none
@@ -904,15 +929,16 @@ mstatus:
               allowed: [17]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sum:
           type: dict
           schema:
             description:
               type: string
-              default: Modifies the privilege with which S-mode loads and stores access virtual memory.
+              default: Modifies the privilege with which S-mode loads and stores access
+                virtual memory.
             shadow:
               type: string
               default: none
@@ -926,9 +952,9 @@ mstatus:
               allowed: [18]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         mxr:
           type: dict
           schema:
@@ -948,15 +974,16 @@ mstatus:
               allowed: [19]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tvm:
           type: dict
           schema:
             description:
               type: string
-              default: Supports intercepting supervisor virtual-memory management operations.
+              default: Supports intercepting supervisor virtual-memory management
+                operations.
             shadow:
               type: string
               default: none
@@ -970,9 +997,9 @@ mstatus:
               allowed: [20]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tw:
           type: dict
           schema:
@@ -992,9 +1019,9 @@ mstatus:
               allowed: [21]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         tsr:
           type: dict
           schema:
@@ -1014,9 +1041,9 @@ mstatus:
               allowed: [22]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: false
         sxl:
           type: dict
           schema:
@@ -1036,9 +1063,9 @@ mstatus:
               allowed: [34]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         uxl:
           type: dict
           schema:
@@ -1058,15 +1085,16 @@ mstatus:
               allowed: [32]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         sd:
           type: dict
           schema:
             description:
               type: string
-              default: Read-only bit that summarizes whether either the FS field or XS field signals the presence of some dirty state.
+              default: Read-only bit that summarizes whether either the FS field or
+                XS field signals the presence of some dirty state.
             shadow:
               type: string
               default: none
@@ -1080,34 +1108,36 @@ mstatus:
               allowed: [63]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
-      required: True
-  required: True
+            implemented: true
+      default:
+        implemented: true
 
 mvendorid:
   type: dict
   schema:
     description:
       type: string
-      default: 32-bit read-only register providing the JEDEC manufacturer ID of the provider of the core.
+      default: 32-bit read-only register providing the JEDEC manufacturer ID of the
+        provider of the core.
     address:
       type: integer
       default: 0xF11
       allowed: [0xF11]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1115,8 +1145,8 @@ mvendorid:
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1130,26 +1160,23 @@ mvendorid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
+            ro: [0x0]
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1163,36 +1190,33 @@ mvendorid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
-  required: True
+            ro: [0x0]
 
 marchid:
   type: dict
   schema:
     description:
       type: string
-      default: MXLEN-bit read-only register encoding the base microarchitecture of the hart.
+      default: MXLEN-bit read-only register encoding the base microarchitecture of
+        the hart.
     address:
       type: integer
       default: 0xF12
       allowed: [0xF12]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1200,8 +1224,8 @@ marchid:
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1215,27 +1239,24 @@ marchid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
+            ro: [0x0]
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1249,21 +1270,17 @@ marchid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFFFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFFFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
-  required: True
+            ro: [0x0]
 
 mimpid:
   type: dict
@@ -1277,8 +1294,8 @@ mimpid:
       allowed: [0xF13]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1286,8 +1303,8 @@ mimpid:
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1301,27 +1318,24 @@ mimpid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
+            ro: [0x0]
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1335,36 +1349,33 @@ mimpid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFFFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFFFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
-  required: True
+            ro: [0x0]
 
 mhartid:
   type: dict
   schema:
     description:
       type: string
-      default: MXLEN-bit read-only register containing the integer ID of the hardware thread running the code.
+      default: MXLEN-bit read-only register containing the integer ID of the hardware
+        thread running the code.
     address:
       type: integer
       default: 0xF14
       allowed: [0xF14]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1372,8 +1383,8 @@ mhartid:
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1387,27 +1398,24 @@ mhartid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
+            ro: [0x0]
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: True
-          allowed: [True]
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1421,21 +1429,17 @@ mhartid:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
         type:
           type: dict
           schema:
-            ro_constant:
-              type: integer
-              max: 0xFFFFFFFFFFFFFFFF
-              default: 0x0
+            ro:
+              type: list
+              schema:
+                type: integer
+                max: 0xFFFFFFFFFFFFFFFF
+              maxlength: 1
           default:
-            ro_constant: 0x0
-      required: True
-  required: True
+            ro: [0x0]
 
 mtvec:
   type: dict
@@ -1449,8 +1453,8 @@ mtvec:
       allowed: [0x305]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1458,7 +1462,7 @@ mtvec:
       schema:
         implemented:
           type: boolean
-          default: False
+          check_with: rv32_check
         fields:
           type: list
         base:
@@ -1480,10 +1484,10 @@ mtvec:
               allowed: [2]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
+            implemented: true
         mode:
           type: dict
           schema:
@@ -1503,17 +1507,16 @@ mtvec:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
-      required: True
+            implemented: true
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          check_with: rv64_check
         fields:
           type: list
         base:
@@ -1535,10 +1538,10 @@ mtvec:
               allowed: [2]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
+            implemented: true
         mode:
           type: dict
           schema:
@@ -1558,12 +1561,10 @@ mtvec:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
-      required: True
-  required: True
+            implemented: true
 
 mideleg:
   type: dict
@@ -1577,8 +1578,8 @@ mideleg:
       allowed: [0x303]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1586,7 +1587,8 @@ mideleg:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1600,18 +1602,15 @@ mideleg:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: True
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1625,13 +1624,8 @@ mideleg:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: True
-      required: True
-  required: True
+        implemented: false
 
 medeleg:
   type: dict
@@ -1645,8 +1639,8 @@ medeleg:
       allowed: [0x302]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1654,7 +1648,8 @@ medeleg:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -1668,18 +1663,15 @@ medeleg:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: True
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -1693,28 +1685,24 @@ medeleg:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: True
-      required: True
-  required: True
+        implemented: false
 
 mip:
   type: dict
   schema:
     description:
       type: string
-      default: The mip register is an MXLEN-bit read/write register containing information on pending interrupts.
+      default: The mip register is an MXLEN-bit read/write register containing information
+        on pending interrupts.
     address:
       type: integer
       default: 0x344
       allowed: [0x344]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -1722,7 +1710,8 @@ mip:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         usip:
@@ -1744,9 +1733,9 @@ mip:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         ssip:
           type: dict
           schema:
@@ -1766,9 +1755,9 @@ mip:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         msip:
           type: dict
           schema:
@@ -1788,17 +1777,20 @@ mip:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
+            implemented: true
         utip:
           type: dict
           schema:
@@ -1818,9 +1810,9 @@ mip:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         stip:
           type: dict
           schema:
@@ -1840,9 +1832,9 @@ mip:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         mtip:
           type: dict
           schema:
@@ -1862,17 +1854,20 @@ mip:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
+            implemented: true
         ueip:
           type: dict
           schema:
@@ -1892,9 +1887,9 @@ mip:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         seip:
           type: dict
           schema:
@@ -1914,17 +1909,17 @@ mip:
               allowed: [9]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         meip:
           type: dict
           schema:
@@ -1944,24 +1939,28 @@ mip:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
-      required: True
+            implemented: true
+      required: true
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         usip:
@@ -1983,9 +1982,9 @@ mip:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         ssip:
           type: dict
           schema:
@@ -2005,9 +2004,9 @@ mip:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         msip:
           type: dict
           schema:
@@ -2027,17 +2026,20 @@ mip:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
+            implemented: true
         utip:
           type: dict
           schema:
@@ -2057,9 +2059,9 @@ mip:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         stip:
           type: dict
           schema:
@@ -2079,9 +2081,9 @@ mip:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         mtip:
           type: dict
           schema:
@@ -2101,17 +2103,20 @@ mip:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
+            implemented: true
         ueip:
           type: dict
           schema:
@@ -2131,9 +2136,9 @@ mip:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         seip:
           type: dict
           schema:
@@ -2153,17 +2158,17 @@ mip:
               allowed: [9]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         meip:
           type: dict
           schema:
@@ -2183,34 +2188,36 @@ mip:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
-                ro_variable:
-                  type: boolean
-                  default: True
+                ro:
+                  type: list
+                  schema:
+                    type: integer
+                    max: 1
+              readonly: true
               default:
-                ro_variable: True
+                ro: [0, 1]
           default:
-            implemented: True
-      required: True
-  required: True
+            implemented: true
 
 mie:
   type: dict
   schema:
     description:
       type: string
-      default: The mie register is an MXLEN-bit read/write register containing interrupt enable bits.
+      default: The mie register is an MXLEN-bit read/write register containing interrupt
+        enable bits.
     address:
       type: integer
       default: 0x304
       allowed: [0x304]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -2218,7 +2225,8 @@ mie:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         usie:
@@ -2240,9 +2248,9 @@ mie:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         ssie:
           type: dict
           schema:
@@ -2262,9 +2270,9 @@ mie:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         msie:
           type: dict
           schema:
@@ -2284,17 +2292,17 @@ mie:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         utie:
           type: dict
           schema:
@@ -2314,9 +2322,9 @@ mie:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         stie:
           type: dict
           schema:
@@ -2336,9 +2344,9 @@ mie:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         mtie:
           type: dict
           schema:
@@ -2358,17 +2366,17 @@ mie:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         ueie:
           type: dict
           schema:
@@ -2388,9 +2396,9 @@ mie:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         seie:
           type: dict
           schema:
@@ -2410,17 +2418,17 @@ mie:
               allowed: [9]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         meie:
           type: dict
           schema:
@@ -2440,24 +2448,25 @@ mie:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
-      required: True
+            implemented: true
+      required: true
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         usie:
@@ -2479,9 +2488,9 @@ mie:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         ssie:
           type: dict
           schema:
@@ -2501,9 +2510,9 @@ mie:
               allowed: [1]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         msie:
           type: dict
           schema:
@@ -2523,17 +2532,17 @@ mie:
               allowed: [3]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         utie:
           type: dict
           schema:
@@ -2553,9 +2562,9 @@ mie:
               allowed: [4]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         stie:
           type: dict
           schema:
@@ -2575,9 +2584,9 @@ mie:
               allowed: [5]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         mtie:
           type: dict
           schema:
@@ -2597,17 +2606,17 @@ mie:
               allowed: [7]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         ueie:
           type: dict
           schema:
@@ -2627,9 +2636,9 @@ mie:
               allowed: [8]
             implemented:
               type: boolean
-              default: True
+              default: true
           default:
-            implemented: True
+            implemented: true
         seie:
           type: dict
           schema:
@@ -2649,17 +2658,17 @@ mie:
               allowed: [9]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
+            implemented: true
         meie:
           type: dict
           schema:
@@ -2679,19 +2688,19 @@ mie:
               allowed: [11]
             implemented:
               type: boolean
-              default: True
+              default: true
             type:
               type: dict
               schema:
                 ro_variable:
                   type: boolean
-                  default: True
+                  default: true
               default:
-                ro_variable: True
+                ro_variable: true
           default:
-            implemented: True
-      required: True
-  required: True
+            implemented: true
+      required: true
+  required: true
 
 mtime:
   type: dict
@@ -2703,8 +2712,8 @@ mtime:
       type: integer
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
       default: 0x0
@@ -2713,7 +2722,8 @@ mtime:
       schema:
         implemented:
           type: boolean
-          default: True
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -2727,17 +2737,14 @@ mtime:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: False
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -2751,13 +2758,9 @@ mtime:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: False
-      required: True
-  required: True
+        implemented: false
+  required: true
 
 mtimecmp:
   type: dict
@@ -2769,8 +2772,8 @@ mtimecmp:
       type: integer
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
       default: 0x0
@@ -2779,7 +2782,8 @@ mtimecmp:
       schema:
         implemented:
           type: boolean
-          default: True
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -2793,17 +2797,14 @@ mtimecmp:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: False
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -2817,28 +2818,25 @@ mtimecmp:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
       default:
-        implemented: False
-      required: True
-  required: True
+        implemented: false
+  required: true
 
 mscratch:
   type: dict
   schema:
     description:
       type: string
-      default: The mscratch register is an MXLEN-bit read/write register dedicated for use by machine mode.
+      default: The mscratch register is an MXLEN-bit read/write register dedicated
+        for use by machine mode.
     address:
       type: integer
       default: 0x340
       allowed: [0x340]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
       default: 0x0
@@ -2847,7 +2845,8 @@ mscratch:
       schema:
         implemented:
           type: boolean
-          default: True
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -2861,18 +2860,14 @@ mscratch:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -2886,29 +2881,24 @@ mscratch:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
-  required: True
+        implemented: false
 
 mepc:
   type: dict
   schema:
     description:
       type: string
-      default: The mepc is a WARL register that must be able to hold all valid physical and virtual addresses.
+      default: The mepc is a WARL register that must be able to hold all valid physical
+        and virtual addresses.
     address:
       type: integer
       default: 0x341
       allowed: [0x341]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
       default: 0x0
@@ -2917,7 +2907,8 @@ mepc:
       schema:
         implemented:
           type: boolean
-          default: True
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -2931,18 +2922,15 @@ mepc:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
+          type: boolean
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -2956,29 +2944,24 @@ mepc:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
-  required: True
+        implemented: false
 
 mtval:
   type: dict
   schema:
     description:
       type: string
-      default: The mtval is a WARL register that holds the address of the instruction which caused the exception.
+      default: The mtval is a WARL register that holds the address of the instruction
+        which caused the exception.
     address:
       type: integer
       default: 0x343
       allowed: [0x343]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
       default: 0x0
@@ -2987,7 +2970,8 @@ mtval:
       schema:
         implemented:
           type: boolean
-          default: True
+          default: true
+          check_with: rv32_check
         fields:
           type: list
         shadow:
@@ -3001,18 +2985,14 @@ mtval:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
-          default: True
+          default: true
+          check_with: rv64_check
         fields:
           type: list
         shadow:
@@ -3026,14 +3006,9 @@ mtval:
           type: integer
           default: 0
           allowed: [0]
-        implemented:
-          type: boolean
-          default: True
-          allowed: [True]
       default:
-        implemented: False
-      required: True
-  required: True
+        implemented: false
+  required: true
 
 mcause:
   type: dict
@@ -3047,8 +3022,8 @@ mcause:
       allowed: [0x342]
     priv_mode:
       type: string
-      allowed: ['M']
-      default: 'M'
+      allowed: [M]
+      default: M
     reset-val:
       type: integer
     rv32:
@@ -3056,7 +3031,8 @@ mcause:
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv32_check
         fields:
           type: list
         interrupt:
@@ -3078,10 +3054,10 @@ mcause:
               allowed: [31]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
+            implemented: true
         exception_code:
           type: dict
           schema:
@@ -3101,8 +3077,8 @@ mcause:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
             type:
               type: dict
               schema:
@@ -3112,14 +3088,16 @@ mcause:
                 wlrl:
                 - (0,15)
           default:
-            implemented: True
-      required: True
+            implemented: true
+      default:
+        implemented: false
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          default: False
+          default: false
+          check_with: rv64_check
         fields:
           type: list
         interrupt:
@@ -3141,10 +3119,10 @@ mcause:
               allowed: [31]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
           default:
-            implemented: True
+            implemented: true
         exception_code:
           type: dict
           schema:
@@ -3164,8 +3142,8 @@ mcause:
               allowed: [0]
             implemented:
               type: boolean
-              default: True
-              allowed: [True]
+              default: true
+              allowed: [true]
             type:
               type: dict
               schema:
@@ -3175,8 +3153,7 @@ mcause:
                 wlrl:
                 - (0,15)
           default:
-            implemented: True
-      required: True
-  required: True
-
+            implemented: true
+      default:
+          implemented: false
 
