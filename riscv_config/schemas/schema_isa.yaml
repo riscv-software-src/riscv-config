@@ -56,7 +56,7 @@ ISA:
   type: string
   regex: ^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$
   required: true
-  # check_with: capture_isa_specifics
+  check_with: capture_isa_specifics
 
 ###
 # **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
