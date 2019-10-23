@@ -143,6 +143,7 @@ misa:
     reset-val:
       type: integer
       default: 0x00
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -274,6 +275,7 @@ mstatus:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1140,6 +1142,7 @@ mvendorid:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1219,6 +1222,7 @@ marchid:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1298,6 +1302,7 @@ mimpid:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1378,6 +1383,7 @@ mhartid:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1457,6 +1463,7 @@ mtvec:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1582,6 +1589,7 @@ mideleg:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1643,6 +1651,7 @@ medeleg:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -1705,6 +1714,7 @@ mip:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -2220,6 +2230,7 @@ mie:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -2716,6 +2727,7 @@ mtime:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
       default: 0x0
     rv32:
       type: dict
@@ -2777,6 +2789,7 @@ mtimecmp:
     reset-val:
       type: integer
       default: 0x0
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -2840,6 +2853,7 @@ mscratch:
     reset-val:
       type: integer
       default: 0x0
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -2902,6 +2916,7 @@ mepc:
     reset-val:
       type: integer
       default: 0x0
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -2965,6 +2980,7 @@ mtval:
     reset-val:
       type: integer
       default: 0x0
+      check_with: max_length
     rv32:
       type: dict
       schema:
@@ -3026,6 +3042,7 @@ mcause:
       default: M
     reset-val:
       type: integer
+      check_with: max_length
     rv32:
       type: dict
       schema:
