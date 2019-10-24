@@ -143,14 +143,18 @@ misa:
     reset-val:
       type: integer
       default: 0x00
-      check_with: max_length
+      check_with: 
+        - max_length
+        - misa_reset_values
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: rv32_check
+          check_with: 
+            - rv32_check
+            - cannot_be_false_rv32
         fields:
           type: list
         mxl:
@@ -204,7 +208,9 @@ misa:
         implemented:
           type: boolean
           default: true
-          check_with: rv64_check
+          check_with:
+            - rv64_check
+            - cannot_be_false_rv64
         fields:
           type: list
         mxl:
