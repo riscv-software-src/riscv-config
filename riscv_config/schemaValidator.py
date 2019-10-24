@@ -21,6 +21,36 @@ class schemaValidator(Validator):
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
 
+    def _check_with_misa_reset_values(self, field, value):
+        ''' Functions checks if the reset value of the misa register is in
+        correlation with the ISA field'''
+
+        global extensions
+        if rv64:
+            mxl = format(value, '#066b')[:4]
+            if mxl != format(2, '#04b')[:4] :
+                self._error(field, 'MXL in reset-val is wrong. Expected: 2')
+        elif rv32:
+            mxl = format(value, '#034b')[:4]
+            if mxl != format(1, '#04b')[:4] :
+                self._error(field, 'MXL in reset-val is wrong. Expected: 1')
+
+        if (value & 0x3FFFFFF) != extensions:
+            self._error(field, "Reset value of MISA is not compliant with the \
+ISA provided. Expeected reset-val: "+str(extensions))
+
+
+    def _check_with_cannot_be_false_rv64(self, field, value):
+        ''' Functions ensures that the field cannot be False in rv64 mode'''
+        if rv64 and not value:
+            self._error(field, "This field cannot be False")
+
+
+    def _check_with_cannot_be_false_rv32(self, field, value):
+        ''' Functions ensures that the field cannot be False in rv32 mode'''
+        if rv32 and not value:
+            self._error(field, "This field cannot be False")
+
     def _check_with_priv_version_check(self, field, value):
         '''Function to check whether the Privileged spec version specified is valid or not.'''
         if value not in constants.priv_versions:

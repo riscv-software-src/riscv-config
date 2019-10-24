@@ -1,5 +1,10 @@
-ISA: RV32I
+ISA: RV32IM
 supported_xlen: [32]
+misa:
+  reset-val: 0x40001100
+  rv32:
+    implemented: true
+
 mtime:
   rv32:
     implemented: false
