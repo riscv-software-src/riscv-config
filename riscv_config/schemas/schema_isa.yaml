@@ -252,11 +252,6 @@ misa:
               default: true
           default:
             implemented: false
-  default:
-    rv32:
-      implemented: false
-    rv64:
-      implemented: false
 
 mstatus:
   type: dict

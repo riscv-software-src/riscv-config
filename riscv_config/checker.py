@@ -162,6 +162,7 @@ def add_def_setters(schema_yaml):
     #     'default_setter'] = lambda doc: simpset()
     # schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
     regsetter = lambda doc: regset()
+    schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
