@@ -291,14 +291,25 @@ def imp_normalise(foo):
 
         :return: The trimmed dictionary.
     '''
-    # for key in foo.keys():
-    #     if isinstance(foo[key], dict):
-    #         foo[key] = imp_normalise(foo[key])
-    #     if key == 'implemented':
-    #         if not foo[key]:
-    #             foo = {'implemented': False}
-    #             break
-    return foo
+    imp = False
+    for key in foo.keys():
+        if key == 'implemented':
+            if not foo[key]:
+                imp = True
+                break    
+        elif isinstance(foo[key], dict):
+            foo[key] = imp_normalise(foo[key])
+        
+        if imp:
+            temp = foo
+            for k in ['reset-val','type']:
+                try:
+                    temp = temp.pop(k)
+                except KeyError:
+                    continue
+            return temp
+        else:
+            return foo
 
 
 def check_specs(isa_spec, platform_spec, work_dir, logging=False):
