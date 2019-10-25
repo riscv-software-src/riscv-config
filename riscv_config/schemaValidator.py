@@ -28,23 +28,22 @@ class schemaValidator(Validator):
         global extensions
         if rv64:
             mxl = format(value, '#066b')[:4]
-            if mxl != format(2, '#04b')[:4] :
+            if mxl != format(2, '#04b')[:4]:
                 self._error(field, 'MXL in reset-val is wrong. Expected: 2')
         elif rv32:
             mxl = format(value, '#034b')[:4]
-            if mxl != format(1, '#04b')[:4] :
+            if mxl != format(1, '#04b')[:4]:
                 self._error(field, 'MXL in reset-val is wrong. Expected: 1')
 
         if (value & 0x3FFFFFF) != extensions:
-            self._error(field, "Reset value of MISA is not compliant with the \
-ISA provided. Expeected reset-val: "+str(extensions))
-
+            self._error(
+                field, "Reset value of MISA is not compliant with the \
+ISA provided. Expeected reset-val: " + str(extensions))
 
     def _check_with_cannot_be_false_rv64(self, field, value):
         ''' Functions ensures that the field cannot be False in rv64 mode'''
         if rv64 and not value:
             self._error(field, "This field cannot be False")
-
 
     def _check_with_cannot_be_false_rv32(self, field, value):
         ''' Functions ensures that the field cannot be False in rv32 mode'''
@@ -120,6 +119,15 @@ ISA provided. Expeected reset-val: "+str(extensions))
                     field,
                     "Register cannot be implemented in rv32 mode due to unsupported xlen."
                 )
+
+    def _check_with_ro_reset_check(self, field, value):
+        '''Function to check whether the reset value of the register is equal to the max supported ro value.'''
+        if rv64:
+            if not value['reset-val'] in value['rv64']['type']['ro']:
+                self._error(field, "Reset value not equal to readonly value.")
+        elif rv32:
+            if not value['reset-val'] in value['rv32']['type']['ro']:
+                self._error(field, "Reset value not equal to readonly value.")
 
     def _check_with_rv64_check(self, field, value):
         global xlen

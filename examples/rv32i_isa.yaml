@@ -5,6 +5,7 @@ misa:
   rv32:
     implemented: true
 mvendorid:
+  reset-val: 0xdeadbeef
   rv32:
     implemented: true
     type:

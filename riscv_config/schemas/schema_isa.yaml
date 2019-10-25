@@ -202,6 +202,8 @@ misa:
               default: true
           default:
             implemented: false
+      default:
+        implemented: False
     rv64:
       type: dict
       schema:
@@ -258,6 +260,8 @@ misa:
               default: true
           default:
             implemented: false
+      default:
+        implemented: false
 
 mstatus:
   type: dict
@@ -1179,6 +1183,8 @@ mvendorid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -1211,6 +1217,9 @@ mvendorid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
+  check_with: ro_reset_check
 
 marchid:
   type: dict
@@ -1264,6 +1273,8 @@ marchid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -1297,6 +1308,9 @@ marchid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
+  check_with: ro_reset_check
 
 mimpid:
   type: dict
@@ -1349,6 +1363,8 @@ mimpid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: False
     rv64:
       type: dict
       schema:
@@ -1382,6 +1398,9 @@ mimpid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: False
+  check_with: ro_reset_check
 
 mhartid:
   type: dict
@@ -1400,6 +1419,7 @@ mhartid:
       default: M
     reset-val:
       type: integer
+      default: 0x00
       check_with: max_length
     rv32:
       type: dict
@@ -1432,6 +1452,8 @@ mhartid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -1463,6 +1485,9 @@ mhartid:
               maxlength: 1
           default:
             ro: [0x0]
+      default:
+        implemented: false
+  check_with: ro_reset_check
 
 mtvec:
   type: dict
@@ -1535,6 +1560,8 @@ mtvec:
               allowed: [true]
           default:
             implemented: true
+      default:
+          implemented: false
     rv64:
       type: dict
       schema:
@@ -1589,6 +1616,8 @@ mtvec:
               allowed: [true]
           default:
             implemented: true
+      default:
+          implemented: false
 
 mideleg:
   type: dict
