@@ -9,6 +9,8 @@ mvendorid:
     implemented: true
     type:
       ro: [0xdeadbeef]
+  rv64:
+    implemented: false
 mtime:
   rv32:
     implemented: false
