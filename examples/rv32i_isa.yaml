@@ -4,7 +4,11 @@ misa:
   reset-val: 0x40001100
   rv32:
     implemented: true
-
+mvendorid:
+  rv32:
+    implemented: true
+    type:
+      ro: [0xdeadbeef]
 mtime:
   rv32:
     implemented: false

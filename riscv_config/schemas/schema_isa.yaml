@@ -1143,14 +1143,18 @@ mvendorid:
       default: M
     reset-val:
       type: integer
-      check_with: max_length
+      default: 0x0
+      check_with: 
+        - max_length
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: rv32_check
+          check_with: 
+            - rv32_check
+            - cannot_be_false_rv32
         fields:
           type: list
         shadow:
@@ -1180,7 +1184,9 @@ mvendorid:
       schema:
         implemented:
           default: true
-          check_with: rv64_check
+          check_with:
+            - rv64_check
+            - cannot_be_false_rv64
         fields:
           type: list
         shadow:
@@ -1223,6 +1229,7 @@ marchid:
       default: M
     reset-val:
       type: integer
+      default: 0x0
       check_with: max_length
     rv32:
       type: dict
@@ -1230,7 +1237,9 @@ marchid:
         implemented:
           type: boolean
           default: true
-          check_with: rv32_check
+          check_with:
+            - rv32_check
+            - cannot_be_false_rv32
         fields:
           type: list
         shadow:
@@ -1261,7 +1270,9 @@ marchid:
         implemented:
           type: boolean
           default: true
-          check_with: rv64_check
+          check_with:
+            - rv64_check
+            - cannot_be_false_rv64
         fields:
           type: list
         shadow:
@@ -1303,6 +1314,7 @@ mimpid:
       default: M
     reset-val:
       type: integer
+      default: 0x0
       check_with: max_length
     rv32:
       type: dict
@@ -1310,7 +1322,9 @@ mimpid:
         implemented:
           type: boolean
           default: true
-          check_with: rv32_check
+          check_with:
+            - rv32_check
+            - cannot_be_false_rv32
         fields:
           type: list
         shadow:
@@ -1341,7 +1355,9 @@ mimpid:
         implemented:
           type: boolean
           default: true
-          check_with: rv64_check
+          check_with:
+            - rv64_check
+            - cannot_be_false_rv64
         fields:
           type: list
         shadow:
