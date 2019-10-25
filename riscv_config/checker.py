@@ -291,13 +291,23 @@ def imp_normalise(foo):
 
         :return: The trimmed dictionary.
     '''
-    # for key in foo.keys():
-    #     if isinstance(foo[key], dict):
-    #         foo[key] = imp_normalise(foo[key])
-    #     if key == 'implemented':
-    #         if not foo[key]:
-    #             foo = {'implemented': False}
-    #             break
+    keys = foo.keys()
+    if 'implemented' in keys:
+        if not foo['implemented']:
+            temp = foo
+            for k in list(
+                    set(foo.keys()) -
+                    set(['description', 'msb', 'lsb', 'implemented', 'shadow'])
+            ):
+                try:
+                    temp.pop(k)
+                except KeyError:
+                    continue
+            return temp
+    for key in keys:
+        if isinstance(foo[key], dict):
+            t = imp_normalise(foo[key])
+            foo[key] = t
     return foo
 
 
@@ -358,7 +368,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     # Perform Validation
     if logging:
         logger.info('Initiating Validation')
-    valid = validator.validate(inp_yaml)
+    valid = validator.validate(normalized)
 
     # Print out errors
     if valid:
@@ -407,7 +417,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     # Perform Validation
     if logging:
         logger.info('Initiating Validation')
-    valid = validator.validate(inp_yaml)
+    valid = validator.validate(normalized)
 
     # Print out errors
     if valid:
