@@ -114,53 +114,6 @@ def regset():
 
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
-    # schema_yaml['mstatus']['schema']['SXL']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: iset()
-    # schema_yaml['mstatus']['schema']['UXL']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: iset()
-    # schema_yaml['mstatus']['schema']['TVM'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['TSR'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['MXR'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['SUM'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['SPP'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['SPIE'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['SIE'][
-    #     'default_setter'] = lambda doc: nosset()
-    # schema_yaml['mstatus']['schema']['UPIE'][
-    #     'default_setter'] = lambda doc: upieset(doc)
-    # schema_yaml['mstatus']['schema']['UIE'][
-    #     'default_setter'] = lambda doc: uieset(doc)
-    # schema_yaml['mstatus']['schema']['MPRV'][
-    #     'default_setter'] = lambda doc: nouset()
-    # schema_yaml['mstatus']['schema']['TW'][
-    #     'default_setter'] = lambda doc: twset()
-    # schema_yaml['mideleg']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: miedelegset()
-    # schema_yaml['medeleg']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: miedelegset()
-    # schema_yaml['mepc']['default_setter'] = lambda doc: mepcset()
-    # schema_yaml['mtvec']['default_setter'] = lambda doc: xtvecset()
-    # schema_yaml['stvec']['default_setter'] = lambda doc: xtvecset()
-    # schema_yaml['satp']['default_setter'] = lambda doc: satpset()
-    # schema_yaml['stvec']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['sie']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['sip']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['scounteren']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['sepc']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['satp']['schema']['implemented'][
-    #     'default_setter'] = lambda doc: simpset()
-    # schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
     regsetter = lambda doc: regset()
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
@@ -281,7 +234,7 @@ def add_def_setters(schema_yaml):
     return schema_yaml
 
 
-def imp_normalise(foo):
+def trim(foo):
     '''
         Function to trim the dictionary. Any node with implemented field set to false is trimmed of all the other nodes.
         
@@ -292,6 +245,12 @@ def imp_normalise(foo):
         :return: The trimmed dictionary.
     '''
     keys = foo.keys()
+    if 'rv32' in keys:
+        if not foo['rv32']['implemented']:
+            foo['rv32'] = {'implemented': False}
+    if 'rv64' in keys:
+        if not foo['rv64']['implemented']:
+            foo['rv64'] = {'implemented': False}
     if 'implemented' in keys:
         if not foo['implemented']:
             temp = foo
@@ -306,7 +265,7 @@ def imp_normalise(foo):
             return temp
     for key in keys:
         if isinstance(foo[key], dict):
-            t = imp_normalise(foo[key])
+            t = trim(foo[key])
             foo[key] = t
     return foo
 
@@ -386,7 +345,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(imp_normalise(normalized), outfile)
+    yaml.dump(trim(normalized), outfile)
 
     if logging:
         logger.info('Input-Platform file')
@@ -435,5 +394,5 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(imp_normalise(normalized), outfile)
+    yaml.dump(trim(normalized), outfile)
     return (ifile, pfile)
