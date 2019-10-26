@@ -26,27 +26,27 @@ mtimecmp:
     implemented: false
 
 mtvec:
-  reset-val: 0x0
+  reset-val: 0x3eadbeef
   rv32:
     implemented: true
     base:
       implemented: true
-      type:
+      type:                             
         WARL: 
           dependency_fields: [mtvec::mode]
           legal:
-            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"              
-            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]"
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
           wr_illegal:
             - "[0] -> Unchanged"
             - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
             - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
     mode:
       implemented: true
-      type:
+      type:                             
         WARL:
           dependency_fields: []
           legal: 
-            - " mode[1:0] in [0x0:0x1]"
+            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
           wr_illegal:
-            - " Unchanged"
+            - "Unchanged"
