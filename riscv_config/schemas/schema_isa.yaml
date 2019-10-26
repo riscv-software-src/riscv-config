@@ -1511,11 +1511,14 @@ mtvec:
       schema:
         implemented:
           type: boolean
-          check_with: rv32_check
+          check_with: 
+            - rv32_check
+            - cannot_be_false_rv32
         fields:
           type: list
         base:
           type: dict
+          required: True
           schema:
             description:
               type: string
@@ -1535,10 +1538,39 @@ mtvec:
               type: boolean
               default: true
               allowed: [true]
-          default:
-            implemented: true
+            type:
+              type: dict 
+              required: true
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x3FFFFFFF
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL:
+                      type: dict
+                      schema:
+                        dependency_fields:
+                          type: list
+                          schema:
+                            type: string
+                        legal:
+                          type: list
+                          schema: 
+                            type: string
+                        wr_illegal:
+                          type: list
+                          schema: 
+                            type: string
         mode:
           type: dict
+          required: True
           schema:
             description:
               type: string
@@ -1558,16 +1590,44 @@ mtvec:
               type: boolean
               default: true
               allowed: [true]
-          default:
-            implemented: true
-      default:
-          implemented: false
+            type:
+              type: dict 
+              required: true
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x1
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL:
+                      type: dict
+                      schema:
+                        dependency_fields:
+                          type: list
+                          schema:
+                            type: string
+                        legal:
+                          type: list
+                          schema: 
+                            type: string
+                        wr_illegal:
+                          type: list
+                          schema: 
+                            type: string
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
-          check_with: rv64_check
+          check_with: 
+            - rv64_check
+            - cannot_be_false_rv64
         fields:
           type: list
         base:
@@ -1616,8 +1676,6 @@ mtvec:
               allowed: [true]
           default:
             implemented: true
-      default:
-          implemented: false
 
 mideleg:
   type: dict

@@ -1,9 +1,11 @@
 ISA: RV32IM
 supported_xlen: [32]
 misa:
-  reset-val: 0x40001100
   rv32:
     implemented: true
+  rv64:
+    implemented: false
+  reset-val: 0x40001100
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
@@ -22,3 +24,29 @@ mtimecmp:
     implemented: false
   rv64:
     implemented: false
+
+mtvec:
+  reset-val: 0x0
+  rv32:
+    implemented: true
+    base:
+      implemented: true
+      type:
+        WARL: 
+          dependency_fields: [mtvec::mode]
+          legal:
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"              
+            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]"
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
+            - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+    mode:
+      implemented: true
+      type:
+        WARL:
+          dependency_fields: []
+          legal: 
+            - " mode[1:0] in [0x0:0x1]"
+          wr_illegal:
+            - " Unchanged"
