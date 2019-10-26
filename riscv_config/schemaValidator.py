@@ -21,6 +21,35 @@ class schemaValidator(Validator):
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
 
+    def _check_with_mtvec_fields(self, field, value):
+        ''' Function to check if the base,mode fields of the mtvec are provided
+        by the user or not'''
+        
+        if rv32: 
+            if 'base' not in value['rv32']:
+                self._error(field,'Please specify base field of mtvec')
+            elif 'type' not in value['rv32']['base']:
+                self._error(field,'Please specify type of the base field in\
+ mtvec')
+
+            if 'mode' not in value['rv32']:
+                self._error(field,'Please specify mode field of mtvec')
+            elif 'type' not in value['rv32']['mode']:
+                self._error(field,'Please specify type of the mode field in\
+ mtvec')
+        if rv64: 
+            if 'base' not in value['rv64']:
+                self._error(field,'Please specify base field of mtvec')
+            elif 'type' not in value['rv64']['base']:
+                self._error(field,'Please specify type of the base field in\
+ mtvec')
+
+            if 'mode' not in value['rv64']:
+                self._error(field,'Please specify mode field of mtvec')
+            elif 'type' not in value['rv64']['mode']:
+                self._error(field,'Please specify type of the mode field in\
+ mtvec')
+
     def _check_with_misa_reset_values(self, field, value):
         ''' Functions checks if the reset value of the misa register is in
         correlation with the ISA field'''

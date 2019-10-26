@@ -1491,6 +1491,7 @@ mhartid:
 
 mtvec:
   type: dict
+  check_with: mtvec_fields
   schema:
     description:
       type: string
@@ -1518,7 +1519,6 @@ mtvec:
           type: list
         base:
           type: dict
-          required: True
           schema:
             description:
               type: string
@@ -1540,7 +1540,6 @@ mtvec:
               allowed: [true]
             type:
               type: dict 
-              required: true
               oneof:
                 - schema:
                     RO_constant:
@@ -1570,7 +1569,6 @@ mtvec:
                             type: string
         mode:
           type: dict
-          required: True
           schema:
             description:
               type: string
@@ -1592,7 +1590,6 @@ mtvec:
               allowed: [true]
             type:
               type: dict 
-              required: true
               oneof:
                 - schema:
                     RO_constant:
@@ -1620,6 +1617,8 @@ mtvec:
                           type: list
                           schema: 
                             type: string
+      default: 
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -1651,6 +1650,35 @@ mtvec:
               type: boolean
               default: true
               allowed: [true]
+            type:
+              type: dict 
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x3FFFFFFFFFFFFFFF
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL:
+                      type: dict
+                      schema:
+                        dependency_fields:
+                          type: list
+                          schema:
+                            type: string
+                        legal:
+                          type: list
+                          schema: 
+                            type: string
+                        wr_illegal:
+                          type: list
+                          schema: 
+                            type: string
           default:
             implemented: true
         mode:
@@ -1674,8 +1702,37 @@ mtvec:
               type: boolean
               default: true
               allowed: [true]
-          default:
-            implemented: true
+            type:
+              type: dict 
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x1
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL:
+                      type: dict
+                      schema:
+                        dependency_fields:
+                          type: list
+                          schema:
+                            type: string
+                        legal:
+                          type: list
+                          schema: 
+                            type: string
+                        wr_illegal:
+                          type: list
+                          schema: 
+                            type: string
+      default:
+          implemented: false
 
 mideleg:
   type: dict
