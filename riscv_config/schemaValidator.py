@@ -26,18 +26,19 @@ class schemaValidator(Validator):
         correlation with the ISA field'''
 
         global extensions
-        if rv64:
-            mxl = format(value, '#066b')[:4]
-            if mxl != format(2, '#04b')[:4]:
-                self._error(field, 'MXL in reset-val is wrong. Expected: 2')
-        elif rv32:
-            mxl = format(value, '#034b')[:4]
-            if mxl != format(1, '#04b')[:4]:
-                self._error(field, 'MXL in reset-val is wrong. Expected: 1')
+        if value != 0x0:
+            if rv64:
+                mxl = format(value, '#066b')[:4]
+                if mxl != format(2, '#04b')[:4]:
+                    self._error(field, 'MXL in reset-val is wrong. Expected: 2')
+            elif rv32:
+                mxl = format(value, '#034b')[:4]
+                if mxl != format(1, '#04b')[:4]:
+                    self._error(field, 'MXL in reset-val is wrong. Expected: 1')
 
-        if (value & 0x3FFFFFF) != extensions:
-            self._error(
-                field, "Reset value of MISA is not compliant with the \
+            if (value & 0x3FFFFFF) != extensions:
+                self._error(
+                    field, "Reset value of MISA is not compliant with the \
 ISA provided. Expeected reset-val: " + str(extensions))
 
     def _check_with_cannot_be_false_rv64(self, field, value):
