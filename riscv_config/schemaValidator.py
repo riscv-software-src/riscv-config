@@ -24,30 +24,30 @@ class schemaValidator(Validator):
     def _check_with_mtvec_fields(self, field, value):
         ''' Function to check if the base,mode fields of the mtvec are provided
         by the user or not'''
-        
-        if rv32: 
+
+        if rv32:
             if 'base' not in value['rv32']:
-                self._error(field,'Please specify base field of mtvec')
+                self._error(field, 'Please specify base field of mtvec')
             elif 'type' not in value['rv32']['base']:
-                self._error(field,'Please specify type of the base field in\
+                self._error(field, 'Please specify type of the base field in\
  mtvec')
 
             if 'mode' not in value['rv32']:
-                self._error(field,'Please specify mode field of mtvec')
+                self._error(field, 'Please specify mode field of mtvec')
             elif 'type' not in value['rv32']['mode']:
-                self._error(field,'Please specify type of the mode field in\
+                self._error(field, 'Please specify type of the mode field in\
  mtvec')
-        if rv64: 
+        if rv64:
             if 'base' not in value['rv64']:
-                self._error(field,'Please specify base field of mtvec')
+                self._error(field, 'Please specify base field of mtvec')
             elif 'type' not in value['rv64']['base']:
-                self._error(field,'Please specify type of the base field in\
+                self._error(field, 'Please specify type of the base field in\
  mtvec')
 
             if 'mode' not in value['rv64']:
-                self._error(field,'Please specify mode field of mtvec')
+                self._error(field, 'Please specify mode field of mtvec')
             elif 'type' not in value['rv64']['mode']:
-                self._error(field,'Please specify type of the mode field in\
+                self._error(field, 'Please specify type of the mode field in\
  mtvec')
 
     def _check_with_misa_reset_values(self, field, value):
@@ -98,7 +98,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
 
     def _check_with_capture_isa_specifics(self, field, value):
         '''
-        Function to extract and store ISA specific information(such as xlen,user 
+        Function to extract and store ISA specific information(such as xlen,user
         spec version and extensions present)
         and check whether the dependencies in ISA extensions are satisfied.
         '''
