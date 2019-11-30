@@ -1,0 +1,154 @@
+############################################ Template description ############################################
+# csr template for csrs with fields
+<name>:                                   # name of the csr
+  description: <text>                     # textual description of the csr
+  address: <hex>                          # address of the CSR
+  priv_mode: <D/M/H/S/U>                  # privilege mode that owns the register
+  reset-val: <hex>                        # Reset value of the register. This an accumulation of the all reset values of the 
+                                          # sub-field 
+  rv32:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 1
+    implemented: <boolean>                # indicates if the csr exists in rv32 mode or not. When False, all fields below 
+                                          # will be trimmed off in the checked yaml. False also indicates that 
+                                          # access-exception should be generated
+    fields:                               # a quick summary of the list of all fields of the csr including a list of 
+                                          # WPRI fields of the csr.
+      - <field_name1>
+      - <field_name2>
+      - wpri                              # contains a list of all WPRI bits within the csr. Can be empty as well
+        - [30-23]
+        - 6
+    <field_name1>:                        # name of the field
+      description: <text>                 # textual description of the csr
+      shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that this field does not shadow anything.
+      msb: <hex>                          # msb index of the field. max: 31, min:0
+      lsb: <hex>                          # lsb index of the field. min: 31, min:0
+      implemented: <boolean>              # indicates if the user has implemented this field or not. When False, all 
+                                          # fields below this will be trimmed.
+      reset-val: <hex>                    # reset value of the field.
+      type:                               # indicates the type of the field. Can be only one of the following
+        WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
+        RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
+        RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
+        WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
+          dependency_fields: [list]    
+          legal: [list of warl-string]
+          wr_illegal: [list of warl-string]           
+  rv64:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    implemented: <boolean>                # indicates if this field exists in rv64 mode or not                          
+  rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    implemented: <boolean>                # indicates if this field exists in rv128 mode or not                          
+
+# csr template for csrs without fields
+<name>:
+  description: <text>                   # textual description of the csr
+  address: <hex>                        # address of the CSR
+  priv_mode: <D/M/H/S/U>                # privilege mode that owns the register
+  reset-val: <hex>                      # Reset value of the register.
+  rv32:                                 # this node and its subsequent fields can exist if [M/S/U]XL value can be 1
+    implemented: <boolean>              # indicates if the csr exists in rv32 mode or not. When False, all fields below 
+                                        # will be trimmed off in the checked yaml. 
+                                        # False also indicates that access-exception should be generated                      
+    fields:                             # This should be empty always since this csr does not have fields
+    shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that this field does not shadow anything.
+    msb: <hex>                          # msb index of the csr. max: 31, min:0
+    lsb: <hex>                          # lsb index of the csr. min: 31, min:0
+    reset-val: <hex>                    # reset value of the field.
+    type:                               # indicates the type of the field. Can be only one of the following
+      WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
+      RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
+      RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
+      WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
+        dependency_fields: [list]    
+        legal: [list of warl-string]
+        wr_illegal: [list of warl-string]           
+  rv64:                                 # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    implemented: <boolean>              # indicates if this field exists in rv64 mode or not                          
+  rv128:                                # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    implemented: <boolean>              # indicates if this field exists in rv64 mode or not                          
+##############################################################################################################
+
+############################################ Examples ############################################
+
+## example of csr with fields. The following is what the user will provide as input to riscv-config
+
+#User Input
+mtvec:                                
+  reset-val: 0x00000001 
+  rv32:                                 
+    implemented: True                         
+    mode:                    
+      reset-val: 0x1
+      shadow: none
+      type:                             
+        WARL:
+          dependency_fields: []
+          legal: 
+            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+          wr_illegal:
+            - "Unchanged"
+  base:
+      reset-val: 0x0
+      shadow: none
+      type:                             
+        WARL: 
+          dependency_fields: [mtvec::mode]
+          legal:
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+            - "[1] -> base[29:6] in [0x000000:0xF00000] & base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
+            - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+  rv64:                                 
+    implemented: False                   
+  rv128:                                
+    implemented: False
+
+#The following is what the riscv-config will output after performing relevant checks on the above user-input
+#Checker output
+mtvec:                                
+  description: Machine trap vector base address
+  address: 0x305         
+  priv_mode: M
+  reset-val: 0x00000001 
+  rv32:                                 
+    implemented: True                        
+    fields:                          
+      - mode
+      - base
+      - wpri                            # there is not wpri field in the mtvec 
+    mode:                   
+      description: trap handling mode
+      shadow: none
+      msb: 1
+      lsb: 0
+      implemented: True 
+      reset-val: 0x1
+      type:                             
+        WARL:
+          dependency_fields: []
+          legal: 
+            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+          wr_illegal:
+            - "Unchanged"
+  base:
+      description: vector base address
+      shadow: none
+      msb: 31
+      lsb: 2
+      implemented: True 
+      reset-val: 0x0
+      type:                             
+        WARL: 
+          dependency_fields: [mtvec::mode]
+          legal:
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
+            - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+  rv64:                                 
+    implemented: False                   
+  rv128:                                
+    implemented: False

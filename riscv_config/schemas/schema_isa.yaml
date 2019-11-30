@@ -1200,8 +1200,8 @@ mvendorid:
           default: none
         msb:
           type: integer
-          default: 31
-          allowed: [31]
+          default: 63
+          allowed: [63]
         lsb:
           type: integer
           default: 0
@@ -3334,4 +3334,116 @@ mcause:
             implemented: true
       default:
           implemented: false
-
+sedeleg:
+   type: dict
+   schema:
+      description:
+          type: string
+          default: sedeleg
+      address: 
+          type: integer
+          default: 0x302
+          allowed: [0x302]
+      reset-val:
+          type: integer
+          check_with: max_length
+      rv32:
+          type: dict
+          schema:
+              implemented:
+                  type: boolean
+                  default: true
+              fields: 
+                  type: list
+              shadow:
+                  type: string
+                  default: none
+              msb: 
+                  type: integer
+                  default: 31
+                  allowed: [31]
+              lsb:
+                  type: integer
+                  default: 0
+                  allowed: [0]
+          default:
+              implemented: false
+                                
+      rv64:
+          type: dict
+          schema:
+              implemented:
+                  type: boolean
+                  default: true
+              fields:
+                  type: list
+              shadow:
+                  type: string        
+                  default: none
+              msb:
+                  type: integer
+                  default: 63
+                  allowed: [63]                        
+              lsb:
+                  type: integer
+                  default: 0
+                  allowed: [0]
+          default:
+              implemented: false
+sideleg:
+   type: dict
+   schema:
+      description:
+          type: string
+          default: sedeleg
+      address: 
+          type: integer
+          default: 0x302
+          allowed: [0x302]
+      reset-val:
+          type: integer
+          check_with: max_length
+      rv32:
+          type: dict
+          schema:
+              implemented:
+                  type: boolean
+                  default: true
+              fields: 
+                  type: list
+              shadow:
+                  type: string
+                  default: none
+              msb: 
+                  type: integer
+                  default: 31
+                  allowed: [31]
+              lsb:
+                  type: integer
+                  default: 0
+                  allowed: [0]
+          default:
+              implemented: false
+                                
+      rv64:
+          type: dict
+          schema:
+              implemented:
+                  type: boolean
+                  default: true
+              fields:
+                  type: list
+              shadow:
+                  type: string        
+                  default: none
+              msb:
+                  type: integer
+                  default: 63
+                  allowed: [63]                        
+              lsb:
+                  type: integer
+                  default: 0
+                  allowed: [0]
+          default:
+              implemented: false
+                                 

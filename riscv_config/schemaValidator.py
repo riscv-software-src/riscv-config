@@ -161,6 +161,28 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, "S cannot exist without U.")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(field, "Z is not supported in the given version.")
+            if rv32:
+                if ('S' in value or 'N' in value) and not self.document['medeleg']['rv32']['implemented'] == True:
+                        self._error(field, "if S or N exist medeleg should also exist(32)")
+                if ('S' in value or 'N' in value) and not self.document['mideleg']['rv32']['implemented'] == True:
+                        self._error(field, "if S or N exist mideleg should also exist(32)")
+                if 'N' in value and not self.document['sedeleg']['rv32']['implemented'] == True:
+                        self._error(field, "if N exist sedeleg should also exist(32)")
+                if 'N' in value and not self.document['sideleg']['rv32']['implemented'] == True:
+                        self._error(field, "if N exist sideleg should also exist(32)")
+            if rv64:
+                if ('S' in value or 'N' in value) and not self.document['medeleg']['rv64']['implemented'] == True:
+                        self._error(field, "if S or N exist medeleg should also exist(64)")
+                if ('S' in value or 'N' in value) and not self.document['mideleg']['rv64']['implemented'] == True:
+                        self._error(field, "if S or N exist mideleg should also exist(64)")
+                if 'N' in value and not self.document['sedeleg']['rv64']['implemented'] == True:
+                        self._error(field, "if N exist sedeleg should also exist(64)")
+                if 'N' in value and not self.document['sideleg']['rv64']['implemented'] == True:
+                        self._error(field, "if N exist sideleg should also exist(64)")
+           # if 'N' in value and not self.document['medeleg']['rv32']['implemented'] == True:
+            #    self._error(field, "if N exist medeleg should also exist")
+           # if 'N' in value and not self.document['mideleg']['rv32']['implemented'] == True:
+              #  self._error(field, "if  exist mideleg should also exist")
         else:
             self._error(field, "Neither of E or I extensions are present.")
         #ISA encoding for future use.
@@ -275,7 +297,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
                     "UXL cannot be hardwired to 0 when S mode is supported")
 
     def _check_with_ext_check(self, field, value):
-        '''Function to check whether the bitmask given for the Extensions field in misa is valid.'''
+        '''Function to check whether the bitmask given for the Extensions field in  is valid.'''
         global xlen
         global extensions
         val = value['mask'] ^ value['default'] ^ extensions
