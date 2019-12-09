@@ -88,7 +88,7 @@ mtvec:
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
           wr_illegal:
             - "Unchanged"
-  base:
+    base:
       reset-val: 0x0
       shadow: none
       type:                             
@@ -133,7 +133,7 @@ mtvec:
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
           wr_illegal:
             - "Unchanged"
-  base:
+    base:
       description: vector base address
       shadow: none
       msb: 31
