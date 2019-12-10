@@ -1,4 +1,4 @@
-ISA: RV64IMSUN
+ISA: RV64IMUSN
 supported_xlen: [64]
 misa:
   rv32:

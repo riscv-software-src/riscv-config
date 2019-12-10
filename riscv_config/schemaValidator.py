@@ -1,5 +1,6 @@
 from cerberus import Validator
 import riscv_config.constants as constants
+import re
 
 
 class schemaValidator(Validator):
@@ -161,7 +162,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, "S cannot exist without U.")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(field, "Z is not supported in the given version.")
-            if rv32:
+        '''    if rv32:
                 if ('S' in value or 'N' in value) and not self.document['medeleg']['rv32']['implemented'] == True:
                         self._error(field, "if S or N exist medeleg should also exist(32)")
                 if ('S' in value or 'N' in value) and not self.document['mideleg']['rv32']['implemented'] == True:
@@ -178,13 +179,13 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 if 'N' in value and not self.document['sedeleg']['rv64']['implemented'] == True:
                         self._error(field, "if N exist sedeleg should also exist(64)")
                 if 'N' in value and not self.document['sideleg']['rv64']['implemented'] == True:
-                        self._error(field, "if N exist sideleg should also exist(64)")
+                        self._error(field, "if N exist sideleg should also exist(64)")'''
            # if 'N' in value and not self.document['medeleg']['rv32']['implemented'] == True:
             #    self._error(field, "if N exist medeleg should also exist")
            # if 'N' in value and not self.document['mideleg']['rv32']['implemented'] == True:
               #  self._error(field, "if  exist mideleg should also exist")
-        else:
-            self._error(field, "Neither of E or I extensions are present.")
+        #else:
+         #   self._error(field, "Neither of E or I extensions are present.")
         #ISA encoding for future use.
         for x in "ACDEFGIJLMNPQSTUVXZ":
             if (x in ext):
@@ -361,7 +362,35 @@ ISA provided. Expeected reset-val: " + str(extensions))
             for val in list:
                 if not (val < maxv):
                     self._error(field, "Value greater than " + str(maxv))
-
+                    
+    def _check_with_mdeleg_checks(self,field,value):
+        #print(value['rv64']['implemented'])
+        if rv32:
+                if(value['rv32']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
+                        value['rv32']['implemented'] = False
+                        self._error(field, "S is not present(32)")
+                        
+        if rv64:
+                if(value['rv64']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
+                        value['rv64']['implemented'] = False
+                        self._error(field, "S is not present(64)")
+                        
+        #print(value['rv64']['implemented'])
+        
+    def _check_with_ndeleg_checks(self,field,value):
+        #print(value['rv64']['implemented'])
+        if rv32:
+                if(value['rv32']['implemented'] == True and not 'N' in self.document['ISA']):
+                        value['rv32']['implemented'] = False
+                        self._error(field, "N is not present(32)")
+                        
+        if rv64:
+                if(value['rv64']['implemented'] == True and not 'N' in self.document['ISA']):
+                        value['rv64']['implemented'] = False
+                        self._error(field, "N is not present(64)")
+                        
+        #print(value['rv64']['implemented'])
+    
     def _check_with_xcause_check(self, field, value):
         '''Function to verify the inputs for mcause.'''
         if (min(value) < 16):

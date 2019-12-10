@@ -1652,6 +1652,7 @@ mtvec:
               allowed: [true]
             type:
               type: dict 
+              #check_with: islegal
               oneof:
                 - schema:
                     RO_constant:
@@ -1795,9 +1796,9 @@ mideleg:
           allowed: [0]
       default:
         implemented: false
-
+  check_with: mdeleg_checks
 medeleg:
-  type: dict
+  type: dict  
   schema:
     description:
       type: string
@@ -1857,7 +1858,7 @@ medeleg:
           allowed: [0]
       default:
         implemented: false
-
+  check_with: mdeleg_checks
 mip:
   type: dict
   schema:
@@ -3342,8 +3343,8 @@ sedeleg:
           default: sedeleg
       address: 
           type: integer
-          default: 0x302
-          allowed: [0x302]
+          default: 0x102
+          allowed: [0x102]
       reset-val:
           type: integer
           check_with: max_length
@@ -3353,6 +3354,7 @@ sedeleg:
               implemented:
                   type: boolean
                   default: true
+                  check_with: rv32_check
               fields: 
                   type: list
               shadow:
@@ -3375,6 +3377,7 @@ sedeleg:
               implemented:
                   type: boolean
                   default: true
+                  check_with: rv64_check
               fields:
                   type: list
               shadow:
@@ -3390,6 +3393,7 @@ sedeleg:
                   allowed: [0]
           default:
               implemented: false
+   check_with: ndeleg_checks
 sideleg:
    type: dict
    schema:
@@ -3398,8 +3402,8 @@ sideleg:
           default: sedeleg
       address: 
           type: integer
-          default: 0x302
-          allowed: [0x302]
+          default: 0x103
+          allowed: [0x103]
       reset-val:
           type: integer
           check_with: max_length
@@ -3409,6 +3413,7 @@ sideleg:
               implemented:
                   type: boolean
                   default: true
+                  check_with: rv32_check
               fields: 
                   type: list
               shadow:
@@ -3431,6 +3436,7 @@ sideleg:
               implemented:
                   type: boolean
                   default: true
+                  check_with: rv64_check
               fields:
                   type: list
               shadow:
@@ -3446,4 +3452,5 @@ sideleg:
                   allowed: [0]
           default:
               implemented: false
+   check_with: ndeleg_checks              
                                  
