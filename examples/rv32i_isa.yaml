@@ -1,19 +1,19 @@
-ISA: RV64IMSUN
-supported_xlen: [64]
+ISA: RV32IMSUN
+supported_xlen: [32]
 misa:
   rv32:
-    implemented: false
-  rv64:
     implemented: true
-  reset-val: 0x8000000000143100
+  rv64:
+    implemented: false
+  reset-val: 0x40143100
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
-    implemented: false
+    implemented: true
     type:
       ro: [0xdeadbeef]
   rv64:
-    implemented: true
+    implemented: false
     type:
       ro: [0xdeadbeef]
 mtime:
@@ -29,7 +29,7 @@ mtimecmp:
 
 mtvec:
   reset-val: 0x3eadbeef
-  rv64:
+  rv32:
     implemented: true
     base:
       implemented: true
@@ -54,24 +54,24 @@ mtvec:
             - "Unchanged"
 medeleg:
   rv32:
-     implemented: false
-  rv64:
      implemented: true
+  rv64:
+     implemented: false
                 
 mideleg:
   rv32:
-     implemented: false
-  rv64:
      implemented: true
+  rv64:
+     implemented: false
    
 sedeleg: 
   rv32:
-     implemented: false
-  rv64:
      implemented: true
+  rv64:
+     implemented: false
 
 sideleg:
   rv32:
-     implemented: false
-  rv64:
      implemented: true
+  rv64:
+     implemented: false
