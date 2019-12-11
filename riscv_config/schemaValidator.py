@@ -162,30 +162,8 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, "S cannot exist without U.")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(field, "Z is not supported in the given version.")
-        '''    if rv32:
-                if ('S' in value or 'N' in value) and not self.document['medeleg']['rv32']['implemented'] == True:
-                        self._error(field, "if S or N exist medeleg should also exist(32)")
-                if ('S' in value or 'N' in value) and not self.document['mideleg']['rv32']['implemented'] == True:
-                        self._error(field, "if S or N exist mideleg should also exist(32)")
-                if 'N' in value and not self.document['sedeleg']['rv32']['implemented'] == True:
-                        self._error(field, "if N exist sedeleg should also exist(32)")
-                if 'N' in value and not self.document['sideleg']['rv32']['implemented'] == True:
-                        self._error(field, "if N exist sideleg should also exist(32)")
-            if rv64:
-                if ('S' in value or 'N' in value) and not self.document['medeleg']['rv64']['implemented'] == True:
-                        self._error(field, "if S or N exist medeleg should also exist(64)")
-                if ('S' in value or 'N' in value) and not self.document['mideleg']['rv64']['implemented'] == True:
-                        self._error(field, "if S or N exist mideleg should also exist(64)")
-                if 'N' in value and not self.document['sedeleg']['rv64']['implemented'] == True:
-                        self._error(field, "if N exist sedeleg should also exist(64)")
-                if 'N' in value and not self.document['sideleg']['rv64']['implemented'] == True:
-                        self._error(field, "if N exist sideleg should also exist(64)")'''
-           # if 'N' in value and not self.document['medeleg']['rv32']['implemented'] == True:
-            #    self._error(field, "if N exist medeleg should also exist")
-           # if 'N' in value and not self.document['mideleg']['rv32']['implemented'] == True:
-              #  self._error(field, "if  exist mideleg should also exist")
-        #else:
-         #   self._error(field, "Neither of E or I extensions are present.")
+        else: 
+                self._error(field, "Neither of E or I extensions are present")
         #ISA encoding for future use.
         for x in "ACDEFGIJLMNPQSTUVXZ":
             if (x in ext):
@@ -363,6 +341,33 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 if not (val < maxv):
                     self._error(field, "Value greater than " + str(maxv))
                     
+    def _check_with_s_check(self,field,value):
+       # print(hex(extensions))
+        s=18
+        if rv64 and value == True:
+                mxl = format(extensions, '#066b')
+                if (mxl[65-s:66-s] != '1'):
+                         self._error(field,"S is not present(64)")
+                        
+        elif rv32 and value == True:
+                mxl = format(extensions, '#034b')
+                if (mxl[33-s:34-s] != '1'):
+                        self._error(field,"S is not present(32)")
+                 
+    
+    def _check_with_n_check(self,field,value):
+        #print(hex(extensions))
+        n=13
+        if rv64:
+                mxl = format(extensions, '#066b')
+                if (mxl[65-n:66-n] != '1'):
+                         self._error(field,"N is not present")
+                        
+        elif rv32:
+                mxl = format(extensions, '#034b')
+                if (mxl[33-n:34-n] != '1'):
+                        self._error(field,"N is not present")
+        
     def _check_with_mdeleg_checks(self,field,value):
         #print(value['rv64']['implemented'])
         if rv32:

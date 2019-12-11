@@ -1,11 +1,11 @@
-ISA: RV64IMUSN
+ISA: RV64IMUANS
 supported_xlen: [64]
 misa:
   rv32:
     implemented: false
   rv64:
     implemented: true
-  reset-val: 0x8000000000143100
+  reset-val: 0x8000000000143101
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
@@ -38,7 +38,7 @@ mtvec:
           dependency_fields: [mtvec::mode]
           legal:
             - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
-            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+            - "[1] -> base[29:6] in [0x000005:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
           wr_illegal:
             - "[0] -> Unchanged"
             - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
@@ -49,7 +49,7 @@ mtvec:
         WARL:
           dependency_fields: []
           legal: 
-            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+            - "mode[1:0] in [0x0:0x9] # Range of 0 to 1 (inclusive)"
           wr_illegal:
             - "Unchanged"
 medeleg:
