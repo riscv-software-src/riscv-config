@@ -347,12 +347,12 @@ ISA provided. Expeected reset-val: " + str(extensions))
         if rv64 and value == True:
                 mxl = format(extensions, '#066b')
                 if (mxl[65-s:66-s] != '1'):
-                         self._error(field,"S is not present(64)")
+                         self._error(field ,"S is not present(64)")
                         
         elif rv32 and value == True:
                 mxl = format(extensions, '#034b')
                 if (mxl[33-s:34-s] != '1'):
-                        self._error(field,"S is not present(32)")
+                        self._error(field ,"S is not present(32)")
                  
     
     def _check_with_n_check(self,field,value):
@@ -373,12 +373,12 @@ ISA provided. Expeected reset-val: " + str(extensions))
         if rv32:
                 if(value['rv32']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
                         value['rv32']['implemented'] = False
-                        self._error(field, "S is not present(32)")
+                        self._error(field, "S and N are not present(32)")
                         
         if rv64:
                 if(value['rv64']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
                         value['rv64']['implemented'] = False
-                        self._error(field, "S is not present(64)")
+                        self._error(field, "S and N are not present(64)")
                         
         #print(value['rv64']['implemented'])
         
