@@ -4,6 +4,7 @@ import yaml
 
 class warl_interpreter():
     global val
+    global bitsum 
     def __init__(self,warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
         #print(warl)
@@ -140,6 +141,8 @@ class warl_interpreter():
         sum=0
         for i in range(len(k)):
                 sum=sum+k[i]
+                
+        self.bitsum=sum
         #print(sum)
         if(len(value)>sum):
                 print("Invalid entry")
@@ -191,6 +194,7 @@ class warl_interpreter():
         the register is calculated and returned.
         '''
         flag1=0
+        flag2=0
         j=0
         #print(dependency_vals)
         for i in range(len(self.val['wr_illegal'])):
@@ -225,14 +229,130 @@ class warl_interpreter():
         if(self.islegal(wr_val,dependency_vals)):
                 return wr_val
         else:
-                op2=re.split(r'\->',inp)
-                wr=op2[1]
+                if "->" in inp:
+                        op2=re.split(r'\->',inp)
+                        wr=op2[1]
+                else:
+                        wr=inp.strip()
                 #print(wr)
                 if "0x" in wr:
-                        return wr
+                        return wr.strip()
                 elif wr.lower().strip() == "unchanged":
                         return curr_val
+                        
+                        
+                elif wr.lower().strip() == "nearup":
+                        print("nearup")
+                        a=[]
+                        flag2=0
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                if len(l[i])==1:
+                                        a.append(abs(int(wr_val,16)-int(l[i][0],16)))
+                        print(min(a))
+                        for i in range(len(a)-1,-1,-1):
+                                if a[i]==min(a):
+                                        j=i
+                                        flag2=1
+                                        break
+                        if flag2==1:
+                                return l[j][0]
+                                 
+                                 
+                                 
+                                        
+                elif wr.lower().strip() == "neardown":
+                        print("neardown")
+                        a=[]
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                if len(l[i])==1:
+                                        a.append(abs(int(wr_val,16)-int(l[i][0],16)))
+                        print(min(a))
+                        for i in range(len(a)):
+                                if a[i]==min(a):
+                                        j=i
+                                        flag2=1
+                                        break
+                        if flag2==1:
+                                return l[j][0]
                                 
+                                
+                                
+                elif wr.lower().strip() == "nextup":
+                        print("nextup")
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                #print(l[i][0])
+                                if int(l[i][0],16)>int(wr_val,16) and len(l[i])==1:
+                                        j=i
+                                        flag2=1
+                                        break
+                        if flag2==1:
+                                return l[j][0]
+                        else:
+                                return max(l)
+                                
+                                
+                elif wr.lower().strip() == "nextdown":
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                #print(l[i][0])
+                                if int(l[i][0],16)>int(wr_val,16) and len(l[i])==1:
+                                        j=i
+                                        flag2=1
+                                        break
+                        if flag2==1 and j!=0:
+                                return l[j-1][0]
+                        else:
+                                return min(l)
+                                
+                                
+                elif wr.lower().strip() == "max":
+                        flag3=0
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                if "," in l[i][0]:
+                                        flag3=1
+                                        j=i
+                                else:
+                                        flag3=0
+                        if flag3==0:
+                                return max(l)
+                        else:
+                                y=re.split(",",l[j][0])
+                                return y[1]
+                                              
+                elif wr.lower().strip() == "min":
+                        flag3=0
+                        l=self.legal(dependency_vals)
+                        for i in range(len(l)):
+                                if "," in l[i][0]:
+                                        flag3=1
+                                        j=i
+                                else:
+                                        flag3=0 
+                        if flag3==0:
+                                return min(l)
+                        else:
+                                y=re.split(",",l[j][0])
+                                return y[0]
+                               
+                      
+                elif wr.lower().strip() == "addr":
+                        wr=format(int(wr_val,16),'#0{}b'.format(4*self.bitsum+2))
+                        wr=wr[2:]
+                        #print(wr)
+                        if wr[0:1] =='0':
+                                wr_final='1'+wr[1:]
+                        elif wr[0:1] =='1':
+                                wr_final='0'+wr[1:]
+                        else:
+                                print("Invalid binary bit")
+                        return hex(int(wr_final,2))
+ 
+                else:
+                        return "Invalid update mode"               
         #print("update accessed successfully")
     def legal(self,dependency_vals=[]):
         '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
@@ -257,22 +377,22 @@ class warl_interpreter():
         s=re.findall(r'in\s*\[(.*?)\]',inp)
         a=[]
         b=[]
+        tup=[]
         for i in range(len(s)):
                 tup=[]
                 if ":" in s[i]:
-                        tup.append(s[i].replace(":",","))
-                        a.append(tup)
+                        a.append(s[i].replace(":",",").split())
                 elif ',' in s[i]:
                         y=re.split(",",s[i])
                         for j in range(len(y)):
                                 tup=[]
                                 tup.append(y[j])
-                                a.append(tup)
+                                a.append(y[j].split())
 
                 else:
                         tup=[]
-                        tup.append(s[i])
-                        a.append(tup)
+                        tup.append(s[i].split())
+                        a.append(s[i].split())
         #print("the range of values are",a)
         return a
         #print(inp)
@@ -280,9 +400,7 @@ class warl_interpreter():
 with open(r'rv64i_isa.yaml') as file:        
         mtvec_base = warl_interpreter(yaml.load(file, Loader=yaml.FullLoader)['mtvec']['rv64']['base']['type']['WARL'])
         print(mtvec_base.dependencies(), " (dependency fields)")
-        print(mtvec_base.islegal("20000000",[0])," (islegal)")
-        print(mtvec_base.islegal("b00",[1])," (islegal)")
-        print(mtvec_base.update("20004000","2000001",[1])," (update)")
+        print(mtvec_base.islegal("a00",[1])," (islegal)")
+        print(mtvec_base.islegal("a10",[1])," (islegal)")
         print(mtvec_base.legal([0])," (legal)")
-
-
+        print(mtvec_base.update("20004000","20008000",[0])," (update)")
