@@ -410,22 +410,22 @@ class warl_interpreter():
         for i in range(len(s)):
                 tup=[]
                 if ":" in s[i]:
-                        a.append(s[i].replace(":",",").split())
-                elif ',' in s[i]:
-                        y=re.split(",",s[i])
-                        for j in range(len(y)):
-                                tup=[]
-                                tup.append(y[j])
-                                a.append(y[j].split())
+                        tup.append(s[i].replace(":",","))
+                        a.append(tup)
 
                 else:
                         tup=[]
-                        tup.append(s[i].split())
-                        a.append(s[i].split())
-        #print("the range of values are",a)
-        return a
-        #print(inp)
-        #print("legal accessed successfully")
+                        tup.append(s[i])
+                        a.append(tup)
+        
+        w=re.split(",",a[0][0])
+        o=[]
+        for i in range(len(w)):
+                e=w[i].strip().split()
+                o.append(e)
+        o.sort()
+        return o
+
 with open(r'rv64i_isa.yaml') as file:        
         mtvec_base = warl_interpreter(yaml.load(file, Loader=yaml.FullLoader)['mtvec']['rv64']['base']['type']['WARL'])
         print(mtvec_base.dependencies(), " (dependency fields)")
@@ -433,5 +433,5 @@ with open(r'rv64i_isa.yaml') as file:
         print(mtvec_base.islegal("30000c00",[1])," (islegal)")
         print(mtvec_base.islegal("30000c10",[1])," (islegal)")
         print(mtvec_base.legal([0])," (legal)")
-        print(mtvec_base.update("20000000","20008000",[0])," (update)")
+        print(mtvec_base.update("20000000","20006000",[0])," (update)")
         print(mtvec_base.update("20004000","20006001",[1])," (update)")
