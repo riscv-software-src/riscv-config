@@ -1652,7 +1652,6 @@ mtvec:
               allowed: [true]
             type:
               type: dict 
-              #check_with: islegal
               oneof:
                 - schema:
                     RO_constant:
@@ -1667,6 +1666,7 @@ mtvec:
                 - schema:
                     WARL:
                       type: dict
+                      check_with: wr_illegal  
                       schema:
                         dependency_fields:
                           type: list
@@ -3466,3 +3466,4 @@ sideleg:
               implemented: false
    check_with: ndeleg_checks              
                                  
+

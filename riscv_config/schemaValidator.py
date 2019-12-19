@@ -483,3 +483,41 @@ ISA provided. Expeected reset-val: " + str(extensions))
                     field,
                     "Please refer to the schema and enter the node values correctly."
                 )
+   
+    def _check_with_wr_illegal(self, field, value):
+        #print("checking inside mtvec")
+        pr=0
+        pri=0
+        for i in range(len(value['legal'])):
+                if ' -> ' in value['legal'][i]:
+                        pr=1
+                        break
+        for i in range(len(value['wr_illegal'])):
+                split=re.findall(r'^\s*\[(\d)]\s*',value['wr_illegal'][i])
+                #print(split)
+                if split != []:
+                        pri=1
+                        break
+        if value['dependency_fields']!=[]:
+                l=(len(value['legal']))
+                f=0
+                for i in range(l):
+                        if "bitmask" in value['legal'][i]:
+                                f=1
+                                #print("parse and find mode")
+                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['legal'][i])
+                                #print(len(value['wr_illegal']))
+                                for j in range(len(value['wr_illegal'])):
+                                        if splits[0] in value['wr_illegal'][j]:
+                                                print(" illegal value does not exist for the given mode",splits[0])
+                                                break
+                                                
+        elif value['dependency_fields']==[] and (len(value['legal'])!=1 or pr==1) :
+                #print( value['legal'])
+                #print("no mode should exist(legal)")
+                self._error(field,"no mode must exist(legal)")
+        elif value['dependency_fields']==[] and pri==1 :
+                #print( value['wr_illegal'])
+                print("no mode should exist(illegal)")
+            
+

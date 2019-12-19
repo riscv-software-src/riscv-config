@@ -5,6 +5,7 @@ import yaml
 class warl_interpreter():
     global val
     global bitsum 
+    global dep_val
     def __init__(self,warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
         #print(warl)
@@ -20,6 +21,7 @@ class warl_interpreter():
         dp=[]
         for i in self.val['dependency_fields']:
                 dp.append(i)
+        self.dep_val=dp
         return dp
     def islegal(self,value,dependency_vals=[]):
         '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
@@ -44,18 +46,25 @@ class warl_interpreter():
         flag1=0
         v=""
         j=0
-        #print("dependency vals is",dependency_vals)
-        for i in range(len(self.val['legal'])):
-                mode = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                        if dependency_vals[i1] == int(mode[i1]):
-                                j=i
-                                flag1=1
-                                break
-                        #print(mode)
-        if flag1==0:
-                print("Dependency vals do not match")
-                exit()
+        #print("dependency vals is",self.dep_val)
+        if self.dep_val !=[] and dependency_vals !=[]:
+                for i in range(len(self.val['legal'])):
+                        mode = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
+                        for i1 in range(len(dependency_vals)):
+                                if dependency_vals[i1] == int(mode[i1]):
+                                        j=i
+                                        flag1=1
+                                        break
+                                #print(mode)
+                if flag1==0:
+                        print("Dependency vals do not match")
+                        exit()
+        else:
+                if len(self.val['legal'])!=1:
+                        print("There cannot be more than one legal value")
+                        exit()
+                else:
+                        j=0
         inp1=self.val['legal'][j]
         #print("input is " ,inp1)
         nodename = re.findall(r'(?:\[.+?\] -> )*\s*(.+?)\[.+?\]\s*in\s*\[.+?\]',inp1)
@@ -179,8 +188,9 @@ class warl_interpreter():
         
         
         else:
-                x=re.findall(r'\[\d\]\s*->\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
-                z=re.findall(r'\[\d\]\s*->\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
+                x=re.findall(r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
+                #print("x is",x)
+                z=re.findall(r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
                 y1=re.split("\,",x[0])
                 bitmask=int(y1[0],16)
                 fixedval=int(y1[1],16)
@@ -208,44 +218,88 @@ class warl_interpreter():
         '''
         flag1=0
         flag2=0
+        flag3=0
+        flag4=0
         j=0
         #print(dependency_vals)
-        for i in range(len(self.val['legal'])):
-                mode1 = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                        if dependency_vals[i1] == int(mode1[i1]):
-                                j=i
-                                flag1=1
-                                break
-                        #print(mode)
-        if flag1==0:
-                print("Dependency vals do not match")
-                exit()
-        inp1=self.val['legal'][j]
-        flag1=0
-        for i in range(len(self.val['wr_illegal'])):
-                mode = re.findall('\[(\d)\]\s*.*->\s*',self.val['wr_illegal'][i])
-                op=re.findall(r'in\s*\[(.*?)\]',self.val['wr_illegal'][i])
-                if op !=[]:
-                        z=re.split("\:",op[0])
-                for i1 in range(len(dependency_vals)):
-                        if dependency_vals[i1] ==int(mode[i1]):
-                                if op!=[]:
-                                        if int(wr_val,16) in range(int(z[0],16),int(z[1],16)):
-                                                j=i
-                                                flag1=1
-                                                break
-                                else:
+        if self.dep_val !=[] and dependency_vals !=[]:
+                for i in range(len(self.val['legal'])):
+                        mode1 = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
+                        for i1 in range(len(dependency_vals)):
+                                if dependency_vals[i1] == int(mode1[i1]):
                                         j=i
                                         flag1=1
                                         break
-                if flag1==1:
-                        break
+                                #print(mode)
+                if flag1==0:
+                        print("Dependency vals do not match")
+                        exit()
+        else:
+                if len(self.val['legal'])!=1:
+                        print("There cannot be more than one legal value")
+                        exit()
+                else:
+                        j=0
+        inp1=self.val['legal'][j]
+        #print("legal is ",inp1)
+        flag1=0
+        if self.dep_val !=[] and dependency_vals !=[]:
+                for i in range(len(self.val['legal'])):
+                        if "bitmask" in self.val['legal'][i]:
+                                flag4=1
+                        else:
+                                flag4=0
+                                break
+                 
+                if flag4==0 and not"bitmask" in inp1:
+                        for i in range(len(self.val['wr_illegal'])):
+                                mode = re.findall('\[(\d)\]\s*.*->\s*',self.val['wr_illegal'][i])
+                                op=re.findall(r'in\s*\[(.*?)\]',self.val['wr_illegal'][i])
+                                if op !=[]:
+                                        z=re.split("\:",op[0])
+                                for i1 in range(len(dependency_vals)):
+                                        if dependency_vals[i1] ==int(mode[i1]):
+                                                if op!=[]:
+                                                        if int(wr_val,16) in range(int(z[0],16),int(z[1],16)):
+                                                                j=i
+                                                                flag1=1
+                                                                break
+                                                else:
+                                                        j=i
+                                                        flag1=1
+                                                        break
+                                if flag1==1:
+                                        break
+                        inp=self.val['wr_illegal'][j]
+                else:
+                        inp="no value"
+                        flag1=1
+                
+                                        
+        elif self.dep_val ==[] and dependency_vals ==[] and not "bitmask" in self.val['legal'][0]:
+                for i in range(len(self.val['wr_illegal'])):
+                        op=re.findall(r'\s*wr_val\s*in\s*\[(.*?)\]',self.val['wr_illegal'][i])
+                        if op!=[]:
+                                z=re.split("\:",op[0])
+                                if int(wr_val,16) in range(int(z[0],16),int(z[1],16)):
+                                        j=i
+                                        flag1=1
+                                        break
+                        
+                        else:
+                                j=i
+                                flag1=1
+                                break              
+                                        
+                inp=self.val['wr_illegal'][j]
+                
+        elif self.dep_val !=[] and dependency_vals !=[] and len(self.val['legal']) ==1 and "bitmask" in self.val['legal'][0]:
+                flag1=1
+        
         if flag1==0 and dependency_vals !=[]:
                 print("Dependency vals do not match")
                 exit()
-        inp=self.val['wr_illegal'][j]
-        #print("input is ",inp)
+        #print("wr_illegal is ",inp)
         #print(dependency_vals)
         if(self.islegal(curr_val,dependency_vals) == False):
                 return "Current value must be legal"
@@ -261,7 +315,7 @@ class warl_interpreter():
                 if "0x" in wr:
                         return wr.strip()
                 elif wr.lower().strip() == "unchanged":
-                        return curr_val
+                        return ("0x"+curr_val)
                         
                         
                 elif wr.lower().strip() == "nearup":
@@ -373,13 +427,13 @@ class warl_interpreter():
                         return "Invalid update mode"
                         
         else:
-                x=re.findall(r'\[\d\]\s*->\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
-                z=re.findall(r'\[\d\]\s*->\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
+                x=re.findall(r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
+                z=re.findall(r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
                 y=re.split("\,",x[0])
                 bitmask=int(y[0],16)
                 fixedval=int(y[1],16)
                 currval=int(wr_val,16)
-                legal=(currval&bitmask)|(~bitmask&fixedval)
+                legal=((currval&bitmask)|fixedval)
                 return hex(legal)
                                
         #print("update accessed successfully")
@@ -389,19 +443,26 @@ class warl_interpreter():
         '''
         flag1=0
         j=0
-        for i in range(len(self.val['legal'])):
-                mode = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                        if dependency_vals[i1] == int(mode[i1]):
-                                j=i
-                                flag1=1
+        if self.dep_val !=[] and dependency_vals !=[]:
+                for i in range(len(self.val['legal'])):
+                        mode = re.findall('\[(\d)\]\s*->\s*',self.val['legal'][i])
+                        for i1 in range(len(dependency_vals)):
+                                if dependency_vals[i1] == int(mode[i1]):
+                                        j=i
+                                        flag1=1
+                                        break
+                        if flag1 ==1:
                                 break
-                if flag1 ==1:
-                        break
-                        #print(mode)
-        if flag1==0 and dependency_vals !=[]:
-                print("Dependency vals do not match")
-                exit()
+                                #print(mode)
+                if flag1==0 and dependency_vals !=[]:
+                        print("Dependency vals do not match")
+                        exit()
+        else:
+                if len(self.val['legal'])!=1:
+                        print("There cannot be more than one legal value")
+                        exit()
+                else:
+                        j=0 
         inp=self.val['legal'][j]
         s=re.findall(r'in\s*\[(.*?)\]',inp)
         a=[]
@@ -417,21 +478,23 @@ class warl_interpreter():
                         tup=[]
                         tup.append(s[i])
                         a.append(tup)
-        
-        w=re.split(",",a[0][0])
-        o=[]
-        for i in range(len(w)):
-                e=w[i].strip().split()
-                o.append(e)
-        o.sort()
-        return o
+        if not "bitmask" in inp:
+                w=re.split(",",a[0][0])
+                o=[]
+                for i in range(len(w)):
+                        e=w[i].strip().split()
+                        o.append(e)
+                o.sort()
+                return o
+        else:
+                return a
 
 with open(r'rv64i_isa.yaml') as file:        
         mtvec_base = warl_interpreter(yaml.load(file, Loader=yaml.FullLoader)['mtvec']['rv64']['base']['type']['WARL'])
         print(mtvec_base.dependencies(), " (dependency fields)")
         print(mtvec_base.islegal("20000000",[0])," (islegal)")
-        print(mtvec_base.islegal("30000c00",[1])," (islegal)")
+        print(mtvec_base.islegal("20000000",[1])," (islegal)")
         print(mtvec_base.islegal("30000c10",[1])," (islegal)")
         print(mtvec_base.legal([0])," (legal)")
-        print(mtvec_base.update("20000000","20006000",[0])," (update)")
-        print(mtvec_base.update("20004000","20006001",[1])," (update)")
+        print(mtvec_base.update("20004000","20006a1",[1])," (update)")
+        print(mtvec_base.update("20000000","35006091",[1])," (update)")
