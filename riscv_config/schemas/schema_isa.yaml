@@ -1489,6 +1489,29 @@ mhartid:
         implemented: false
   check_with: ro_reset_check
 
+schema_node:
+  type: dict
+  allow_unknown: False
+  noneof:
+      - schema:
+         WARL: &id001
+           type: dict
+           schema:
+             dependency_fields:
+               type: list
+               empty: True
+               schema:
+                 type: string
+                 nullable: True
+             legal:
+               type: list
+               schema: 
+                 type: string
+             wr_illegal:
+               type: list
+               schema: 
+                 type: string 
+
 mtvec:
   type: dict
   check_with: mtvec_fields
@@ -1552,21 +1575,7 @@ mtvec:
                     RO_variable:
                       type: boolean
                 - schema:
-                    WARL:
-                      type: dict
-                      schema:
-                        dependency_fields:
-                          type: list
-                          schema:
-                            type: string
-                        legal:
-                          type: list
-                          schema: 
-                            type: string
-                        wr_illegal:
-                          type: list
-                          schema: 
-                            type: string
+                    WARL: *id001
         mode:
           type: dict
           schema:
@@ -1602,21 +1611,8 @@ mtvec:
                     RO_variable:
                       type: boolean
                 - schema:
-                    WARL:
-                      type: dict
-                      schema:
-                        dependency_fields:
-                          type: list
-                          schema:
-                            type: string
-                        legal:
-                          type: list
-                          schema: 
-                            type: string
-                        wr_illegal:
-                          type: list
-                          schema: 
-                            type: string
+                    WARL: *id001
+                      
       default: 
         implemented: false
     rv64:
@@ -1652,6 +1648,7 @@ mtvec:
               allowed: [true]
             type:
               type: dict 
+              check_with: wr_illegal
               oneof:
                 - schema:
                     RO_constant:
@@ -1664,22 +1661,7 @@ mtvec:
                     RO_variable:
                       type: boolean
                 - schema:
-                    WARL:
-                      type: dict
-                      check_with: wr_illegal  
-                      schema:
-                        dependency_fields:
-                          type: list
-                          schema:
-                            type: string
-                        legal:
-                          type: list
-                          schema: 
-                            type: string
-                        wr_illegal:
-                          type: list
-                          schema: 
-                            type: string
+                    WARL: *id001 
           default:
             implemented: true
         mode:
@@ -1717,21 +1699,7 @@ mtvec:
                     RO_variable:
                       type: boolean
                 - schema:
-                    WARL:
-                      type: dict
-                      schema:
-                        dependency_fields:
-                          type: list
-                          schema:
-                            type: string
-                        legal:
-                          type: list
-                          schema: 
-                            type: string
-                        wr_illegal:
-                          type: list
-                          schema: 
-                            type: string
+                    WARL: *id001
       default:
           implemented: false
 

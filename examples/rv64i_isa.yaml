@@ -35,11 +35,15 @@ mtvec:
       implemented: true
       type:                             
         WARL: 
-          dependency_fields: []
+          dependency_fields: [mtvec::mode]
           legal:
-            - "[1] -> base[29:0] in [0x20000000, 0x20004000]"   
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  
+            - "[1] -> base[29:0] in [0x20000000:0x30000000]"
           wr_illegal:
-           - "unchanged"
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
+            - "[1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
+          
     mode:
       implemented: true
       type:                             

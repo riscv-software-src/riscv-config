@@ -488,36 +488,40 @@ ISA provided. Expeected reset-val: " + str(extensions))
         #print("checking inside mtvec")
         pr=0
         pri=0
-        for i in range(len(value['legal'])):
-                if ' -> ' in value['legal'][i]:
+        #print(value['WARL'])
+        for i in range(len(value['WARL']['legal'])):
+                if ' -> ' in value['WARL']['legal'][i]:
                         pr=1
                         break
-        for i in range(len(value['wr_illegal'])):
-                split=re.findall(r'^\s*\[(\d)]\s*',value['wr_illegal'][i])
-                #print(split)
-                if split != []:
-                        pri=1
-                        break
-        if value['dependency_fields']!=[]:
-                l=(len(value['legal']))
+        if value['WARL']['wr_illegal']!=None:
+                for i in range(len(value['WARL']['wr_illegal'])):
+                        split=re.findall(r'^\s*\[(\d)]\s*',value['WARL']['wr_illegal'][i])
+                        #print(split)
+                        if split != []:
+                                pri=1
+                                break
+        if value['WARL']['dependency_fields']!=[]:
+                l=(len(value['WARL']['legal']))
                 f=0
                 for i in range(l):
-                        if "bitmask" in value['legal'][i]:
+                        if "bitmask" in value['WARL']['legal'][i]:
                                 f=1
                                 #print("parse and find mode")
-                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['legal'][i])
+                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['WARL']['legal'][i])
                                 #print(len(value['wr_illegal']))
-                                for j in range(len(value['wr_illegal'])):
-                                        if splits[0] in value['wr_illegal'][j]:
-                                                print(" illegal value does not exist for the given mode",splits[0])
-                                                break
-                                                
-        elif value['dependency_fields']==[] and (len(value['legal'])!=1 or pr==1) :
-                #print( value['legal'])
-                #print("no mode should exist(legal)")
+                                if value['WARL']['wr_illegal']!=None:
+                                        for j in range(len(value['WARL']['wr_illegal'])):
+                                                if splits[0] in value['WARL']['wr_illegal'][j]:
+                                                        self._error(field, "illegal value does not exist for the given mode{}(bitmask)".format(splits[0]))
+                if f==0:
+                        pass
+                              
+        elif value['WARL']['dependency_fields']==[] and pr==1 :
                 self._error(field,"no mode must exist(legal)")
-        elif value['dependency_fields']==[] and pri==1 :
-                #print( value['wr_illegal'])
-                print("no mode should exist(illegal)")
+        elif value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])!=1:
+                self._error(field, "There should be only one legal value")
+        elif value['WARL']['dependency_fields']==[] and pri==1 :
+                self._error(field,"no mode must exist(illlegal)")
+        elif  value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])==1 and value['WARL']['wr_illegal']!=None:
+                self._error(field,"illegal value cannot exist")
             
-
