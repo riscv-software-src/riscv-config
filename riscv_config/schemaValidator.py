@@ -553,17 +553,23 @@ ISA provided. Expeected reset-val: " + str(extensions))
         
     def _check_with_legal_check(self,field,value):
         global xlen
+        l=[]
+        warl=[]
         if xlen[0]==32:
                 xl=32
         elif xlen[0]==64:
                 xl=64
         elif xlen[0]==128:
                 xl=128
-        print(xl)       
-        mtvec_base = warl_interpreter(value['rv{}'.format(xl)]['base']['type']['WARL'])
-        mtvec_base.dependencies()
-        if(mtvec_base.islegal(hex(value['reset-val'])[2:],[0])!=True):
-                self._error(field,"Reset value is illegal")   
+        #print(xl)       
+        #mtvec_base = warl_interpreter(value['rv64'].keys())
+        for i in value['rv{}'.format(xl)].keys():
+                l.append(i)
+        #print(l)
+        warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['WARL']))
+        warl.dependencies()
+        if(warl.islegal(hex(value['reset-val'])[2:],[0])!=True):
+                self._error(field, "Illegal reset value")
         
         
         
