@@ -1,4 +1,5 @@
 from cerberus import Validator
+from riscv_config.warl import warl_interpreter
 import riscv_config.constants as constants
 import re
 
@@ -354,7 +355,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 if (mxl[33-s:34-s] != '1'):
                         self._error(field ,"S is not present(32)")
                  
-    
     def _check_with_n_check(self,field,value):
         #print(hex(extensions))
         n=13
@@ -522,6 +522,31 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, "There should be only one legal value")
         elif value['WARL']['dependency_fields']==[] and pri==1 :
                 self._error(field,"no mode must exist(illlegal)")
-        elif  value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])==1 and value['WARL']['wr_illegal']!=None:
+        elif  value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])==1 and value['WARL']['wr_illegal']!=None and "bitmask" in value['WARL']['legal'][0]:
                 self._error(field,"illegal value cannot exist")
-            
+    
+    def _check_with_key_check(self, field, value):
+        if value['base']['type']['WARL']['dependency_fields']!=[]:
+                par=re.split("::",value['base']['type']['WARL']['dependency_fields'][0])
+                if not par[1] in value:
+                        self._error(field," {} not present".format(par[1]))
+                        
+    def _check_with_medeleg_reset(self, field, value):
+        #print(hex(value))
+        global xlen
+        #print(xlen[0]+2)
+        s=format(value,'#{}b'.format(xlen[0]+2))
+        #print(s[-11:-10])
+        if (s[-11:-10])!='0' and value>=int("0x400",16):
+                self._error(field," 11th bit must be hardwired to 0")    
+    def _check_with_sedeleg_reset(self, field, value):
+        #print(hex(value))
+        global xlen
+        #print(xlen[0]+2)
+        s=format(value,'#{}b'.format(xlen[0]+2))
+        #print(s[-11:-8])
+        if (s[-11:-8])!='000' and value>=int("400",16):
+                self._error(field, " 11,10,9 bits should be hardwired to 0")
+
+        
+                        

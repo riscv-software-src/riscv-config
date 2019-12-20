@@ -1617,6 +1617,7 @@ mtvec:
         implemented: false
     rv64:
       type: dict
+      check_with: key_check
       schema:
         implemented:
           type: boolean
@@ -1783,7 +1784,10 @@ medeleg:
       default: M
     reset-val:
       type: integer
-      check_with: max_length
+      default: 0x00
+      check_with: 
+        - max_length
+        - medeleg_reset
     rv32:
       type: dict
       schema:
@@ -3319,7 +3323,9 @@ sedeleg:
           allowed: [0x102]
       reset-val:
           type: integer
-          check_with: max_length
+          check_with: 
+                - max_length
+                - sedeleg_reset
       rv32:
           type: dict
           schema:

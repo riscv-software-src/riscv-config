@@ -28,7 +28,7 @@ mtimecmp:
     implemented: false
 
 mtvec:
-  reset-val: 0x3eadbeef
+  reset-val: 0x20004000
   rv64:
     implemented: true
     base:
@@ -54,6 +54,7 @@ mtvec:
           wr_illegal:
             - "Unchanged"
 medeleg:
+  reset-val: 0x800  
   rv32:
      implemented: false
   rv64:
@@ -66,6 +67,7 @@ mideleg:
      implemented: true
    
 sedeleg: 
+  reset-val: 0x800
   rv32:
      implemented: false
   rv64:

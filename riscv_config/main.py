@@ -1,10 +1,10 @@
 import logging
 import os
 import shutil
-
 import riscv_config.checker as checker
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
+
 
 def main():
     '''

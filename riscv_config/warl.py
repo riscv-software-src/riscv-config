@@ -1,7 +1,6 @@
 import re
 import os
 import yaml
-
 class warl_interpreter():
     global val
     global bitsum 
@@ -265,6 +264,7 @@ class warl_interpreter():
                 exit()
         if(self.islegal(curr_val,dependency_vals) == False):
                 return "Current value must be legal"
+               # self._error("Current value must be legal")
         if(self.islegal(wr_val,dependency_vals)):
                 return wr_val
         elif not "bitmask" in inp1:
@@ -450,12 +450,17 @@ class warl_interpreter():
         else:
                 return a
 
-with open(r'rv64i_isa.yaml') as file:        
-        mtvec_base = warl_interpreter(yaml.load(file, Loader=yaml.FullLoader)['mtvec']['rv64']['base']['type']['WARL'])
-        print(mtvec_base.dependencies(), " (dependency fields)")
-        print(mtvec_base.islegal("20000000",[0])," (islegal)")
-        print(mtvec_base.islegal("20000000",[1])," (islegal)")
-        print(mtvec_base.islegal("30000c10",[1])," (islegal)")
-        print(mtvec_base.legal([0])," (legal)")
-        print(mtvec_base.update("20004000","20006a1",[1])," (update)")
-        print(mtvec_base.update("20000000","4006091",[1])," (update)")
+with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
+        #os.path.join(path,"riscv_config")
+        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
+        mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
+        value=load['reset-val']
+        mtvec_base.dependencies()
+        print(mtvec_base.islegal(hex(value)[2:],[0]))
+        #print(mtvec_base.islegal("20000000",[0])," (islegal)")
+        #print(mtvec_base.islegal("20000000",[1])," (islegal)")
+        #print(mtvec_base.islegal("30000c10",[1])," (islegal)")
+        #print(mtvec_base.legal([0])," (legal)")
+        #print(mtvec_base.update("20004000","20006a1",[1])," (update)")
+        #print(mtvec_base.update("20000000","4006091",[1])," (update)")
+        
