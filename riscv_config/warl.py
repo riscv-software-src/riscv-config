@@ -8,7 +8,7 @@ class warl_interpreter():
     def __init__(self,warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
         self.val=warl
-        
+        #print(warl)
     def prevsum(self,i,k):
         sump=0
         for j in range(i+1):
@@ -450,13 +450,13 @@ class warl_interpreter():
         else:
                 return a
 
-with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
+#with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
         #os.path.join(path,"riscv_config")
-        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
-        mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
-        value=load['reset-val']
-        mtvec_base.dependencies()
-        print(mtvec_base.islegal(hex(value)[2:],[0]))
+        #load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
+        #mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
+        #value=load['reset-val']
+        #mtvec_base.dependencies()
+        #print(mtvec_base.islegal(hex(value)[2:],[0]))
         #print(mtvec_base.islegal("20000000",[0])," (islegal)")
         #print(mtvec_base.islegal("20000000",[1])," (islegal)")
         #print(mtvec_base.islegal("30000c10",[1])," (islegal)")

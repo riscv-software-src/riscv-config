@@ -2,6 +2,8 @@ from cerberus import Validator
 from riscv_config.warl import warl_interpreter
 import riscv_config.constants as constants
 import re
+import os
+import yaml
 
 
 class schemaValidator(Validator):
@@ -549,4 +551,29 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, " 11,10,9 bits should be hardwired to 0")
 
         
-                        
+    def _check_with_legal_check(self,field,value):
+        global xlen
+        if xlen[0]==32:
+                xl=32
+        elif xlen[0]==64:
+                xl=64
+        elif xlen[0]==128:
+                xl=128
+        print(xl)       
+        mtvec_base = warl_interpreter(value['rv{}'.format(xl)]['base']['type']['WARL'])
+        mtvec_base.dependencies()
+        if(mtvec_base.islegal(hex(value['reset-val'])[2:],[0])!=True):
+                self._error(field,"Reset value is illegal")   
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                      

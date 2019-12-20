@@ -1514,7 +1514,9 @@ schema_node:
 
 mtvec:
   type: dict
-  check_with: mtvec_fields
+  check_with: 
+    - mtvec_fields
+    - legal_check
   schema:
     description:
       type: string
@@ -1529,7 +1531,9 @@ mtvec:
       default: M
     reset-val:
       type: integer
-      check_with: max_length
+      check_with: 
+        - max_length
+       
     rv32:
       type: dict
       schema:
