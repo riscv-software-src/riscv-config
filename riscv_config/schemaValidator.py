@@ -547,7 +547,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
         if "WARL" in value['rv{}'.format(xl)][l[1]]['type']:
                 warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['WARL']))
                 warl.dependencies()
-                if(warl.islegal(hex(value['reset-val'])[2:],[0])!=True):
+                if(warl.islegal(hex(value['reset-val'])[2:],[1])!=True):
                         self._error(field, "Illegal reset value")
         
         

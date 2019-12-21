@@ -128,9 +128,7 @@ class warl_interpreter():
                 self.bitsum=sum
 
                 if(len(value)>sum):
-                        print("Invalid entry")
-                        print("false")
-                        exit()
+                        return False
                 elif len(value)<sum:
                         for i in range(sum-len(value)):
                                 v=v+"0"
