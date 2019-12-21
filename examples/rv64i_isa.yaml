@@ -1,0 +1,105 @@
+ISA: RV64IMSUN
+supported_xlen: [64]
+misa:
+  rv32:
+    implemented: false
+  rv64:
+    implemented: true
+    mxl:
+      implemented: true
+      type:
+        WARL:
+          dependency_fields: [misa::extensions]
+          legal:
+            - "[0] -> mxl[29:0] in [0x20000000, 0x20004000]"  
+            - "[1] -> mxl[61:6] in  [0x00000000000000:0xf0000000000000] mxl[5:0] in [0x00]"
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
+            - "[1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
+          
+    extensions:
+      implemented: true
+      type:                             
+        WARL:
+          dependency_fields: []
+          legal: 
+            - "extensions[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+          wr_illegal:
+            - "Unchanged"
+          
+    
+  reset-val: 0x8000000000143100
+mvendorid:
+  reset-val: 0xdeadbeef
+  rv32:
+    implemented: false
+    type:
+      ro: [0xdeadbeef]
+  rv64:
+    implemented: true
+    type:
+      ro: [0xdeadbeef]
+mtime:
+  rv32:
+    implemented: false
+  rv64:
+    implemented: false
+mtimecmp:
+  rv32:
+    implemented: false
+  rv64:
+    implemented: false
+
+mtvec:
+  reset-val: 0x20000000
+  rv64:
+    implemented: true
+    base:
+      implemented: true
+      type:                             
+        WARL: 
+          dependency_fields: [mtvec::mode]
+          legal:
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  
+            - "[1] -> base[29:6] in [0x000000:0xf00000] base[5:0] in [0x00]"
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
+            - "[1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
+          
+    mode:
+      implemented: true
+      type:                             
+        WARL:
+          dependency_fields: []
+          legal: 
+            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+          wr_illegal:
+            - "Unchanged"
+medeleg:
+  reset-val: 0x800  
+  rv32:
+     implemented: false
+  rv64:
+     implemented: true
+                
+mideleg:
+  rv32:
+     implemented: false
+  
+  rv64:
+     implemented: true
+   
+sedeleg: 
+  reset-val: 0x800
+  rv32:
+     implemented: false
+  rv64:
+     implemented: true
+
+sideleg:
+  rv32:
+     implemented: false
+  rv64:
+     implemented: true

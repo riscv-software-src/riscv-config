@@ -36,7 +36,7 @@
   rv64:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
     implemented: <boolean>                # indicates if this field exists in rv64 mode or not                          
   rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
-    implemented: <boolean>                # indicates if this field exists in rv64 mode or not                          
+    implemented: <boolean>                # indicates if this field exists in rv128 mode or not                          
 
 # csr template for csrs without fields
 <name>:
@@ -52,8 +52,6 @@
     shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that this field does not shadow anything.
     msb: <hex>                          # msb index of the csr. max: 31, min:0
     lsb: <hex>                          # lsb index of the csr. min: 31, min:0
-    implemented: <boolean>              # indicates if the user has implemented this csr or not. When False, all fields 
-                                        # below this will be trimmed.
     reset-val: <hex>                    # reset value of the field.
     type:                               # indicates the type of the field. Can be only one of the following
       WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec

@@ -9,6 +9,7 @@ from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
 from riscv_config.utils import yaml
 
+
 logger = logging.getLogger(__name__)
 
 
