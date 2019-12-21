@@ -8,7 +8,6 @@ class warl_interpreter():
     def __init__(self,warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
         self.val=warl
-        #print(warl)
     def prevsum(self,i,k):
         sump=0
         for j in range(i+1):
@@ -264,7 +263,6 @@ class warl_interpreter():
                 exit()
         if(self.islegal(curr_val,dependency_vals) == False):
                 return "Current value must be legal"
-               # self._error("Current value must be legal")
         if(self.islegal(wr_val,dependency_vals)):
                 return wr_val
         elif not "bitmask" in inp1:
@@ -316,7 +314,6 @@ class warl_interpreter():
                 elif wr.lower().strip() == "nextup":
                         l=self.legal(dependency_vals)
                         for i in range(len(l)):
-                                #print(l[i][0])
                                 if int(l[i][0],16)>int(wr_val,16) and len(l[i])==1:
                                         j=i
                                         flag2=1
@@ -330,7 +327,6 @@ class warl_interpreter():
                 elif wr.lower().strip() == "nextdown":
                         l=self.legal(dependency_vals)
                         for i in range(len(l)):
-                                #print(l[i][0])
                                 if int(l[i][0],16)>int(wr_val,16) and len(l[i])==1:
                                         j=i
                                         flag2=1
@@ -375,7 +371,6 @@ class warl_interpreter():
                 elif wr.lower().strip() == "addr":
                         wr=format(int(wr_val,16),'#0{}b'.format(4*self.bitsum+2))
                         wr=wr[2:]
-                        #print(wr)
                         if wr[0:1] =='0':
                                 wr_final='1'+wr[1:]
                         elif wr[0:1] =='1':
@@ -396,8 +391,7 @@ class warl_interpreter():
                 currval=int(wr_val,16)
                 legal=((currval&bitmask)|fixedval)
                 return hex(legal)
-                               
-        #print("update accessed successfully")
+
     def legal(self,dependency_vals=[]):
         '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
         values of the corresponding dependency fields and returns the set of legal values as a list of two tuple lists.
@@ -414,7 +408,6 @@ class warl_interpreter():
                                         break
                         if flag1 ==1:
                                 break
-                                #print(mode)
                 if flag1==0 and dependency_vals !=[]:
                         print("Dependency vals do not match")
                         exit()
@@ -449,18 +442,17 @@ class warl_interpreter():
                 return o
         else:
                 return a
-
-#with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
-        #os.path.join(path,"riscv_config")
-        #load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
-        #mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
-        #value=load['reset-val']
-        #mtvec_base.dependencies()
-        #print(mtvec_base.islegal(hex(value)[2:],[0]))
-        #print(mtvec_base.islegal("20000000",[0])," (islegal)")
-        #print(mtvec_base.islegal("20000000",[1])," (islegal)")
-        #print(mtvec_base.islegal("30000c10",[1])," (islegal)")
-        #print(mtvec_base.legal([0])," (legal)")
-        #print(mtvec_base.update("20004000","20006a1",[1])," (update)")
-        #print(mtvec_base.update("20000000","4006091",[1])," (update)")
-        
+#To check if the given functions work properly
+'''with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
+        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
+        mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
+        value=load['reset-val']
+        mtvec_base.dependencies()
+        print(mtvec_base.islegal(hex(value)[2:],[0]))
+        print(mtvec_base.islegal("20000000",[0])," (islegal)")
+        print(mtvec_base.islegal("20000000",[1])," (islegal)")
+        print(mtvec_base.islegal("30000c10",[1])," (islegal)")
+        print(mtvec_base.legal([0])," (legal)")
+        print(mtvec_base.update("20004000","20006a1",[1])," (update)")
+        print(mtvec_base.update("20000000","4006091",[1])," (update)")
+'''        

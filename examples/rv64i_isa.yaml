@@ -63,6 +63,7 @@ medeleg:
 mideleg:
   rv32:
      implemented: false
+  
   rv64:
      implemented: true
    

@@ -3316,132 +3316,199 @@ mcause:
       default:
           implemented: false
 sedeleg:
-   type: dict
-   schema:
-      description:
-          type: string
-          default: sedeleg
-      address: 
-          type: integer
-          default: 0x102
-          allowed: [0x102]
-      reset-val:
-          type: integer
+  type: dict
+  schema:
+    description:
+      type: string
+      default: sedeleg
+    address: 
+      type: integer
+      default: 0x102
+      allowed: [0x102]
+    reset-val:
+      type: integer
+      check_with: 
+        - max_length
+        - sedeleg_reset
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
           check_with: 
-                - max_length
-                - sedeleg_reset
-      rv32:
-          type: dict
-          schema:
-              implemented:
-                  type: boolean
-                  default: true
-                  check_with: 
-                        - rv32_check
-                        - s_check
-              fields: 
-                  type: list
-              shadow:
-                  type: string
-                  default: none
-              msb: 
-                  type: integer
-                  default: 31
-                  allowed: [31]
-              lsb:
-                  type: integer
-                  default: 0
-                  allowed: [0]
-          default:
-              implemented: false
-                                
-      rv64:
-          type: dict
-          schema:
-              implemented:
-                  type: boolean
-                  default: true
-                  check_with: 
-                        - rv64_check
-                        - s_check
-              fields:
-                  type: list
-              shadow:
-                  type: string        
-                  default: none
-              msb:
-                  type: integer
-                  default: 63
-                  allowed: [63]                        
-              lsb:
-                  type: integer
-                  default: 0
-                  allowed: [0]
-          default:
-              implemented: false
-   check_with: ndeleg_checks
-sideleg:
-   type: dict
-   schema:
-      description:
+            - rv32_check
+            - s_check
+        fields: 
+          type: list
+        shadow:
           type: string
-          default: sedeleg
-      address: 
+          default: none
+        msb: 
           type: integer
-          default: 0x103
-          allowed: [0x103]
-      reset-val:
+          default: 31
+          allowed: [31]
+        lsb:
           type: integer
-          check_with: max_length
-      rv32:
-          type: dict
-          schema:
-              implemented:
-                  type: boolean
-                  default: true
-                  check_with:
-                        - rv32_check
-                        - s_check
-              fields: 
-                  type: list
-              shadow:
-                  type: string
-                  default: none
-              msb: 
-                  type: integer
-                  default: 31
-                  allowed: [31]
-              lsb:
-                  type: integer
-                  default: 0
-                  allowed: [0]
-          default:
-              implemented: false
+          default: 0
+          allowed: [0]
+      default:
+        implemented: false
                                 
-      rv64:
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: 
+            - rv64_check
+            - s_check
+        fields:
+            type: list
+                  
+        base:
           type: dict
           schema:
-              implemented:
-                  type: boolean
-                  default: true
-                  check_with:
-                        - rv64_check
-                        - s_check
-              fields:
-                  type: list
-              shadow:
-                  type: string        
-                  default: none
-              msb:
-                  type: integer
-                  default: 63
-                  allowed: [63]                        
-              lsb:
-                  type: integer
-                  default: 0
-                  allowed: [0]
+            description:
+              type: string
+              default: Vector base address.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 63
+              allowed: [63]
+            lsb:
+              type: integer
+              default: 2
+              allowed: [2]
+            implemented:
+              type: boolean
+              default: true
+              allowed: [true]
+            type:
+              type: dict 
+              check_with: wr_illegal
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x3FFFFFFFFFFFFFFF
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL: *id001 
           default:
-              implemented: false
-   check_with: ndeleg_checks              
+            implemented: true
+        
+        mode:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Vector mode.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 1
+              allowed: [1]
+            lsb:
+              type: integer
+              default: 0
+              allowed: [0]
+            implemented:
+              type: boolean
+              default: true
+              allowed: [true]
+            type:
+              type: dict 
+              oneof:
+                - schema:
+                    RO_constant:
+                      type: list
+                      schema:
+                        type: integer
+                        max: 0x1
+                      maxlength: 1
+                - schema:
+                    RO_variable:
+                      type: boolean
+                - schema:
+                    WARL: *id001
+      default:
+        implemented: false
+               
+  check_with: ndeleg_checks
+sideleg:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: sedeleg
+    address: 
+      type: integer
+      default: 0x103
+      allowed: [0x103]
+    reset-val:
+      type: integer
+      check_with: max_length
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with:
+            - rv32_check
+            - s_check
+        fields: 
+          type: list
+        shadow:
+          type: string
+          default: none
+        msb: 
+          type: integer
+          default: 31
+          allowed: [31]
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+      default:
+        implemented: false
+                                
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with:
+            - rv64_check
+            - s_check
+        fields:
+          type: list
+        shadow:
+          type: string        
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed: [63]                        
+        lsb:
+          type: integer
+          default: 0
+          allowed: [0]
+      default:
+        implemented: false
+  check_with: ndeleg_checks              
                                  
 

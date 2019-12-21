@@ -345,7 +345,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
                     self._error(field, "Value greater than " + str(maxv))
                     
     def _check_with_s_check(self,field,value):
-       # print(hex(extensions))
         s=18
         if rv64 and value == True:
                 mxl = format(extensions, '#066b')
@@ -358,7 +357,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
                         self._error(field ,"S is not present(32)")
                  
     def _check_with_n_check(self,field,value):
-        #print(hex(extensions))
         n=13
         if rv64:
                 mxl = format(extensions, '#066b')
@@ -371,7 +369,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
                         self._error(field,"N is not present")
         
     def _check_with_mdeleg_checks(self,field,value):
-        #print(value['rv64']['implemented'])
         if rv32:
                 if(value['rv32']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
                         value['rv32']['implemented'] = False
@@ -382,10 +379,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
                         value['rv64']['implemented'] = False
                         self._error(field, "S and N are not present(64)")
                         
-        #print(value['rv64']['implemented'])
-        
     def _check_with_ndeleg_checks(self,field,value):
-        #print(value['rv64']['implemented'])
         if rv32:
                 if(value['rv32']['implemented'] == True and not 'N' in self.document['ISA']):
                         value['rv32']['implemented'] = False
@@ -395,8 +389,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 if(value['rv64']['implemented'] == True and not 'N' in self.document['ISA']):
                         value['rv64']['implemented'] = False
                         self._error(field, "N is not present(64)")
-                        
-        #print(value['rv64']['implemented'])
     
     def _check_with_xcause_check(self, field, value):
         '''Function to verify the inputs for mcause.'''
@@ -487,10 +479,8 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 )
    
     def _check_with_wr_illegal(self, field, value):
-        #print("checking inside mtvec")
         pr=0
         pri=0
-        #print(value['WARL'])
         for i in range(len(value['WARL']['legal'])):
                 if ' -> ' in value['WARL']['legal'][i]:
                         pr=1
@@ -498,7 +488,6 @@ ISA provided. Expeected reset-val: " + str(extensions))
         if value['WARL']['wr_illegal']!=None:
                 for i in range(len(value['WARL']['wr_illegal'])):
                         split=re.findall(r'^\s*\[(\d)]\s*',value['WARL']['wr_illegal'][i])
-                        #print(split)
                         if split != []:
                                 pri=1
                                 break
@@ -508,9 +497,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 for i in range(l):
                         if "bitmask" in value['WARL']['legal'][i]:
                                 f=1
-                                #print("parse and find mode")
                                 splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['WARL']['legal'][i])
-                                #print(len(value['wr_illegal']))
                                 if value['WARL']['wr_illegal']!=None:
                                         for j in range(len(value['WARL']['wr_illegal'])):
                                                 if splits[0] in value['WARL']['wr_illegal'][j]:
@@ -534,19 +521,13 @@ ISA provided. Expeected reset-val: " + str(extensions))
                         self._error(field," {} not present".format(par[1]))
                         
     def _check_with_medeleg_reset(self, field, value):
-        #print(hex(value))
         global xlen
-        #print(xlen[0]+2)
         s=format(value,'#{}b'.format(xlen[0]+2))
-        #print(s[-11:-10])
         if (s[-11:-10])!='0' and value>=int("0x400",16):
                 self._error(field," 11th bit must be hardwired to 0")    
     def _check_with_sedeleg_reset(self, field, value):
-        #print(hex(value))
         global xlen
-        #print(xlen[0]+2)
         s=format(value,'#{}b'.format(xlen[0]+2))
-        #print(s[-11:-8])
         if (s[-11:-8])!='000' and value>=int("400",16):
                 self._error(field, " 11,10,9 bits should be hardwired to 0")
 
@@ -561,15 +542,13 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 xl=64
         elif xlen[0]==128:
                 xl=128
-        #print(xl)       
-        #mtvec_base = warl_interpreter(value['rv64'].keys())
         for i in value['rv{}'.format(xl)].keys():
                 l.append(i)
-        #print(l)
-        warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['WARL']))
-        warl.dependencies()
-        if(warl.islegal(hex(value['reset-val'])[2:],[0])!=True):
-                self._error(field, "Illegal reset value")
+        if "WARL" in value['rv{}'.format(xl)][l[1]]['type']:
+                warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['WARL']))
+                warl.dependencies()
+                if(warl.islegal(hex(value['reset-val'])[2:],[0])!=True):
+                        self._error(field, "Illegal reset value")
         
         
         
