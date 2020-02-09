@@ -2193,6 +2193,7 @@ mtvec:
                       type: boolean
                 - schema:
                     WARL: *id001
+              
         mode:
           type: dict
           schema:
@@ -2229,12 +2230,12 @@ mtvec:
                       type: boolean
                 - schema:
                     WARL: *id001
-                      
+                    
       default: 
         implemented: false
     rv64:
       type: dict
-      check_with: key_check
+      #check_with: key_check
       schema:
         implemented:
           type: boolean
