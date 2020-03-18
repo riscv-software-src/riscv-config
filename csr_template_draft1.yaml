@@ -14,29 +14,30 @@
                                           # WPRI fields of the csr.
       - <field_name1>
       - <field_name2>
-      - wpri                              # contains a list of all WPRI bits within the csr. Can be empty as well
-        - [30-23]
-        - 6
+      - - [30,23]                         # A list which contains a squashed pair(of form [msb,lsb]) of all WPRI bits within the csr.
+        - 6                               # Does not exist if there are no WPRI bits
+
     <field_name1>:                        # name of the field
       description: <text>                 # textual description of the csr
       shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that this field does not shadow anything.
-      msb: <hex>                          # msb index of the field. max: 31, min:0
-      lsb: <hex>                          # lsb index of the field. min: 31, min:0
+      msb: <int>                          # msb index of the field. max: 31, min:0
+      lsb: <int>                          # lsb index of the field. max: 31, min:0
       implemented: <boolean>              # indicates if the user has implemented this field or not. When False, all 
                                           # fields below this will be trimmed.
-      reset-val: <hex>                    # reset value of the field.
       type:                               # indicates the type of the field. Can be only one of the following
-        WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
-        RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
-        RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
-        WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
+        wlrl: [list of ranges]            # indicates this field is wlrl and the list of legal values as defined by the spec
+        ro_constant: <hex>                # indicates the field is readonly and will always return the same value.
+        ro_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
+        warl:                             # indicates this field is warl type. Refer to warl_proposal for more info.
           dependency_fields: [list]    
           legal: [list of warl-string]
           wr_illegal: [list of warl-string]           
   rv64:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
-    implemented: <boolean>                # indicates if this field exists in rv64 mode or not                          
-  rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
-    implemented: <boolean>                # indicates if this field exists in rv128 mode or not                          
+    implemented: <boolean>                # indicates if this register exists in rv64 mode or not. Same definition as
+                                          # for rv32 node.
+  rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 3
+    implemented: <boolean>                # indicates if this register exists in rv128 mode or not. Same definition as
+                                          # for rv32 node.                          
 
 # csr template for csrs without fields
 <name>:
@@ -49,22 +50,24 @@
                                         # will be trimmed off in the checked yaml. 
                                         # False also indicates that access-exception should be generated                      
     fields:                             # This should be empty always since this csr does not have fields
-    shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that this field does not shadow anything.
-    msb: <hex>                          # msb index of the csr. max: 31, min:0
-    lsb: <hex>                          # lsb index of the csr. min: 31, min:0
-    reset-val: <hex>                    # reset value of the field.
-    type:                               # indicates the type of the field. Can be only one of the following
-      WLRL: [list of ranges]            # indicates this field is WLRL and the list of legal values as defined by the spec
-      RO_constant: <hex>                # indicates the field is readonly and will always return the same value.
-      RO_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
-      WARL:                             # indicates this field is WARL type. Refer to warl_proposal for more info.
+    shadow: <csr-name>::<register>      # which this register shadows,'none' indicates that this register does not shadow anything.
+    msb: <int>                          # msb index of the csr. max: 31, min:31
+    lsb: <int>                          # lsb index of the csr. max: 0, min:0
+    type:                               # indicates the type of the register. Can be only one of the following
+      wlrl: [list of ranges]            # indicates this field is wlrl and the list of legal values as defined by the spec
+      ro_constant: <hex>                # indicates the field is readonly and will always return the same value.
+      ro_variable: True                 # indicates the field is readonly but the value returned depends on other arch-states
+      warl:                             # indicates this field is warl type. Refer to warl_proposal for more info.
         dependency_fields: [list]    
         legal: [list of warl-string]
         wr_illegal: [list of warl-string]           
-  rv64:                                 # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
-    implemented: <boolean>              # indicates if this field exists in rv64 mode or not                          
-  rv128:                                # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
-    implemented: <boolean>              # indicates if this field exists in rv64 mode or not                          
+  rv64:                                   # this node and its subsequent fields can exist if [M/S/U]XL value can be 2
+    implemented: <boolean>                # indicates if this register exists in rv64 mode or not. Same definition as
+                                          # for rv32 node.
+  rv128:                                  # this node and its subsequent fields can exist if [M/S/U]XL value can be 3
+    implemented: <boolean>                # indicates if this register exists in rv128 mode or not. Same definition as
+                                          # for rv32 node.                          
+
 ##############################################################################################################
 
 ############################################ Examples ############################################
@@ -77,20 +80,18 @@ mtvec:
   rv32:                                 
     implemented: True                         
     mode:                    
-      reset-val: 0x1
       shadow: none
       type:                             
-        WARL:
+        warl:
           dependency_fields: []
           legal: 
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
           wr_illegal:
             - "Unchanged"
   base:
-      reset-val: 0x0
       shadow: none
       type:                             
-        WARL: 
+        warl: 
           dependency_fields: [mtvec::mode]
           legal:
             - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
@@ -123,9 +124,8 @@ mtvec:
       msb: 1
       lsb: 0
       implemented: True 
-      reset-val: 0x1
       type:                             
-        WARL:
+        warl:
           dependency_fields: []
           legal: 
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
@@ -137,9 +137,8 @@ mtvec:
       msb: 31
       lsb: 2
       implemented: True 
-      reset-val: 0x0
       type:                             
-        WARL: 
+        warl: 
           dependency_fields: [mtvec::mode]
           legal:
             - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.

@@ -7,11 +7,11 @@ misa:
     mxl:
       implemented: true
       type:
-        RO_constant: [0x01]
+        ro_constant: [0x01]
     extensions:
       implemented: true
       type:
-        RO_constant: [0x100]
+        ro_constant: [0x100]
   rv64:
     implemented: false
 mvendorid:
@@ -19,7 +19,7 @@ mvendorid:
   rv32:
     implemented: true
     type:
-      ro: [0xdeadbeef]
+      ro_constant: [0xdeadbeef]
   rv64:
     implemented: false
 
@@ -41,7 +41,7 @@ mtvec:
     base:
       implemented: true
       type:                             
-        WARL: 
+        warl: 
           dependency_fields: [mtvec::mode]
           legal:
             - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
@@ -53,7 +53,7 @@ mtvec:
     mode:
       implemented: true
       type:                             
-        WARL:
+        warl:
           dependency_fields: []
           legal: 
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"

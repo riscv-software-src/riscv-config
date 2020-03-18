@@ -118,38 +118,37 @@ Privilege_Spec_Version:
 hw_data_misaligned_support:
   type: boolean
   default: false
-
 supported_xlen:
   type: list
   schema:
     type: integer
-    allowed: [32, 64, 128]
+    allowed:
+    - 32
+    - 64
+    - 128
   required: true
-
 schema_node:
   type: dict
-  allow_unknown: False
+  allow_unknown: false
   noneof:
-      - schema:
-         WARL: &id001
-           type: dict
-           schema:
-             dependency_fields:
-               type: list
-               empty: True
-               schema:
-                 type: string
-                 nullable: True
-             legal:
-               type: list
-               schema: 
-                 type: string
-             wr_illegal:
-               type: list
-               schema: 
-                 type: string 
-
-
+  - schema:
+      warl: &id001
+        type: dict
+        schema:
+          dependency_fields:
+            type: list
+            empty: true
+            schema:
+              type: string
+              nullable: true
+          legal:
+            type: list
+            schema:
+              type: string
+          wr_illegal:
+            type: list
+            schema:
+              type: string
 misa:
   type: dict
   check_with: legal_check
@@ -159,29 +158,32 @@ misa:
       default: misa is a read-write register reporting the ISA supported by the hart.
     address:
       type: integer
-      default: 0x301
-      allowed: [0x301]
+      default: 769
+      allowed:
+      - 769
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x00
-      check_with: 
-        - max_length
-        - misa_reset_values
+      default: 0
+      check_with:
+      - max_length
+      - misa_reset_values
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: 
-            - rv32_check
-            - cannot_be_false_rv32
+          check_with:
+          - rv32_check
+          - cannot_be_false_rv32
         fields:
           type: list
+          default: []
         mxl:
           type: dict
           schema:
@@ -194,31 +196,32 @@ misa:
             msb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             lsb:
               type: integer
               default: 30
-              allowed: [30]
+              allowed:
+              - 30
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
-            
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
               default:
                 implemented: false
         extensions:
@@ -234,34 +237,36 @@ misa:
             msb:
               type: integer
               default: 25
-              allowed: [25]
+              allowed:
+              - 25
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
       default:
-        implemented: False
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -269,10 +274,11 @@ misa:
           type: boolean
           default: true
           check_with:
-            - rv64_check
-            - cannot_be_false_rv64
+          - rv64_check
+          - cannot_be_false_rv64
         fields:
           type: list
+          default: []
         mxl:
           type: dict
           schema:
@@ -285,30 +291,32 @@ misa:
             msb:
               type: integer
               default: 63
-              allowed: [63]
+              allowed:
+              - 63
             lsb:
               type: integer
               default: 62
-              allowed: [62]
+              allowed:
+              - 62
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         extensions:
@@ -324,49 +332,52 @@ misa:
             msb:
               type: integer
               default: 25
-              allowed: [25]
+              allowed:
+              - 25
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
       default:
         implemented: false
-
 mstatus:
   type: dict
   schema:
     description:
       type: string
-      default: The mstatus register keeps track of and controls the hart’s current
-        operating state.
+      default: "The mstatus register keeps track of and controls the hart\u2019s current\
+        \ operating state."
     address:
       type: integer
-      default: 0x300
-      allowed: [0x300]
+      default: 768
+      allowed:
+      - 768
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
@@ -380,6 +391,7 @@ mstatus:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         uie:
           type: dict
           schema:
@@ -392,30 +404,32 @@ mstatus:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sie:
@@ -430,30 +444,32 @@ mstatus:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mie:
@@ -468,30 +484,32 @@ mstatus:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         upie:
@@ -506,30 +524,32 @@ mstatus:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         spie:
@@ -545,30 +565,32 @@ mstatus:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mpie:
@@ -584,30 +606,32 @@ mstatus:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         spp:
@@ -622,30 +646,32 @@ mstatus:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mpp:
@@ -660,30 +686,32 @@ mstatus:
             msb:
               type: integer
               default: 12
-              allowed: [12]
+              allowed:
+              - 12
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         fs:
@@ -699,30 +727,32 @@ mstatus:
             msb:
               type: integer
               default: 14
-              allowed: [14]
+              allowed:
+              - 14
             lsb:
               type: integer
               default: 13
-              allowed: [13]
+              allowed:
+              - 13
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         xs:
@@ -738,30 +768,32 @@ mstatus:
             msb:
               type: integer
               default: 16
-              allowed: [16]
+              allowed:
+              - 16
             lsb:
               type: integer
               default: 15
-              allowed: [15]
+              allowed:
+              - 15
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mprv:
@@ -777,30 +809,32 @@ mstatus:
             msb:
               type: integer
               default: 17
-              allowed: [17]
+              allowed:
+              - 17
             lsb:
               type: integer
               default: 17
-              allowed: [17]
+              allowed:
+              - 17
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sum:
@@ -816,31 +850,32 @@ mstatus:
             msb:
               type: integer
               default: 18
-              allowed: [18]
+              allowed:
+              - 18
             lsb:
               type: integer
               default: 18
-              allowed: [18]
+              allowed:
+              - 18
             implemented:
               type: boolean
               default: true
-              
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mxr:
@@ -855,30 +890,32 @@ mstatus:
             msb:
               type: integer
               default: 19
-              allowed: [19]
+              allowed:
+              - 19
             lsb:
               type: integer
               default: 19
-              allowed: [19]
+              allowed:
+              - 19
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tvm:
@@ -894,30 +931,32 @@ mstatus:
             msb:
               type: integer
               default: 20
-              allowed: [20]
+              allowed:
+              - 20
             lsb:
               type: integer
               default: 20
-              allowed: [20]
+              allowed:
+              - 20
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tw:
@@ -932,30 +971,32 @@ mstatus:
             msb:
               type: integer
               default: 21
-              allowed: [21]
+              allowed:
+              - 21
             lsb:
               type: integer
               default: 21
-              allowed: [21]
+              allowed:
+              - 21
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tsr:
@@ -970,30 +1011,32 @@ mstatus:
             msb:
               type: integer
               default: 22
-              allowed: [22]
+              allowed:
+              - 22
             lsb:
               type: integer
               default: 22
-              allowed: [22]
+              allowed:
+              - 22
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sd:
@@ -1009,23 +1052,27 @@ mstatus:
             msb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             lsb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
       default:
@@ -1039,6 +1086,7 @@ mstatus:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         uie:
           type: dict
           schema:
@@ -1051,30 +1099,32 @@ mstatus:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sie:
@@ -1089,30 +1139,32 @@ mstatus:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mie:
@@ -1127,30 +1179,32 @@ mstatus:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         upie:
@@ -1165,30 +1219,32 @@ mstatus:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         spie:
@@ -1204,30 +1260,32 @@ mstatus:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mpie:
@@ -1243,30 +1301,32 @@ mstatus:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         spp:
@@ -1281,30 +1341,32 @@ mstatus:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mpp:
@@ -1319,30 +1381,32 @@ mstatus:
             msb:
               type: integer
               default: 12
-              allowed: [12]
+              allowed:
+              - 12
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         fs:
@@ -1358,30 +1422,32 @@ mstatus:
             msb:
               type: integer
               default: 14
-              allowed: [14]
+              allowed:
+              - 14
             lsb:
               type: integer
               default: 13
-              allowed: [13]
+              allowed:
+              - 13
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         xs:
@@ -1397,30 +1463,32 @@ mstatus:
             msb:
               type: integer
               default: 16
-              allowed: [16]
+              allowed:
+              - 16
             lsb:
               type: integer
               default: 15
-              allowed: [15]
+              allowed:
+              - 15
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mprv:
@@ -1436,30 +1504,32 @@ mstatus:
             msb:
               type: integer
               default: 17
-              allowed: [17]
+              allowed:
+              - 17
             lsb:
               type: integer
               default: 17
-              allowed: [17]
+              allowed:
+              - 17
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sum:
@@ -1475,30 +1545,32 @@ mstatus:
             msb:
               type: integer
               default: 18
-              allowed: [18]
+              allowed:
+              - 18
             lsb:
               type: integer
               default: 18
-              allowed: [18]
+              allowed:
+              - 18
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         mxr:
@@ -1513,30 +1585,32 @@ mstatus:
             msb:
               type: integer
               default: 19
-              allowed: [19]
+              allowed:
+              - 19
             lsb:
               type: integer
               default: 19
-              allowed: [19]
+              allowed:
+              - 19
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tvm:
@@ -1552,30 +1626,32 @@ mstatus:
             msb:
               type: integer
               default: 20
-              allowed: [20]
+              allowed:
+              - 20
             lsb:
               type: integer
               default: 20
-              allowed: [20]
+              allowed:
+              - 20
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tw:
@@ -1590,30 +1666,32 @@ mstatus:
             msb:
               type: integer
               default: 21
-              allowed: [21]
+              allowed:
+              - 21
             lsb:
               type: integer
               default: 21
-              allowed: [21]
+              allowed:
+              - 21
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         tsr:
@@ -1628,30 +1706,32 @@ mstatus:
             msb:
               type: integer
               default: 22
-              allowed: [22]
+              allowed:
+              - 22
             lsb:
               type: integer
               default: 22
-              allowed: [22]
+              allowed:
+              - 22
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: false
         sxl:
@@ -1666,30 +1746,32 @@ mstatus:
             msb:
               type: integer
               default: 35
-              allowed: [35]
+              allowed:
+              - 35
             lsb:
               type: integer
               default: 34
-              allowed: [34]
+              allowed:
+              - 34
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         uxl:
@@ -1704,30 +1786,32 @@ mstatus:
             msb:
               type: integer
               default: 33
-              allowed: [33]
+              allowed:
+              - 33
             lsb:
               type: integer
               default: 32
-              allowed: [32]
+              allowed:
+              - 32
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         sd:
@@ -1743,28 +1827,31 @@ mstatus:
             msb:
               type: integer
               default: 63
-              allowed: [63]
+              allowed:
+              - 63
             lsb:
               type: integer
               default: 63
-              allowed: [63]
+              allowed:
+              - 63
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
       default:
         implemented: true
-
 mvendorid:
   type: dict
   schema:
@@ -1774,50 +1861,56 @@ mvendorid:
         provider of the core.
     address:
       type: integer
-      default: 0xF11
-      allowed: [0xF11]
+      default: 3857
+      allowed:
+      - 3857
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
-      check_with: 
-        - max_length
+      default: 0
+      check_with:
+      - max_length
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: 
-            - rv32_check
-            - cannot_be_false_rv32
+          check_with:
+          - rv32_check
+          - cannot_be_false_rv32
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFF
+                max: 4294967295
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
     rv64:
@@ -1826,36 +1919,39 @@ mvendorid:
         implemented:
           default: true
           check_with:
-            - rv64_check
-            - cannot_be_false_rv64
+          - rv64_check
+          - cannot_be_false_rv64
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFF
+                max: 4294967295
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
   check_with: ro_reset_check
-
 marchid:
   type: dict
   schema:
@@ -1865,15 +1961,17 @@ marchid:
         the hart.
     address:
       type: integer
-      default: 0xF12
-      allowed: [0xF12]
+      default: 3858
+      allowed:
+      - 3858
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -1882,32 +1980,36 @@ marchid:
           type: boolean
           default: true
           check_with:
-            - rv32_check
-            - cannot_be_false_rv32
+          - rv32_check
+          - cannot_be_false_rv32
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFF
+                max: 4294967295
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
     rv64:
@@ -1917,36 +2019,39 @@ marchid:
           type: boolean
           default: true
           check_with:
-            - rv64_check
-            - cannot_be_false_rv64
+          - rv64_check
+          - cannot_be_false_rv64
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFFFFFFFFFF
+                max: 18446744073709551615
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
   check_with: ro_reset_check
-
 mimpid:
   type: dict
   schema:
@@ -1955,15 +2060,17 @@ mimpid:
       default: Provides a unique encoding of the version of the processor implementation.
     address:
       type: integer
-      default: 0xF13
-      allowed: [0xF13]
+      default: 3859
+      allowed:
+      - 3859
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -1972,34 +2079,38 @@ mimpid:
           type: boolean
           default: true
           check_with:
-            - rv32_check
-            - cannot_be_false_rv32
+          - rv32_check
+          - cannot_be_false_rv32
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFF
+                max: 4294967295
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
-        implemented: False
+        implemented: false
     rv64:
       type: dict
       schema:
@@ -2007,36 +2118,39 @@ mimpid:
           type: boolean
           default: true
           check_with:
-            - rv64_check
-            - cannot_be_false_rv64
+          - rv64_check
+          - cannot_be_false_rv64
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFFFFFFFFFF
+                max: 18446744073709551615
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
-        implemented: False
+        implemented: false
   check_with: ro_reset_check
-
 mhartid:
   type: dict
   schema:
@@ -2046,15 +2160,17 @@ mhartid:
         thread running the code.
     address:
       type: integer
-      default: 0xF14
-      allowed: [0xF14]
+      default: 3860
+      allowed:
+      - 3860
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x00
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -2065,28 +2181,32 @@ mhartid:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFF
+                max: 4294967295
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
     rv64:
@@ -2098,65 +2218,69 @@ mhartid:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
           type: dict
           schema:
-            ro:
+            ro_constant:
               type: list
               schema:
                 type: integer
-                max: 0xFFFFFFFFFFFFFFFF
+                max: 18446744073709551615
               maxlength: 1
           default:
-            ro: [0x0]
+            ro_constant:
+            - 0
       default:
         implemented: false
   check_with: ro_reset_check
-
-
 mtvec:
   type: dict
-  check_with: 
-    - mtvec_fields
-    - legal_check
+  check_with:
+  - mtvec_fields
+  - legal_check
   schema:
     description:
       type: string
       default: MXLEN-bit read/write register that holds trap vector configuration.
     address:
       type: integer
-      default: 0x305
-      allowed: [0x305]
+      default: 773
+      allowed:
+      - 773
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      check_with: 
-        - max_length
-       
+      check_with:
+      - max_length
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
-          check_with: 
-            - rv32_check
-            - cannot_be_false_rv32
+          check_with:
+          - rv32_check
+          - cannot_be_false_rv32
         fields:
           type: list
+          default: []
         base:
           type: dict
           schema:
@@ -2169,31 +2293,33 @@ mtvec:
             msb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             lsb:
               type: integer
               default: 2
-              allowed: [2]
+              allowed:
+              - 2
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001
-              
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 1073741823
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
         mode:
           type: dict
           schema:
@@ -2206,44 +2332,46 @@ mtvec:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x1
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001
-                    
-      default: 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 1
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
+      default:
         implemented: false
     rv64:
       type: dict
-      #check_with: key_check
       schema:
         implemented:
           type: boolean
-          check_with: 
-            - rv64_check
-            - cannot_be_false_rv64
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
         fields:
           type: list
+          default: []
         base:
           type: dict
           schema:
@@ -2256,31 +2384,34 @@ mtvec:
             msb:
               type: integer
               default: 63
-              allowed: [63]
+              allowed:
+              - 63
             lsb:
               type: integer
               default: 2
-              allowed: [2]
+              allowed:
+              - 2
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         mode:
@@ -2295,33 +2426,35 @@ mtvec:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x1
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 1
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
       default:
-          implemented: false
-
+        implemented: false
 mideleg:
   type: dict
   schema:
@@ -2330,11 +2463,13 @@ mideleg:
       default: Machine Interrupt delegation Register.
     address:
       type: integer
-      default: 0x303
-      allowed: [0x303]
+      default: 771
+      allowed:
+      - 771
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
@@ -2345,37 +2480,40 @@ mideleg:
         implemented:
           type: boolean
           default: true
-          check_with: 
-                - rv32_check
+          check_with:
+          - rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
     rv64:
@@ -2384,97 +2522,105 @@ mideleg:
         implemented:
           type: boolean
           default: true
-          check_with: 
-                - rv64_check
+          check_with:
+          - rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
   check_with: mdeleg_checks
 medeleg:
-  type: dict  
+  type: dict
   schema:
     description:
       type: string
       default: Machine Exception delegation Register.
     address:
       type: integer
-      default: 0x302
-      allowed: [0x302]
+      default: 770
+      allowed:
+      - 770
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x00
-      check_with: 
-        - max_length
-        - medeleg_reset
+      default: 0
+      check_with:
+      - max_length
+      - medeleg_reset
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: 
-                - rv32_check
+          check_with:
+          - rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
     rv64:
@@ -2483,37 +2629,40 @@ medeleg:
         implemented:
           type: boolean
           default: true
-          check_with: 
-                - rv64_check
+          check_with:
+          - rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
   check_with: mdeleg_checks
@@ -2526,11 +2675,13 @@ mip:
         on pending interrupts.
     address:
       type: integer
-      default: 0x344
-      allowed: [0x344]
+      default: 836
+      allowed:
+      - 836
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
@@ -2544,6 +2695,7 @@ mip:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         usip:
           type: dict
           schema:
@@ -2556,30 +2708,32 @@ mip:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         ssip:
@@ -2594,30 +2748,32 @@ mip:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         msip:
@@ -2632,25 +2788,29 @@ mip:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
         utip:
@@ -2665,30 +2825,32 @@ mip:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         stip:
@@ -2703,30 +2865,32 @@ mip:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         mtip:
@@ -2741,25 +2905,29 @@ mip:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
         ueip:
@@ -2774,30 +2942,32 @@ mip:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         seip:
@@ -2812,11 +2982,13 @@ mip:
             msb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             lsb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             implemented:
               type: boolean
               default: true
@@ -2842,25 +3014,29 @@ mip:
             msb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
       required: true
@@ -2873,6 +3049,7 @@ mip:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         usip:
           type: dict
           schema:
@@ -2885,30 +3062,32 @@ mip:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         ssip:
@@ -2923,30 +3102,32 @@ mip:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         msip:
@@ -2961,25 +3142,29 @@ mip:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
         utip:
@@ -2994,30 +3179,32 @@ mip:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         stip:
@@ -3032,30 +3219,32 @@ mip:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         mtip:
@@ -3070,25 +3259,29 @@ mip:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
         ueip:
@@ -3103,30 +3296,32 @@ mip:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         seip:
@@ -3141,11 +3336,13 @@ mip:
             msb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             lsb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             implemented:
               type: boolean
               default: true
@@ -3171,28 +3368,31 @@ mip:
             msb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
             type:
               type: dict
               schema:
-                ro:
+                ro_constant:
                   type: list
                   schema:
                     type: integer
                     max: 1
               readonly: true
               default:
-                ro: [0, 1]
+                ro_constant:
+                - 0
+                - 1
           default:
             implemented: true
-
 mie:
   type: dict
   schema:
@@ -3202,11 +3402,13 @@ mie:
         enable bits.
     address:
       type: integer
-      default: 0x304
-      allowed: [0x304]
+      default: 772
+      allowed:
+      - 772
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
@@ -3220,6 +3422,7 @@ mie:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         usie:
           type: dict
           schema:
@@ -3232,30 +3435,32 @@ mie:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         ssie:
@@ -3270,30 +3475,32 @@ mie:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         msie:
@@ -3308,11 +3515,13 @@ mie:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
@@ -3338,30 +3547,32 @@ mie:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         stie:
@@ -3376,30 +3587,32 @@ mie:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         mtie:
@@ -3414,11 +3627,13 @@ mie:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
@@ -3444,30 +3659,32 @@ mie:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         seie:
@@ -3482,11 +3699,13 @@ mie:
             msb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             lsb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             implemented:
               type: boolean
               default: true
@@ -3512,11 +3731,13 @@ mie:
             msb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
@@ -3540,6 +3761,7 @@ mie:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         usie:
           type: dict
           schema:
@@ -3552,30 +3774,32 @@ mie:
             msb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         ssie:
@@ -3590,30 +3814,32 @@ mie:
             msb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             lsb:
               type: integer
               default: 1
-              allowed: [1]
+              allowed:
+              - 1
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         msie:
@@ -3628,11 +3854,13 @@ mie:
             msb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             lsb:
               type: integer
               default: 3
-              allowed: [3]
+              allowed:
+              - 3
             implemented:
               type: boolean
               default: true
@@ -3658,30 +3886,32 @@ mie:
             msb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             lsb:
               type: integer
               default: 4
-              allowed: [4]
+              allowed:
+              - 4
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         stie:
@@ -3696,30 +3926,32 @@ mie:
             msb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             lsb:
               type: integer
               default: 5
-              allowed: [5]
+              allowed:
+              - 5
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         mtie:
@@ -3734,11 +3966,13 @@ mie:
             msb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             lsb:
               type: integer
               default: 7
-              allowed: [7]
+              allowed:
+              - 7
             implemented:
               type: boolean
               default: true
@@ -3764,30 +3998,32 @@ mie:
             msb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             lsb:
               type: integer
               default: 8
-              allowed: [8]
+              allowed:
+              - 8
             implemented:
               type: boolean
               default: true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         seie:
@@ -3802,11 +4038,13 @@ mie:
             msb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             lsb:
               type: integer
               default: 9
-              allowed: [9]
+              allowed:
+              - 9
             implemented:
               type: boolean
               default: true
@@ -3832,11 +4070,13 @@ mie:
             msb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             lsb:
               type: integer
               default: 11
-              allowed: [11]
+              allowed:
+              - 11
             implemented:
               type: boolean
               default: true
@@ -3852,7 +4092,6 @@ mie:
             implemented: true
       required: true
   required: true
-
 mtime:
   type: dict
   schema:
@@ -3863,12 +4102,13 @@ mtime:
       type: integer
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
       check_with: max_length
-      default: 0x0
+      default: 0
     rv32:
       type: dict
       schema:
@@ -3878,33 +4118,36 @@ mtime:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
     rv64:
@@ -3915,37 +4158,39 @@ mtime:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
   required: true
-
 mtimecmp:
   type: dict
   schema:
@@ -3956,11 +4201,12 @@ mtimecmp:
       type: integer
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -3971,33 +4217,36 @@ mtimecmp:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
     rv64:
@@ -4008,37 +4257,39 @@ mtimecmp:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: false
   required: true
-
 mscratch:
   type: dict
   schema:
@@ -4048,15 +4299,17 @@ mscratch:
         for use by machine mode.
     address:
       type: integer
-      default: 0x340
-      allowed: [0x340]
+      default: 832
+      allowed:
+      - 832
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -4067,33 +4320,43 @@ mscratch:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mscratch[31:0] in [0x00000000:0xFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
       default:
         implemented: false
     rv64:
@@ -4104,54 +4367,66 @@ mscratch:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
+
       default:
         implemented: false
-
 mepc:
   type: dict
   schema:
     description:
       type: string
-      default: The mepc is a WARL register that must be able to hold all valid physical
+      default: The mepc is a warl register that must be able to hold all valid physical
         and virtual addresses.
     address:
       type: integer
-      default: 0x341
-      allowed: [0x341]
+      default: 833
+      allowed:
+      - 833
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -4162,33 +4437,44 @@ mepc:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mepc[31:0] in [0x00000000:0xFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
+
       default:
         implemented: false
     rv64:
@@ -4200,54 +4486,66 @@ mepc:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mepc[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
+
       default:
         implemented: false
-
 mtval:
   type: dict
   schema:
     description:
       type: string
-      default: The mtval is a WARL register that holds the address of the instruction
+      default: The mtval is a warl register that holds the address of the instruction
         which caused the exception.
     address:
       type: integer
-      default: 0x343
-      allowed: [0x343]
+      default: 835
+      allowed:
+      - 835
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
-      default: 0x0
+      default: 0
       check_with: max_length
     rv32:
       type: dict
@@ -4258,33 +4556,44 @@ mtval:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 31
-          allowed: [31]
+          allowed:
+          - 31
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mtval[31:0] in [0x00000000:0xFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
+
       default:
         implemented: false
     rv64:
@@ -4295,37 +4604,47 @@ mtval:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 0
-          allowed: [0]
+          allowed:
+          - 0
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mtval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              wr_illegal:
+                - 'unchanged'
+
       default:
         implemented: false
   required: true
-
 mcause:
   type: dict
   schema:
@@ -4334,11 +4653,13 @@ mcause:
       default: The mcause register stores the information regarding the trap.
     address:
       type: integer
-      default: 0x342
-      allowed: [0x342]
+      default: 834
+      allowed:
+      - 834
     priv_mode:
       type: string
-      allowed: [M]
+      allowed:
+      - M
       default: M
     reset-val:
       type: integer
@@ -4352,6 +4673,7 @@ mcause:
           check_with: rv32_check
         fields:
           type: list
+          default: []
         interrupt:
           type: dict
           schema:
@@ -4364,31 +4686,34 @@ mcause:
             msb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             lsb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         exception_code:
@@ -4403,15 +4728,18 @@ mcause:
             msb:
               type: integer
               default: 30
-              allowed: [30]
+              allowed:
+              - 30
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
               type: dict
               schema:
@@ -4433,6 +4761,7 @@ mcause:
           check_with: rv64_check
         fields:
           type: list
+          default: []
         interrupt:
           type: dict
           schema:
@@ -4445,31 +4774,34 @@ mcause:
             msb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             lsb:
               type: integer
               default: 31
-              allowed: [31]
+              allowed:
+              - 31
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
-              type: dict 
+              type: dict
               check_with: wr_illegal
               oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+              - schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              - schema:
+                  ro_variable:
+                    type: boolean
+              - schema:
+                  warl: *id001
           default:
             implemented: true
         exception_code:
@@ -4484,15 +4816,18 @@ mcause:
             msb:
               type: integer
               default: 30
-              allowed: [30]
+              allowed:
+              - 30
             lsb:
               type: integer
               default: 0
-              allowed: [0]
+              allowed:
+              - 0
             implemented:
               type: boolean
               default: true
-              allowed: [true]
+              allowed:
+              - true
             type:
               type: dict
               schema:
@@ -4504,105 +4839,109 @@ mcause:
           default:
             implemented: true
       default:
-          implemented: false
+        implemented: false
 sedeleg:
   type: dict
   schema:
     description:
       type: string
       default: sedeleg
-    address: 
+    address:
       type: integer
-      default: 0x102
-      allowed: [0x102]
+      default: 258
+      allowed:
+      - 258
     reset-val:
       type: integer
-      check_with: 
-        - max_length
-        - sedeleg_reset
+      check_with:
+      - max_length
+      - sedeleg_reset
     rv32:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: 
-            - rv32_check
-            - s_check
-        fields: 
+          check_with:
+          - rv32_check
+          - s_check
+        fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 2
-          allowed: [2]
+          allowed:
+          - 2
         type:
-          type: dict 
+          type: dict
           check_with: wr_illegal
           oneof:
-            - schema:
-                RO_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 0x3FFFFFFFFFFFFFFF
-                  maxlength: 1
-            - schema:
-                RO_variable:
-                  type: boolean
-            - schema:
-                WARL: *id001 
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: true
-    
-                                
     rv64:
       type: dict
       schema:
         implemented:
           type: boolean
           default: true
-          check_with: 
-            - rv64_check
-            - s_check
+          check_with:
+          - rv64_check
+          - s_check
         fields:
-            type: list
+          type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 2
-          allowed: [2]
+          allowed:
+          - 2
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: true
-               
   check_with: ndeleg_checks
 sideleg:
   type: dict
@@ -4610,10 +4949,11 @@ sideleg:
     description:
       type: string
       default: sideleg
-    address: 
+    address:
       type: integer
-      default: 0x103
-      allowed: [0x103]
+      default: 259
+      allowed:
+      - 259
     reset-val:
       type: integer
       check_with: max_length
@@ -4624,40 +4964,42 @@ sideleg:
           type: boolean
           default: true
           check_with:
-            - rv32_check
-            - s_check
-        fields: 
+          - rv32_check
+          - s_check
+        fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 2
-          allowed: [2]
+          allowed:
+          - 2
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001  
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: true
-                                
     rv64:
       type: dict
       schema:
@@ -4665,38 +5007,40 @@ sideleg:
           type: boolean
           default: true
           check_with:
-            - rv64_check
-            - s_check
+          - rv64_check
+          - s_check
         fields:
           type: list
+          default: []
         shadow:
           type: string
           default: none
         msb:
           type: integer
           default: 63
-          allowed: [63]
+          allowed:
+          - 63
         lsb:
           type: integer
           default: 2
-          allowed: [2]
+          allowed:
+          - 2
         type:
-              type: dict 
-              check_with: wr_illegal
-              oneof:
-                - schema:
-                    RO_constant:
-                      type: list
-                      schema:
-                        type: integer
-                        max: 0x3FFFFFFFFFFFFFFF
-                      maxlength: 1
-                - schema:
-                    RO_variable:
-                      type: boolean
-                - schema:
-                    WARL: *id001 
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          - schema:
+              ro_variable:
+                type: boolean
+          - schema:
+              warl: *id001
       default:
         implemented: true
-  check_with: ndeleg_checks              
-
+  check_with: ndeleg_checks

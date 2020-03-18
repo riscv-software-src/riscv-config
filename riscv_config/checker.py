@@ -3,18 +3,19 @@ import logging
 
 from cerberus import Validator
 
+import itertools
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
 from riscv_config.utils import yaml
-
+from riscv_config.warl import warl_interpreter
 
 logger = logging.getLogger(__name__)
 
 
 def nosset():
-    '''Function to check and set defaults for all fields which are dependent on 
+    '''Function to check and set defaults for all fields which are dependent on
         the presence of 'S' extension.'''
     global inp_yaml
     if 'S' in inp_yaml['ISA']:
@@ -24,7 +25,7 @@ def nosset():
 
 
 def nouset():
-    '''Function to check and set defaults for all fields which are dependent on 
+    '''Function to check and set defaults for all fields which are dependent on
         the presence of 'U' extension.'''
     global inp_yaml
     if 'U' in inp_yaml['ISA']:
@@ -238,9 +239,9 @@ def add_def_setters(schema_yaml):
 def trim(foo):
     '''
         Function to trim the dictionary. Any node with implemented field set to false is trimmed of all the other nodes.
-        
+
         :param foo: The dictionary to be trimmed.
-        
+
         :type foo: dict
 
         :return: The trimmed dictionary.
@@ -270,29 +271,131 @@ def trim(foo):
             foo[key] = t
     return foo
 
+def groupc(test_list):
+    ''' Generator function to squash consecutive numbers for wpri bits.'''
+    for x,y in itertools.groupby(enumerate(test_list), lambda a: a[1]-a[0]):
+        y = list(y)
+        a = y[0][1]
+        b = y[-1][1]
+        if a == b:
+            yield [a]
+        else:
+            yield [b,a]
+
+def get_fields(node,bitwidth):
+    fields = list(set(node.keys()) - set(['fields', 'msb', 'lsb', 'implemented', 'shadow', 'type']))
+    if not fields:
+        return fields
+    bits = set(range(bitwidth))
+    for entry in fields:
+        bits-=set(range(node[entry]['lsb'],node[entry]['msb']+1))
+    bits = list(groupc(sorted(list(bits))))
+    if not bits:
+        return fields
+    else:
+        fields.append(bits)
+        return fields
+
+def fill_fields(spec):
+    errors = {}
+    for node in spec:
+        if isinstance(spec[node],dict):
+            if spec[node]['rv32']['implemented']:
+                spec[node]['rv32']['fields'] = get_fields(spec[node]['rv32'],32)
+            if spec[node]['rv64']['implemented']:
+                spec[node]['rv64']['fields'] = get_fields(spec[node]['rv64'],64)
+            if 'reset-val' in spec[node].keys():
+                reset_val = spec[node]['reset-val']
+                if spec[node]['rv64']['implemented']:
+                    field_desc = spec[node]['rv64']
+                    bit_len = 64
+                elif spec[node]['rv32']['implemented']:
+                    field_desc = spec[node]['rv32']
+                    bit_len = 32
+                else:
+                    continue
+                error = []
+                if not field_desc['fields']:
+                    desc = field_desc['type']
+                    keys = desc.keys()
+                    if 'wlrl' in keys:
+                        if reset_val not in desc['wlrl']:
+                            error.append("Reset value doesnt match the 'wlrl' description for the register.")
+                    elif 'ro_constant' in keys:
+                        if reset_val not in desc['ro_constant']:
+                            error.append("Reset value doesnt match the 'ro_constant' description for the register.")
+                    elif 'ro_variable' in keys:
+                        pass
+                    elif "warl" in keys:
+                        warl=(warl_interpreter(desc['warl']))
+                        deps = warl.dependencies()
+                        dep_vals = []
+                        for dep in deps:
+                            reg = dep.split("::")
+                            if len(reg) == 1:
+                                dep_vals.append(spec[reg[0]]['reset-val'])
+                            else:
+                                bin_str = bin(spec[reg[0]]['reset-val'])[2:].zfill(bit_len)
+                                dep_vals.append(int(bin_str[bit_len-1-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']:bit_len-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']],base = 2)
+)
+                        if(warl.islegal(hex(reset_val)[2:],dep_vals)!=True):
+                            error.append("Reset value doesnt match the 'warl' description for the register.")
+                else:
+                    bin_str = bin(reset_val)[2:].zfill(bit_len)
+                    for field in field_desc['fields']:
+                        if isinstance(field,list):
+                            continue
+                        test_val = int(bin_str[bit_len-1-field_desc[field]['msb']:bit_len-field_desc[field]['lsb']],base = 2)
+                        desc = field_desc[field]['type']
+                        keys = desc.keys()
+                        if 'wlrl' in keys:
+                            if test_val not in desc['wlrl']:
+                                self._error(field,"Reset value for "+field+" doesnt match the 'wlrl' description for the register.")
+                        elif 'ro_constant' in keys:
+                            if test_val not in desc['ro_constant']:
+                                error.append("Reset value for "+field+" doesnt match the 'ro_constant' description for the register.")
+                        elif 'ro_variable' in keys:
+                            pass
+                        elif "warl" in keys:
+                            warl=(warl_interpreter(desc['warl']))
+                            deps = warl.dependencies()
+                            dep_vals = []
+                            for dep in deps:
+                                reg = dep.split("::")
+                                if len(reg) == 1:
+                                    dep_vals.append(spec[reg[0]]['reset-val'])
+                                else:
+                                    bin_str = bin(spec[reg[0]]['reset-val'])[2:].zfill(bit_len)
+                                    dep_vals.append(int(bin_str[bit_len-1-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']:bit_len-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']],base = 2)
+)
+                            if(warl.islegal(hex(test_val)[2:],dep_vals)!=True):
+                                error.append("Reset value for "+field+" doesnt match the 'warl' description for the register.")
+                if error:
+                    errors[node] = error
+    return spec,errors
 
 def check_specs(isa_spec, platform_spec, work_dir, logging=False):
-    ''' 
+    '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
         specifications confirm to their respective schemas.
 
-        :param isa_spec: The path to the DUT isa specification yaml file. 
+        :param isa_spec: The path to the DUT isa specification yaml file.
 
         :param platform_spec: The path to the DUT platform specification yaml file.
 
         :param logging: A boolean to indicate whether log is to be printed.
 
         :type logging: bool
-        
+
         :type isa_spec: str
 
         :type platform_spec: str
 
-        :raise ValidationError: It is raised when the specifications violate the 
+        :raise ValidationError: It is raised when the specifications violate the
             schema rules. It also contains the specific errors in each of the fields.
-        
-        :return: A tuple with the first entry being the absolute path to normalized isa file 
+
+        :return: A tuple with the first entry being the absolute path to normalized isa file
             and the second being the absolute path to the platform spec file.
     '''
     global inp_yaml
@@ -337,7 +440,10 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     else:
         error_list = validator.errors
         raise ValidationError("Error in " + foo + ".", error_list)
-
+    logger.info("Initiating post processing and reset value checks.")
+    normalized,errors = fill_fields(normalized)
+    if errors:
+        raise ValidationError("Error in "+ foo + ".", errors)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
     output_filename = os.path.join(

@@ -37,24 +37,24 @@ class schemaValidator(Validator):
             elif 'type' not in value['rv32']['base']:
                 self._error(field, 'Please specify type of the base field in\
  mtvec')
-            elif 'RO_constant' in value['rv32']['base']['type'] and not rv64:
+            elif 'ro_constant' in value['rv32']['base']['type'] and not rv64:
                 if reset_base_value not in value['rv32']['base']['type'][
-                        'RO_constant']:
+                        'ro_constant']:
                     self._error(
                         field, 'reset-value does not correlate with base\
- field. Expected:' + str(value['rv32']['base']['type']['RO_constant']))
+ field. Expected:' + str(value['rv32']['base']['type']['ro_constant']))
 
             if 'mode' not in value['rv32']:
                 self._error(field, 'Please specify mode field of mtvec')
             elif 'type' not in value['rv32']['mode']:
                 self._error(field, 'Please specify type of the mode field in\
  mtvec')
-            elif 'RO_constant' in value['rv32']['mode']['type'] and not rv64:
+            elif 'ro_constant' in value['rv32']['mode']['type'] and not rv64:
                 if reset_mode_value not in value['rv32']['mode']['type'][
-                        'RO_constant']:
+                        'ro_constant']:
                     self._error(
                         field, 'reset-value does not correlate with mode\
- field. Expected:' + str(value['rv32']['mode']['type']['RO_constant']) +
+ field. Expected:' + str(value['rv32']['mode']['type']['ro_constant']) +
                         ' Found: ' + str(reset_mode_value))
 
         if rv64:
@@ -63,24 +63,24 @@ class schemaValidator(Validator):
             elif 'type' not in value['rv64']['base']:
                 self._error(field, 'Please specify type of the base field in\
  mtvec')
-            elif 'RO_constant' in value['rv64']['base']['type']:
+            elif 'ro_constant' in value['rv64']['base']['type']:
                 if reset_base_value not in value['rv64']['base']['type'][
-                        'RO_constant']:
+                        'ro_constant']:
                     self._error(
                         field, 'reset-value does not correlate with base\
- field. Expected:' + str(value['rv64']['base']['type']['RO_constant']))
+ field. Expected:' + str(value['rv64']['base']['type']['ro_constant']))
 
             if 'mode' not in value['rv64']:
                 self._error(field, 'Please specify mode field of mtvec')
             elif 'type' not in value['rv64']['mode']:
                 self._error(field, 'Please specify type of the mode field in\
  mtvec')
-            elif 'RO_constant' in value['rv64']['mode']['type']:
+            elif 'ro_constant' in value['rv64']['mode']['type']:
                 if reset_mode_value not in value['rv64']['mode']['type'][
-                        'RO_constant']:
+                        'ro_constant']:
                     self._error(
                         field, 'reset-value does not correlate with mode\
- field. Expected:' + str(value['rv64']['mode']['type']['RO_constant']) +
+ field. Expected:' + str(value['rv64']['mode']['type']['ro_constant']) +
                         ' Found: ' + str(reset_mode_value))
 
     def _check_with_misa_reset_values(self, field, value):
@@ -186,10 +186,10 @@ ISA provided. Expeected reset-val: " + str(extensions))
     def _check_with_ro_reset_check(self, field, value):
         '''Function to check whether the reset value of the register is equal to the max supported ro value.'''
         if rv64:
-            if not value['reset-val'] in value['rv64']['type']['ro']:
+            if not value['reset-val'] in value['rv64']['type']['ro_constant']:
                 self._error(field, "Reset value not equal to readonly value.")
         elif rv32:
-            if not value['reset-val'] in value['rv32']['type']['ro']:
+            if not value['reset-val'] in value['rv32']['type']['ro_constant']:
                 self._error(field, "Reset value not equal to readonly value.")
 
     def _check_with_rv64_check(self, field, value):
@@ -333,7 +333,7 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 self._error(field, "No bit can be harwired to 1.")
 
     def _check_with_rangecheck(self, field, value):
-        '''Function to check whether the inputs in range type in WARL fields are valid.'''
+        '''Function to check whether the inputs in range type in warl fields are valid.'''
         global xlen
         maxv = 2**(xlen)
         for list in value:
@@ -481,44 +481,44 @@ ISA provided. Expeected reset-val: " + str(extensions))
     def _check_with_wr_illegal(self, field, value):
         pr=0
         pri=0
-        if 'WARL' not in value.keys():
+        if 'warl' not in value.keys():
             return
-        for i in range(len(value['WARL']['legal'])):
-                if ' -> ' in value['WARL']['legal'][i]:
+        for i in range(len(value['warl']['legal'])):
+                if ' -> ' in value['warl']['legal'][i]:
                         pr=1
                         break
-        if value['WARL']['wr_illegal']!=None:
-                for i in range(len(value['WARL']['wr_illegal'])):
-                        split=re.findall(r'^\s*\[(\d)]\s*',value['WARL']['wr_illegal'][i])
+        if value['warl']['wr_illegal']!=None:
+                for i in range(len(value['warl']['wr_illegal'])):
+                        split=re.findall(r'^\s*\[(\d)]\s*',value['warl']['wr_illegal'][i])
                         if split != []:
                                 pri=1
                                 break
-        if value['WARL']['dependency_fields']!=[]:
-                l=(len(value['WARL']['legal']))
+        if value['warl']['dependency_fields']!=[]:
+                l=(len(value['warl']['legal']))
                 f=0
                 for i in range(l):
-                        if "bitmask" in value['WARL']['legal'][i]:
+                        if "bitmask" in value['warl']['legal'][i]:
                                 f=1
-                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['WARL']['legal'][i])
-                                if value['WARL']['wr_illegal']!=None:
-                                        for j in range(len(value['WARL']['wr_illegal'])):
-                                                if splits[0] in value['WARL']['wr_illegal'][j]:
+                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['warl']['legal'][i])
+                                if value['warl']['wr_illegal']!=None:
+                                        for j in range(len(value['warl']['wr_illegal'])):
+                                                if splits[0] in value['warl']['wr_illegal'][j]:
                                                         self._error(field, "illegal value does not exist for the given mode{}(bitmask)".format(splits[0]))
                 if f==0:
                         pass
 
-        elif value['WARL']['dependency_fields']==[] and pr==1 :
+        elif value['warl']['dependency_fields']==[] and pr==1 :
                 self._error(field,"no mode must exist(legal)")
-        elif value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])!=1:
+        elif value['warl']['dependency_fields']==[] and len(value['warl']['legal'])!=1:
                 self._error(field, "There should be only one legal value")
-        elif value['WARL']['dependency_fields']==[] and pri==1 :
+        elif value['warl']['dependency_fields']==[] and pri==1 :
                 self._error(field,"no mode must exist(illlegal)")
-        elif  value['WARL']['dependency_fields']==[] and len(value['WARL']['legal'])==1 and value['WARL']['wr_illegal']!=None and "bitmask" in value['WARL']['legal'][0]:
+        elif  value['warl']['dependency_fields']==[] and len(value['warl']['legal'])==1 and value['warl']['wr_illegal']!=None and "bitmask" in value['warl']['legal'][0]:
                 self._error(field,"illegal value cannot exist")
 
     def _check_with_key_check(self, field, value):
-        if value['base']['type']['WARL']['dependency_fields']!=[]:
-                par=re.split("::",value['base']['type']['WARL']['dependency_fields'][0])
+        if value['base']['type']['warl']['dependency_fields']!=[]:
+                par=re.split("::",value['base']['type']['warl']['dependency_fields'][0])
                 if not par[1] in value:
                         self._error(field," {} not present".format(par[1]))
 
@@ -546,8 +546,8 @@ ISA provided. Expeected reset-val: " + str(extensions))
                 xl=128
         for i in value['rv{}'.format(xl)].keys():
                 l.append(i)
-        if "WARL" in value['rv{}'.format(xl)][l[1]]['type']:
-                warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['WARL']))
+        if "warl" in value['rv{}'.format(xl)][l[1]]['type']:
+                warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['warl']))
                 warl.dependencies()
                 if(warl.islegal(hex(value['reset-val'])[2:],[1])!=True):
                         self._error(field, "Illegal reset value")

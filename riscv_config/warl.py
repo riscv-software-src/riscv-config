@@ -3,7 +3,7 @@ import os
 import yaml
 class warl_interpreter():
     global val
-    global bitsum 
+    global bitsum
     global dep_val
     def __init__(self,warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
@@ -12,7 +12,7 @@ class warl_interpreter():
         sump=0
         for j in range(i+1):
               sump=sump+k[j]
-        return sump      
+        return sump
     def dependencies(self):
         dp=[]
         for i in self.val['dependency_fields']:
@@ -21,7 +21,7 @@ class warl_interpreter():
         return dp
     def islegal(self,value,dependency_vals=[]):
         '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
-        values of the corresponding dependency fields and checks whether the range of 
+        values of the corresponding dependency fields and checks whether the range of
         values is legal. Returns true if its a legal range and false otherwise.
         '''
         flag=0
@@ -48,6 +48,7 @@ class warl_interpreter():
                                         flag1=1
                                         break
                 if flag1==0:
+                        print(self.dep_val,dependency_vals)
                         print("Dependency vals do not match")
                         exit()
         else:
@@ -63,7 +64,7 @@ class warl_interpreter():
                 print('Wrong Syntax: Node name is different')
                 print(nodename)
                 exit()
-        if not "bitmask" in inp1: 
+        if not "bitmask" in inp1:
                 splits = re.findall(r'(?:{0}\[(\d.?)+:(\d.?)\])\s*in\s*\[(.+?)\]'.format(nodename[0]),inp1)
                 for i in range(len(splits)):
                         a=int(splits[i][0])
@@ -86,17 +87,17 @@ class warl_interpreter():
                 for i in range(len(splits)):
                         ch2.append(int(splits[i][0]))
                         ch2.append(int(splits[i][1]))
-        
+
                 for i in range(len(ch)):
-                        cha=cha+ch[i]  
+                        cha=cha+ch[i]
                 for i in range(min(ch2),max(ch2)+1):
                         if i not in cha:
                                 print("Bits missing error ")
                                 exit()
                 for i in range(len(ch)):
                         for j in range(i+1,len(ch)):
-                                a_set=set(ch[i])    
-                                b_set=set(ch[j])      
+                                a_set=set(ch[i])
+                                b_set=set(ch[j])
                                 if(a_set & b_set):
                                         print("Overlapping error")
                                         exit()
@@ -124,7 +125,7 @@ class warl_interpreter():
                 sum=0
                 for i in range(len(k)):
                         sum=sum+k[i]
-                
+
                 self.bitsum=sum
 
                 if(len(value)>sum):
@@ -138,9 +139,9 @@ class warl_interpreter():
                                 x.append(value[0:k[i]])
                         else:
                                 x.append(value[self.prevsum(i-1,k):self.prevsum(i,k)])
-        
+
                 for i in range(len(r1)):
-                        if isinstance(r1[i], list) == False: 
+                        if isinstance(r1[i], list) == False:
                                 if(int(x[i],16) in range(r1[i],r2[i]+1)):
                                         flag=1
                                 else:
@@ -151,9 +152,9 @@ class warl_interpreter():
                                         flag=1
                                 else:
                                         flag=0
-                                        break                
-        
-        
+                                        break
+
+
         else:
                 x=re.findall(r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
                 z=re.findall(r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
@@ -167,16 +168,16 @@ class warl_interpreter():
                 else:
                         flag=0
 
-        
+
         if flag==1:
                 return True
         else:
                 return False
-        
+
     def update(self, curr_val,wr_val,dependency_vals=[]):
         ''' The function takes the current value, write value and an optional list(optional incase there are no dependencies) containing the
-        values of the corresponding dependency fields and models the updation of 
-        the register i.e if the supplied value is legal then the value is returned, else the new value of 
+        values of the corresponding dependency fields and models the updation of
+        the register i.e if the supplied value is legal then the value is returned, else the new value of
         the register is calculated and returned.
         '''
         flag1=0
@@ -210,7 +211,7 @@ class warl_interpreter():
                         else:
                                 flag4=0
                                 break
-                 
+
                 if flag4==0 and not"bitmask" in inp1:
                         for i in range(len(self.val['wr_illegal'])):
                                 mode = re.findall('\[(\d)\]\s*.*->\s*',self.val['wr_illegal'][i])
@@ -234,8 +235,8 @@ class warl_interpreter():
                 else:
                         inp="no value"
                         flag1=1
-                
-                                        
+
+
         elif self.dep_val ==[] and dependency_vals ==[] and not "bitmask" in self.val['legal'][0]:
                 for i in range(len(self.val['wr_illegal'])):
                         op=re.findall(r'\s*wr_val\s*in\s*\[(.*?)\]',self.val['wr_illegal'][i])
@@ -245,17 +246,17 @@ class warl_interpreter():
                                         j=i
                                         flag1=1
                                         break
-                        
+
                         else:
                                 j=i
                                 flag1=1
-                                break              
-                                        
+                                break
+
                 inp=self.val['wr_illegal'][j]
-                
+
         elif self.dep_val !=[] and dependency_vals !=[] and len(self.val['legal']) ==1 and "bitmask" in self.val['legal'][0]:
                 flag1=1
-        
+
         if flag1==0 and dependency_vals !=[]:
                 print("Dependency vals do not match")
                 exit()
@@ -273,8 +274,8 @@ class warl_interpreter():
                         return wr.strip()
                 elif wr.lower().strip() == "unchanged":
                         return ("0x"+curr_val)
-                        
-                        
+
+
                 elif wr.lower().strip() == "nearup":
                         a=[]
                         flag2=0
@@ -289,10 +290,10 @@ class warl_interpreter():
                                         break
                         if flag2==1:
                                 return l[j][0]
-                                 
-                                 
-                                 
-                                        
+
+
+
+
                 elif wr.lower().strip() == "neardown":
                         a=[]
                         l=self.legal(dependency_vals)
@@ -306,9 +307,9 @@ class warl_interpreter():
                                         break
                         if flag2==1:
                                 return l[j][0]
-                                
-                                
-                                
+
+
+
                 elif wr.lower().strip() == "nextup":
                         l=self.legal(dependency_vals)
                         for i in range(len(l)):
@@ -320,8 +321,8 @@ class warl_interpreter():
                                 return l[j][0]
                         else:
                                 return max(l)
-                                
-                                
+
+
                 elif wr.lower().strip() == "nextdown":
                         l=self.legal(dependency_vals)
                         for i in range(len(l)):
@@ -333,8 +334,8 @@ class warl_interpreter():
                                 return l[j-1][0]
                         else:
                                 return min(l)
-                                
-                                
+
+
                 elif wr.lower().strip() == "max":
                         flag3=0
                         l=self.legal(dependency_vals)
@@ -349,7 +350,7 @@ class warl_interpreter():
                         else:
                                 y=re.split(",",l[j][0])
                                 return y[1]
-                                              
+
                 elif wr.lower().strip() == "min":
                         flag3=0
                         l=self.legal(dependency_vals)
@@ -358,14 +359,14 @@ class warl_interpreter():
                                         flag3=1
                                         j=i
                                 else:
-                                        flag3=0 
+                                        flag3=0
                         if flag3==0:
                                 return min(l)
                         else:
                                 y=re.split(",",l[j][0])
                                 return y[0]
-                               
-                      
+
+
                 elif wr.lower().strip() == "addr":
                         wr=format(int(wr_val,16),'#0{}b'.format(4*self.bitsum+2))
                         wr=wr[2:]
@@ -376,10 +377,10 @@ class warl_interpreter():
                         else:
                                 print("Invalid binary bit")
                         return hex(int(wr_final,2))
- 
+
                 else:
                         return "Invalid update mode"
-                        
+
         else:
                 x=re.findall(r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"),inp1)
                 z=re.findall(r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"),inp1)
@@ -414,7 +415,7 @@ class warl_interpreter():
                         print("There cannot be more than one legal value")
                         exit()
                 else:
-                        j=0 
+                        j=0
         inp=self.val['legal'][j]
         s=re.findall(r'in\s*\[(.*?)\]',inp)
         a=[]
@@ -442,7 +443,7 @@ class warl_interpreter():
                 return a
 #To check if the given functions work properly
 '''with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
-        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']        
+        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']
         mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
         value=load['reset-val']
         mtvec_base.dependencies()
@@ -453,4 +454,4 @@ class warl_interpreter():
         print(mtvec_base.legal([0])," (legal)")
         print(mtvec_base.update("20004000","20006a1",[1])," (update)")
         print(mtvec_base.update("20000000","4006091",[1])," (update)")
-'''        
+'''
