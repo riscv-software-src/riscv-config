@@ -35,7 +35,7 @@ mtimecmp:
     implemented: false
 
 mtvec:
-  reset-val: 0x20004000
+  reset-val: 0x80010000
   rv32:
     implemented: true
     base:
