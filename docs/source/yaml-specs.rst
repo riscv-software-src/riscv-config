@@ -141,10 +141,6 @@ Only the following fields can be modified by the user:
 * type
 * implemented
 
-RISCV-Config allows defining custom CSRS where all the fields can be modified by
-the user. However, currently riscv_config does not perform checks on custom csr
-fields.
-
 Example
 -------
 
@@ -153,85 +149,79 @@ Following is an example of how a user can define the mtvec csr in the input ISA 
 
 .. code-block:: yaml
 
-  mtvec:                                
-    reset-val: 0x00000001 
-    rv32:                                 
-      implemented: True                         
-      mode:                    
-        shadow: none
-        type:                             
-          warl:
-            dependency_fields: []
-            legal: 
-              - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
-            wr_illegal:
-              - "Unchanged"
+  mtvec:
+  reset-val: 0x80010000
+  rv32:
+    implemented: true
     base:
-        shadow: none
-        type:                             
-          warl: 
-            dependency_fields: [mtvec::mode]
-            legal:
-              - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
-              - "[1] -> base[29:6] in [0x000000:0xF00000] & base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
-            wr_illegal:
-              - "[0] -> Unchanged"
-              - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
-              - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
-    rv64:                                 
-      implemented: False                   
-    rv128:                                
-      implemented: False
+      implemented: true
+      type:                             
+        warl: 
+          dependency_fields: [mtvec::mode]
+          legal:
+            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+          wr_illegal:
+            - "[0] -> Unchanged"
+            - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
+            - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+    mode:
+      implemented: true
+      type:                             
+        warl:
+          dependency_fields: []
+          legal: 
+            - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+          wr_illegal:
+            - "Unchanged"
 
 The following is what the riscv-config will output after performing relevant checks on the 
 above user-input:
 
 .. code-block:: yaml
 
-  mtvec:                                
-    description: Machine trap vector base address
-    address: 0x305         
-    priv_mode: M
-    reset-val: 0x00000001 
-    rv32:                                 
-      implemented: True                        
-      fields:                          
+    mtvec:
+      description: MXLEN-bit read/write register that holds trap vector configuration.
+      address: 773
+      priv_mode: M
+      reset-val: 0x80010000
+      rv32:
+        implemented: true
+        base:
+          implemented: true
+          type:
+            warl:
+              dependency_fields: [mtvec::mode]
+              legal:
+              - '[0] -> base[29:0] in [0x20000000, 0x20004000]'               # can take only 2 fixed values in direct mode.
+              - '[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]'   # 256 byte aligned values only in vectored mode.
+              wr_illegal:
+              - '[0] -> Unchanged'
+              - '[1] wr_val in [0x2000000:0x4000000] -> 0x2000000'
+              - '[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged'
+          description: Vector base address.
+          shadow: none
+          msb: 31
+          lsb: 2
+        mode:
+          implemented: true
+          type:
+            warl:
+              dependency_fields: []
+              legal:
+              - 'mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)'
+              wr_illegal:
+              - Unchanged
+    
+          description: Vector mode.
+          shadow: none
+          msb: 1
+          lsb: 0
+        fields:
         - mode
-        - base
-      mode:                   
-        description: trap handling mode
-        shadow: none
-        msb: 1
-        lsb: 0
-        implemented: True 
-        type:                             
-          warl:
-            dependency_fields: []
-            legal: 
-              - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
-            wr_illegal:
-              - "Unchanged"
-    base:
-        description: vector base address
-        shadow: none
-        msb: 31
-        lsb: 2
-        implemented: True 
-        type:                             
-          warl: 
-            dependency_fields: [mtvec::mode]
-            legal:
-              - "[0] -> base[29:0] in [0x20000000, 0x20004000]" # can take only 2 fixed values in direct mode.
-              - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
-            wr_illegal:
-              - "[0] -> Unchanged"
-              - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
-              - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
-    rv64:                                 
-      implemented: False                   
-    rv128:                                
-      implemented: False
-
+        - base 
+      rv64:
+        implemented: false
 
 WARL field Definition
 =====================
