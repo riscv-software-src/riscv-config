@@ -27,6 +27,11 @@ def gen_schema_doc(infile, outfile):
     
     rst_file.close()
 
+def get_version():
+    changelog = open('../../CHANGELOG.md','r').read()
+    x = re.findall(r'##(.*?)-',changelog)[0]
+    return str(x)
+
 gen_schema_doc('../../riscv_config/schemas/schema_isa.yaml', 'schema_isa.rst')
 gen_schema_doc('../../riscv_config/schemas/schema_platform.yaml', 'schema_platform.rst')
 
@@ -40,10 +45,9 @@ project = u'RISCV_Config'
 copyright = '2019 InCore Semiconductors, IIT Madras'
 author = 'InCore Semiconductors Pvt. Ltd.'
 
-# The short X.Y version
-version = '1.2.0'
+version = str(get_version())
 # The full version, including alpha/beta/rc tags
-release = 'beta'
+release = version
 
 
 # -- General configuration ---------------------------------------------------

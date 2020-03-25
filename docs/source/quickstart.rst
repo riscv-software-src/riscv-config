@@ -50,7 +50,7 @@ Now you can activate this virtual environment using the following command:
 .. code-block:: bash
 
   $ pyenv activate riscof_env
-  $ python ==version
+  $ python --version
 
 Install via PIP [users]
 =======================
@@ -72,23 +72,23 @@ To checkout a specific version of riscof:
 
 .. code-block:: bash
 
-  $ pip install riscv_config==1.x.x
+  $ pip install riscv_config--1.x.x
 
-Once you have RISCV_CONFIG installed, executing ``riscv_config ==help`` should print the following on the terminal:
+Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following on the terminal:
 
 .. code-block:: bash
 
-    riscv-config [-h] ==isa_spec YAML ==platform_spec YAML [==verbose]
+    riscv-config [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
     RISC-V Configuration Validator 
     
     optional arguments:
-      ==isa_spec YAML, -ispec YAML
+      --isa_spec YAML, -ispec YAML
                             The YAML which contains the ISA specs.
-      ==platform_spec YAML, -pspec YAML
+      --platform_spec YAML, -pspec YAML
                             The YAML which contains the Platfrorm specs.
-      ==verbose             debug | info | warning | error
-      -h, ==help            show this help message and exit
+      --verbose             debug | info | warning | error
+      -h, --help            show this help message and exit
 
 
 
@@ -105,7 +105,7 @@ performing the following steps.
   $ cd riscv_config
   $ pip3 install -r requirements.txt
 
-Executing ``python -m riscv_config.main ==help`` should display the same help message as above.
+Executing ``python -m riscv_config.main --help`` should display the same help message as above.
 
 Usage Example
 =============
