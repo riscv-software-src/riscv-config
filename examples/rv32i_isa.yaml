@@ -1,7 +1,8 @@
-ISA: RV32I
+ISA: RV32IMAFCZicsr_Zifencei
+User_Spec_Version: '2.3'
 supported_xlen: [32]
 misa:
-  reset-val: 0x40000100
+  reset-val: 0x40001125
   rv32:
     implemented: true
     mxl:
@@ -11,7 +12,7 @@ misa:
     extensions:
       implemented: true
       type:
-        ro_constant: [0x100]
+        ro_constant: [0x1125]
   rv64:
     implemented: false
 mvendorid:

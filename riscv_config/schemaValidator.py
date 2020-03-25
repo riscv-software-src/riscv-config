@@ -164,11 +164,11 @@ ISA provided. Expeected reset-val: " + str(extensions))
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
-                self._error(field, "Z is not supported in the given version.")
+                self._error(field, "Z is not supported in the User Spec given version.")
         else:
                 self._error(field, "Neither of E or I extensions are present")
         #ISA encoding for future use.
-        for x in "ACDEFGIJLMNPQSTUVXZ":
+        for x in "ABCDEFHIJLMNPQSTUVX":
             if (x in ext):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
