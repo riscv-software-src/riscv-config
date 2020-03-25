@@ -52,8 +52,8 @@ Now you can activate this virtual environment using the following command:
   $ pyenv activate riscof_env
   $ python ==version
 
-Install RISCV_CONFIG via PIP [users]
-====================================
+Install via PIP [users]
+=======================
 
 **NOTE**: If you are using `pyenv` as mentioned above, make sure to enable that environment before
 performing the following steps.
@@ -92,8 +92,8 @@ Once you have RISCV_CONFIG installed, executing ``riscv_config ==help`` should p
 
 
 
-Install RISCV_CONFIG [Developers]
-=================================
+RISCV_CONFIG for Developers
+===========================
 
 Clone the repository from git and install required dependencies. Note, you will still need
 python-3.7.0 and pip. If you are using `pyenv` as mentioned above, make sure to enable that environment before

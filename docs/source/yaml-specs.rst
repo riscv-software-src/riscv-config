@@ -4,6 +4,8 @@ YAML Specifications
 
 This section provides details of the ISA and Platform spec YAML files that need to be provided by the user.
 
+.. _isa_yaml_spec:
+
 ISA YAML Spec
 =============
 
@@ -12,7 +14,7 @@ ISA YAML Spec
   1. All fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
   2. An elaborate example of the full-fledge ISA-YAML file can be found here: `ISA-YAML <https://github.com/riscv/riscv_config/blob/master/examples/template_isa.yaml>`_
 
-.. include:: schema_doc.rst
+.. include:: schema_isa.rst
 
 CSR Template
 ============
@@ -423,3 +425,12 @@ Example:
         - "mode[1:0] in [0x0,0x1] # Range of 0 to 1 (inclusive)"
       wr_illegal:
         - "0x00"
+
+.. _platform_yaml_spec:
+
+Platform YAML Spec
+==================
+
+This section describes each node of the PLATFORM-YAML. For each node, we have identified the fields required from the user and also the various constraints involved.
+
+.. include:: schema_platform.rst
