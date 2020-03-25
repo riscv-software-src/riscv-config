@@ -8,6 +8,7 @@ from ruamel.yaml import YAML
 yaml = YAML(typ="rt")
 yaml.default_flow_style = False
 yaml.allow_unicode = True
+yaml.compact(seq_seq=False, seq_map=False)
 
 
 def load_yaml(foo):
@@ -22,8 +23,8 @@ def load_yaml(foo):
 
 
 class ColoredFormatter(logging.Formatter):
-    """                                                                         
-        Class to create a log output which is colored based on level.           
+    """
+        Class to create a log output which is colored based on level.
     """
 
     def __init__(self, *args, **kwargs):
@@ -48,13 +49,13 @@ class ColoredFormatter(logging.Formatter):
 
 
 def setup_logging(log_level):
-    """Setup logging                                                            
-                                                                                
-        Verbosity decided on user input                                         
-                                                                                                                                                   
-        :param log_level: User defined log level                             
-                                                                                
-        :type log_level: str                                                               
+    """Setup logging
+
+        Verbosity decided on user input
+
+        :param log_level: User defined log level
+
+        :type log_level: str
     """
     numeric_level = getattr(logging, log_level.upper(), None)
 
@@ -75,9 +76,10 @@ class SortingHelpFormatter(argparse.HelpFormatter):
 
 
 def riscv_config_cmdline_args():
-    parser = argparse.ArgumentParser(formatter_class=SortingHelpFormatter,
-                                     prog="riscv_config",
-                                     description="RISC-V Configuration Validator")
+    parser = argparse.ArgumentParser(
+        formatter_class=SortingHelpFormatter,
+        prog="riscv_config",
+        description="RISC-V Configuration Validator")
     parser.add_argument('--isa_spec',
                         '-ispec',
                         type=str,
