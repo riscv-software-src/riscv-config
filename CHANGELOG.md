@@ -2,6 +2,18 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.0.0 - 2020-03-25
+### Added
+- adding support for warl fields and support
+- documentation for the warl fields added
+- reset-value checks added
+### Changed
+- using a new common template for defining all csrs
+- updated docs with new template
+- using special function within conf.py to extract comments from yaml file as docs.
+### Fixed
+- closed issues #10, #11, #12, #13
+
 ## 1.0.2 - 2019-08-09
 ### Changed
 - Log is generated only if specified(for API calls to checker.check_specs).

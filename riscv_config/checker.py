@@ -3,234 +3,512 @@ import logging
 
 from cerberus import Validator
 
+import itertools
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
 from riscv_config.utils import yaml
+from riscv_config.warl import warl_interpreter
 
 logger = logging.getLogger(__name__)
 
-def iset():
-    '''Function to check and set defaults for all "implemented" fields which are dependent on 
-        the xlen.'''
-    global inp_yaml
-    if '32' in inp_yaml['ISA']:
-        return False
-    else:
-        return True
-
 
 def nosset():
-    '''Function to check and set defaults for all fields which are dependent on 
-        the presence of 'S' extension and have a hardwired value of 0.'''
+    '''Function to check and set defaults for all fields which are dependent on
+        the presence of 'S' extension.'''
     global inp_yaml
-    if 'S' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+    if 'S' in inp_yaml['ISA']:
+        return {'implemented': True}
     else:
-        return {'is_hardwired': False}
+        return {'implemented': False}
 
 
 def nouset():
-    '''Function to check and set defaults for all fields which are dependent on 
-        the presence of 'U' extension and have a hardwired value of 0.'''
+    '''Function to check and set defaults for all fields which are dependent on
+        the presence of 'U' extension.'''
     global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+    if 'U' in inp_yaml['ISA']:
+        return {'implemented': True}
     else:
-        return {'is_hardwired': False}
-
-
-def upieset(doc):
-    '''Function to check and set value for upie field in misa.'''
-    global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
-    elif 'UPIE' not in doc.keys():
-        return {'is_hardwired': False}
-    else:
-        return doc['UPIE']
-
-
-def uieset(doc):
-    '''Function to check and set value for uie field in misa.'''
-    global inp_yaml
-    if 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
-    elif 'UIE' not in doc.keys():
-        return {'is_hardwired': False}
-    else:
-        return doc['UIE']
+        return {'implemented': False}
 
 
 def twset():
     '''Function to check and set value for tw field in misa.'''
     global inp_yaml
     if 'S' not in inp_yaml['ISA'] and 'U' not in inp_yaml['ISA']:
-        return {'is_hardwired': True, 'hardwired_val': 0}
+        return {'implemented': False}
     else:
-        return {'is_hardwired': False}
+        return {'implemented': False}
 
 
-def miedelegset():
+def delegset():
     '''Function to set "implemented" value for mideleg regisrer.'''
     # return True
     global inp_yaml
+    var = True
     if 'U' not in inp_yaml['ISA']:
-        return False
+        var = False
     elif (('U' in inp_yaml['ISA']) and
           not ('N' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA'])):
-        return False
-    else:
-        return True
+        var = False
+
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True and var
+    if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['implemented'] = True and var
+    return temp
 
 
-def mepcset():
-    return {
-        'range': {
-            'rangelist': [[0, int("FFFFFFFF", 16)]],
-            'mode': "Unchanged"
-        }
-    }
-
-
-def xtvecset():
-    return {
-        'BASE': {
-            'range': {
-                'rangelist': [[0, int("3FFFFFFF", 16)]],
-                'mode': "Unchanged"
-            }
-        },
-        'MODE': {
-            'range': {
-                'rangelist': [[0]],
-                'mode': "Unchanged"
-            }
-        }
-    }
-
-
-def simpset():
+def countset():
     global inp_yaml
-    if 'S' in inp_yaml['ISA']:
-        return True
-    else:
-        return False
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 'S' in inp_yaml['ISA'] or 'U' in inp_yaml["ISA"]:
+        if 32 in inp_yaml['supported_xlen']:
+            temp['rv32']['implemented'] = True
+        if 64 in inp_yaml['supported_xlen']:
+            temp['rv64']['implemented'] = True
+    return temp
 
 
-def satpset():
-    return {'MODE': {'range': {'rangelist': [[0]]}}}
-
-
-def findxlen():
+def regset():
     global inp_yaml
-    if "32" in inp_yaml['ISA']:
-        xlen = 32
-    elif "64" in inp_yaml['ISA']:
-        xlen = 64
-    elif "128" in inp_yaml['ISA']:
-        xlen = 128
-    return xlen
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True
+    if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['implemented'] = True
+    return temp
 
 
-def xlenset():
-    return findxlen()
+def counterhset():
+    global inp_yaml
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True
+    return temp
 
 
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
-    schema_yaml['mstatus']['schema']['SXL']['schema']['implemented'][
-        'default_setter'] = lambda doc: iset()
-    schema_yaml['mstatus']['schema']['UXL']['schema']['implemented'][
-        'default_setter'] = lambda doc: iset()
-    schema_yaml['mstatus']['schema']['TVM'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['TSR'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['MXR'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SUM'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SPP'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SPIE'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['SIE'][
-        'default_setter'] = lambda doc: nosset()
-    schema_yaml['mstatus']['schema']['UPIE'][
-        'default_setter'] = lambda doc: upieset(doc)
-    schema_yaml['mstatus']['schema']['UIE'][
-        'default_setter'] = lambda doc: uieset(doc)
-    schema_yaml['mstatus']['schema']['MPRV'][
-        'default_setter'] = lambda doc: nouset()
-    schema_yaml['mstatus']['schema']['TW'][
-        'default_setter'] = lambda doc: twset()
-    schema_yaml['mideleg']['schema']['implemented'][
-        'default_setter'] = lambda doc: miedelegset()
-    schema_yaml['medeleg']['schema']['implemented'][
-        'default_setter'] = lambda doc: miedelegset()
-    schema_yaml['mepc']['default_setter'] = lambda doc: mepcset()
-    schema_yaml['mtvec']['default_setter'] = lambda doc: xtvecset()
-    schema_yaml['stvec']['default_setter'] = lambda doc: xtvecset()
-    schema_yaml['satp']['default_setter'] = lambda doc: satpset()
-    schema_yaml['stvec']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sie']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sip']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['scounteren']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['sepc']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['satp']['schema']['implemented'][
-        'default_setter'] = lambda doc: simpset()
-    schema_yaml['xlen']['default_setter'] = lambda doc: xlenset()
+    regsetter = lambda doc: regset()
+    schema_yaml['misa']['default_setter'] = regsetter
+    schema_yaml['mstatus']['default_setter'] = regsetter
+    schema_yaml['mvendorid']['default_setter'] = regsetter
+    schema_yaml['marchid']['default_setter'] = regsetter
+    schema_yaml['mhartid']['default_setter'] = regsetter
+    schema_yaml['mtvec']['default_setter'] = regsetter
+    schema_yaml['mip']['default_setter'] = regsetter
+    schema_yaml['mie']['default_setter'] = regsetter
+    schema_yaml['mscratch']['default_setter'] = regsetter
+    schema_yaml['mepc']['default_setter'] = regsetter
+    schema_yaml['mtval']['default_setter'] = regsetter
+    schema_yaml['mcountinhibit']['default_setter'] = regsetter
+
+    # event counters
+    schema_yaml['mhpmevent3']['default_setter'] = regsetter
+    schema_yaml['mhpmevent4']['default_setter'] = regsetter
+    schema_yaml['mhpmevent5']['default_setter'] = regsetter
+    schema_yaml['mhpmevent6']['default_setter'] = regsetter
+    schema_yaml['mhpmevent7']['default_setter'] = regsetter
+    schema_yaml['mhpmevent8']['default_setter'] = regsetter
+    schema_yaml['mhpmevent9']['default_setter'] = regsetter
+    schema_yaml['mhpmevent10']['default_setter'] = regsetter
+    schema_yaml['mhpmevent11']['default_setter'] = regsetter
+    schema_yaml['mhpmevent12']['default_setter'] = regsetter
+    schema_yaml['mhpmevent13']['default_setter'] = regsetter
+    schema_yaml['mhpmevent14']['default_setter'] = regsetter
+    schema_yaml['mhpmevent15']['default_setter'] = regsetter
+    schema_yaml['mhpmevent16']['default_setter'] = regsetter
+    schema_yaml['mhpmevent17']['default_setter'] = regsetter
+    schema_yaml['mhpmevent18']['default_setter'] = regsetter
+    schema_yaml['mhpmevent19']['default_setter'] = regsetter
+    schema_yaml['mhpmevent20']['default_setter'] = regsetter
+    schema_yaml['mhpmevent21']['default_setter'] = regsetter
+    schema_yaml['mhpmevent22']['default_setter'] = regsetter
+    schema_yaml['mhpmevent23']['default_setter'] = regsetter
+    schema_yaml['mhpmevent24']['default_setter'] = regsetter
+    schema_yaml['mhpmevent25']['default_setter'] = regsetter
+    schema_yaml['mhpmevent26']['default_setter'] = regsetter
+    schema_yaml['mhpmevent27']['default_setter'] = regsetter
+    schema_yaml['mhpmevent28']['default_setter'] = regsetter
+    schema_yaml['mhpmevent29']['default_setter'] = regsetter
+    schema_yaml['mhpmevent30']['default_setter'] = regsetter
+    schema_yaml['mhpmevent31']['default_setter'] = regsetter
+
+    schema_yaml['mhpmcounter3']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter4']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter5']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter6']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter7']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter8']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter9']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter10']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter11']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter12']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter13']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter14']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter15']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter16']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter17']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter18']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter19']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter20']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter21']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter22']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter23']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter24']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter25']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter26']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter27']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter28']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter29']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter30']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter31']['default_setter'] = regsetter
+
+    counthsetter = lambda doc: counterhset()
+
+    schema_yaml['mhpmcounter3h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter4h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter5h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter6h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter7h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter8h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter9h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter10h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter11h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter12h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter13h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter14h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter15h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter16h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter17h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter18h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter19h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter20h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter21h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter22h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter23h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter24h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter25h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter26h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter27h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter28h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter29h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter30h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter31h']['default_setter'] = counthsetter
+
+    schema_yaml['mcounteren']['default_setter'] = lambda doc: countset()
+
+    schema_yaml['mcause']['default_setter'] = regsetter
+    usetter = lambda doc: nouset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['uie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['upie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['upie'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['mprv'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['mprv'][
+        'default_setter'] = usetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['ueip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['ueip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['utip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['utip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv32']['schema']['usip'][
+        'default_setter'] = usetter
+    schema_yaml['mip']['schema']['rv64']['schema']['usip'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['ueie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['ueie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['utie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['utie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv32']['schema']['usie'][
+        'default_setter'] = usetter
+    schema_yaml['mie']['schema']['rv64']['schema']['usie'][
+        'default_setter'] = usetter
+
+    ssetter = lambda doc: nosset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tvm'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tvm'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sxl'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tsr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tsr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['ssie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['ssie'][
+        'default_setter'] = ssetter
+
+    twsetter = lambda doc: twset()
+    schema_yaml['mstatus']['schema']['rv32']['schema']['tw'][
+        'default_setter'] = twsetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['tw'][
+        'default_setter'] = twsetter
+    delegsetter = lambda doc: delegset()
+    schema_yaml['medeleg']['default_setter'] = delegsetter
+    schema_yaml['mideleg']['default_setter'] = delegsetter
     return schema_yaml
 
 
-def imp_normalise(foo):
+def trim(foo):
     '''
         Function to trim the dictionary. Any node with implemented field set to false is trimmed of all the other nodes.
-        
+
         :param foo: The dictionary to be trimmed.
-        
+
         :type foo: dict
 
         :return: The trimmed dictionary.
     '''
-    for key in foo.keys():
+    keys = foo.keys()
+    if 'rv32' in keys:
+        if not foo['rv32']['implemented']:
+            foo['rv32'] = {'implemented': False}
+    if 'rv64' in keys:
+        if not foo['rv64']['implemented']:
+            foo['rv64'] = {'implemented': False}
+    if 'implemented' in keys:
+        if not foo['implemented']:
+            temp = foo
+            for k in list(
+                    set(foo.keys()) -
+                    set(['description', 'msb', 'lsb', 'implemented', 'shadow'])
+            ):
+                try:
+                    temp.pop(k)
+                except KeyError:
+                    continue
+            return temp
+    for key in keys:
         if isinstance(foo[key], dict):
-            foo[key] = imp_normalise(foo[key])
-        if key == 'implemented':
-            if not foo[key]:
-                foo = {'implemented': False}
-                break
+            t = trim(foo[key])
+            foo[key] = t
     return foo
 
-def check_specs(isa_spec, platform_spec, work_dir,logging=False):
-    ''' 
+
+def groupc(test_list):
+    ''' Generator function to squash consecutive numbers for wpri bits.'''
+    for x, y in itertools.groupby(enumerate(test_list), lambda a: a[1] - a[0]):
+        y = list(y)
+        a = y[0][1]
+        b = y[-1][1]
+        if a == b:
+            yield [a]
+        else:
+            yield [a, b]
+
+
+def get_fields(node, bitwidth):
+    fields = list(
+        set(node.keys()) -
+        set(['fields', 'msb', 'lsb', 'implemented', 'shadow', 'type']))
+    if not fields:
+        return fields
+    bits = set(range(bitwidth))
+    for entry in fields:
+        bits -= set(range(node[entry]['lsb'], node[entry]['msb'] + 1))
+    bits = list(groupc(sorted(list(bits))))
+    if not bits:
+        return fields
+    else:
+        fields.append(bits)
+        return fields
+
+
+def check_reset_fill_fields(spec):
+    errors = {}
+    for node in spec:
+        if isinstance(spec[node], dict):
+            if spec[node]['rv32']['implemented']:
+                spec[node]['rv32']['fields'] = get_fields(
+                    spec[node]['rv32'], 32)
+            if spec[node]['rv64']['implemented']:
+                spec[node]['rv64']['fields'] = get_fields(
+                    spec[node]['rv64'], 64)
+            if 'reset-val' in spec[node].keys():
+                reset_val = spec[node]['reset-val']
+                if spec[node]['rv64']['implemented']:
+                    field_desc = spec[node]['rv64']
+                    bit_len = 64
+                elif spec[node]['rv32']['implemented']:
+                    field_desc = spec[node]['rv32']
+                    bit_len = 32
+                else:
+                    continue
+                error = []
+                if not field_desc['fields']:
+                    desc = field_desc['type']
+                    keys = desc.keys()
+                    if 'wlrl' in keys:
+                        if reset_val not in desc['wlrl']:
+                            error.append(
+                                "Reset value doesnt match the 'wlrl' description for the register."
+                            )
+                    elif 'ro_constant' in keys:
+                        if reset_val not in desc['ro_constant']:
+                            error.append(
+                                "Reset value doesnt match the 'ro_constant' description for the register."
+                            )
+                    elif 'ro_variable' in keys:
+                        pass
+                    elif "warl" in keys:
+                        warl = (warl_interpreter(desc['warl']))
+                        deps = warl.dependencies()
+                        dep_vals = []
+                        for dep in deps:
+                            reg = dep.split("::")
+                            if len(reg) == 1:
+                                dep_vals.append(spec[reg[0]]['reset-val'])
+                            else:
+                                bin_str = bin(spec[reg[0]]
+                                              ['reset-val'])[2:].zfill(bit_len)
+                                dep_vals.append(
+                                    int(bin_str[bit_len - 1 - spec[reg[0]][
+                                        'rv{}'.format(bit_len
+                                                     )][reg[1]]['msb']:bit_len -
+                                                spec[reg[0]]['rv{}'.format(
+                                                    bit_len)][reg[1]]['lsb']],
+                                        base=2))
+                        if (warl.islegal(hex(reset_val)[2:], dep_vals) != True):
+                            error.append(
+                                "Reset value doesnt match the 'warl' description for the register."
+                            )
+                else:
+                    bin_str = bin(reset_val)[2:].zfill(bit_len)
+                    for field in field_desc['fields']:
+                        if isinstance(field, list):
+                            continue
+                        test_val = int(
+                            bin_str[bit_len - 1 -
+                                    field_desc[field]['msb']:bit_len -
+                                    field_desc[field]['lsb']],
+                            base=2)
+                        desc = field_desc[field]['type']
+                        keys = desc.keys()
+                        if 'wlrl' in keys:
+                            if test_val not in desc['wlrl']:
+                                self._error(
+                                    field, "Reset value for " + field +
+                                    " doesnt match the 'wlrl' description.")
+                        elif 'ro_constant' in keys:
+                            if test_val not in desc['ro_constant']:
+                                error.append(
+                                    "Reset value for " + field +
+                                    " doesnt match the 'ro_constant' description."
+                                )
+                        elif 'ro_variable' in keys:
+                            pass
+                        elif "warl" in keys:
+                            warl = (warl_interpreter(desc['warl']))
+                            deps = warl.dependencies()
+                            dep_vals = []
+                            for dep in deps:
+                                reg = dep.split("::")
+                                if len(reg) == 1:
+                                    dep_vals.append(spec[reg[0]]['reset-val'])
+                                else:
+                                    bin_str = bin(spec[
+                                        reg[0]]['reset-val'])[2:].zfill(bit_len)
+                                    dep_vals.append(
+                                        int(bin_str[
+                                            bit_len - 1 -
+                                            spec[reg[0]]['rv{}'.format(bit_len)]
+                                            [reg[1]]['msb']:bit_len -
+                                            spec[reg[0]]['rv{}'.format(
+                                                bit_len)][reg[1]]['lsb']],
+                                            base=2))
+                            if (warl.islegal(hex(test_val)[2:], dep_vals) !=
+                                    True):
+                                error.append(
+                                    "Reset value for " + field +
+                                    " doesnt match the 'warl' description.")
+                if error:
+                    errors[node] = error
+    return spec, errors
+
+
+def check_specs(isa_spec, platform_spec, work_dir, logging=False):
+    '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
         specifications confirm to their respective schemas.
 
-        :param isa_spec: The path to the DUT isa specification yaml file. 
+        :param isa_spec: The path to the DUT isa specification yaml file.
 
         :param platform_spec: The path to the DUT platform specification yaml file.
 
         :param logging: A boolean to indicate whether log is to be printed.
 
         :type logging: bool
-        
+
         :type isa_spec: str
 
         :type platform_spec: str
 
-        :raise ValidationError: It is raised when the specifications violate the 
+        :raise ValidationError: It is raised when the specifications violate the
             schema rules. It also contains the specific errors in each of the fields.
-        
-        :return: A tuple with the first entry being the absolute path to normalized isa file 
+
+        :return: A tuple with the first entry being the absolute path to normalized isa file
             and the second being the absolute path to the platform spec file.
     '''
     global inp_yaml
@@ -252,12 +530,12 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = utils.load_yaml(schema)
+    schema_yaml = add_def_setters(utils.load_yaml(schema))
 
     #Extract xlen
-    xlen = findxlen()
+    xlen = inp_yaml['supported_xlen']
 
-    schema_yaml = add_def_setters(schema_yaml)
+    # schema_yaml = add_def_setters(schema_yaml)
     validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
     validator.purge_readonly = True
@@ -266,7 +544,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     # Perform Validation
     if logging:
         logger.info('Initiating Validation')
-    valid = validator.validate(inp_yaml)
+    valid = validator.validate(normalized)
 
     # Print out errors
     if valid:
@@ -274,8 +552,11 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
             logger.info('No Syntax errors in Input ISA Yaml. :)')
     else:
         error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".",error_list)
-
+        raise ValidationError("Error in " + foo + ".", error_list)
+    logger.info("Initiating post processing and reset value checks.")
+    normalized, errors = check_reset_fill_fields(normalized)
+    if errors:
+        raise ValidationError("Error in " + foo + ".", errors)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
     output_filename = os.path.join(
@@ -284,7 +565,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(imp_normalise(normalized), outfile)
+    yaml.dump(trim(normalized), outfile)
 
     if logging:
         logger.info('Input-Platform file')
@@ -315,7 +596,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     # Perform Validation
     if logging:
         logger.info('Initiating Validation')
-    valid = validator.validate(inp_yaml)
+    valid = validator.validate(normalized)
 
     # Print out errors
     if valid:
@@ -323,7 +604,7 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
             logger.info('No Syntax errors in Input Platform Yaml. :)')
     else:
         error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".",error_list)
+        raise ValidationError("Error in " + foo + ".", error_list)
 
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -333,5 +614,5 @@ def check_specs(isa_spec, platform_spec, work_dir,logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(imp_normalise(normalized), outfile)
+    yaml.dump(trim(normalized), outfile)
     return (ifile, pfile)

@@ -14,6 +14,21 @@
 #
 import os
 import sys
+import re
+
+def gen_schema_doc(infile, outfile):
+    text = open(infile,'r').read()
+    rst_file = open(outfile,'w')
+    x = re.findall("^###(?:(?:\r\n|[\r\n]).+$)*",text,re.M|re.U)
+    for y in x:
+        y = y.replace('#','')
+        y = y.lstrip(' ')
+        rst_file.write(y+'\n')
+    
+    rst_file.close()
+
+gen_schema_doc('../../riscv_config/schemas/schema_isa.yaml', 'schema_isa.rst')
+gen_schema_doc('../../riscv_config/schemas/schema_platform.yaml', 'schema_platform.rst')
 
 sys.path.insert(0, os.path.abspath('../..'))
 sys.setrecursionlimit(1500)
