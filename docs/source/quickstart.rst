@@ -2,13 +2,13 @@
 Quickstart
 ##########
 
-This doc is meant to serve as a quick-guide to setup RISCOF and perform a sample compliance check
-between ``spike`` (DUT in this case) and ``riscvOVPsim`` (Golden model in this case).
+This doc is meant to serve as a quick-guide to setup RISCV-CONFIG and perform a \
+sample validation of target specifications.
 
 Install Python Dependencies
 ===========================
 
-RISCOF requires `pip` and `python` (>=3.7) to be available on your system. If you have issues, instead of
+RISCV-CONFIG requires `pip` and `python` (>=3.7) to be available on your system. If you have issues
 installing either of these directly on your system, we suggest using a virtual environment
 like `pyenv` to make things easy.
 
@@ -42,14 +42,14 @@ Open a new terminal and create a virtual environment using the following
 .. code-block:: bash
 
   $ pyenv install 3.7.0
-  $ pyenv virtualenv 3.7.0 riscof_env
+  $ pyenv virtualenv 3.7.0 riscv_config_env
 
 
 Now you can activate this virtual environment using the following command:
 
 .. code-block:: bash
 
-  $ pyenv activate riscof_env
+  $ pyenv activate riscv_config_env
   $ python --version
 
 Install via PIP [users]
@@ -62,13 +62,13 @@ performing the following steps.
 
   $ pip install riscv_config
 
-To update an already installed version of RISCOF to the latest version:
+To update an already installed version of RISCV-CONFIG to the latest version:
 
 .. code-block:: bash
 
   $ pip install -U riscv_config
 
-To checkout a specific version of riscof:
+To checkout a specific version of riscv_config:
 
 .. code-block:: bash
 
