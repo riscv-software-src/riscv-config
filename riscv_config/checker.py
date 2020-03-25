@@ -88,13 +88,15 @@ def xtvecset():
     }
 
 
-def simpset():
+def countset():
     global inp_yaml
-    if 'S' in inp_yaml['ISA']:
-        return True
-    else:
-        return False
-
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 'S' in inp_yaml['ISA'] or 'U' in inp_yaml["ISA"]:
+        if 32 in inp_yaml['supported_xlen']:
+            temp['rv32']['implemented'] = True
+        if 64 in inp_yaml['supported_xlen']:
+            temp['rv64']['implemented'] = True
+    return temp
 
 def satpset():
     return {'MODE': {'range': {'rangelist': [[0]]}}}
@@ -113,6 +115,12 @@ def regset():
         temp['rv64']['implemented'] = True
     return temp
 
+def counterhset():
+    global inp_yaml
+    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['implemented'] = True
+    return temp
 
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
@@ -128,6 +136,103 @@ def add_def_setters(schema_yaml):
     schema_yaml['mscratch']['default_setter'] = regsetter
     schema_yaml['mepc']['default_setter'] = regsetter
     schema_yaml['mtval']['default_setter'] = regsetter
+    schema_yaml['mcountinhibit']['default_setter'] = regsetter
+
+    # event counters
+    schema_yaml['mhpmevent3']['default_setter'] = regsetter
+    schema_yaml['mhpmevent4']['default_setter'] = regsetter
+    schema_yaml['mhpmevent5']['default_setter'] = regsetter
+    schema_yaml['mhpmevent6']['default_setter'] = regsetter
+    schema_yaml['mhpmevent7']['default_setter'] = regsetter
+    schema_yaml['mhpmevent8']['default_setter'] = regsetter
+    schema_yaml['mhpmevent9']['default_setter'] = regsetter
+    schema_yaml['mhpmevent10']['default_setter'] = regsetter
+    schema_yaml['mhpmevent11']['default_setter'] = regsetter
+    schema_yaml['mhpmevent12']['default_setter'] = regsetter
+    schema_yaml['mhpmevent13']['default_setter'] = regsetter
+    schema_yaml['mhpmevent14']['default_setter'] = regsetter
+    schema_yaml['mhpmevent15']['default_setter'] = regsetter
+    schema_yaml['mhpmevent16']['default_setter'] = regsetter
+    schema_yaml['mhpmevent17']['default_setter'] = regsetter
+    schema_yaml['mhpmevent18']['default_setter'] = regsetter
+    schema_yaml['mhpmevent19']['default_setter'] = regsetter
+    schema_yaml['mhpmevent20']['default_setter'] = regsetter
+    schema_yaml['mhpmevent21']['default_setter'] = regsetter
+    schema_yaml['mhpmevent22']['default_setter'] = regsetter
+    schema_yaml['mhpmevent23']['default_setter'] = regsetter
+    schema_yaml['mhpmevent24']['default_setter'] = regsetter
+    schema_yaml['mhpmevent25']['default_setter'] = regsetter
+    schema_yaml['mhpmevent26']['default_setter'] = regsetter
+    schema_yaml['mhpmevent27']['default_setter'] = regsetter
+    schema_yaml['mhpmevent28']['default_setter'] = regsetter
+    schema_yaml['mhpmevent29']['default_setter'] = regsetter
+    schema_yaml['mhpmevent30']['default_setter'] = regsetter
+    schema_yaml['mhpmevent31']['default_setter'] = regsetter
+
+    schema_yaml['mhpmcounter3']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter4']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter5']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter6']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter7']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter8']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter9']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter10']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter11']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter12']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter13']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter14']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter15']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter16']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter17']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter18']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter19']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter20']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter21']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter22']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter23']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter24']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter25']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter26']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter27']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter28']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter29']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter30']['default_setter'] = regsetter
+    schema_yaml['mhpmcounter31']['default_setter'] = regsetter
+
+    counthsetter = lambda doc: counterhset()
+
+    schema_yaml['mhpmcounter3h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter4h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter5h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter6h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter7h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter8h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter9h']['default_setter']  = counthsetter
+    schema_yaml['mhpmcounter10h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter11h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter12h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter13h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter14h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter15h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter16h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter17h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter18h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter19h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter20h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter21h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter22h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter23h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter24h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter25h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter26h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter27h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter28h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter29h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter30h']['default_setter'] = counthsetter
+    schema_yaml['mhpmcounter31h']['default_setter'] = counthsetter
+
+    schema_yaml['mcounteren']['default_setter'] = lambda doc: countset()
+
     schema_yaml['mcause']['default_setter'] = regsetter
     usetter = lambda doc: nouset()
     schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][

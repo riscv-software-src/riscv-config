@@ -4444,9 +4444,9 @@ mepc:
         and virtual addresses.
     address:
       type: integer
-      default: 833
+      default: 0x341
       allowed:
-      - 833
+      - 0x341
     priv_mode:
       type: string
       allowed:
@@ -4554,6 +4554,7 @@ mepc:
 
       default:
         implemented: false
+
 mtval:
   type: dict
   schema:
@@ -4673,6 +4674,7 @@ mtval:
       default:
         implemented: false
   required: true
+
 mcause:
   type: dict
   schema:
@@ -4868,6 +4870,7474 @@ mcause:
             implemented: true
       default:
         implemented: false
+
+mcounteren:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mcounteren is a 32-bit register that controls the availability of the hardware performance-monitoring counters to the next-lowest privileged mode.
+    address:
+      type: integer
+      default: 0x306
+      allowed:
+      - 0x306
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+      check_with: max_length
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mcounteren[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mcounteren[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+
+mcountinhibit:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mcountinhibit is a 32-bit WARL register that controls which of the hardware performance-monitoring counters increment.
+    address:
+      type: integer
+      default: 0x320
+      allowed:
+      - 0x320
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+      check_with: max_length
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mcountinhibit[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mcounterinhibit[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+
+## Counters
+mhpmevent3:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent3 is a MXLEN-bit event register which controls mhpmcounter3.
+    address:
+      type: integer
+      default: 0x323
+      allowed:
+      - 0x323
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mhpmevent3[63:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mhpmevent3[63:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+
+mhpmcounter3:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
+    address:
+      type: integer
+      default: 0xB03
+      allowed:
+      - 0xB03
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mhpmcounter3[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mhpmcounter3[63:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+mhpmcounter3h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter3h returns the upper half word in RV32I systems.
+    address:
+      type: integer
+      default: 0xB83
+      allowed:
+      - 0xB83
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+              warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+                - 'mhpmcounter3h[31:0] in [0x00000000]'
+              wr_illegal:
+                - 'unchanged'
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+
+mhpmevent4:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent4 is a MXLEN-bit event register which controls mhpmcounter4.
+    address:
+      type: integer
+      default: 0x324
+      allowed:
+      - 0x324
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent4[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent4[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter4:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter4 is a 64-bit counter. Returns lower 42 bits in RV42I
+        mode.
+    address:
+      type: integer
+      default: 0xB04
+      allowed:
+      - 0xB04
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet4[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet4[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter4h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter4h returns the upper half word in RV42I systems.
+    address:
+      type: integer
+      default: 0xB84
+      allowed:
+      - 0xB84
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet4h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent5:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent5 is a MXLEN-bit event register which controls mhpmcounter5.
+    address:
+      type: integer
+      default: 0x325
+      allowed:
+      - 0x325
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent5[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent5[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter5:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter5 is a 64-bit counter. Returns lower 52 bits in RV52I
+        mode.
+    address:
+      type: integer
+      default: 0xB05
+      allowed:
+      - 0xB05
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet5[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet5[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter5h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter5h returns the upper half word in RV52I systems.
+    address:
+      type: integer
+      default: 0xB85
+      allowed:
+      - 0xB85
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet5h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent6:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent6 is a MXLEN-bit event register which controls mhpmcounter6.
+    address:
+      type: integer
+      default: 0x326
+      allowed:
+      - 0x326
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent6[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent6[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter6:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter6 is a 64-bit counter. Returns lower 62 bits in RV62I
+        mode.
+    address:
+      type: integer
+      default: 0xB06
+      allowed:
+      - 0xB06
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet6[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet6[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter6h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter6h returns the upper half word in RV62I systems.
+    address:
+      type: integer
+      default: 0xB86
+      allowed:
+      - 0xB86
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet6h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent7:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent7 is a MXLEN-bit event register which controls mhpmcounter7.
+    address:
+      type: integer
+      default: 0x327
+      allowed:
+      - 0x327
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent7[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent7[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter7:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter7 is a 64-bit counter. Returns lower 72 bits in RV72I
+        mode.
+    address:
+      type: integer
+      default: 0xB07
+      allowed:
+      - 0xB07
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet7[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet7[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter7h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter7h returns the upper half word in RV72I systems.
+    address:
+      type: integer
+      default: 0xB87
+      allowed:
+      - 0xB87
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet7h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent8:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent8 is a MXLEN-bit event register which controls mhpmcounter8.
+    address:
+      type: integer
+      default: 0x328
+      allowed:
+      - 0x328
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent8[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent8[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter8:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter8 is a 64-bit counter. Returns lower 82 bits in RV82I
+        mode.
+    address:
+      type: integer
+      default: 0xB08
+      allowed:
+      - 0xB08
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet8[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet8[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter8h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter8h returns the upper half word in RV82I systems.
+    address:
+      type: integer
+      default: 0xB88
+      allowed:
+      - 0xB88
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet8h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent9:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent9 is a MXLEN-bit event register which controls mhpmcounter9.
+    address:
+      type: integer
+      default: 0x329
+      allowed:
+      - 0x329
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent9[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent9[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter9:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter9 is a 64-bit counter. Returns lower 92 bits in RV92I
+        mode.
+    address:
+      type: integer
+      default: 0xB09
+      allowed:
+      - 0xB09
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet9[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet9[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter9h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter9h returns the upper half word in RV92I systems.
+    address:
+      type: integer
+      default: 0xB89
+      allowed:
+      - 0xB89
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet9h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent10:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent10 is a MXLEN-bit event register which controls mhpmcounter10.
+    address:
+      type: integer
+      default: 0x32a
+      allowed:
+      - 0x32a
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent10[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent10[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter10:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter10 is a 64-bit counter. Returns lower 102 bits in RV102I
+        mode.
+    address:
+      type: integer
+      default: 0xB0A
+      allowed:
+      - 0xB0A
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet10[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet10[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter10h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter10h returns the upper half word in RV102I systems.
+    address:
+      type: integer
+      default: 0xB8A
+      allowed:
+      - 0xB8A
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet10h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+      default:
+        implemented: false
+
+mhpmevent11:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent11 is a MXLEN-bit event register which controls mhpmcounter11.
+    address:
+      type: integer
+      default: 0x32b
+      allowed:
+      - 0x32b
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent11[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent11[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter11:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter11 is a 64-bit counter. Returns lower 112 bits in RV112I
+        mode.
+    address:
+      type: integer
+      default: 0xB0B
+      allowed:
+      - 0xB0B
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet11[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet11[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter11h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter11h returns the upper half word in RV112I systems.
+    address:
+      type: integer
+      default: 0xB8B
+      allowed:
+      - 0xB8B
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet11h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent12:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent12 is a MXLEN-bit event register which controls mhpmcounter12.
+    address:
+      type: integer
+      default: 0x32c
+      allowed:
+      - 0x32c
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent12[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent12[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter12:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter12 is a 64-bit counter. Returns lower 122 bits in RV122I
+        mode.
+    address:
+      type: integer
+      default: 0xB0C
+      allowed:
+      - 0xB0C
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet12[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet12[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter12h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter12h returns the upper half word in RV122I systems.
+    address:
+      type: integer
+      default: 0xB8C
+      allowed:
+      - 0xB8C
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet12h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent13:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent13 is a MXLEN-bit event register which controls mhpmcounter13.
+    address:
+      type: integer
+      default: 0x32d
+      allowed:
+      - 0x32d
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent13[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent13[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter13:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter13 is a 64-bit counter. Returns lower 132 bits in RV132I
+        mode.
+    address:
+      type: integer
+      default: 0xB0D
+      allowed:
+      - 0xB0D
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet13[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet13[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter13h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter13h returns the upper half word in RV132I systems.
+    address:
+      type: integer
+      default: 0xB8D
+      allowed:
+      - 0xB8D
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet13h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent14:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent14 is a MXLEN-bit event register which controls mhpmcounter14.
+    address:
+      type: integer
+      default: 0x32e
+      allowed:
+      - 0x32e
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent14[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent14[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter14:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter14 is a 64-bit counter. Returns lower 142 bits in RV142I
+        mode.
+    address:
+      type: integer
+      default: 0xB0E
+      allowed:
+      - 0xB0E
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet14[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet14[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter14h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter14h returns the upper half word in RV142I systems.
+    address:
+      type: integer
+      default: 0xB8E
+      allowed:
+      - 0xB8E
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet14h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent15:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent15 is a MXLEN-bit event register which controls mhpmcounter15.
+    address:
+      type: integer
+      default: 0x32f
+      allowed:
+      - 0x32f
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent15[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent15[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter15:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter15 is a 64-bit counter. Returns lower 152 bits in RV152I
+        mode.
+    address:
+      type: integer
+      default: 0xB0F
+      allowed:
+      - 0xB0F
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet15[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet15[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter15h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter15h returns the upper half word in RV152I systems.
+    address:
+      type: integer
+      default: 0xB8F
+      allowed:
+      - 0xB8F
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet15h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent16:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent16 is a MXLEN-bit event register which controls mhpmcounter16.
+    address:
+      type: integer
+      default: 0x330
+      allowed:
+      - 0x330
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent16[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent16[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter16:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter16 is a 64-bit counter. Returns lower 162 bits in RV162I
+        mode.
+    address:
+      type: integer
+      default: 0xB10
+      allowed:
+      - 0xB10
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet16[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet16[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter16h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter16h returns the upper half word in RV162I systems.
+    address:
+      type: integer
+      default: 0xB90
+      allowed:
+      - 0xB90
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet16h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent17:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent17 is a MXLEN-bit event register which controls mhpmcounter17.
+    address:
+      type: integer
+      default: 0x331
+      allowed:
+      - 0x331
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent17[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent17[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter17:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter17 is a 64-bit counter. Returns lower 172 bits in RV172I
+        mode.
+    address:
+      type: integer
+      default: 0xB11
+      allowed:
+      - 0xB11
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet17[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet17[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter17h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter17h returns the upper half word in RV172I systems.
+    address:
+      type: integer
+      default: 0xB91
+      allowed:
+      - 0xB91
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet17h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent18:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent18 is a MXLEN-bit event register which controls mhpmcounter18.
+    address:
+      type: integer
+      default: 0x332
+      allowed:
+      - 0x332
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent18[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent18[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter18:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter18 is a 64-bit counter. Returns lower 182 bits in RV182I
+        mode.
+    address:
+      type: integer
+      default: 0xB12
+      allowed:
+      - 0xB12
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet18[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet18[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter18h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter18h returns the upper half word in RV182I systems.
+    address:
+      type: integer
+      default: 0xB92
+      allowed:
+      - 0xB92
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet18h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent19:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent19 is a MXLEN-bit event register which controls mhpmcounter19.
+    address:
+      type: integer
+      default: 0x333
+      allowed:
+      - 0x333
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent19[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent19[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter19:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter19 is a 64-bit counter. Returns lower 192 bits in RV192I
+        mode.
+    address:
+      type: integer
+      default: 0xB13
+      allowed:
+      - 0xB13
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet19[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet19[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter19h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter19h returns the upper half word in RV192I systems.
+    address:
+      type: integer
+      default: 0xB93
+      allowed:
+      - 0xB93
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet19h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent20:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent20 is a MXLEN-bit event register which controls mhpmcounter20.
+    address:
+      type: integer
+      default: 0x334
+      allowed:
+      - 0x334
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent20[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent20[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter20:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter20 is a 64-bit counter. Returns lower 202 bits in RV202I
+        mode.
+    address:
+      type: integer
+      default: 0xB14
+      allowed:
+      - 0xB14
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet20[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet20[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter20h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter20h returns the upper half word in RV202I systems.
+    address:
+      type: integer
+      default: 0xB94
+      allowed:
+      - 0xB94
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet20h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent21:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent21 is a MXLEN-bit event register which controls mhpmcounter21.
+    address:
+      type: integer
+      default: 0x335
+      allowed:
+      - 0x335
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent21[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent21[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter21:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter21 is a 64-bit counter. Returns lower 212 bits in RV212I
+        mode.
+    address:
+      type: integer
+      default: 0xB15
+      allowed:
+      - 0xB15
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet21[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet21[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter21h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter21h returns the upper half word in RV212I systems.
+    address:
+      type: integer
+      default: 0xB95
+      allowed:
+      - 0xB95
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet21h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent22:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent22 is a MXLEN-bit event register which controls mhpmcounter22.
+    address:
+      type: integer
+      default: 0x336
+      allowed:
+      - 0x336
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent22[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent22[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter22:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter22 is a 64-bit counter. Returns lower 222 bits in RV222I
+        mode.
+    address:
+      type: integer
+      default: 0xB16
+      allowed:
+      - 0xB16
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet22[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet22[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter22h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter22h returns the upper half word in RV222I systems.
+    address:
+      type: integer
+      default: 0xB96
+      allowed:
+      - 0xB96
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet22h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent23:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent23 is a MXLEN-bit event register which controls mhpmcounter23.
+    address:
+      type: integer
+      default: 0x337
+      allowed:
+      - 0x337
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent23[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent23[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter23:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter23 is a 64-bit counter. Returns lower 232 bits in RV232I
+        mode.
+    address:
+      type: integer
+      default: 0xB17
+      allowed:
+      - 0xB17
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet23[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet23[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter23h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter23h returns the upper half word in RV232I systems.
+    address:
+      type: integer
+      default: 0xB97
+      allowed:
+      - 0xB97
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet23h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent24:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent24 is a MXLEN-bit event register which controls mhpmcounter24.
+    address:
+      type: integer
+      default: 0x338
+      allowed:
+      - 0x338
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent24[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent24[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter24:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter24 is a 64-bit counter. Returns lower 242 bits in RV242I
+        mode.
+    address:
+      type: integer
+      default: 0xB18
+      allowed:
+      - 0xB18
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet24[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet24[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter24h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter24h returns the upper half word in RV242I systems.
+    address:
+      type: integer
+      default: 0xB98
+      allowed:
+      - 0xB98
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet24h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent25:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent25 is a MXLEN-bit event register which controls mhpmcounter25.
+    address:
+      type: integer
+      default: 0x339
+      allowed:
+      - 0x339
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent25[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent25[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter25:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter25 is a 64-bit counter. Returns lower 252 bits in RV252I
+        mode.
+    address:
+      type: integer
+      default: 0xB19
+      allowed:
+      - 0xB19
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet25[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet25[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter25h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter25h returns the upper half word in RV252I systems.
+    address:
+      type: integer
+      default: 0xB99
+      allowed:
+      - 0xB99
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet25h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent26:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent26 is a MXLEN-bit event register which controls mhpmcounter26.
+    address:
+      type: integer
+      default: 0x33a
+      allowed:
+      - 0x33a
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent26[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent26[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter26:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter26 is a 64-bit counter. Returns lower 262 bits in RV262I
+        mode.
+    address:
+      type: integer
+      default: 0xB1A
+      allowed:
+      - 0xB1A
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet26[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet26[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter26h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter26h returns the upper half word in RV262I systems.
+    address:
+      type: integer
+      default: 0xB9A
+      allowed:
+      - 0xB9A
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet26h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent27:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent27 is a MXLEN-bit event register which controls mhpmcounter27.
+    address:
+      type: integer
+      default: 0x33b
+      allowed:
+      - 0x33b
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent27[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent27[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter27:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter27 is a 64-bit counter. Returns lower 272 bits in RV272I
+        mode.
+    address:
+      type: integer
+      default: 0xB1B
+      allowed:
+      - 0xB1B
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet27[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet27[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter27h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter27h returns the upper half word in RV272I systems.
+    address:
+      type: integer
+      default: 0xB9B
+      allowed:
+      - 0xB9B
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet27h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent28:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent28 is a MXLEN-bit event register which controls mhpmcounter28.
+    address:
+      type: integer
+      default: 0x33c
+      allowed:
+      - 0x33c
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent28[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent28[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter28:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter28 is a 64-bit counter. Returns lower 282 bits in RV282I
+        mode.
+    address:
+      type: integer
+      default: 0xB1C
+      allowed:
+      - 0xB1C
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet28[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet28[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter28h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter28h returns the upper half word in RV282I systems.
+    address:
+      type: integer
+      default: 0xB9C
+      allowed:
+      - 0xB9C
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet28h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent29:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent29 is a MXLEN-bit event register which controls mhpmcounter29.
+    address:
+      type: integer
+      default: 0x33d
+      allowed:
+      - 0x33d
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent29[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent29[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter29:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter29 is a 64-bit counter. Returns lower 292 bits in RV292I
+        mode.
+    address:
+      type: integer
+      default: 0xB1D
+      allowed:
+      - 0xB1D
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet29[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet29[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter29h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter29h returns the upper half word in RV292I systems.
+    address:
+      type: integer
+      default: 0xB9D
+      allowed:
+      - 0xB9D
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet29h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent30:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent30 is a MXLEN-bit event register which controls mhpmcounter30.
+    address:
+      type: integer
+      default: 0x33e
+      allowed:
+      - 0x33e
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent30[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent30[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter30:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter30 is a 64-bit counter. Returns lower 302 bits in RV302I
+        mode.
+    address:
+      type: integer
+      default: 0xB1E
+      allowed:
+      - 0xB1E
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet30[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet30[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter30h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter30h returns the upper half word in RV302I systems.
+    address:
+      type: integer
+      default: 0xB9E
+      allowed:
+      - 0xB9E
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet30h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
+mhpmevent31:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmevent31 is a MXLEN-bit event register which controls mhpmcounter31.
+    address:
+      type: integer
+      default: 0x33f
+      allowed:
+      - 0x33f
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent31[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent31[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+
+mhpmcounter31:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter31 is a 64-bit counter. Returns lower 312 bits in RV312I
+        mode.
+    address:
+      type: integer
+      default: 0xB1F
+      allowed:
+      - 0xB1F
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet31[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          check_with: rv64_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet31[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+mhpmcounter31h:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: The mhpmcounter31h returns the upper half word in RV312I systems.
+    address:
+      type: integer
+      default: 0xB9F
+      allowed:
+      - 0xB9F
+    priv_mode:
+      type: string
+      allowed:
+      - M
+      default: M
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        implemented:
+          type: boolean
+          default: true
+          check_with: rv32_check
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmcountet31h[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+      default:
+        implemented: false
+    rv64:
+      type: dict
+      schema:
+        implemented:
+          default: true
+          
+      default:
+        implemented: false
+
 sedeleg:
   type: dict
   schema:
