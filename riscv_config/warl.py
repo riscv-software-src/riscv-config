@@ -1,6 +1,5 @@
 import re
 import os
-import yaml
 
 
 class warl_interpreter():
@@ -450,19 +449,3 @@ class warl_interpreter():
             return o
         else:
             return a
-
-
-#To check if the given functions work properly
-'''with open(r'{}/examples/rv64i_isa.yaml'.format(os.getcwd())) as file:
-        load=yaml.load(file, Loader=yaml.FullLoader)['mtvec']
-        mtvec_base = warl_interpreter(load['rv64']['base']['type']['WARL'])
-        value=load['reset-val']
-        mtvec_base.dependencies()
-        print(mtvec_base.islegal(hex(value)[2:],[0]))
-        print(mtvec_base.islegal("20000000",[0])," (islegal)")
-        print(mtvec_base.islegal("20000000",[1])," (islegal)")
-        print(mtvec_base.islegal("30000c10",[1])," (islegal)")
-        print(mtvec_base.legal([0])," (legal)")
-        print(mtvec_base.update("20004000","20006a1",[1])," (update)")
-        print(mtvec_base.update("20000000","4006091",[1])," (update)")
-'''

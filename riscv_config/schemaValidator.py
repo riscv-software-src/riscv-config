@@ -3,7 +3,6 @@ from riscv_config.warl import warl_interpreter
 import riscv_config.constants as constants
 import re
 import os
-import yaml
 
 
 class schemaValidator(Validator):
