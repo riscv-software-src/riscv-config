@@ -71,7 +71,7 @@ nmi:
 # 
 # .. code-block:: yaml
 #
-#   mcause:
+#   mcause_non_standard:
 #      implemented: True
 #      value: [16,17,20]
 #
@@ -90,13 +90,13 @@ mcause_non_standard:
     implemented: True
 
 ###
-#mtval
+#mtval_condition_writes
 #-----
 #
-# **Description**: Stores the fields for *mtval* register.
+# **Description**: Stores the fields for *mtval_condition_writes* register.
 #
 #       * implemented: A Boolean value indicating whether the register is implemented.      
-#       * behaviour: A dictionary type to specify which of the exceptions modify the mtval reg
+#       * behaviour: A dictionary type to specify which of the exceptions modify the mtval_condition_writes reg
 #
 #           - e0: A string type describing the behaviour of exception 0.
 #           - e1: A string type describing the behaviour of exception 1.
@@ -124,7 +124,7 @@ mcause_non_standard:
 #
 #       - None
 
-mtval:
+mtval_condition_writes:
   type: dict
   schema:
     implemented:
@@ -165,81 +165,9 @@ mtval:
           type: string
   default:
     implemented: False
-    
-mhpmevent3: &id001
-  type: dict
-  schema:
-    bitmask:
-      type: dict
-      excludes: ['range']
-      schema:
-        mask:
-          type: integer
-          default: 0x00
-          check_with: max_length
-        default:
-          type: integer
-          default: 0x00
-          check_with: max_length
-    range:
-      type: dict
-      schema: 
-        rangelist:
-          type: list
-          schema:
-            type: list
-            schema:
-              type: integer
-          check_with: rangecheck
-        mode:
-          type: string
-          allowed: ["Unchanged","Nextup","Nextdown","Nearup","Neardown","Largest","Smallest","Addr"]
-          default: "Unchanged"
-    is_hardwired:
-      type: boolean
-      default: False
-    hardwired_val:
-      type: integer
-      default: 0
-    implemented:
-      type: boolean
-      default: True
-      readonly: True
-  default:
-    is_hardwired: True
-    hardwired_val: 0
-
-mhpmevent4: *id001
-mhpmevent5: *id001
-mhpmevent6: *id001
-mhpmevent7: *id001
-mhpmevent8: *id001
-mhpmevent9: *id001
-mhpmevent10: *id001
-mhpmevent11: *id001
-mhpmevent12: *id001
-mhpmevent13: *id001
-mhpmevent14: *id001
-mhpmevent15: *id001
-mhpmevent16: *id001
-mhpmevent17: *id001
-mhpmevent18: *id001
-mhpmevent19: *id001
-mhpmevent20: *id001
-mhpmevent21: *id001
-mhpmevent22: *id001
-mhpmevent23: *id001
-mhpmevent24: *id001
-mhpmevent25: *id001
-mhpmevent26: *id001
-mhpmevent27: *id001
-mhpmevent28: *id001
-mhpmevent29: *id001
-mhpmevent30: *id001
-mhpmevent31: *id001
 
 ###
-#scause
+#scause_non_standard
 #------
 #
 # **Description**: Stores the fields for the *scause* register.
@@ -251,7 +179,7 @@ mhpmevent31: *id001
 # 
 # .. code-block:: yaml
 #
-#   scause:
+#   scause_non_standard:
 #      implemented: True
 #      value: [16,17,20]
 #
@@ -259,7 +187,7 @@ mhpmevent31: *id001
 #
 #       - None
 
-scause:
+scause_non_standard:
   type: dict
   schema:
     implemented:
@@ -271,13 +199,13 @@ scause:
     implemented: False
   
 ###
-#stval
+#stval_condition_writes
 #-----
 #
-# **Description**: Stores the fields for *stval* register.
+# **Description**: Stores the fields for *stval_condition_writes* register.
 #
 #       - implemented: A Boolean value indicating whether the field is implemented.   
-#       - behaviour: A dictionary type to specify which of the exceptions modify the stval reg
+#       - behaviour: A dictionary type to specify which of the exceptions modify the stval_condition_writes reg
 #
 #           - e0: A string type describing the behaviour of exception 0.
 #           - e1: A string type describing the behaviour of exception 1.
@@ -305,7 +233,7 @@ scause:
 #
 #       - None
 
-stval:
+stval_condition_writes:
   type: dict
   schema:
     implemented:

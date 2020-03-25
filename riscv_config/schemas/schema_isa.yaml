@@ -199,7 +199,6 @@ misa:
       default: 0
       check_with:
       - max_length
-      - misa_reset_values
     rv32:
       type: dict
       schema:
@@ -1979,7 +1978,6 @@ mvendorid:
             - 0
       default:
         implemented: false
-  check_with: ro_reset_check
 marchid:
   type: dict
   schema:
@@ -2079,7 +2077,6 @@ marchid:
             - 0
       default:
         implemented: false
-  check_with: ro_reset_check
 mimpid:
   type: dict
   schema:
@@ -2178,7 +2175,6 @@ mimpid:
             - 0
       default:
         implemented: false
-  check_with: ro_reset_check
 mhartid:
   type: dict
   schema:
@@ -2274,11 +2270,9 @@ mhartid:
             - 0
       default:
         implemented: false
-  check_with: ro_reset_check
 mtvec:
   type: dict
   check_with:
-  - mtvec_fields
   - legal_check
   schema:
     description:

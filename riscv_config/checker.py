@@ -62,32 +62,6 @@ def delegset():
     return temp
 
 
-def mepcset():
-    return {
-        'range': {
-            'rangelist': [[0, int("FFFFFFFF", 16)]],
-            'mode': "Unchanged"
-        }
-    }
-
-
-def xtvecset():
-    return {
-        'BASE': {
-            'range': {
-                'rangelist': [[0, int("3FFFFFFF", 16)]],
-                'mode': "Unchanged"
-            }
-        },
-        'MODE': {
-            'range': {
-                'rangelist': [[0]],
-                'mode': "Unchanged"
-            }
-        }
-    }
-
-
 def countset():
     global inp_yaml
     temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
@@ -97,14 +71,6 @@ def countset():
         if 64 in inp_yaml['supported_xlen']:
             temp['rv64']['implemented'] = True
     return temp
-
-def satpset():
-    return {'MODE': {'range': {'rangelist': [[0]]}}}
-
-
-def xlenset():
-    return findxlen()
-
 
 def regset():
     global inp_yaml
@@ -401,7 +367,7 @@ def get_fields(node,bitwidth):
         fields.append(bits)
         return fields
 
-def fill_fields(spec):
+def check_reset_fill_fields(spec):
     errors = {}
     for node in spec:
         if isinstance(spec[node],dict):
@@ -455,10 +421,10 @@ def fill_fields(spec):
                         keys = desc.keys()
                         if 'wlrl' in keys:
                             if test_val not in desc['wlrl']:
-                                self._error(field,"Reset value for "+field+" doesnt match the 'wlrl' description for the register.")
+                                self._error(field,"Reset value for "+field+" doesnt match the 'wlrl' description.")
                         elif 'ro_constant' in keys:
                             if test_val not in desc['ro_constant']:
-                                error.append("Reset value for "+field+" doesnt match the 'ro_constant' description for the register.")
+                                error.append("Reset value for "+field+" doesnt match the 'ro_constant' description.")
                         elif 'ro_variable' in keys:
                             pass
                         elif "warl" in keys:
@@ -474,7 +440,7 @@ def fill_fields(spec):
                                     dep_vals.append(int(bin_str[bit_len-1-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']:bit_len-spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']],base = 2)
 )
                             if(warl.islegal(hex(test_val)[2:],dep_vals)!=True):
-                                error.append("Reset value for "+field+" doesnt match the 'warl' description for the register.")
+                                error.append("Reset value for "+field+" doesnt match the 'warl' description.")
                 if error:
                     errors[node] = error
     return spec,errors
@@ -546,7 +512,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
         error_list = validator.errors
         raise ValidationError("Error in " + foo + ".", error_list)
     logger.info("Initiating post processing and reset value checks.")
-    normalized,errors = fill_fields(normalized)
+    normalized,errors = check_reset_fill_fields(normalized)
     if errors:
         raise ValidationError("Error in "+ foo + ".", errors)
     file_name = os.path.split(foo)
