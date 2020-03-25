@@ -86,9 +86,10 @@ class schemaValidator(Validator):
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
-                self._error(field, "Z is not supported in the User Spec given version.")
+                self._error(
+                    field, "Z is not supported in the User Spec given version.")
         else:
-                self._error(field, "Neither of E or I extensions are present")
+            self._error(field, "Neither of E or I extensions are present")
         #ISA encoding for future use.
         for x in "ABCDEFHIJLMNPQSTUVX":
             if (x in ext):
@@ -134,52 +135,57 @@ class schemaValidator(Validator):
                 if not (val < maxv):
                     self._error(field, "Invalid values.")
 
-
-    def _check_with_s_check(self,field,value):
-        s=18
+    def _check_with_s_check(self, field, value):
+        s = 18
         if rv64 and value == True:
-                mxl = format(extensions, '#066b')
-                if (mxl[65-s:66-s] != '1'):
-                         self._error(field ,"S is not present(64)")
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - s:66 - s] != '1'):
+                self._error(field, "S is not present(64)")
 
         elif rv32 and value == True:
-                mxl = format(extensions, '#034b')
-                if (mxl[33-s:34-s] != '1'):
-                        self._error(field ,"S is not present(32)")
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - s:34 - s] != '1'):
+                self._error(field, "S is not present(32)")
 
-    def _check_with_n_check(self,field,value):
-        n=13
+    def _check_with_n_check(self, field, value):
+        n = 13
         if rv64:
-                mxl = format(extensions, '#066b')
-                if (mxl[65-n:66-n] != '1'):
-                         self._error(field,"N is not present")
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - n:66 - n] != '1'):
+                self._error(field, "N is not present")
 
         elif rv32:
-                mxl = format(extensions, '#034b')
-                if (mxl[33-n:34-n] != '1'):
-                        self._error(field,"N is not present")
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - n:34 - n] != '1'):
+                self._error(field, "N is not present")
 
-    def _check_with_mdeleg_checks(self,field,value):
+    def _check_with_mdeleg_checks(self, field, value):
         if rv32:
-                if(value['rv32']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
-                        value['rv32']['implemented'] = False
-                        self._error(field, "S and N are not present(32)")
+            if (value['rv32']['implemented'] == True and
+                (not 'S' in self.document['ISA'] and
+                 not 'N' in self.document['ISA'])):
+                value['rv32']['implemented'] = False
+                self._error(field, "S and N are not present(32)")
 
         if rv64:
-                if(value['rv64']['implemented'] == True and (not 'S' in self.document['ISA'] and not 'N' in self.document['ISA'])):
-                        value['rv64']['implemented'] = False
-                        self._error(field, "S and N are not present(64)")
+            if (value['rv64']['implemented'] == True and
+                (not 'S' in self.document['ISA'] and
+                 not 'N' in self.document['ISA'])):
+                value['rv64']['implemented'] = False
+                self._error(field, "S and N are not present(64)")
 
-    def _check_with_ndeleg_checks(self,field,value):
+    def _check_with_ndeleg_checks(self, field, value):
         if rv32:
-                if(value['rv32']['implemented'] == True and not 'N' in self.document['ISA']):
-                        value['rv32']['implemented'] = False
-                        self._error(field, "N is not present(32)")
+            if (value['rv32']['implemented'] == True and
+                    not 'N' in self.document['ISA']):
+                value['rv32']['implemented'] = False
+                self._error(field, "N is not present(32)")
 
         if rv64:
-                if(value['rv64']['implemented'] == True and not 'N' in self.document['ISA']):
-                        value['rv64']['implemented'] = False
-                        self._error(field, "N is not present(64)")
+            if (value['rv64']['implemented'] == True and
+                    not 'N' in self.document['ISA']):
+                value['rv64']['implemented'] = False
+                self._error(field, "N is not present(64)")
 
     def _check_with_xcause_check(self, field, value):
         '''Function to verify the inputs for mcause.'''
@@ -188,88 +194,87 @@ class schemaValidator(Validator):
                 field, "Invalid platform specific values for exception cause.")
 
     def _check_with_wr_illegal(self, field, value):
-        pr=0
-        pri=0
+        pr = 0
+        pri = 0
         if 'warl' not in value.keys():
             return
         for i in range(len(value['warl']['legal'])):
-                if ' -> ' in value['warl']['legal'][i]:
-                        pr=1
-                        break
-        if value['warl']['wr_illegal']!=None:
-                for i in range(len(value['warl']['wr_illegal'])):
-                        split=re.findall(r'^\s*\[(\d)]\s*',value['warl']['wr_illegal'][i])
-                        if split != []:
-                                pri=1
-                                break
-        if value['warl']['dependency_fields']!=[]:
-                l=(len(value['warl']['legal']))
-                f=0
-                for i in range(l):
-                        if "bitmask" in value['warl']['legal'][i]:
-                                f=1
-                                splits=re.findall(r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.format("bitmask"),value['warl']['legal'][i])
-                                if value['warl']['wr_illegal']!=None:
-                                        for j in range(len(value['warl']['wr_illegal'])):
-                                                if splits[0] in value['warl']['wr_illegal'][j]:
-                                                        self._error(field, "illegal value does not exist for the given mode{}(bitmask)".format(splits[0]))
-                if f==0:
-                        pass
+            if ' -> ' in value['warl']['legal'][i]:
+                pr = 1
+                break
+        if value['warl']['wr_illegal'] != None:
+            for i in range(len(value['warl']['wr_illegal'])):
+                split = re.findall(r'^\s*\[(\d)]\s*',
+                                   value['warl']['wr_illegal'][i])
+                if split != []:
+                    pri = 1
+                    break
+        if value['warl']['dependency_fields'] != []:
+            l = (len(value['warl']['legal']))
+            f = 0
+            for i in range(l):
+                if "bitmask" in value['warl']['legal'][i]:
+                    f = 1
+                    splits = re.findall(
+                        r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.
+                        format("bitmask"), value['warl']['legal'][i])
+                    if value['warl']['wr_illegal'] != None:
+                        for j in range(len(value['warl']['wr_illegal'])):
+                            if splits[0] in value['warl']['wr_illegal'][j]:
+                                self._error(
+                                    field,
+                                    "illegal value does not exist for the given mode{}(bitmask)"
+                                    .format(splits[0]))
+            if f == 0:
+                pass
 
-        elif value['warl']['dependency_fields']==[] and pr==1 :
-                self._error(field,"no mode must exist(legal)")
-        elif value['warl']['dependency_fields']==[] and len(value['warl']['legal'])!=1:
-                self._error(field, "There should be only one legal value")
-        elif value['warl']['dependency_fields']==[] and pri==1 :
-                self._error(field,"no mode must exist(illlegal)")
-        elif  value['warl']['dependency_fields']==[] and len(value['warl']['legal'])==1 and value['warl']['wr_illegal']!=None and "bitmask" in value['warl']['legal'][0]:
-                self._error(field,"illegal value cannot exist")
+        elif value['warl']['dependency_fields'] == [] and pr == 1:
+            self._error(field, "no mode must exist(legal)")
+        elif value['warl']['dependency_fields'] == [] and len(
+                value['warl']['legal']) != 1:
+            self._error(field, "There should be only one legal value")
+        elif value['warl']['dependency_fields'] == [] and pri == 1:
+            self._error(field, "no mode must exist(illlegal)")
+        elif value['warl']['dependency_fields'] == [] and len(
+                value['warl']['legal']
+        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
+                'warl']['legal'][0]:
+            self._error(field, "illegal value cannot exist")
 
     def _check_with_key_check(self, field, value):
-        if value['base']['type']['warl']['dependency_fields']!=[]:
-                par=re.split("::",value['base']['type']['warl']['dependency_fields'][0])
-                if not par[1] in value:
-                        self._error(field," {} not present".format(par[1]))
+        if value['base']['type']['warl']['dependency_fields'] != []:
+            par = re.split(
+                "::", value['base']['type']['warl']['dependency_fields'][0])
+            if not par[1] in value:
+                self._error(field, " {} not present".format(par[1]))
 
     def _check_with_medeleg_reset(self, field, value):
         global xlen
-        s=format(value,'#{}b'.format(xlen[0]+2))
-        if (s[-11:-10])!='0' and value>=int("0x400",16):
-                self._error(field," 11th bit must be hardwired to 0")
+        s = format(value, '#{}b'.format(xlen[0] + 2))
+        if (s[-11:-10]) != '0' and value >= int("0x400", 16):
+            self._error(field, " 11th bit must be hardwired to 0")
+
     def _check_with_sedeleg_reset(self, field, value):
         global xlen
-        s=format(value,'#{}b'.format(xlen[0]+2))
-        if (s[-11:-8])!='000' and value>=int("400",16):
-                self._error(field, " 11,10,9 bits should be hardwired to 0")
+        s = format(value, '#{}b'.format(xlen[0] + 2))
+        if (s[-11:-8]) != '000' and value >= int("400", 16):
+            self._error(field, " 11,10,9 bits should be hardwired to 0")
 
-
-    def _check_with_legal_check(self,field,value):
+    def _check_with_legal_check(self, field, value):
         global xlen
-        l=[]
-        warl=[]
-        if xlen[0]==32:
-                xl=32
-        elif xlen[0]==64:
-                xl=64
-        elif xlen[0]==128:
-                xl=128
+        l = []
+        warl = []
+        if xlen[0] == 32:
+            xl = 32
+        elif xlen[0] == 64:
+            xl = 64
+        elif xlen[0] == 128:
+            xl = 128
         for i in value['rv{}'.format(xl)].keys():
-                l.append(i)
+            l.append(i)
         if "warl" in value['rv{}'.format(xl)][l[1]]['type']:
-                warl=(warl_interpreter(value['rv{}'.format(xl)][l[1]]['type']['warl']))
-                warl.dependencies()
-                if(warl.islegal(hex(value['reset-val'])[2:],[1])!=True):
-                        self._error(field, "Illegal reset value")
-
-
-
-
-
-
-
-
-
-
-
-
-
+            warl = (warl_interpreter(
+                value['rv{}'.format(xl)][l[1]]['type']['warl']))
+            warl.dependencies()
+            if (warl.islegal(hex(value['reset-val'])[2:], [1]) != True):
+                self._error(field, "Illegal reset value")

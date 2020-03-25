@@ -1,9 +1,11 @@
 class ValidationError(Exception):
-    def __init__(self,message,errors):
+
+    def __init__(self, message, errors):
         super().__init__(message)
-        self.message=message
-        self.errors=errors
-    def __errPrint__(self,foo, space=' '):
+        self.message = message
+        self.errors = errors
+
+    def __errPrint__(self, foo, space=' '):
         '''
             Function to petty print the error from cerberus.
         '''
@@ -16,5 +18,6 @@ class ValidationError(Exception):
                 error += str(foo[key][0])
             error += "\n"
         return error.rstrip()
+
     def __str__(self):
-        return self.message+"\n"+self.__errPrint__(self.errors)
+        return self.message + "\n" + self.__errPrint__(self.errors)
