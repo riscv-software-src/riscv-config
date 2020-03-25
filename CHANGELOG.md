@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.0.1 - 2020-03-25
+### Fixed
+- typos in quickstart doc
+- disabled deployment to repository until authentication issue is fixed.
+
 ## 2.0.0 - 2020-03-25
 ### Added
 - adding support for warl fields and support

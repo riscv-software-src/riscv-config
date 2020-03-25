@@ -2,13 +2,13 @@
 Quickstart
 ##########
 
-This doc is meant to serve as a quick-guide to setup RISCOF and perform a sample compliance check
-between ``spike`` (DUT in this case) and ``riscvOVPsim`` (Golden model in this case).
+This doc is meant to serve as a quick-guide to setup RISCV-CONFIG and perform a \
+sample validation of target specifications.
 
 Install Python Dependencies
 ===========================
 
-RISCOF requires `pip` and `python` (>=3.7) to be available on your system. If you have issues, instead of
+RISCV-CONFIG requires `pip` and `python` (>=3.7) to be available on your system. If you have issues
 installing either of these directly on your system, we suggest using a virtual environment
 like `pyenv` to make things easy.
 
@@ -42,15 +42,15 @@ Open a new terminal and create a virtual environment using the following
 .. code-block:: bash
 
   $ pyenv install 3.7.0
-  $ pyenv virtualenv 3.7.0 riscof_env
+  $ pyenv virtualenv 3.7.0 riscv_config_env
 
 
 Now you can activate this virtual environment using the following command:
 
 .. code-block:: bash
 
-  $ pyenv activate riscof_env
-  $ python ==version
+  $ pyenv activate riscv_config_env
+  $ python --version
 
 Install via PIP [users]
 =======================
@@ -62,33 +62,33 @@ performing the following steps.
 
   $ pip install riscv_config
 
-To update an already installed version of RISCOF to the latest version:
+To update an already installed version of RISCV-CONFIG to the latest version:
 
 .. code-block:: bash
 
   $ pip install -U riscv_config
 
-To checkout a specific version of riscof:
+To checkout a specific version of riscv_config:
 
 .. code-block:: bash
 
-  $ pip install riscv_config==1.x.x
+  $ pip install riscv_config--1.x.x
 
-Once you have RISCV_CONFIG installed, executing ``riscv_config ==help`` should print the following on the terminal:
+Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following on the terminal:
 
 .. code-block:: bash
 
-    riscv-config [-h] ==isa_spec YAML ==platform_spec YAML [==verbose]
+    riscv-config [-h] --isa_spec YAML --platform_spec YAML [--verbose]
 
     RISC-V Configuration Validator 
     
     optional arguments:
-      ==isa_spec YAML, -ispec YAML
+      --isa_spec YAML, -ispec YAML
                             The YAML which contains the ISA specs.
-      ==platform_spec YAML, -pspec YAML
+      --platform_spec YAML, -pspec YAML
                             The YAML which contains the Platfrorm specs.
-      ==verbose             debug | info | warning | error
-      -h, ==help            show this help message and exit
+      --verbose             debug | info | warning | error
+      -h, --help            show this help message and exit
 
 
 
@@ -105,7 +105,7 @@ performing the following steps.
   $ cd riscv_config
   $ pip3 install -r requirements.txt
 
-Executing ``python -m riscv_config.main ==help`` should display the same help message as above.
+Executing ``python -m riscv_config.main --help`` should display the same help message as above.
 
 Usage Example
 =============
