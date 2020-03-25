@@ -14,6 +14,21 @@
 #
 import os
 import sys
+import re
+
+def gen_schema_doc():
+    text = open('../../riscv_config/schemas/schema_isa.yaml','r').read()
+    rst_file = open('schema_doc.rst','w')
+    x = re.findall("^###(?:(?:\r\n|[\r\n]).+$)*",text,re.M|re.U)
+    for y in x:
+        y = y.replace('#','')
+        y = y.lstrip(' ')
+        rst_file.write(y+'\n')
+    
+    rst_file.close()
+
+gen_schema_doc()
+
 
 sys.path.insert(0, os.path.abspath('../..'))
 sys.setrecursionlimit(1500)
@@ -234,3 +249,4 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+gen_schema_doc()
