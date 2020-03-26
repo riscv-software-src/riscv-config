@@ -12,16 +12,16 @@ script:
   - cd ../
   - if [ "$TRAVIS_BRANCH" = "master" ]; then python setup.py sdist; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then python -m twine upload --username $pypiusername --password $pypipassword dist/*; fi
-    #before_deploy:
-    #  - git tag $TAGNAME
-    #deploy:
-    #  provider: releases
-    #  api_key:
-    #    secure: $github_access_token
-    #  file_glob: true
-    #  file: docs/build/latex/*.pdf
-    #  skip_cleanup: true
-    #  on:
-    #    repo: riscv/riscv-config
-    #    branch: master
-    #    tags: false
+before_deploy:
+ - git tag $TAGNAME
+deploy:
+ provider: releases
+ edge: true
+ api_key: $github_access_token
+ file_glob: true
+ file: docs/build/latex/*.pdf
+ cleanup: true
+ on:
+   repo: riscv/riscv-config
+   branch: master
+   tags: false
