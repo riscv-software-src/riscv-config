@@ -1,6 +1,8 @@
 import logging
 import os
+import sys
 import shutil
+from riscv_config import __version__ as version
 import riscv_config.checker as checker
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
@@ -13,6 +15,13 @@ def main():
     # Set up the parser
     parser = utils.riscv_config_cmdline_args()
     args = parser.parse_args()
+    if len(sys.argv) < 2:
+        parser.print_help()
+        raise SystemExit
+    if (args.version):
+        print('RISCV-CONFIG: RISC-V Configuration Validator')
+        print('Version: ' + version)
+        return 0
 
     # Set up the logger
     utils.setup_logging(args.verbose)

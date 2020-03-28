@@ -78,9 +78,10 @@ Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should p
 
 .. code-block:: bash
 
-    riscv-config [-h] --isa_spec YAML --platform_spec YAML [--verbose]
-
-    RISC-V Configuration Validator 
+    riscv_config [-h] [--version] [--isa_spec YAML] [--platform_spec YAML]
+                        [--work_dir DIR] [--verbose]
+    
+    RISC-V Configuration Validator
     
     optional arguments:
       --isa_spec YAML, -ispec YAML
@@ -88,9 +89,9 @@ Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should p
       --platform_spec YAML, -pspec YAML
                             The YAML which contains the Platfrorm specs.
       --verbose             debug | info | warning | error
+      --version, -v         Print version of RISCV-CONFIG being used
+      --work_dir DIR        The name of the work dir to dump the output files to.
       -h, --help            show this help message and exit
-
-
 
 RISCV_CONFIG for Developers
 ===========================

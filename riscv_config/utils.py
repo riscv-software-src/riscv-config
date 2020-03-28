@@ -80,24 +80,26 @@ def riscv_config_cmdline_args():
         formatter_class=SortingHelpFormatter,
         prog="riscv_config",
         description="RISC-V Configuration Validator")
+    parser.add_argument('--version',
+                        '-v',
+                        help='Print version of RISCV-CONFIG being used',
+                        action='store_true')
     parser.add_argument('--isa_spec',
                         '-ispec',
                         type=str,
                         metavar='YAML',
-                        help='The YAML which contains the ISA specs.',
-                        required=True)
+                        help='The YAML which contains the ISA specs.')
     parser.add_argument('--platform_spec',
                         '-pspec',
                         type=str,
                         metavar='YAML',
-                        help='The YAML which contains the Platfrorm specs.',
-                        required=True),
+                        help='The YAML which contains the Platfrorm specs.')
     parser.add_argument(
         '--work_dir',
         type=str,
         default="riscv_config_work",
         metavar='DIR',
-        help='The name of the work dir to dump the output files to.'),
+        help='The name of the work dir to dump the output files to.')
     parser.add_argument('--verbose',
                         action='store',
                         default='info',
