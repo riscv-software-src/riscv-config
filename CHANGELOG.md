@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.0.2 - 2020-03-28
+### Fixed
+- Redundant reset-val check for mtvec and misa registers.
+
 ## 2.0.1 - 2020-03-25
 ### Fixed
 - typos in quickstart doc
