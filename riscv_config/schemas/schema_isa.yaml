@@ -179,7 +179,6 @@ schema_node:
               type: string
 misa:
   type: dict
-  check_with: legal_check
   schema:
     description:
       type: string
@@ -2272,8 +2271,6 @@ mhartid:
         implemented: false
 mtvec:
   type: dict
-  check_with:
-  - legal_check
   schema:
     description:
       type: string

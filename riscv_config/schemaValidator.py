@@ -258,22 +258,3 @@ class schemaValidator(Validator):
         s = format(value, '#{}b'.format(xlen[0] + 2))
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
-
-    def _check_with_legal_check(self, field, value):
-        global xlen
-        l = []
-        warl = []
-        if xlen[0] == 32:
-            xl = 32
-        elif xlen[0] == 64:
-            xl = 64
-        elif xlen[0] == 128:
-            xl = 128
-        for i in value['rv{}'.format(xl)].keys():
-            l.append(i)
-        if "warl" in value['rv{}'.format(xl)][l[1]]['type']:
-            warl = (warl_interpreter(
-                value['rv{}'.format(xl)][l[1]]['type']['warl']))
-            warl.dependencies()
-            if (warl.islegal(hex(value['reset-val'])[2:], [1]) != True):
-                self._error(field, "Illegal reset value")
