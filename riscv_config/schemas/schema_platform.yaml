@@ -89,7 +89,7 @@ mtime:
   default:
     implemented: False
 
-### 
+###
 #mtimecmp
 #--------
 # 

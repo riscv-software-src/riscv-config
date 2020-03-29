@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.1.1 - 2020-03-29
+## Fixed
+- doc issue for mtimecmp
+- mimpid is now part of the default setters list
+
 ## 2.1.0 - 2020-03-29
 ## Fixed
 - Moved machine timer nodes to platform yaml.

@@ -97,6 +97,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
+    schema_yaml['mimpid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
     schema_yaml['mhartid']['default_setter'] = regsetter
     schema_yaml['mtvec']['default_setter'] = regsetter
