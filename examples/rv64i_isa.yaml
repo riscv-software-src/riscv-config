@@ -24,17 +24,6 @@ mvendorid:
     implemented: true
     type:
       ro_constant: [0xdeadbeef]
-mtime:
-  rv32:
-    implemented: false
-  rv64:
-    implemented: false
-mtimecmp:
-  rv32:
-    implemented: false
-  rv64:
-    implemented: false
-
 mtvec:
   reset-val: 0x0000000080000000
   rv64:

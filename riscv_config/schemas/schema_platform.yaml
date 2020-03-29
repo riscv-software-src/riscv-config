@@ -57,6 +57,69 @@ nmi:
       excludes: ['label']
   required: True
 
+###
+#mtime
+#-----
+#
+# **Description**: Stores the fields for memory mapped *mtime* register.
+#
+#       * implemented: A boolean field indicating that the register has been implemented.
+#       * address: A value equal to the physical address at which the register is present.
+# 
+# **Examples**: 
+# 
+# .. code-block:: yaml
+#
+#   mtime:
+#      implemented: True
+#      address: 0x458
+#
+# **Constraints**: 
+#
+#       - None
+
+mtime:
+  type: dict
+  schema:
+    address:
+      type: integer
+    implemented:
+      type: boolean
+      default: False
+  default:
+    implemented: False
+
+### 
+#mtimecmp
+#--------
+# 
+# **Description**: Stores the fields for memory mapped *mtimecmp* register.
+#
+#       * implemented: A boolean field indicating that the register has been implemented.
+#       * address: A value equal to the physical address at which the register is present.
+# 
+# **Examples**: 
+# 
+# .. code-block:: yaml
+#
+#   mtimecmp:
+#      implemented: True
+#      address: 0x458
+#
+# **Constraints**:
+#
+#       - None
+
+mtimecmp:
+  type: dict
+  schema:
+    address:
+      type: integer
+    implemented:
+      type: boolean
+      default: False
+  default:
+    implemented: False
 
 ###
 #mcause_non_standard
@@ -75,7 +138,8 @@ nmi:
 #      implemented: True
 #      value: [16,17,20]
 #
-# **Constraints**: 
+# **Constraints**:
+#
 #       - None
 
 mcause_non_standard:

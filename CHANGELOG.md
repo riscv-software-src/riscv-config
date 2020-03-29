@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.1.0 - 2020-03-29
+## Fixed
+- Moved machine timer nodes to platform yaml.
+## Added
+- `--version` option to arguments to print version and exit when specified.
+- Print help and exit when no options/arguments are specified.
+
 ## 2.0.2 - 2020-03-28
 ### Fixed
 - Redundant reset-val check for mtvec and misa registers.
