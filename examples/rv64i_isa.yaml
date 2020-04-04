@@ -3,9 +3,9 @@ supported_xlen: [64]
 misa:
   reset-val: 0x8000000000000100
   rv32:
-    implemented: false
+    accessible: false
   rv64:
-    implemented: true
+    accessible: true
     mxl:
       implemented: true
       type:
@@ -17,17 +17,15 @@ misa:
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
-    implemented: false
-    type:
-      ro_constant: [0xdeadbeef]
+    accessible: false
   rv64:
-    implemented: true
+    accessible: true
     type:
       ro_constant: [0xdeadbeef]
 mtvec:
   reset-val: 0x0000000080000000
   rv64:
-    implemented: true
+    accessible: true
     base:
       implemented: true
       type:                             
@@ -50,29 +48,3 @@ mtvec:
             - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
           wr_illegal:
             - "Unchanged"
-medeleg:
-  reset-val: 0x800  
-  rv32:
-     implemented: false
-  rv64:
-     implemented: false
-                
-mideleg:
-  rv32:
-     implemented: false
-  
-  rv64:
-     implemented: false
-   
-sedeleg: 
-  reset-val: 0x800
-  rv32:
-     implemented: false
-  rv64:
-     implemented: false
-
-sideleg:
-  rv32:
-     implemented: false
-  rv64:
-     implemented: false

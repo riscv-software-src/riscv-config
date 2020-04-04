@@ -159,7 +159,8 @@ schema_node:
   type: dict
   allow_unknown: false
   noneof:
-  - schema:
+  -
+    schema:
       warl: &id001
         type: dict
         schema:
@@ -201,12 +202,6 @@ misa:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
-          - cannot_be_false_rv32
         fields:
           type: list
           default: []
@@ -236,20 +231,23 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
-              default:
-                implemented: false
+          default:
+            implemented: false
         extensions:
           type: dict
           schema:
@@ -277,31 +275,34 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
-      default:
-        implemented: false
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
-          - rv64_check
-          - cannot_be_false_rv64
+          - rv32_check
+          - cannot_be_false_rv32
+      default:
+        accessible: false
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -331,17 +332,20 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -372,29 +376,38 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
       default:
-        implemented: false
+        accessible: false
 mstatus:
   type: dict
   schema:
     description:
       type: string
-      default: "The mstatus register keeps track of and controls the hart\u2019s current\
-        \ operating state."
+      default: The mstatus register keeps track of and controls the hart’s current
+        operating state.
     address:
       type: integer
       default: 768
@@ -411,10 +424,6 @@ mstatus:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -444,17 +453,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -484,17 +496,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -524,17 +539,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -564,17 +582,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -605,17 +626,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -646,17 +670,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -686,17 +713,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -726,17 +756,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -767,17 +800,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -808,17 +844,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -849,17 +888,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -890,17 +932,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -930,17 +975,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -971,17 +1019,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1011,17 +1062,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1051,17 +1105,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1101,15 +1158,15 @@ mstatus:
                 - 1
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv32_check
       default:
-        implemented: true
+        accessible: true
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -1139,17 +1196,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1179,17 +1239,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1219,17 +1282,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1259,17 +1325,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1300,17 +1369,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1341,17 +1413,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1381,17 +1456,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1421,17 +1499,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1462,17 +1543,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1503,17 +1587,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1544,17 +1631,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1585,17 +1675,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1625,17 +1718,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1666,17 +1762,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1706,17 +1805,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1746,17 +1848,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1786,17 +1891,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1826,17 +1934,20 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1876,8 +1987,12 @@ mstatus:
                 - 1
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv64_check
       default:
-        implemented: true
+        accessible: true
 mvendorid:
   type: dict
   schema:
@@ -1903,12 +2018,6 @@ mvendorid:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
-          - cannot_be_false_rv32
         fields:
           type: list
           default: []
@@ -1937,16 +2046,17 @@ mvendorid:
           default:
             ro_constant:
             - 0
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv32_check
+          - cannot_be_false_rv32
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with:
-          - rv64_check
-          - cannot_be_false_rv64
         fields:
           type: list
           default: []
@@ -1975,8 +2085,13 @@ mvendorid:
           default:
             ro_constant:
             - 0
+        accessible:
+          default: true
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
       default:
-        implemented: false
+        accessible: false
 marchid:
   type: dict
   schema:
@@ -2001,12 +2116,6 @@ marchid:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
-          - cannot_be_false_rv32
         fields:
           type: list
           default: []
@@ -2035,17 +2144,17 @@ marchid:
           default:
             ro_constant:
             - 0
-      default:
-        implemented: false
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
-          - rv64_check
-          - cannot_be_false_rv64
+          - rv32_check
+          - cannot_be_false_rv32
+      default:
+        accessible: false
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -2074,8 +2183,14 @@ marchid:
           default:
             ro_constant:
             - 0
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
       default:
-        implemented: false
+        accessible: false
 mimpid:
   type: dict
   schema:
@@ -2099,12 +2214,6 @@ mimpid:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
-          - cannot_be_false_rv32
         fields:
           type: list
           default: []
@@ -2133,17 +2242,17 @@ mimpid:
           default:
             ro_constant:
             - 0
-      default:
-        implemented: false
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
-          - rv64_check
-          - cannot_be_false_rv64
+          - rv32_check
+          - cannot_be_false_rv32
+      default:
+        accessible: false
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -2172,8 +2281,14 @@ mimpid:
           default:
             ro_constant:
             - 0
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
       default:
-        implemented: false
+        accessible: false
 mhartid:
   type: dict
   schema:
@@ -2198,10 +2313,6 @@ mhartid:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -2230,15 +2341,15 @@ mhartid:
           default:
             ro_constant:
             - 0
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -2267,8 +2378,12 @@ mhartid:
           default:
             ro_constant:
             - 0
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mtvec:
   type: dict
   schema:
@@ -2292,11 +2407,6 @@ mtvec:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          check_with:
-          - rv32_check
-          - cannot_be_false_rv32
         fields:
           type: list
           default: []
@@ -2327,17 +2437,20 @@ mtvec:
             type:
               type: dict
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 1073741823
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
         mode:
           type: dict
@@ -2366,28 +2479,31 @@ mtvec:
             type:
               type: dict
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 1
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
+        accessible:
+          type: boolean
+          check_with:
+          - rv32_check
+          - cannot_be_false_rv32
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          check_with:
-          - rv64_check
-          - cannot_be_false_rv64
         fields:
           type: list
           default: []
@@ -2419,17 +2535,20 @@ mtvec:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -2460,20 +2579,28 @@ mtvec:
             type:
               type: dict
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 1
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
+        accessible:
+          type: boolean
+          check_with:
+          - rv64_check
+          - cannot_be_false_rv64
       default:
-        implemented: false
+        accessible: false
 mideleg:
   type: dict
   schema:
@@ -2496,11 +2623,6 @@ mideleg:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
         fields:
           type: list
           default: []
@@ -2521,28 +2643,31 @@ mideleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
-      default:
-        implemented: false
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
-          - rv64_check
+          - rv32_check
+      default:
+        accessible: false
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -2563,20 +2688,28 @@ mideleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv64_check
       default:
-        implemented: false
+        accessible: false
   check_with: mdeleg_checks
 medeleg:
   type: dict
@@ -2603,11 +2736,6 @@ medeleg:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with:
-          - rv32_check
         fields:
           type: list
           default: []
@@ -2628,28 +2756,31 @@ medeleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
-      default:
-        implemented: false
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
-          - rv64_check
+          - rv32_check
+      default:
+        accessible: false
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -2670,20 +2801,28 @@ medeleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
+        accessible:
+          type: boolean
+          default: true
+          check_with:
+          - rv64_check
       default:
-        implemented: false
+        accessible: false
   check_with: mdeleg_checks
 mip:
   type: dict
@@ -2708,10 +2847,6 @@ mip:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -2741,17 +2876,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -2781,17 +2919,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -2858,17 +2999,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -2898,17 +3042,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -2975,17 +3122,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3058,14 +3208,14 @@ mip:
                 - 1
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv32_check
       required: true
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -3095,17 +3245,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3135,17 +3288,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3212,17 +3368,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3252,17 +3411,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3329,17 +3491,20 @@ mip:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3412,6 +3577,10 @@ mip:
                 - 1
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv64_check
 mie:
   type: dict
   schema:
@@ -3435,10 +3604,6 @@ mie:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -3468,17 +3633,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3508,17 +3676,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3580,17 +3751,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3620,17 +3794,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3692,17 +3869,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3770,14 +3950,14 @@ mie:
                 ro_variable: true
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv32_check
       required: true
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -3807,17 +3987,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3847,17 +4030,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3919,17 +4105,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -3959,17 +4148,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -4031,17 +4223,20 @@ mie:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -4109,6 +4304,10 @@ mie:
                 ro_variable: true
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv64_check
       required: true
   required: true
 mscratch:
@@ -4135,10 +4334,6 @@ mscratch:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -4159,33 +4354,37 @@ mscratch:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mscratch[31:0] in [0x00000000:0xFFFFFFFF]'
+              - mscratch[31:0] in [0x00000000:0xFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4206,28 +4405,34 @@ mscratch:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              - mscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
 
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mepc:
   type: dict
   schema:
@@ -4252,10 +4457,6 @@ mepc:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -4276,35 +4477,38 @@ mepc:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mepc[31:0] in [0x00000000:0xFFFFFFFF]'
+              - mepc[31:0] in [0x00000000:0xFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
 
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4325,29 +4529,35 @@ mepc:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mepc[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              - mepc[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
 
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mtval:
   type: dict
   schema:
@@ -4372,10 +4582,6 @@ mtval:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -4396,34 +4602,38 @@ mtval:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mtval[31:0] in [0x00000000:0xFFFFFFFF]'
+              - mtval[31:0] in [0x00000000:0xFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
 
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4444,28 +4654,34 @@ mtval:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mtval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]'
+              - mtval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
 
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
   required: true
 
 mcause:
@@ -4490,98 +4706,97 @@ mcause:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        interrupt:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Indicates whether the trap was due to an interrupt.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 31
+              allowed:
+              - 31
+            lsb:
+              type: integer
+              default: 31
+              allowed:
+              - 31
+            implemented:
+              type: boolean
+              default: true
+              allowed:
+              - true
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              -
+                schema:
+                  ro_constant:
+                    type: list
+                    schema:
+                      type: integer
+                      max: 4611686018427387903
+                    maxlength: 1
+              -
+                schema:
+                  ro_variable:
+                    type: boolean
+              -
+                schema:
+                  warl: *id001
+          default:
+            implemented: true
+        exception_code:
+          type: dict
+          schema:
+            description:
+              type: string
+              default: Encodes the exception code.
+            shadow:
+              type: string
+              default: none
+            msb:
+              type: integer
+              default: 30
+              allowed:
+              - 30
+            lsb:
+              type: integer
+              default: 0
+              allowed:
+              - 0
+            implemented:
+              type: boolean
+              default: true
+              allowed:
+              - true
+            type:
+              type: dict
+              schema:
+                wlrl:
+                  type: list
+              default:
+                wlrl:
+                - (0,15)
+          default:
+            implemented: true
+        accessible:
           type: boolean
           default: false
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        interrupt:
-          type: dict
-          schema:
-            description:
-              type: string
-              default: Indicates whether the trap was due to an interrupt.
-            shadow:
-              type: string
-              default: none
-            msb:
-              type: integer
-              default: 31
-              allowed:
-              - 31
-            lsb:
-              type: integer
-              default: 31
-              allowed:
-              - 31
-            implemented:
-              type: boolean
-              default: true
-              allowed:
-              - true
-            type:
-              type: dict
-              check_with: wr_illegal
-              oneof:
-              - schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              - schema:
-                  ro_variable:
-                    type: boolean
-              - schema:
-                  warl: *id001
-          default:
-            implemented: true
-        exception_code:
-          type: dict
-          schema:
-            description:
-              type: string
-              default: Encodes the exception code.
-            shadow:
-              type: string
-              default: none
-            msb:
-              type: integer
-              default: 30
-              allowed:
-              - 30
-            lsb:
-              type: integer
-              default: 0
-              allowed:
-              - 0
-            implemented:
-              type: boolean
-              default: true
-              allowed:
-              - true
-            type:
-              type: dict
-              schema:
-                wlrl:
-                  type: list
-              default:
-                wlrl:
-                - (0,15)
-          default:
-            implemented: true
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: false
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4613,17 +4828,20 @@ mcause:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema:
+              -
+                schema:
                   ro_constant:
                     type: list
                     schema:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              - schema:
+              -
+                schema:
                   ro_variable:
                     type: boolean
-              - schema:
+              -
+                schema:
                   warl: *id001
           default:
             implemented: true
@@ -4661,15 +4879,20 @@ mcause:
                 - (0,15)
           default:
             implemented: true
+        accessible:
+          type: boolean
+          default: false
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mcounteren:
   type: dict
   schema:
     description:
       type: string
-      default: The mcounteren is a 32-bit register that controls the availability of the hardware performance-monitoring counters to the next-lowest privileged mode.
+      default: The mcounteren is a 32-bit register that controls the availability
+        of the hardware performance-monitoring counters to the next-lowest privileged
+        mode.
     address:
       type: integer
       default: 0x306
@@ -4687,46 +4910,43 @@ mcounteren:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mcounteren[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 31
-          allowed:
-          - 31
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-              warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-                - 'mcounteren[31:0] in [0x00000000]'
-              wr_illegal:
-                - 'unchanged'
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4747,23 +4967,26 @@ mcounteren:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mcounteren[31:0] in [0x00000000]'
+              - mcounteren[31:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mcountinhibit:
   type: dict
   schema:
     description:
       type: string
-      default: The mcountinhibit is a 32-bit WARL register that controls which of the hardware performance-monitoring counters increment.
+      default: The mcountinhibit is a 32-bit WARL register that controls which of
+        the hardware performance-monitoring counters increment.
     address:
       type: integer
       default: 0x320
@@ -4781,46 +5004,43 @@ mcountinhibit:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 31
+          allowed:
+          - 31
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mcountinhibit[31:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 31
-          allowed:
-          - 31
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-              warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-                - 'mcountinhibit[31:0] in [0x00000000]'
-              wr_illegal:
-                - 'unchanged'
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4841,18 +5061,19 @@ mcountinhibit:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mcounterinhibit[31:0] in [0x00000000]'
+              - mcounterinhibit[31:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
-## Counters
+        accessible: false
 mhpmevent3:
   type: dict
   schema:
@@ -4875,46 +5096,43 @@ mhpmevent3:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent3[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-              warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-                - 'mhpmevent3[63:0] in [0x00000000]'
-              wr_illegal:
-                - 'unchanged'
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -4935,23 +5153,26 @@ mhpmevent3:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mhpmevent3[63:0] in [0x00000000]'
+              - mhpmevent3[63:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter3:
   type: dict
   schema:
     description:
       type: string
-      default: The mhpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
+      default: The mhpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32I
+        mode.
     address:
       type: integer
       default: 0xB03
@@ -4968,10 +5189,6 @@ mhpmcounter3:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -4992,22 +5209,23 @@ mhpmcounter3:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mhpmcounter3[31:0] in [0x00000000]'
+              - mhpmcounter3[31:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5028,16 +5246,19 @@ mhpmcounter3:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mhpmcounter3[63:0] in [0x00000000]'
+              - mhpmcounter3[63:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter3h:
   type: dict
   schema:
@@ -5060,10 +5281,6 @@ mhpmcounter3h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5084,26 +5301,28 @@ mhpmcounter3h:
           type: dict
           check_with: wr_illegal
           schema:
-              warl: *id001
+            warl: *id001
           default:
             warl:
               dependency_fields: []
               legal:
-                - 'mhpmcounter3h[31:0] in [0x00000000]'
+              - mhpmcounter3h[31:0] in [0x00000000]
               wr_illegal:
-                - 'unchanged'
+              - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
+
       default:
-        implemented: false
-
-
+        accessible: false
 mhpmevent4:
   type: dict
   schema:
@@ -5126,46 +5345,43 @@ mhpmevent4:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent4[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent4[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5194,9 +5410,11 @@ mhpmevent4:
               - mhpmevent4[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter4:
   type: dict
   schema:
@@ -5220,10 +5438,6 @@ mhpmcounter4:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5252,14 +5466,15 @@ mhpmcounter4:
               - mhpmcountet4[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5288,8 +5503,11 @@ mhpmcounter4:
               - mhpmcountet4[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter4h:
   type: dict
   schema:
@@ -5312,10 +5530,6 @@ mhpmcounter4h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5344,17 +5558,20 @@ mhpmcounter4h:
               - mhpmcountet4h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent5:
   type: dict
   schema:
@@ -5377,46 +5594,43 @@ mhpmevent5:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent5[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent5[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5445,9 +5659,11 @@ mhpmevent5:
               - mhpmevent5[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter5:
   type: dict
   schema:
@@ -5471,10 +5687,6 @@ mhpmcounter5:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5503,14 +5715,15 @@ mhpmcounter5:
               - mhpmcountet5[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5539,8 +5752,11 @@ mhpmcounter5:
               - mhpmcountet5[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter5h:
   type: dict
   schema:
@@ -5563,10 +5779,6 @@ mhpmcounter5h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5595,17 +5807,20 @@ mhpmcounter5h:
               - mhpmcountet5h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent6:
   type: dict
   schema:
@@ -5628,46 +5843,43 @@ mhpmevent6:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent6[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent6[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5696,9 +5908,11 @@ mhpmevent6:
               - mhpmevent6[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter6:
   type: dict
   schema:
@@ -5722,10 +5936,6 @@ mhpmcounter6:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5754,14 +5964,15 @@ mhpmcounter6:
               - mhpmcountet6[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5790,8 +6001,11 @@ mhpmcounter6:
               - mhpmcountet6[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter6h:
   type: dict
   schema:
@@ -5814,10 +6028,6 @@ mhpmcounter6h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -5846,17 +6056,20 @@ mhpmcounter6h:
               - mhpmcountet6h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent7:
   type: dict
   schema:
@@ -5879,46 +6092,43 @@ mhpmevent7:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent7[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent7[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -5947,9 +6157,11 @@ mhpmevent7:
               - mhpmevent7[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter7:
   type: dict
   schema:
@@ -5973,10 +6185,6 @@ mhpmcounter7:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6005,14 +6213,15 @@ mhpmcounter7:
               - mhpmcountet7[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6041,8 +6250,11 @@ mhpmcounter7:
               - mhpmcountet7[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter7h:
   type: dict
   schema:
@@ -6065,10 +6277,6 @@ mhpmcounter7h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6097,17 +6305,20 @@ mhpmcounter7h:
               - mhpmcountet7h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent8:
   type: dict
   schema:
@@ -6130,46 +6341,43 @@ mhpmevent8:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent8[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent8[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6198,9 +6406,11 @@ mhpmevent8:
               - mhpmevent8[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter8:
   type: dict
   schema:
@@ -6224,10 +6434,6 @@ mhpmcounter8:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6256,14 +6462,15 @@ mhpmcounter8:
               - mhpmcountet8[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6292,8 +6499,11 @@ mhpmcounter8:
               - mhpmcountet8[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter8h:
   type: dict
   schema:
@@ -6316,10 +6526,6 @@ mhpmcounter8h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6348,17 +6554,20 @@ mhpmcounter8h:
               - mhpmcountet8h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent9:
   type: dict
   schema:
@@ -6381,46 +6590,43 @@ mhpmevent9:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent9[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent9[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6449,9 +6655,11 @@ mhpmevent9:
               - mhpmevent9[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter9:
   type: dict
   schema:
@@ -6475,10 +6683,6 @@ mhpmcounter9:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6507,14 +6711,15 @@ mhpmcounter9:
               - mhpmcountet9[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6543,8 +6748,11 @@ mhpmcounter9:
               - mhpmcountet9[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter9h:
   type: dict
   schema:
@@ -6567,10 +6775,6 @@ mhpmcounter9h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6599,17 +6803,20 @@ mhpmcounter9h:
               - mhpmcountet9h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent10:
   type: dict
   schema:
@@ -6632,46 +6839,43 @@ mhpmevent10:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent10[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent10[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6700,9 +6904,11 @@ mhpmevent10:
               - mhpmevent10[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter10:
   type: dict
   schema:
@@ -6726,10 +6932,6 @@ mhpmcounter10:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6758,14 +6960,15 @@ mhpmcounter10:
               - mhpmcountet10[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6794,8 +6997,11 @@ mhpmcounter10:
               - mhpmcountet10[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter10h:
   type: dict
   schema:
@@ -6818,10 +7024,6 @@ mhpmcounter10h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -6850,16 +7052,19 @@ mhpmcounter10h:
               - mhpmcountet10h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
       default:
-        implemented: false
-
+        accessible: false
 mhpmevent11:
   type: dict
   schema:
@@ -6882,46 +7087,43 @@ mhpmevent11:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent11[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent11[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -6950,9 +7152,11 @@ mhpmevent11:
               - mhpmevent11[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter11:
   type: dict
   schema:
@@ -6976,10 +7180,6 @@ mhpmcounter11:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7008,14 +7208,15 @@ mhpmcounter11:
               - mhpmcountet11[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7044,8 +7245,11 @@ mhpmcounter11:
               - mhpmcountet11[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter11h:
   type: dict
   schema:
@@ -7068,10 +7272,6 @@ mhpmcounter11h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7100,17 +7300,20 @@ mhpmcounter11h:
               - mhpmcountet11h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent12:
   type: dict
   schema:
@@ -7133,46 +7336,43 @@ mhpmevent12:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent12[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent12[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7201,9 +7401,11 @@ mhpmevent12:
               - mhpmevent12[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter12:
   type: dict
   schema:
@@ -7227,10 +7429,6 @@ mhpmcounter12:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7259,14 +7457,15 @@ mhpmcounter12:
               - mhpmcountet12[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7295,8 +7494,11 @@ mhpmcounter12:
               - mhpmcountet12[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter12h:
   type: dict
   schema:
@@ -7319,10 +7521,6 @@ mhpmcounter12h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7351,17 +7549,20 @@ mhpmcounter12h:
               - mhpmcountet12h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent13:
   type: dict
   schema:
@@ -7384,46 +7585,43 @@ mhpmevent13:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent13[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent13[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7452,9 +7650,11 @@ mhpmevent13:
               - mhpmevent13[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter13:
   type: dict
   schema:
@@ -7478,10 +7678,6 @@ mhpmcounter13:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7510,14 +7706,15 @@ mhpmcounter13:
               - mhpmcountet13[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7546,8 +7743,11 @@ mhpmcounter13:
               - mhpmcountet13[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter13h:
   type: dict
   schema:
@@ -7570,10 +7770,6 @@ mhpmcounter13h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7602,17 +7798,20 @@ mhpmcounter13h:
               - mhpmcountet13h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent14:
   type: dict
   schema:
@@ -7635,46 +7834,43 @@ mhpmevent14:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent14[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent14[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7703,9 +7899,11 @@ mhpmevent14:
               - mhpmevent14[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter14:
   type: dict
   schema:
@@ -7729,10 +7927,6 @@ mhpmcounter14:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7761,14 +7955,15 @@ mhpmcounter14:
               - mhpmcountet14[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7797,8 +7992,11 @@ mhpmcounter14:
               - mhpmcountet14[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter14h:
   type: dict
   schema:
@@ -7821,10 +8019,6 @@ mhpmcounter14h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -7853,17 +8047,20 @@ mhpmcounter14h:
               - mhpmcountet14h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent15:
   type: dict
   schema:
@@ -7886,46 +8083,43 @@ mhpmevent15:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent15[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent15[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -7954,9 +8148,11 @@ mhpmevent15:
               - mhpmevent15[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter15:
   type: dict
   schema:
@@ -7980,10 +8176,6 @@ mhpmcounter15:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8012,14 +8204,15 @@ mhpmcounter15:
               - mhpmcountet15[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8048,8 +8241,11 @@ mhpmcounter15:
               - mhpmcountet15[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter15h:
   type: dict
   schema:
@@ -8072,10 +8268,6 @@ mhpmcounter15h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8104,17 +8296,20 @@ mhpmcounter15h:
               - mhpmcountet15h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent16:
   type: dict
   schema:
@@ -8137,46 +8332,43 @@ mhpmevent16:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent16[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent16[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8205,9 +8397,11 @@ mhpmevent16:
               - mhpmevent16[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter16:
   type: dict
   schema:
@@ -8231,10 +8425,6 @@ mhpmcounter16:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8263,14 +8453,15 @@ mhpmcounter16:
               - mhpmcountet16[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8299,8 +8490,11 @@ mhpmcounter16:
               - mhpmcountet16[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter16h:
   type: dict
   schema:
@@ -8323,10 +8517,6 @@ mhpmcounter16h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8355,17 +8545,20 @@ mhpmcounter16h:
               - mhpmcountet16h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent17:
   type: dict
   schema:
@@ -8388,46 +8581,43 @@ mhpmevent17:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent17[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent17[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8456,9 +8646,11 @@ mhpmevent17:
               - mhpmevent17[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter17:
   type: dict
   schema:
@@ -8482,10 +8674,6 @@ mhpmcounter17:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8514,14 +8702,15 @@ mhpmcounter17:
               - mhpmcountet17[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8550,8 +8739,11 @@ mhpmcounter17:
               - mhpmcountet17[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter17h:
   type: dict
   schema:
@@ -8574,10 +8766,6 @@ mhpmcounter17h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8606,17 +8794,20 @@ mhpmcounter17h:
               - mhpmcountet17h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent18:
   type: dict
   schema:
@@ -8639,46 +8830,43 @@ mhpmevent18:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent18[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent18[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8707,9 +8895,11 @@ mhpmevent18:
               - mhpmevent18[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter18:
   type: dict
   schema:
@@ -8733,10 +8923,6 @@ mhpmcounter18:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8765,14 +8951,15 @@ mhpmcounter18:
               - mhpmcountet18[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8801,8 +8988,11 @@ mhpmcounter18:
               - mhpmcountet18[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter18h:
   type: dict
   schema:
@@ -8825,10 +9015,6 @@ mhpmcounter18h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -8857,17 +9043,20 @@ mhpmcounter18h:
               - mhpmcountet18h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent19:
   type: dict
   schema:
@@ -8890,46 +9079,43 @@ mhpmevent19:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent19[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent19[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -8958,9 +9144,11 @@ mhpmevent19:
               - mhpmevent19[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter19:
   type: dict
   schema:
@@ -8984,10 +9172,6 @@ mhpmcounter19:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9016,14 +9200,15 @@ mhpmcounter19:
               - mhpmcountet19[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9052,8 +9237,11 @@ mhpmcounter19:
               - mhpmcountet19[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter19h:
   type: dict
   schema:
@@ -9076,10 +9264,6 @@ mhpmcounter19h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9108,17 +9292,20 @@ mhpmcounter19h:
               - mhpmcountet19h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent20:
   type: dict
   schema:
@@ -9141,46 +9328,43 @@ mhpmevent20:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent20[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent20[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9209,9 +9393,11 @@ mhpmevent20:
               - mhpmevent20[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter20:
   type: dict
   schema:
@@ -9235,10 +9421,6 @@ mhpmcounter20:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9267,14 +9449,15 @@ mhpmcounter20:
               - mhpmcountet20[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9303,8 +9486,11 @@ mhpmcounter20:
               - mhpmcountet20[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter20h:
   type: dict
   schema:
@@ -9327,10 +9513,6 @@ mhpmcounter20h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9359,17 +9541,20 @@ mhpmcounter20h:
               - mhpmcountet20h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent21:
   type: dict
   schema:
@@ -9392,46 +9577,43 @@ mhpmevent21:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent21[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent21[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9460,9 +9642,11 @@ mhpmevent21:
               - mhpmevent21[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter21:
   type: dict
   schema:
@@ -9486,10 +9670,6 @@ mhpmcounter21:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9518,14 +9698,15 @@ mhpmcounter21:
               - mhpmcountet21[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9554,8 +9735,11 @@ mhpmcounter21:
               - mhpmcountet21[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter21h:
   type: dict
   schema:
@@ -9578,10 +9762,6 @@ mhpmcounter21h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9610,17 +9790,20 @@ mhpmcounter21h:
               - mhpmcountet21h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent22:
   type: dict
   schema:
@@ -9643,46 +9826,43 @@ mhpmevent22:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent22[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent22[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9711,9 +9891,11 @@ mhpmevent22:
               - mhpmevent22[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter22:
   type: dict
   schema:
@@ -9737,10 +9919,6 @@ mhpmcounter22:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9769,14 +9947,15 @@ mhpmcounter22:
               - mhpmcountet22[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9805,8 +9984,11 @@ mhpmcounter22:
               - mhpmcountet22[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter22h:
   type: dict
   schema:
@@ -9829,10 +10011,6 @@ mhpmcounter22h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -9861,17 +10039,20 @@ mhpmcounter22h:
               - mhpmcountet22h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent23:
   type: dict
   schema:
@@ -9894,46 +10075,43 @@ mhpmevent23:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent23[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent23[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -9962,9 +10140,11 @@ mhpmevent23:
               - mhpmevent23[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter23:
   type: dict
   schema:
@@ -9988,10 +10168,6 @@ mhpmcounter23:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10020,14 +10196,15 @@ mhpmcounter23:
               - mhpmcountet23[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10056,8 +10233,11 @@ mhpmcounter23:
               - mhpmcountet23[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter23h:
   type: dict
   schema:
@@ -10080,10 +10260,6 @@ mhpmcounter23h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10112,17 +10288,20 @@ mhpmcounter23h:
               - mhpmcountet23h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent24:
   type: dict
   schema:
@@ -10145,46 +10324,43 @@ mhpmevent24:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent24[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent24[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10213,9 +10389,11 @@ mhpmevent24:
               - mhpmevent24[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter24:
   type: dict
   schema:
@@ -10239,10 +10417,6 @@ mhpmcounter24:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10271,14 +10445,15 @@ mhpmcounter24:
               - mhpmcountet24[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10307,8 +10482,11 @@ mhpmcounter24:
               - mhpmcountet24[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter24h:
   type: dict
   schema:
@@ -10331,10 +10509,6 @@ mhpmcounter24h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10363,17 +10537,20 @@ mhpmcounter24h:
               - mhpmcountet24h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent25:
   type: dict
   schema:
@@ -10396,46 +10573,43 @@ mhpmevent25:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent25[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent25[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10464,9 +10638,11 @@ mhpmevent25:
               - mhpmevent25[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter25:
   type: dict
   schema:
@@ -10490,10 +10666,6 @@ mhpmcounter25:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10522,14 +10694,15 @@ mhpmcounter25:
               - mhpmcountet25[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10558,8 +10731,11 @@ mhpmcounter25:
               - mhpmcountet25[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter25h:
   type: dict
   schema:
@@ -10582,10 +10758,6 @@ mhpmcounter25h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10614,17 +10786,20 @@ mhpmcounter25h:
               - mhpmcountet25h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent26:
   type: dict
   schema:
@@ -10647,46 +10822,43 @@ mhpmevent26:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent26[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent26[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10715,9 +10887,11 @@ mhpmevent26:
               - mhpmevent26[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter26:
   type: dict
   schema:
@@ -10741,10 +10915,6 @@ mhpmcounter26:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10773,14 +10943,15 @@ mhpmcounter26:
               - mhpmcountet26[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10809,8 +10980,11 @@ mhpmcounter26:
               - mhpmcountet26[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter26h:
   type: dict
   schema:
@@ -10833,10 +11007,6 @@ mhpmcounter26h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -10865,17 +11035,20 @@ mhpmcounter26h:
               - mhpmcountet26h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent27:
   type: dict
   schema:
@@ -10898,46 +11071,43 @@ mhpmevent27:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent27[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent27[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -10966,9 +11136,11 @@ mhpmevent27:
               - mhpmevent27[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter27:
   type: dict
   schema:
@@ -10992,10 +11164,6 @@ mhpmcounter27:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11024,14 +11192,15 @@ mhpmcounter27:
               - mhpmcountet27[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11060,8 +11229,11 @@ mhpmcounter27:
               - mhpmcountet27[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter27h:
   type: dict
   schema:
@@ -11084,10 +11256,6 @@ mhpmcounter27h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11116,17 +11284,20 @@ mhpmcounter27h:
               - mhpmcountet27h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent28:
   type: dict
   schema:
@@ -11149,46 +11320,43 @@ mhpmevent28:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent28[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent28[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11217,9 +11385,11 @@ mhpmevent28:
               - mhpmevent28[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter28:
   type: dict
   schema:
@@ -11243,10 +11413,6 @@ mhpmcounter28:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11275,14 +11441,15 @@ mhpmcounter28:
               - mhpmcountet28[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11311,8 +11478,11 @@ mhpmcounter28:
               - mhpmcountet28[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter28h:
   type: dict
   schema:
@@ -11335,10 +11505,6 @@ mhpmcounter28h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11367,17 +11533,20 @@ mhpmcounter28h:
               - mhpmcountet28h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent29:
   type: dict
   schema:
@@ -11400,46 +11569,43 @@ mhpmevent29:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent29[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent29[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11468,9 +11634,11 @@ mhpmevent29:
               - mhpmevent29[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter29:
   type: dict
   schema:
@@ -11494,10 +11662,6 @@ mhpmcounter29:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11526,14 +11690,15 @@ mhpmcounter29:
               - mhpmcountet29[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11562,8 +11727,11 @@ mhpmcounter29:
               - mhpmcountet29[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter29h:
   type: dict
   schema:
@@ -11586,10 +11754,6 @@ mhpmcounter29h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11618,17 +11782,20 @@ mhpmcounter29h:
               - mhpmcountet29h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent30:
   type: dict
   schema:
@@ -11651,46 +11818,43 @@ mhpmevent30:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent30[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent30[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11719,9 +11883,11 @@ mhpmevent30:
               - mhpmevent30[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter30:
   type: dict
   schema:
@@ -11745,10 +11911,6 @@ mhpmcounter30:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11777,14 +11939,15 @@ mhpmcounter30:
               - mhpmcountet30[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11813,8 +11976,11 @@ mhpmcounter30:
               - mhpmcountet30[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter30h:
   type: dict
   schema:
@@ -11837,10 +12003,6 @@ mhpmcounter30h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -11869,17 +12031,20 @@ mhpmcounter30h:
               - mhpmcountet30h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 mhpmevent31:
   type: dict
   schema:
@@ -11902,46 +12067,43 @@ mhpmevent31:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 0
+          allowed:
+          - 0
+        type:
+          type: dict
+          check_with: wr_illegal
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - mhpmevent31[63:0] in [0x00000000]
+              wr_illegal:
+              - unchanged
+        accessible:
           type: boolean
           default: true
           check_with: rv32_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 0
-          allowed:
-          - 0
-        type:
-          type: dict
-          check_with: wr_illegal
-          schema:
-            warl: *id001
-          default:
-            warl:
-              dependency_fields: []
-              legal:
-              - mhpmevent31[63:0] in [0x00000000]
-              wr_illegal:
-              - unchanged
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -11970,9 +12132,11 @@ mhpmevent31:
               - mhpmevent31[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
-
+        accessible: false
 mhpmcounter31:
   type: dict
   schema:
@@ -11996,10 +12160,6 @@ mhpmcounter31:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -12028,14 +12188,15 @@ mhpmcounter31:
               - mhpmcountet31[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
-          default: true
-          check_with: rv64_check
         fields:
           type: list
           default: []
@@ -12064,8 +12225,11 @@ mhpmcounter31:
               - mhpmcountet31[63:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          default: true
+          check_with: rv64_check
       default:
-        implemented: false
+        accessible: false
 mhpmcounter31h:
   type: dict
   schema:
@@ -12088,10 +12252,6 @@ mhpmcounter31h:
     rv32:
       type: dict
       schema:
-        implemented:
-          type: boolean
-          default: true
-          check_with: rv32_check
         fields:
           type: list
           default: []
@@ -12120,17 +12280,20 @@ mhpmcounter31h:
               - mhpmcountet31h[31:0] in [0x00000000]
               wr_illegal:
               - unchanged
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
       default:
-        implemented: false
+        accessible: false
     rv64:
       type: dict
       schema:
-        implemented:
+        accessible:
           default: true
-          
-      default:
-        implemented: false
 
+      default:
+        accessible: false
 sedeleg:
   type: dict
   schema:
@@ -12150,12 +12313,52 @@ sedeleg:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 2
+          allowed:
+          - 2
+        type:
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          -
+            schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          -
+            schema:
+              ro_variable:
+                type: boolean
+          -
+            schema:
+              warl: *id001
+        accessible:
           type: boolean
           default: true
           check_with:
           - rv32_check
           - s_check
+      default:
+        accessible: true
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -12176,63 +12379,29 @@ sedeleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
-      default:
-        implemented: true
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
           - rv64_check
           - s_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 2
-          allowed:
-          - 2
-        type:
-          type: dict
-          check_with: wr_illegal
-          oneof:
-          - schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          - schema:
-              ro_variable:
-                type: boolean
-          - schema:
-              warl: *id001
       default:
-        implemented: true
+        accessible: true
   check_with: ndeleg_checks
 sideleg:
   type: dict
@@ -12251,12 +12420,52 @@ sideleg:
     rv32:
       type: dict
       schema:
-        implemented:
+        fields:
+          type: list
+          default: []
+        shadow:
+          type: string
+          default: none
+        msb:
+          type: integer
+          default: 63
+          allowed:
+          - 63
+        lsb:
+          type: integer
+          default: 2
+          allowed:
+          - 2
+        type:
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          -
+            schema:
+              ro_constant:
+                type: list
+                schema:
+                  type: integer
+                  max: 4611686018427387903
+                maxlength: 1
+          -
+            schema:
+              ro_variable:
+                type: boolean
+          -
+            schema:
+              warl: *id001
+        accessible:
           type: boolean
           default: true
           check_with:
           - rv32_check
           - s_check
+      default:
+        accessible: true
+    rv64:
+      type: dict
+      schema:
         fields:
           type: list
           default: []
@@ -12277,61 +12486,27 @@ sideleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema:
+          -
+            schema:
               ro_constant:
                 type: list
                 schema:
                   type: integer
                   max: 4611686018427387903
                 maxlength: 1
-          - schema:
+          -
+            schema:
               ro_variable:
                 type: boolean
-          - schema:
+          -
+            schema:
               warl: *id001
-      default:
-        implemented: true
-    rv64:
-      type: dict
-      schema:
-        implemented:
+        accessible:
           type: boolean
           default: true
           check_with:
           - rv64_check
           - s_check
-        fields:
-          type: list
-          default: []
-        shadow:
-          type: string
-          default: none
-        msb:
-          type: integer
-          default: 63
-          allowed:
-          - 63
-        lsb:
-          type: integer
-          default: 2
-          allowed:
-          - 2
-        type:
-          type: dict
-          check_with: wr_illegal
-          oneof:
-          - schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          - schema:
-              ro_variable:
-                type: boolean
-          - schema:
-              warl: *id001
       default:
-        implemented: true
+        accessible: true
   check_with: ndeleg_checks

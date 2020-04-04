@@ -160,30 +160,30 @@ class schemaValidator(Validator):
 
     def _check_with_mdeleg_checks(self, field, value):
         if rv32:
-            if (value['rv32']['implemented'] == True and
+            if (value['rv32']['accessible'] == True and
                 (not 'S' in self.document['ISA'] and
                  not 'N' in self.document['ISA'])):
-                value['rv32']['implemented'] = False
+                value['rv32']['accessible'] = False
                 self._error(field, "S and N are not present(32)")
 
         if rv64:
-            if (value['rv64']['implemented'] == True and
+            if (value['rv64']['accessible'] == True and
                 (not 'S' in self.document['ISA'] and
                  not 'N' in self.document['ISA'])):
-                value['rv64']['implemented'] = False
+                value['rv64']['accessible'] = False
                 self._error(field, "S and N are not present(64)")
 
     def _check_with_ndeleg_checks(self, field, value):
         if rv32:
-            if (value['rv32']['implemented'] == True and
+            if (value['rv32']['accessible'] == True and
                     not 'N' in self.document['ISA']):
-                value['rv32']['implemented'] = False
+                value['rv32']['accessible'] = False
                 self._error(field, "N is not present(32)")
 
         if rv64:
-            if (value['rv64']['implemented'] == True and
+            if (value['rv64']['accessible'] == True and
                     not 'N' in self.document['ISA']):
-                value['rv64']['implemented'] = False
+                value['rv64']['accessible'] = False
                 self._error(field, "N is not present(64)")
 
     def _check_with_xcause_check(self, field, value):

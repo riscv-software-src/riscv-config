@@ -54,40 +54,40 @@ def delegset():
           not ('N' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA'])):
         var = False
 
-    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     if 32 in inp_yaml['supported_xlen']:
-        temp['rv32']['implemented'] = True and var
+        temp['rv32']['accessible'] = True and var
     if 64 in inp_yaml['supported_xlen']:
-        temp['rv64']['implemented'] = True and var
+        temp['rv64']['accessible'] = True and var
     return temp
 
 
 def countset():
     global inp_yaml
-    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     if 'S' in inp_yaml['ISA'] or 'U' in inp_yaml["ISA"]:
         if 32 in inp_yaml['supported_xlen']:
-            temp['rv32']['implemented'] = True
+            temp['rv32']['accessible'] = True
         if 64 in inp_yaml['supported_xlen']:
-            temp['rv64']['implemented'] = True
+            temp['rv64']['accessible'] = True
     return temp
 
 
 def regset():
     global inp_yaml
-    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     if 32 in inp_yaml['supported_xlen']:
-        temp['rv32']['implemented'] = True
+        temp['rv32']['accessible'] = True
     if 64 in inp_yaml['supported_xlen']:
-        temp['rv64']['implemented'] = True
+        temp['rv64']['accessible'] = True
     return temp
 
 
 def counterhset():
     global inp_yaml
-    temp = {'rv32': {'implemented': False}, 'rv64': {'implemented': False}}
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     if 32 in inp_yaml['supported_xlen']:
-        temp['rv32']['implemented'] = True
+        temp['rv32']['accessible'] = True
     return temp
 
 
@@ -323,11 +323,11 @@ def trim(foo):
     '''
     keys = foo.keys()
     if 'rv32' in keys:
-        if not foo['rv32']['implemented']:
-            foo['rv32'] = {'implemented': False}
+        if not foo['rv32']['accessible']:
+            foo['rv32'] = {'accessible': False}
     if 'rv64' in keys:
-        if not foo['rv64']['implemented']:
-            foo['rv64'] = {'implemented': False}
+        if not foo['rv64']['accessible']:
+            foo['rv64'] = {'accessible': False}
     if 'implemented' in keys:
         if not foo['implemented']:
             temp = foo
@@ -362,7 +362,7 @@ def groupc(test_list):
 def get_fields(node, bitwidth):
     fields = list(
         set(node.keys()) -
-        set(['fields', 'msb', 'lsb', 'implemented', 'shadow', 'type']))
+        set(['fields', 'msb', 'lsb', 'accessible', 'shadow', 'type']))
     if not fields:
         return fields
     bits = set(range(bitwidth))
@@ -380,18 +380,18 @@ def check_reset_fill_fields(spec):
     errors = {}
     for node in spec:
         if isinstance(spec[node], dict):
-            if spec[node]['rv32']['implemented']:
+            if spec[node]['rv32']['accessible']:
                 spec[node]['rv32']['fields'] = get_fields(
                     spec[node]['rv32'], 32)
-            if spec[node]['rv64']['implemented']:
+            if spec[node]['rv64']['accessible']:
                 spec[node]['rv64']['fields'] = get_fields(
                     spec[node]['rv64'], 64)
             if 'reset-val' in spec[node].keys():
                 reset_val = spec[node]['reset-val']
-                if spec[node]['rv64']['implemented']:
+                if spec[node]['rv64']['accessible']:
                     field_desc = spec[node]['rv64']
                     bit_len = 64
-                elif spec[node]['rv32']['implemented']:
+                elif spec[node]['rv32']['accessible']:
                     field_desc = spec[node]['rv32']
                     bit_len = 32
                 else:
@@ -444,45 +444,52 @@ def check_reset_fill_fields(spec):
                                     field_desc[field]['msb']:bit_len -
                                     field_desc[field]['lsb']],
                             base=2)
-                        desc = field_desc[field]['type']
-                        keys = desc.keys()
-                        if 'wlrl' in keys:
-                            if test_val not in desc['wlrl']:
-                                self._error(
-                                    field, "Reset value for " + field +
-                                    " doesnt match the 'wlrl' description.")
-                        elif 'ro_constant' in keys:
-                            if test_val not in desc['ro_constant']:
-                                error.append(
-                                    "Reset value for " + field +
-                                    " doesnt match the 'ro_constant' description."
-                                )
-                        elif 'ro_variable' in keys:
-                            pass
-                        elif "warl" in keys:
-                            warl = (warl_interpreter(desc['warl']))
-                            deps = warl.dependencies()
-                            dep_vals = []
-                            for dep in deps:
-                                reg = dep.split("::")
-                                if len(reg) == 1:
-                                    dep_vals.append(spec[reg[0]]['reset-val'])
-                                else:
-                                    bin_str = bin(spec[
-                                        reg[0]]['reset-val'])[2:].zfill(bit_len)
-                                    dep_vals.append(
-                                        int(bin_str[
-                                            bit_len - 1 -
-                                            spec[reg[0]]['rv{}'.format(bit_len)]
-                                            [reg[1]]['msb']:bit_len -
-                                            spec[reg[0]]['rv{}'.format(
-                                                bit_len)][reg[1]]['lsb']],
-                                            base=2))
-                            if (warl.islegal(hex(test_val)[2:], dep_vals) !=
-                                    True):
-                                error.append(
-                                    "Reset value for " + field +
-                                    " doesnt match the 'warl' description.")
+                        if field_desc[field]['implemented']:
+                            desc = field_desc[field]['type']
+                            keys = desc.keys()
+                            if 'wlrl' in keys:
+                                if test_val not in desc['wlrl']:
+                                    self._error(
+                                        field, "Reset value for " + field +
+                                        " doesnt match the 'wlrl' description.")
+                            elif 'ro_constant' in keys:
+                                if test_val not in desc['ro_constant']:
+                                    error.append(
+                                        "Reset value for " + field +
+                                        " doesnt match the 'ro_constant' description."
+                                    )
+                            elif 'ro_variable' in keys:
+                                pass
+                            elif "warl" in keys:
+                                warl = (warl_interpreter(desc['warl']))
+                                deps = warl.dependencies()
+                                dep_vals = []
+                                for dep in deps:
+                                    reg = dep.split("::")
+                                    if len(reg) == 1:
+                                        dep_vals.append(
+                                            spec[reg[0]]['reset-val'])
+                                    else:
+                                        bin_str = bin(
+                                            spec[reg[0]]
+                                            ['reset-val'])[2:].zfill(bit_len)
+                                        dep_vals.append(
+                                            int(bin_str[
+                                                bit_len - 1 -
+                                                spec[reg[0]]['rv{}'.format(
+                                                    bit_len
+                                                )][reg[1]]['msb']:bit_len -
+                                                spec[reg[0]]['rv{}'.format(
+                                                    bit_len)][reg[1]]['lsb']],
+                                                base=2))
+                                if (warl.islegal(hex(test_val)[2:], dep_vals) !=
+                                        True):
+                                    error.append(
+                                        "Reset value for " + field +
+                                        " doesnt match the 'warl' description.")
+                        elif test_val != 0:
+                            error.append("Reset value for unimplemented " +
+                                         field + " cannot be non zero.")
                 if error:
                     errors[node] = error
     return spec, errors
