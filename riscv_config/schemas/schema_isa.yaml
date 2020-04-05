@@ -178,6 +178,14 @@ schema_node:
             type: list
             schema:
               type: string
+  - 
+    schema:
+      wlrl: &id002
+        type: list
+        schema:
+          type: string
+          regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
+
 misa:
   type: dict
   schema:
@@ -401,6 +409,7 @@ misa:
           - cannot_be_false_rv64
       default:
         accessible: false
+
 mstatus:
   type: dict
   schema:
@@ -421,6 +430,7 @@ mstatus:
     reset-val:
       type: integer
       check_with: max_length
+      default: 0
     rv32:
       type: dict
       schema:
@@ -455,19 +465,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default: 
+                wlrl: [0:1]
           default:
             implemented: false
         sie:
@@ -498,19 +501,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         mie:
@@ -537,23 +533,11 @@ mstatus:
               default: true
             type:
               type: dict
-              check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl:
+                - 0:1
           default:
             implemented: true
         upie:
@@ -584,19 +568,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         spie:
@@ -628,16 +605,7 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
@@ -668,23 +636,11 @@ mstatus:
               default: true
             type:
               type: dict
-              check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl:
+                - 0:1
           default:
             implemented: true
         spp:
@@ -715,16 +671,7 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
@@ -758,19 +705,13 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - "0"
           default:
             implemented: true
         fs:
@@ -810,10 +751,6 @@ mstatus:
                     maxlength: 1
               -
                 schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
                   warl: *id001
           default:
             implemented: false
@@ -843,22 +780,12 @@ mstatus:
             type:
               type: dict
               check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                ro_variable:
+                  type: boolean
+              default:
+                ro_variable: True
+              readonly: true
           default:
             implemented: false
         mprv:
@@ -890,19 +817,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         sum:
@@ -934,19 +854,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         mxr:
@@ -977,19 +890,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tvm:
@@ -1021,19 +927,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tw:
@@ -1064,19 +963,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tsr:
@@ -1107,19 +999,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         sd:
@@ -1148,14 +1033,10 @@ mstatus:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
+                ro_variable:
+                  type: boolean
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: True
           default:
             implemented: true
         accessible:
@@ -1198,19 +1079,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         sie:
@@ -1241,19 +1115,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default: 
+                wlrl: [0:1]
           default:
             implemented: false
         mie:
@@ -1281,22 +1148,11 @@ mstatus:
             type:
               type: dict
               check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl:
+                - 0:1
           default:
             implemented: true
         upie:
@@ -1327,19 +1183,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         spie:
@@ -1371,19 +1220,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default: 
+                wlrl: [0:1]
           default:
             implemented: false
         mpie:
@@ -1412,22 +1254,11 @@ mstatus:
             type:
               type: dict
               check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl:
+                - 0:1
           default:
             implemented: true
         spp:
@@ -1458,19 +1289,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default: 
+                wlrl: [0:1]
           default:
             implemented: false
         mpp:
@@ -1501,19 +1325,13 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - "0"
           default:
             implemented: true
         fs:
@@ -1553,10 +1371,6 @@ mstatus:
                     maxlength: 1
               -
                 schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
                   warl: *id001
           default:
             implemented: false
@@ -1586,22 +1400,12 @@ mstatus:
             type:
               type: dict
               check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                ro_variable:
+                  type: boolean
+              readonly: true
+              default:
+                ro_variable: true
           default:
             implemented: false
         mprv:
@@ -1633,19 +1437,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         sum:
@@ -1677,19 +1474,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         mxr:
@@ -1720,19 +1510,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tvm:
@@ -1764,19 +1547,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tw:
@@ -1807,19 +1583,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: [0:1]
           default:
             implemented: false
         tsr:
@@ -1850,19 +1619,12 @@ mstatus:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default: 
+                wlrl: [0:1]
           default:
             implemented: false
         sxl:
@@ -1899,10 +1661,6 @@ mstatus:
                       type: integer
                       max: 4611686018427387903
                     maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
               -
                 schema:
                   warl: *id001
@@ -1944,10 +1702,6 @@ mstatus:
                     maxlength: 1
               -
                 schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
                   warl: *id001
           default:
             implemented: true
@@ -1977,14 +1731,10 @@ mstatus:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
+                ro_variable:
+                  type: boolean
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: true
           default:
             implemented: true
         accessible:
@@ -1993,6 +1743,7 @@ mstatus:
           check_with: rv64_check
       default:
         accessible: true
+
 mvendorid:
   type: dict
   schema:
@@ -2092,6 +1843,7 @@ mvendorid:
           - cannot_be_false_rv64
       default:
         accessible: false
+
 marchid:
   type: dict
   schema:
@@ -2191,6 +1943,7 @@ marchid:
           - cannot_be_false_rv64
       default:
         accessible: false
+
 mimpid:
   type: dict
   schema:
@@ -2289,6 +2042,7 @@ mimpid:
           - cannot_be_false_rv64
       default:
         accessible: false
+
 mhartid:
   type: dict
   schema:
@@ -2384,6 +2138,7 @@ mhartid:
           check_with: rv64_check
       default:
         accessible: false
+
 mtvec:
   type: dict
   schema:
@@ -2601,6 +2356,7 @@ mtvec:
           - cannot_be_false_rv64
       default:
         accessible: false
+
 mideleg:
   type: dict
   schema:
@@ -2620,6 +2376,7 @@ mideleg:
     reset-val:
       type: integer
       check_with: max_length
+      default: 0
     rv32:
       type: dict
       schema:
@@ -2642,22 +2399,15 @@ mideleg:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - "mideleg[31:0] in [0x00]"
+              wr_illegal:
+              - 'unchanged'
         accessible:
           type: boolean
           default: true
@@ -2687,22 +2437,15 @@ mideleg:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - "mideleg[63:0] in [0x00]"
+              wr_illegal:
+              - 'unchanged'
         accessible:
           type: boolean
           default: true
@@ -2711,6 +2454,7 @@ mideleg:
       default:
         accessible: false
   check_with: mdeleg_checks
+
 medeleg:
   type: dict
   schema:
@@ -2755,22 +2499,15 @@ medeleg:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - "medeleg[31:0] in [0x00]"
+              wr_illegal:
+              - 'unchanged'
         accessible:
           type: boolean
           default: true
@@ -2800,22 +2537,15 @@ medeleg:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
+          default:
+            warl:
+              dependency_fields: []
+              legal:
+              - "medeleg[63:0] in [0x00]"
+              wr_illegal:
+              - 'unchanged'
         accessible:
           type: boolean
           default: true
@@ -2824,6 +2554,7 @@ medeleg:
       default:
         accessible: false
   check_with: mdeleg_checks
+
 mip:
   type: dict
   schema:
@@ -2844,6 +2575,7 @@ mip:
     reset-val:
       type: integer
       check_with: max_length
+      default: 0
     rv32:
       type: dict
       schema:
@@ -2878,21 +2610,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         ssip:
           type: dict
           schema:
@@ -2921,21 +2647,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         msip:
           type: dict
           schema:
@@ -2961,16 +2681,12 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [true]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: true
           default:
             implemented: true
         utip:
@@ -3001,21 +2717,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         stip:
           type: dict
           schema:
@@ -3044,21 +2754,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         mtip:
           type: dict
           schema:
@@ -3084,16 +2788,12 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [True]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: True
           default:
             implemented: true
         ueip:
@@ -3124,21 +2824,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         seip:
           type: dict
           schema:
@@ -3163,14 +2857,19 @@ mip:
               default: true
             type:
               type: dict
-              schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+              check_with: wr_illegal
+              oneof:
+              -
+                schema:
+                  wlrl: *id002
+              -
+                schema:
+                  warl: *id001
               default:
-                ro_variable: true
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         meip:
           type: dict
           schema:
@@ -3196,16 +2895,12 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [True]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: True
           default:
             implemented: true
         accessible:
@@ -3247,21 +2942,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         ssip:
           type: dict
           schema:
@@ -3290,21 +2979,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         msip:
           type: dict
           schema:
@@ -3330,16 +3013,12 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [true]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: true
           default:
             implemented: true
         utip:
@@ -3370,21 +3049,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         stip:
           type: dict
           schema:
@@ -3413,21 +3086,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         mtip:
           type: dict
           schema:
@@ -3453,16 +3120,12 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [True]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: True
           default:
             implemented: true
         ueip:
@@ -3493,21 +3156,15 @@ mip:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         seip:
           type: dict
           schema:
@@ -3532,14 +3189,19 @@ mip:
               default: true
             type:
               type: dict
-              schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+              check_with: wr_illegal
+              oneof:
+              -
+                schema:
+                  wlrl: *id002
+              -
+                schema:
+                  warl: *id001
               default:
-                ro_variable: true
+                wlrl: 
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         meip:
           type: dict
           schema:
@@ -3565,22 +3227,20 @@ mip:
             type:
               type: dict
               schema:
-                ro_constant:
-                  type: list
-                  schema:
-                    type: integer
-                    max: 1
+                ro_variable:
+                  type: boolean
+                  allowed: [True]
               readonly: true
               default:
-                ro_constant:
-                - 0
-                - 1
+                ro_variable: True
           default:
             implemented: true
         accessible:
           type: boolean
           default: false
           check_with: rv64_check
+      required: true
+    
 mie:
   type: dict
   schema:
@@ -3601,6 +3261,7 @@ mie:
     reset-val:
       type: integer
       check_with: max_length
+      default: 0
     rv32:
       type: dict
       schema:
@@ -3635,21 +3296,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         ssie:
           type: dict
           schema:
@@ -3678,21 +3333,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         msie:
           type: dict
           schema:
@@ -3717,14 +3366,15 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+                wlrl: *id002
               default:
-                ro_variable: true
+                wlrl: 
+                - 0x0:0x1
+              readonly: true
           default:
-            implemented: true
+            implemented: True
         utie:
           type: dict
           schema:
@@ -3753,21 +3403,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         stie:
           type: dict
           schema:
@@ -3796,21 +3440,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         mtie:
           type: dict
           schema:
@@ -3835,12 +3473,12 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
-              default:
-                ro_variable: true
+                wlrl: *id002
+              default: 
+                wlrl: 
+                - 0:1
           default:
             implemented: true
         ueie:
@@ -3871,21 +3509,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                 - 0:1
           default:
-            implemented: true
+            implemented: False
         seie:
           type: dict
           schema:
@@ -3910,14 +3542,19 @@ mie:
               default: true
             type:
               type: dict
-              schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+              check_with: wr_illegal
+              oneof:
+              -
+                schema:
+                  wlrl: *id002
+              -
+                schema:
+                  warl: *id001
               default:
-                ro_variable: true
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         meie:
           type: dict
           schema:
@@ -3942,12 +3579,11 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
-              default:
-                ro_variable: true
+                wlrl: *id002
+              default: 
+                wlrl: [0:1]
           default:
             implemented: true
         accessible:
@@ -3989,21 +3625,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         ssie:
           type: dict
           schema:
@@ -4032,21 +3662,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         msie:
           type: dict
           schema:
@@ -4071,14 +3695,15 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+                wlrl: *id002
               default:
-                ro_variable: true
+                wlrl: 
+                - 0x0:0x1
+              readonly: true
           default:
-            implemented: true
+            implemented: True
         utie:
           type: dict
           schema:
@@ -4107,21 +3732,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         stie:
           type: dict
           schema:
@@ -4150,21 +3769,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         mtie:
           type: dict
           schema:
@@ -4189,12 +3802,12 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
-              default:
-                ro_variable: true
+                wlrl: *id002
+              default: 
+                wlrl: 
+                - 0:1
           default:
             implemented: true
         ueie:
@@ -4225,21 +3838,15 @@ mie:
               oneof:
               -
                 schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
+                  wlrl: *id002
               -
                 schema:
                   warl: *id001
+              default:
+                wlrl:
+                 - 0:1
           default:
-            implemented: true
+            implemented: False
         seie:
           type: dict
           schema:
@@ -4264,14 +3871,19 @@ mie:
               default: true
             type:
               type: dict
-              schema:
-                ro_variable:
-                  type: boolean
-                  default: true
+              check_with: wr_illegal
+              oneof:
+              -
+                schema:
+                  wlrl: *id002
+              -
+                schema:
+                  warl: *id001
               default:
-                ro_variable: true
+                wlrl:
+                - 0:1
           default:
-            implemented: true
+            implemented: False
         meie:
           type: dict
           schema:
@@ -4296,20 +3908,20 @@ mie:
               default: true
             type:
               type: dict
+              check_with: wr_illegal
               schema:
-                ro_variable:
-                  type: boolean
-                  default: true
-              default:
-                ro_variable: true
+                wlrl: *id002
+              default: 
+                wlrl: [0:1]
           default:
             implemented: true
         accessible:
           type: boolean
           default: false
           check_with: rv64_check
-      required: true
+      required: true  
   required: true
+
 mscratch:
   type: dict
   schema:
@@ -4433,6 +4045,7 @@ mscratch:
           check_with: rv64_check
       default:
         accessible: false
+
 mepc:
   type: dict
   schema:
@@ -4476,22 +4089,8 @@ mepc:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
           default:
             warl:
               dependency_fields: []
@@ -4528,22 +4127,8 @@ mepc:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
           default:
             warl:
               dependency_fields: []
@@ -4558,6 +4143,7 @@ mepc:
           check_with: rv64_check
       default:
         accessible: false
+
 mtval:
   type: dict
   schema:
@@ -4601,22 +4187,8 @@ mtval:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
           default:
             warl:
               dependency_fields: []
@@ -4653,22 +4225,8 @@ mtval:
         type:
           type: dict
           check_with: wr_illegal
-          oneof:
-          -
-            schema:
-              ro_constant:
-                type: list
-                schema:
-                  type: integer
-                  max: 4611686018427387903
-                maxlength: 1
-          -
-            schema:
-              ro_variable:
-                type: boolean
-          -
-            schema:
-              warl: *id001
+          schema:
+            warl: *id001
           default:
             warl:
               dependency_fields: []
@@ -4703,6 +4261,7 @@ mcause:
     reset-val:
       type: integer
       check_with: max_length
+      default: 0
     rv32:
       type: dict
       schema:
@@ -4735,23 +4294,12 @@ mcause:
               - true
             type:
               type: dict
-              check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl: 
+                - 0x0:0x1
+              readonly: True
           default:
             implemented: true
         exception_code:
@@ -4781,11 +4329,10 @@ mcause:
             type:
               type: dict
               schema:
-                wlrl:
-                  type: list
+                wlrl: *id002
               default:
-                wlrl:
-                - (0,15)
+                wlrl: 
+                - 0:15
           default:
             implemented: true
         accessible:
@@ -4811,14 +4358,14 @@ mcause:
               default: none
             msb:
               type: integer
-              default: 31
+              default: 63
               allowed:
-              - 31
+              - 63
             lsb:
               type: integer
-              default: 31
+              default: 63
               allowed:
-              - 31
+              - 63
             implemented:
               type: boolean
               default: true
@@ -4826,23 +4373,11 @@ mcause:
               - true
             type:
               type: dict
-              check_with: wr_illegal
-              oneof:
-              -
-                schema:
-                  ro_constant:
-                    type: list
-                    schema:
-                      type: integer
-                      max: 4611686018427387903
-                    maxlength: 1
-              -
-                schema:
-                  ro_variable:
-                    type: boolean
-              -
-                schema:
-                  warl: *id001
+              schema:
+                wlrl: *id002
+              default:
+                wlrl:
+                - 0:1
           default:
             implemented: true
         exception_code:
@@ -4856,9 +4391,9 @@ mcause:
               default: none
             msb:
               type: integer
-              default: 30
+              default: 62
               allowed:
-              - 30
+              - 62
             lsb:
               type: integer
               default: 0
@@ -4872,11 +4407,10 @@ mcause:
             type:
               type: dict
               schema:
-                wlrl:
-                  type: list
+                wlrl: *id002
               default:
                 wlrl:
-                - (0,15)
+                - 0:15
           default:
             implemented: true
         accessible:
@@ -4885,6 +4419,7 @@ mcause:
           check_with: rv64_check
       default:
         accessible: false
+
 mcounteren:
   type: dict
   schema:
@@ -4980,6 +4515,7 @@ mcounteren:
           check_with: rv64_check
       default:
         accessible: false
+
 mcountinhibit:
   type: dict
   schema:
@@ -5074,6 +4610,7 @@ mcountinhibit:
           check_with: rv64_check
       default:
         accessible: false
+
 mhpmevent3:
   type: dict
   schema:
