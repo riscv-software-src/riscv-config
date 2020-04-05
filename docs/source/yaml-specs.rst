@@ -11,7 +11,7 @@ ISA YAML Spec
 
 **NOTE**:
 
-  1. All fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
+  1. All integer fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
   2. An elaborate example of the full-fledge ISA-YAML file can be found here: `ISA-YAML <https://github.com/riscv/riscv_config/blob/master/examples/template_isa.yaml>`_
 
 .. include:: schema_isa.rst
@@ -34,16 +34,16 @@ CSRs with sub-fields
                                             # of the all reset values of the sub-fields 
     rv32:                                   # this node and its subsequent fields can exist 
                                             # if [M/S/U]XL value can be 1
-      implemented: <boolean>                # indicates if the csr exists in rv32 mode or not. 
+      accessible: <boolean>                 # indicates if the csr is accessible in rv32 mode or not. 
                                             # When False, all fields below will be trimmed off 
                                             # in the checked yaml. False also indicates that 
-                                            # access-exception should be generated
+                                            # access-exception should be generated. 
       fields:                               # a quick summary of the list of all fields of the 
                                             # csr including a list of WPRI fields of the csr.
         - <field_name1>
         - <field_name2>
-        - - [30,23]                         # A list which contains a squashed pair 
-          - 6                               # (of form [msb,lsb]) of all WPRI bits within the 
+        - - [23,30]                         # A list which contains a squashed pair 
+          - 6                               # (of form [lsb,msb]) of all WPRI bits within the 
                                             # csr. Does not exist if there are no WPRI bits
   
       <field_name1>:                        # name of the field
@@ -56,7 +56,7 @@ CSRs with sub-fields
                                             # or not. When False, all 
                                             # fields below this will be trimmed.
         type:                               # type of field. Can be only one of the following
-          wlrl: [list of ranges]            # field is wlrl and the list of legal values.
+          wlrl: [list of value-descriptors] # field is wlrl and the set of legal values.
           ro_constant: <hex>                # field is readonly and will return the same value.
           ro_variable: True                 # field is readonly but the value returned depends 
                                             # on other arch-states
@@ -66,11 +66,11 @@ CSRs with sub-fields
             wr_illegal: [list of warl-string]           
     rv64:                                   # this node and its subsequent fields can exist 
                                             # if [M/S/U]XL value can be 2
-      implemented: <boolean>                # indicates if this register exists in rv64 mode 
+      accessible: <boolean>                 # indicates if this register exists in rv64 mode 
                                             # or not. Same definition as for rv32 node.
     rv128:                                  # this node and its subsequent fields can exist if 
                                             # [M/S/U]XL value can be 3
-      implemented: <boolean>                # indicates if this register exists in rv128 mode 
+      accessible: <boolean>                 # indicates if this register exists in rv128 mode 
                                             # or not. Same definition as for rv32 node.                          
 
 CSRs without sub-fields
@@ -86,17 +86,17 @@ CSRs without sub-fields
                                           # of the all reset values of the sub-fields 
     rv32:                                 # this node and its subsequent fields can exist 
                                           # if [M/S/U]XL value can be 1
-      implemented: <boolean>              # indicates if the csr exists in rv32 mode or not. 
+      accessible: <boolean>               # indicates if the csr is accessible in rv32 mode or not. 
                                           # When False, all fields below will be trimmed off 
                                           # in the checked yaml. False also indicates that 
                                           # access-exception should be generated
-      fields:                             # This should be empty always.
+      fields: []                          # This should be empty always.
       shadow: <csr-name>::<register>      # which this register shadows,'none' indicates that 
                                           # this register does not shadow anything.
       msb: <int>                          # msb index of the csr. max: 31, min:31
       lsb: <int>                          # lsb index of the csr. max: 0, min:0
       type:                               # type of field. Can be only one of the following
-        wlrl: [list of ranges]            # field is wlrl and the list of legal values.
+        wlrl: [list of value-descriptors] # field is wlrl and the set of legal values.
         ro_constant: <hex>                # field is readonly and will return the same value.
         ro_variable: True                 # field is readonly but the value returned depends 
                                           # on other arch-states
@@ -106,11 +106,11 @@ CSRs without sub-fields
           wr_illegal: [list of warl-string]           
     rv64:                                 # this node and its subsequent fields can exist 
                                           # if [M/S/U]XL value can be 2
-      implemented: <boolean>              # indicates if this register exists in rv64 mode 
+      accessible: <boolean>               # indicates if this register exists in rv64 mode 
                                           # or not. Same definition as for rv32 node.
     rv128:                                # this node and its subsequent fields can exist if 
                                           # [M/S/U]XL value can be 3
-      implemented: <boolean>              # indicates if this register exists in rv128 mode 
+      accessible: <boolean>              # indicates if this register exists in rv128 mode 
 
 Constraints
 -----------
@@ -120,7 +120,7 @@ Each CSR undergoes the following checks:
   1. All implemented fields at the csr-level, if set to True, are checked if
      they comply with the supported_xlen field of the ISA yaml.
   2. The reset-val is checked against compliance with the type field specified
-     by the user.
+     by the user. All unimplemented fields are considered to be hardwired to 0.
 
 For each of the above templates the following fields for all standard CSRs
 defined by the spec are frozen and **CANNOT** be modified by the user.
@@ -152,7 +152,7 @@ Following is an example of how a user can define the mtvec csr in the input ISA 
   mtvec:
   reset-val: 0x80010000
   rv32:
-    implemented: true
+    accessible: true
     base:
       implemented: true
       type:                             
@@ -186,7 +186,7 @@ above user-input:
       priv_mode: M
       reset-val: 0x80010000
       rv32:
-        implemented: true
+        accessible: true
         base:
           implemented: true
           type:
@@ -221,7 +221,7 @@ above user-input:
         - mode
         - base 
       rv64:
-        implemented: false
+        accessible: false
 
 WARL field Definition
 =====================
