@@ -20,7 +20,7 @@ deploy:
  api_key: $github_access_token
  file_glob: true
  file: docs/build/latex/*.pdf
- cleanup: true
+ cleanup: false
  on:
    repo: riscv/riscv-config
    branch: master
