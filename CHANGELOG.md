@@ -2,9 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.2.0 - 2020-04-06
+## 2.2.0 - 2020-04-07
 ### Changed
-- Changed implemented in rv32 and rv64 nodes to accessible.
+- Renamed the 'implemented' field  in rv32 and rv64 nodes to 'accessible'.
 - Modified appropriate definitions for fields dependent on specific extensions like NSU.
 
 ## 2.1.1 - 2020-03-29
