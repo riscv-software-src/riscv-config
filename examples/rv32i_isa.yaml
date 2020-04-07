@@ -2,31 +2,29 @@ ISA: RV32IMAFCZicsr_Zifencei
 User_Spec_Version: '2.3'
 supported_xlen: [32]
 misa:
-  reset-val: 0x40001125
-  rv32:
-    implemented: true
-    mxl:
-      implemented: true
-      type:
-        ro_constant: [0x01]
-    extensions:
-      implemented: true
-      type:
-        ro_constant: [0x1125]
-  rv64:
-    implemented: false
+ reset-val: 0x40001125
+ rv32:
+   accessible: true
+   mxl:
+     implemented: true
+     type:
+       ro_constant: [0x01]
+   extensions:
+     implemented: true
+     type:
+       ro_constant: [0x1125]
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
-    implemented: true
+    accessible: true
     type:
       ro_constant: [0xdeadbeef]
   rv64:
-    implemented: false
+    accessible: false
 mtvec:
   reset-val: 0x80010000
   rv32:
-    implemented: true
+    accessible: true
     base:
       implemented: true
       type:                             
