@@ -97,19 +97,19 @@ Install RISCV-CONFIG
 
 .. code-block:: bash
 
-  $ pip install riscv_config
+  $ pip3 install riscv_config
 
 To update an already installed version of RISCV-CONFIG to the latest version:
 
 .. code-block:: bash
 
-  $ pip install -U riscv_config
+  $ pip3 install -U riscv_config
 
 To checkout a specific version of riscv_config:
 
 .. code-block:: bash
 
-  $ pip install riscv_config--1.x.x
+  $ pip3 install riscv_config--1.x.x
 
 Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following 
 output ::
@@ -134,7 +134,7 @@ RISCV_CONFIG for Developers
 
 Clone the repository from git and install required dependencies. 
 
-.. note::  you will still need python-3.7.0 and pip. 
+.. note::  you will still need python (>=3.6.0) and pip. 
   If you are using `pyenv` as mentioned above, make sure to enable that environment before
   performing the following steps.
 
