@@ -23,7 +23,7 @@ setup(name="riscv_config",
       description="RISC-V Configuration Validator",
       long_description=long_description,
       classifiers=[
-          "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.6",
           "License :: OSI Approved :: BSD License",
           "Development Status :: 4 - Beta"
       ],
@@ -36,7 +36,7 @@ setup(name="riscv_config",
       package_dir={'riscv_config': 'riscv_config/'},
       package_data={'riscv_config': ['schemas/*']},
       install_requires=['Cerberus>=1.3.1', 'ruamel.yaml>=0.16.0'],
-      python_requires=">=3.7.0",
+      python_requires=">=3.6.0",
       entry_points={
           "console_scripts": ["riscv-config=riscv_config.main:main"],
       })
