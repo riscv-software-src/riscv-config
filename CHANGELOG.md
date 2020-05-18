@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.2.1 - 2020-05-18
+### Changed
+- Changed minimum python version requirement to 3.6.0 which is typically easy to install on all
+  major distributions
+- Updated readme with better installation instructions
+
 ## 2.2.0 - 2020-04-07
 ### Changed
 - Renamed the 'implemented' field  in rv32 and rv64 nodes to 'accessible'.
