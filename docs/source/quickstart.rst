@@ -5,58 +5,95 @@ Quickstart
 This doc is meant to serve as a quick-guide to setup RISCV-CONFIG and perform a \
 sample validation of target specifications.
 
-Install Python Dependencies
-===========================
+Install Python
+==============
 
-RISCV-CONFIG requires `pip` and `python` (>=3.7) to be available on your system. If you have issues
-installing either of these directly on your system, we suggest using a virtual environment
-like `pyenv` to make things easy.
+RISCV-CONFIG requires `pip` and `python` (>=3.6) to be available on your system. 
 
-Installing Pyenv [optional]
+Ubuntu
+------
+
+Ubuntu 17.10 and 18.04 by default come with python-3.6.9 which is sufficient for using riscv-config.
+
+If you are are Ubuntu 16.10 and 17.04 you can directly install python3.6 using the Universe
+repository::
+
+  $ sudo apt-get install python3.6
+  $ pip3 install --upgrade pip
+
+If you are using Ubuntu 14.04 or 16.04 you need to get python3.6 from a Personal Package Archive 
+(PPA)::
+
+  $ sudo add-apt-repository ppa:deadsnakes/ppa
+  $ sudo apt-get update
+  $ sudo apt-get install python3.6 -y 
+  $ pip3 install --upgrade pip
+
+You should now have 2 binaries: ``python3`` and ``pip3`` available in your $PATH. 
+You can check the versions as below::
+
+  $ python3 --version
+  Python 3.6.9
+  $ pip3 --version
+  pip 20.1 from <user-path>.local/lib/python3.6/site-packages/pip (python 3.6)
+
+Centos:7
+--------
+The CentOS 7 Linux distribution includes Python 2 by default. However, as of CentOS 7.7, Python 3 
+is available in the base package repository which can be installed using the following commands::
+
+  $ sudo yum update -y
+  $ sudo yum install -y python3
+  $ pip3 install --upgrade pip
+
+For versions prior to 7.7 you can install python3.6 using third-party repositories, such as the 
+IUS repository::
+
+  $ sudo yum update -y
+  $ sudo yum install yum-utils
+  $ sudo yum install https://centos7.iuscommunity.org/ius-release.rpm
+  $ sudo yum install python36u
+  $ pip3 install --upgrade pip
+
+You can check the versions::
+
+  $ python3 --version
+  Python 3.6.8
+  $ pip --version
+  pip 20.1 from <user-path>.local/lib/python3.6/site-packages/pip (python 3.6)
+
+
+Using Virtualenv for Python 
 ---------------------------
 
-If you are working on Ubuntu/Debian systems make sure you have the following libraries installed:
+Many a times folks face issues in installing and managing python versions, which is actually a 
+major issue as many gui elements in Linux use the default python versions. In which case installing
+python3.6 using the above methods might break other software. We thus advise the use of **pyenv** to
+install python3.6.
 
-.. code-block:: bash
+For Ubuntu and CentosOS, please follow the steps here: https://github.com/pyenv/pyenv#basic-github-checkout
 
-  $ sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-      libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-      xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+RHEL users can find more detailed guides for virtual-env here: https://developers.redhat.com/blog/2018/08/13/install-python3-rhel/#create-env
 
-Download and install pyenv:
+Once you have pyenv installed do the following to install python 3.6.0::
 
-.. code-block:: bash
+  $ pyenv install 3.6.0
+  $ pip3 install --upgrade pip
+  $ pyenv shell 3.6.0
+  
+You can check the version in the **same shell**::
 
-  $ curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-
-Add the following lines to your .bashrc:
-
-.. code-block:: bash
-
-  $ export PATH="/home/<username>/.pyenv/bin:$PATH"
-  $ eval "$(pyenv init -)"
-  $ eval "$(pyenv virtualenv-init -)"
-
-Open a new terminal and create a virtual environment using the following
-
-.. code-block:: bash
-
-  $ pyenv install 3.7.0
-  $ pyenv virtualenv 3.7.0 riscv_config_env
-
-
-Now you can activate this virtual environment using the following command:
-
-.. code-block:: bash
-
-  $ pyenv activate riscv_config_env
   $ python --version
+  Python 3.6.0
+  $ pip --version
+  pip 20.1 from <user-path>.local/lib/python3.6/site-packages/pip (python 3.6)
 
-Install via PIP [users]
-=======================
 
-**NOTE**: If you are using `pyenv` as mentioned above, make sure to enable that environment before
-performing the following steps.
+Install RISCV-CONFIG
+====================
+
+.. note:: If you are using a virtual environment make sure to enable that environment before
+  performing the following steps.
 
 .. code-block:: bash
 
@@ -74,9 +111,8 @@ To checkout a specific version of riscv_config:
 
   $ pip install riscv_config--1.x.x
 
-Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following on the terminal:
-
-.. code-block:: bash
+Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following 
+output ::
 
     riscv_config [-h] [--version] [--isa_spec YAML] [--platform_spec YAML]
                         [--work_dir DIR] [--verbose]
@@ -96,9 +132,11 @@ Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should p
 RISCV_CONFIG for Developers
 ===========================
 
-Clone the repository from git and install required dependencies. Note, you will still need
-python-3.7.0 and pip. If you are using `pyenv` as mentioned above, make sure to enable that environment before
-performing the following steps.
+Clone the repository from git and install required dependencies. 
+
+.. note::  you will still need python-3.7.0 and pip. 
+  If you are using `pyenv` as mentioned above, make sure to enable that environment before
+  performing the following steps.
 
 .. code-block:: bash
 
