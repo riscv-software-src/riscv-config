@@ -151,7 +151,7 @@ Usage Example
 
 .. code-block:: bash
 
-    $ riscv_config -ispec examples/rv32i_isa.yaml -pspec examples/rv32i_platform.yaml
+    $ riscv-config -ispec examples/rv32i_isa.yaml -pspec examples/rv32i_platform.yaml
 
 Executing the above command should display the following on the terminal:
 
