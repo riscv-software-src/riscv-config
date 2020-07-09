@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.2.2 - 2020-06-09
+### Changed
+- Changed quickstart 'riscv_config' to 'riscv-config'
+- Changed checker.py to add check_reset_fill_fields() description
+
 ## 2.2.1 - 2020-05-18
 ### Changed
 - Changed minimum python version requirement to 3.6.0 which is typically easy to install on all
