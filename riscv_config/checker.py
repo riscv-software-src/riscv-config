@@ -11,8 +11,13 @@ import riscv_config.constants as constants
 from riscv_config.utils import yaml
 from riscv_config.warl import warl_interpreter
 
+import yaml as pyyaml
+
 logger = logging.getLogger(__name__)
 
+class NoAliasDumper(pyyaml.Dumper):
+    def ignore_aliases(self, data):
+        return True
 
 def nosset():
     '''Function to check and set defaults for all fields which are dependent on
@@ -440,7 +445,7 @@ def check_reset_fill_fields(spec):
                                 "Reset value doesnt match the 'wlrl' description for the register."
                             )
                     elif 'ro_constant' in keys:
-                        if reset_val not in desc['ro_constant']:
+                        if reset_val != desc['ro_constant']:
                             error.append(
                                 "Reset value doesnt match the 'ro_constant' description for the register."
                             )
@@ -528,7 +533,7 @@ def check_reset_fill_fields(spec):
                                             " doesnt match the 'wlrl' description."
                                         )
                                 elif 'ro_constant' in keys:
-                                    if test_val not in desc['ro_constant']:
+                                    if test_val != desc['ro_constant']:
                                         error.append(
                                             "Reset value for " + field +
                                             " doesnt match the 'ro_constant' description."
@@ -573,7 +578,7 @@ def check_reset_fill_fields(spec):
     return spec, errors
 
 
-def check_specs(isa_spec, platform_spec, work_dir, logging=False):
+def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=False):
     '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -651,7 +656,10 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(trim(normalized), outfile)
+    if no_anchors:
+        pyyaml.dump(trim(normalized), outfile, Dumper=NoAliasDumper)
+    else:
+        yaml.dump(trim(normalized), outfile)
 
     if logging:
         logger.info('Input-Platform file')

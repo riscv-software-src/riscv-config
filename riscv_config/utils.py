@@ -5,10 +5,12 @@ import operator
 import ruamel
 from ruamel.yaml import YAML
 
-yaml = YAML(typ="rt")
+yaml = YAML(typ="unsafe")
 yaml.default_flow_style = False
 yaml.allow_unicode = True
 yaml.compact(seq_seq=False, seq_map=False)
+yaml.indent = 4
+yaml.block_seq_indent = 2
 
 
 def load_yaml(foo):
@@ -105,4 +107,7 @@ def riscv_config_cmdline_args():
                         default='info',
                         help='debug | info | warning | error',
                         metavar="")
+    parser.add_argument('--no_anchors',
+                        action='store_true',
+                        help='Unroll/Disable all anchors')
     return parser
