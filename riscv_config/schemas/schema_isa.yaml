@@ -48,6 +48,85 @@ schema_node:
           type: string
           regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
 
+gen_flatschema:
+  schema:  &gen_flatschema
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer,  default: 0}
+    rv32:
+      type: dict
+      schema:
+        fields: {type: list, default: []}
+        shadow: {type: string, default: , nullable: True}
+        msb: {type: integer, default: 31, allowed: [31]}
+        lsb: {type: integer, default: 0, allowed: [0]}
+        type:
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+          - schema: { warl: *ref_warl }
+          default:
+            ro_constant: 0
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
+      default: {accessible: false}
+    rv64:
+      type: dict
+      schema:
+        fields: {type: list, default: []}
+        shadow: {type: string, default: , nullable: True}
+        msb: {type: integer, default: 63, allowed: [63]}
+        lsb: {type: integer, default: 0, allowed: [0]}
+        type:
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema: {ro_constant: {type: integer, max: 0xFFFFFFFFFFFFFFFF}}
+          - schema: { warl: *ref_warl }
+          default:
+            ro_constant: 0
+        accessible:
+          default: true
+          check_with: rv64_check
+      default: {accessible: True}
+
+gen_flatschema32:
+  schema:  &gen_flatschema32
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val:
+      type: integer
+      default: 0
+    rv32:
+      type: dict
+      schema:
+        fields: {type: list, default: []}
+        shadow: {type: string, default: , nullable: True}
+        msb: {type: integer, default: 31, allowed: [31]}
+        lsb: {type: integer, default: 0, allowed: [0]}
+        type:
+          type: dict
+          check_with: wr_illegal
+          oneof:
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+          - schema: { warl: *ref_warl }
+          default:
+            ro_constant: 0
+        accessible:
+          type: boolean
+          default: true
+          check_with: rv32_check
+      default: {accessible: false}
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+
+      default: {accessible: False}
+
+
 misa:
   type: dict
   schema:
@@ -2420,89 +2499,27 @@ mcountinhibit:
         accessible: { default: true, check_with: rv64_check}
       default: {accessible: false}
 
-mhpm_schema:
-  schema:  &mhpm_schema
-    priv_mode: {type: string, default: M, allowed: [M]}
-    reset-val: {type: integer,  default: 0}
-    rv32:
-      type: dict
-      schema:
-        fields: {type: list, default: []}
-        shadow: {type: string, default: , nullable: True}
-        msb: {type: integer, default: 63, allowed: [63]}
-        lsb: {type: integer, default: 0, allowed: [0]}
-        type:
-          type: dict
-          check_with: wr_illegal
-          oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
-          - schema: { warl: *ref_warl }
-          default:
-            ro_constant: 0
-        accessible:
-          type: boolean
-          default: true
-          check_with: rv32_check
-      default: {accessible: false}
-    rv64:
-      type: dict
-      schema:
-        fields: {type: list, default: []}
-        shadow: {type: string, default: , nullable: True}
-        msb: {type: integer, default: 63, allowed: [63]}
-        lsb: {type: integer, default: 0, allowed: [0]}
-        type:
-          type: dict
-          check_with: wr_illegal
-          oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
-          - schema: { warl: *ref_warl }
-          default:
-            ro_constant: 0
-        accessible:
-          default: true
-          check_with: rv64_check
-      default: {accessible: True}
-
-mhpm_schema32:
-  schema:  &mhpm_schema32
-    priv_mode: {type: string, default: M, allowed: [M]}
-    reset-val:
-      type: integer
-      default: 0
-    rv32:
-      type: dict
-      schema:
-        fields: {type: list, default: []}
-        shadow: {type: string, default: , nullable: True}
-        msb: {type: integer, default: 31, allowed: [31]}
-        lsb: {type: integer, default: 0, allowed: [0]}
-        type:
-          type: dict
-          check_with: wr_illegal
-          oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
-          - schema: { warl: *ref_warl }
-          default:
-            ro_constant: 0
-        accessible:
-          type: boolean
-          default: true
-          check_with: rv32_check
-      default: {accessible: false}
-    rv64:
-      type: dict
-      schema:
-        accessible:
-          default: False
-
-      default: {accessible: False}
-
+mcycle:
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Counts the number of clock cycles executed from an arbitrary point in time.
+    address: {type: integer, default: 0xB00, allowed: [0xB00]}
+    <<: *gen_flatschema
+minstret: 
+  type: dict
+  schema:
+    description:
+      type: string
+      default: Counts the number of instructions completed from an arbitrary point in time.
+    address: {type: integer, default: 0xB02, allowed: [0xB02]}
+    <<: *gen_flatschema
 
 mhpmevent3:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent3 is a MXLEN-bit event register which controls mhpmcounter3.
@@ -2510,7 +2527,7 @@ mhpmevent3:
 mhpmcounter3:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -2518,7 +2535,7 @@ mhpmcounter3:
 mhpmcounter3h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter3h returns the upper half word in RV32I systems.
@@ -2526,7 +2543,7 @@ mhpmcounter3h:
 mhpmevent4:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent4 is a MXLEN-bit event register which controls mhpmcounter4.
@@ -2534,7 +2551,7 @@ mhpmevent4:
 mhpmcounter4:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter4 is a 64-bit counter. Returns lower 42 bits in RV42I mode.
@@ -2542,7 +2559,7 @@ mhpmcounter4:
 mhpmcounter4h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter4h returns the upper half word in RV42I systems.
@@ -2550,7 +2567,7 @@ mhpmcounter4h:
 mhpmevent5:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent5 is a MXLEN-bit event register which controls mhpmcounter5.
@@ -2558,7 +2575,7 @@ mhpmevent5:
 mhpmcounter5:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter5 is a 64-bit counter. Returns lower 52 bits in RV52I mode.
@@ -2566,7 +2583,7 @@ mhpmcounter5:
 mhpmcounter5h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter5h returns the upper half word in RV52I systems.
@@ -2574,7 +2591,7 @@ mhpmcounter5h:
 mhpmevent6:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent6 is a MXLEN-bit event register which controls mhpmcounter6.
@@ -2582,7 +2599,7 @@ mhpmevent6:
 mhpmcounter6:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter6 is a 64-bit counter. Returns lower 62 bits in RV62I
@@ -2591,7 +2608,7 @@ mhpmcounter6:
 mhpmcounter6h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter6h returns the upper half word in RV62I systems.
@@ -2599,7 +2616,7 @@ mhpmcounter6h:
 mhpmevent7:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent7 is a MXLEN-bit event register which controls mhpmcounter7.
@@ -2607,7 +2624,7 @@ mhpmevent7:
 mhpmcounter7:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter7 is a 64-bit counter. Returns lower 72 bits in RV72I mode.
@@ -2615,7 +2632,7 @@ mhpmcounter7:
 mhpmcounter7h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter7h returns the upper half word in RV72I systems.
@@ -2623,7 +2640,7 @@ mhpmcounter7h:
 mhpmevent8:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent8 is a MXLEN-bit event register which controls mhpmcounter8.
@@ -2631,7 +2648,7 @@ mhpmevent8:
 mhpmcounter8:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter8 is a 64-bit counter. Returns lower 82 bits in RV82I mode.
@@ -2639,7 +2656,7 @@ mhpmcounter8:
 mhpmcounter8h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter8h returns the upper half word in RV82I systems.
@@ -2647,7 +2664,7 @@ mhpmcounter8h:
 mhpmevent9:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent9 is a MXLEN-bit event register which controls mhpmcounter9.
@@ -2655,7 +2672,7 @@ mhpmevent9:
 mhpmcounter9:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter9 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -2663,7 +2680,7 @@ mhpmcounter9:
 mhpmcounter9h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter9h returns the upper half word in RV32I systems.
@@ -2671,7 +2688,7 @@ mhpmcounter9h:
 mhpmevent10:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent10 is a MXLEN-bit event register which controls mhpmcounter10.
@@ -2679,7 +2696,7 @@ mhpmevent10:
 mhpmcounter10:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter10 is a 64-bit counter. Returns lower 102 bits in RV102I mode.
@@ -2687,7 +2704,7 @@ mhpmcounter10:
 mhpmcounter10h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter10h returns the upper half word in RV102I systems.
@@ -2695,7 +2712,7 @@ mhpmcounter10h:
 mhpmevent11:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent11 is a MXLEN-bit event register which controls mhpmcounter11.
@@ -2703,7 +2720,7 @@ mhpmevent11:
 mhpmcounter11:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter11 is a 64-bit counter. Returns lower 112 bits in RV112I mode.
@@ -2711,7 +2728,7 @@ mhpmcounter11:
 mhpmcounter11h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter11h returns the upper half word in RV112I systems.
@@ -2719,7 +2736,7 @@ mhpmcounter11h:
 mhpmevent12:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent12 is a MXLEN-bit event register which controls mhpmcounter12.
@@ -2727,7 +2744,7 @@ mhpmevent12:
 mhpmcounter12:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter12 is a 64-bit counter. Returns lower 122 bits in RV122I mode.
@@ -2735,7 +2752,7 @@ mhpmcounter12:
 mhpmcounter12h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter12h returns the upper half word in RV122I systems.
@@ -2743,7 +2760,7 @@ mhpmcounter12h:
 mhpmevent13:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent13 is a MXLEN-bit event register which controls mhpmcounter13.
@@ -2751,7 +2768,7 @@ mhpmevent13:
 mhpmcounter13:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter13 is a 64-bit counter. Returns lower 132 bits in RV132I mode.
@@ -2759,7 +2776,7 @@ mhpmcounter13:
 mhpmcounter13h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter13h returns the upper half word in RV132I systems.
@@ -2767,7 +2784,7 @@ mhpmcounter13h:
 mhpmevent14:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent14 is a MXLEN-bit event register which controls mhpmcounter14.
@@ -2775,7 +2792,7 @@ mhpmevent14:
 mhpmcounter14:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter14 is a 64-bit counter. Returns lower 142 bits in RV142I mode.
@@ -2783,7 +2800,7 @@ mhpmcounter14:
 mhpmcounter14h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter14h returns the upper half word in RV142I systems.
@@ -2791,7 +2808,7 @@ mhpmcounter14h:
 mhpmevent15:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent15 is a MXLEN-bit event register which controls mhpmcounter15.
@@ -2799,7 +2816,7 @@ mhpmevent15:
 mhpmcounter15:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter15 is a 64-bit counter. Returns lower 152 bits in RV152I mode.
@@ -2807,7 +2824,7 @@ mhpmcounter15:
 mhpmcounter15h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter15h returns the upper half word in RV152I systems.
@@ -2815,7 +2832,7 @@ mhpmcounter15h:
 mhpmevent16:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent16 is a MXLEN-bit event register which controls mhpmcounter16.
@@ -2823,7 +2840,7 @@ mhpmevent16:
 mhpmcounter16:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter16 is a 64-bit counter. Returns lower 162 bits in RV162I mode.
@@ -2831,7 +2848,7 @@ mhpmcounter16:
 mhpmcounter16h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter16h returns the upper half word in RV162I systems.
@@ -2839,7 +2856,7 @@ mhpmcounter16h:
 mhpmevent17:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent17 is a MXLEN-bit event register which controls mhpmcounter17.
@@ -2847,7 +2864,7 @@ mhpmevent17:
 mhpmcounter17:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter17 is a 64-bit counter. Returns lower 172 bits in RV172I mode.
@@ -2855,7 +2872,7 @@ mhpmcounter17:
 mhpmcounter17h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter17h returns the upper half word in RV172I systems.
@@ -2863,7 +2880,7 @@ mhpmcounter17h:
 mhpmevent18:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent18 is a MXLEN-bit event register which controls mhpmcounter18.
@@ -2871,7 +2888,7 @@ mhpmevent18:
 mhpmcounter18:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter18 is a 64-bit counter. Returns lower 182 bits in RV182I mode.
@@ -2879,7 +2896,7 @@ mhpmcounter18:
 mhpmcounter18h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter18h returns the upper half word in RV182I systems.
@@ -2887,7 +2904,7 @@ mhpmcounter18h:
 mhpmevent19:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent19 is a MXLEN-bit event register which controls mhpmcounter19.
@@ -2895,7 +2912,7 @@ mhpmevent19:
 mhpmcounter19:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter19 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -2903,7 +2920,7 @@ mhpmcounter19:
 mhpmcounter19h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter19h returns the upper half word in RV32I systems.
@@ -2911,7 +2928,7 @@ mhpmcounter19h:
 mhpmevent20:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent20 is a MXLEN-bit event register which controls mhpmcounter20.
@@ -2919,7 +2936,7 @@ mhpmevent20:
 mhpmcounter20:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter20 is a 64-bit counter. Returns lower 202 bits in RV202I mode.
@@ -2927,7 +2944,7 @@ mhpmcounter20:
 mhpmcounter20h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter20h returns the upper half word in RV202I systems.
@@ -2935,7 +2952,7 @@ mhpmcounter20h:
 mhpmevent21:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent21 is a MXLEN-bit event register which controls mhpmcounter21.
@@ -2943,7 +2960,7 @@ mhpmevent21:
 mhpmcounter21:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter21 is a 64-bit counter. Returns lower 212 bits in RV212I mode.
@@ -2951,7 +2968,7 @@ mhpmcounter21:
 mhpmcounter21h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter21h returns the upper half word in RV212I systems.
@@ -2959,7 +2976,7 @@ mhpmcounter21h:
 mhpmevent22:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent22 is a MXLEN-bit event register which controls mhpmcounter22.
@@ -2967,7 +2984,7 @@ mhpmevent22:
 mhpmcounter22:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter22 is a 64-bit counter. Returns lower 222 bits in RV222I mode.
@@ -2975,7 +2992,7 @@ mhpmcounter22:
 mhpmcounter22h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter22h returns the upper half word in RV222I systems.
@@ -2983,7 +3000,7 @@ mhpmcounter22h:
 mhpmevent23:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent23 is a MXLEN-bit event register which controls mhpmcounter23.
@@ -2991,7 +3008,7 @@ mhpmevent23:
 mhpmcounter23:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter23 is a 64-bit counter. Returns lower 232 bits in RV232I mode.
@@ -2999,7 +3016,7 @@ mhpmcounter23:
 mhpmcounter23h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter23h returns the upper half word in RV232I systems.
@@ -3007,7 +3024,7 @@ mhpmcounter23h:
 mhpmevent24:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent24 is a MXLEN-bit event register which controls mhpmcounter24.
@@ -3015,7 +3032,7 @@ mhpmevent24:
 mhpmcounter24:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter24 is a 64-bit counter. Returns lower 242 bits in RV242I mode.
@@ -3023,7 +3040,7 @@ mhpmcounter24:
 mhpmcounter24h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter24h returns the upper half word in RV242I systems.
@@ -3031,7 +3048,7 @@ mhpmcounter24h:
 mhpmevent25:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent25 is a MXLEN-bit event register which controls mhpmcounter25.
@@ -3039,7 +3056,7 @@ mhpmevent25:
 mhpmcounter25:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter25 is a 64-bit counter. Returns lower 252 bits in RV252I mode.
@@ -3047,7 +3064,7 @@ mhpmcounter25:
 mhpmcounter25h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter25h returns the upper half word in RV252I systems.
@@ -3055,7 +3072,7 @@ mhpmcounter25h:
 mhpmevent26:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent26 is a MXLEN-bit event register which controls mhpmcounter26.
@@ -3063,7 +3080,7 @@ mhpmevent26:
 mhpmcounter26:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter26 is a 64-bit counter. Returns lower 262 bits in RV262I mode.
@@ -3071,7 +3088,7 @@ mhpmcounter26:
 mhpmcounter26h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter26h returns the upper half word in RV262I systems.
@@ -3079,7 +3096,7 @@ mhpmcounter26h:
 mhpmevent27:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent27 is a MXLEN-bit event register which controls mhpmcounter27.
@@ -3087,7 +3104,7 @@ mhpmevent27:
 mhpmcounter27:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter27 is a 64-bit counter. Returns lower 272 bits in RV272I mode.
@@ -3095,7 +3112,7 @@ mhpmcounter27:
 mhpmcounter27h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter27h returns the upper half word in RV272I systems.
@@ -3103,7 +3120,7 @@ mhpmcounter27h:
 mhpmevent28:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent28 is a MXLEN-bit event register which controls mhpmcounter28.
@@ -3111,7 +3128,7 @@ mhpmevent28:
 mhpmcounter28:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter28 is a 64-bit counter. Returns lower 282 bits in RV282I mode.
@@ -3119,7 +3136,7 @@ mhpmcounter28:
 mhpmcounter28h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter28h returns the upper half word in RV282I systems.
@@ -3127,7 +3144,7 @@ mhpmcounter28h:
 mhpmevent29:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent29 is a MXLEN-bit event register which controls mhpmcounter29.
@@ -3135,7 +3152,7 @@ mhpmevent29:
 mhpmcounter29:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter29 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -3143,7 +3160,7 @@ mhpmcounter29:
 mhpmcounter29h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter29h returns the upper half word in RV32I systems.
@@ -3151,7 +3168,7 @@ mhpmcounter29h:
 mhpmevent30:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent30 is a MXLEN-bit event register which controls mhpmcounter30.
@@ -3159,7 +3176,7 @@ mhpmevent30:
 mhpmcounter30:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter30 is a 64-bit counter. Returns lower 302 bits in RV302I mode.
@@ -3167,7 +3184,7 @@ mhpmcounter30:
 mhpmcounter30h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter30h returns the upper half word in RV302I systems.
@@ -3175,7 +3192,7 @@ mhpmcounter30h:
 mhpmevent31:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmevent31 is a MXLEN-bit event register which controls mhpmcounter31.
@@ -3183,7 +3200,7 @@ mhpmevent31:
 mhpmcounter31:
   type: dict
   schema:
-    <<: *mhpm_schema
+    <<: *gen_flatschema
     description:
       type: string
       default: The mhpmcounter31 is a 64-bit counter. Returns lower 312 bits in RV312I mode.
@@ -3191,7 +3208,7 @@ mhpmcounter31:
 mhpmcounter31h:
   type: dict
   schema:
-    <<: *mhpm_schema32
+    <<: *gen_flatschema32
     description:
       type: string
       default: The mhpmcounter31h returns the upper half word in RV312I systems.

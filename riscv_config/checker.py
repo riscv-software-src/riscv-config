@@ -114,6 +114,8 @@ def add_def_setters(schema_yaml):
     schema_yaml['mepc']['default_setter'] = regsetter
     schema_yaml['mtval']['default_setter'] = regsetter
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
+    schema_yaml['mcycle']['default_setter'] = regsetter
+    schema_yaml['minstret']['default_setter'] = regsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter
