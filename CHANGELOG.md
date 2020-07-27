@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Size of the isa schema has been reduced significantly.
 - Using anchors in the schema.
 - Provided a command line argument to disable anchors in the checked yaml dump.
+- adding mycycle, minstret, pmpcfgs and pmpaddrs
 
 ## 2.2.2 - 2020-06-09
 ### Changed

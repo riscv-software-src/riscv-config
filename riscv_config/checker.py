@@ -116,6 +116,22 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter
+    schema_yaml['pmpcfg0']['default_setter'] = regsetter
+    schema_yaml['pmpcfg1']['default_setter'] = regsetter
+    schema_yaml['pmpcfg2']['default_setter'] = regsetter
+    schema_yaml['pmpcfg3']['default_setter'] = regsetter
+    schema_yaml['pmpcfg4']['default_setter'] = regsetter
+    schema_yaml['pmpcfg5']['default_setter'] = regsetter
+    schema_yaml['pmpcfg6']['default_setter'] = regsetter
+    schema_yaml['pmpcfg7']['default_setter'] = regsetter
+    schema_yaml['pmpcfg8']['default_setter'] = regsetter
+    schema_yaml['pmpcfg9']['default_setter'] = regsetter
+    schema_yaml['pmpcfg10']['default_setter'] = regsetter
+    schema_yaml['pmpcfg11']['default_setter'] = regsetter
+    schema_yaml['pmpcfg12']['default_setter'] = regsetter
+    schema_yaml['pmpcfg13']['default_setter'] = regsetter
+    schema_yaml['pmpcfg14']['default_setter'] = regsetter
+    schema_yaml['pmpcfg15']['default_setter'] = regsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter

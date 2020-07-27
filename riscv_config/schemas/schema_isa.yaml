@@ -71,7 +71,7 @@ gen_flatschema:
           type: boolean
           default: true
           check_with: rv32_check
-      default: {accessible: false}
+      default: {accessible: True}
     rv64:
       type: dict
       schema:
@@ -117,13 +117,12 @@ gen_flatschema32:
           type: boolean
           default: true
           check_with: rv32_check
-      default: {accessible: false}
+      default: {accessible: True}
     rv64:
       type: dict
       schema:
         accessible:
           default: False
-
       default: {accessible: False}
 
 
@@ -145,7 +144,7 @@ misa:
             shadow: {type: string, default: , nullable: True}
             msb: { type: integer, default: 31, allowed: [31] }
             lsb: { type: integer, default: 30, allowed: [30] }
-            implemented: { type: boolean, default: true }
+            implemented: { type: boolean, default: false }
             type:
               type: dict
               check_with: wr_illegal
@@ -164,7 +163,7 @@ misa:
             shadow: {type: string, default: , nullable: True}
             msb: {type: integer, default: 25, allowed: [25]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            implemented: {type: boolean, default: true}
+            implemented: {type: boolean, default: false}
             type:
               type: dict
               check_with: wr_illegal
@@ -2395,6 +2394,688 @@ mcause:
           check_with: rv64_check
       default: {accessible: false}
 
+pmpcfg0:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A0, allowed: [0x3A0]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp0cfg: &pmp0
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 7, allowed: [7]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+                - schema: {ro_constant: {type: integer, max:  0xFF}}
+                - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp1cfg: &pmp1
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 15, allowed: [15]}
+            lsb: {type: integer, default: 8, allowed: [8]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+                - schema: {ro_constant: {type: integer, max:  0xFF}}
+                - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp2cfg: &pmp2
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 23, allowed: [23]}
+            lsb: {type: integer, default: 16, allowed: [16]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+                - schema: {ro_constant: {type: integer, max:  0xFF}}
+                - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp3cfg: &pmp3
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 24, allowed: [24]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+                - schema: {ro_constant: {type: integer, max:  0xFF}}
+                - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv64_check}
+        fields: {type: list, default: []}
+        pmp0cfg: 
+          <<: *pmp0
+        pmp1cfg: 
+          <<: *pmp1
+        pmp2cfg: 
+          <<: *pmp2
+        pmp3cfg: 
+          <<: *pmp3
+        pmp4cfg: &pmp4
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 39, allowed: [39]}
+            lsb: {type: integer, default: 32, allowed: [32]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp5cfg: &pmp5
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 47, allowed: [47]}
+            lsb: {type: integer, default: 40, allowed: [40]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp6cfg: &pmp6
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 55, allowed: [55]}
+            lsb: {type: integer, default: 48, allowed: [48]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+        pmp7cfg: &pmp7
+          type: dict
+          schema:
+            description: {type: string, default: pmp configuration bits}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 56, allowed: [56]}
+            implemented: {type: boolean, default: false}
+            type: 
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                ro_constant: 0
+          default: {implemented: True}
+              
+pmpcfg1:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp4cfg: 
+          <<: *pmp0
+        pmp5cfg: 
+          <<: *pmp1
+        pmp6cfg: 
+          <<: *pmp2
+        pmp7cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg2:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp8cfg: 
+          <<: *pmp0
+        pmp9cfg: 
+          <<: *pmp1
+        pmp10cfg: 
+          <<: *pmp2
+        pmp11cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp8cfg: 
+          <<: *pmp0
+        pmp9cfg: 
+          <<: *pmp1
+        pmp10cfg: 
+          <<: *pmp2
+        pmp11cfg: 
+          <<: *pmp3
+        pmp12cfg: 
+          <<: *pmp4
+        pmp13cfg: 
+          <<: *pmp5
+        pmp14cfg: 
+          <<: *pmp6
+        pmp15cfg: 
+          <<: *pmp7
+pmpcfg3:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp12cfg: 
+          <<: *pmp0
+        pmp13cfg: 
+          <<: *pmp1
+        pmp14cfg: 
+          <<: *pmp2
+        pmp15cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg4:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp16cfg: 
+          <<: *pmp0
+        pmp17cfg: 
+          <<: *pmp1
+        pmp18cfg: 
+          <<: *pmp2
+        pmp19cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp16cfg: 
+          <<: *pmp0
+        pmp17cfg: 
+          <<: *pmp1
+        pmp18cfg: 
+          <<: *pmp2
+        pmp19cfg: 
+          <<: *pmp3
+        pmp20cfg: 
+          <<: *pmp4
+        pmp21cfg: 
+          <<: *pmp5
+        pmp22cfg: 
+          <<: *pmp6
+        pmp23cfg: 
+          <<: *pmp7
+pmpcfg5:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp20cfg: 
+          <<: *pmp0
+        pmp21cfg: 
+          <<: *pmp1
+        pmp22cfg: 
+          <<: *pmp2
+        pmp23cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg6:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp24cfg: 
+          <<: *pmp0
+        pmp25cfg: 
+          <<: *pmp1
+        pmp26cfg: 
+          <<: *pmp2
+        pmp27cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp24cfg: 
+          <<: *pmp0
+        pmp25cfg: 
+          <<: *pmp1
+        pmp26cfg: 
+          <<: *pmp2
+        pmp27cfg: 
+          <<: *pmp3
+        pmp28cfg: 
+          <<: *pmp4
+        pmp29cfg: 
+          <<: *pmp5
+        pmp30cfg: 
+          <<: *pmp6
+        pmp31cfg: 
+          <<: *pmp7
+pmpcfg7:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp28cfg: 
+          <<: *pmp0
+        pmp29cfg: 
+          <<: *pmp1
+        pmp30cfg: 
+          <<: *pmp2
+        pmp31cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg8:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp32cfg: 
+          <<: *pmp0
+        pmp33cfg: 
+          <<: *pmp1
+        pmp34cfg: 
+          <<: *pmp2
+        pmp35cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp32cfg: 
+          <<: *pmp0
+        pmp33cfg: 
+          <<: *pmp1
+        pmp34cfg: 
+          <<: *pmp2
+        pmp35cfg: 
+          <<: *pmp3
+        pmp36cfg: 
+          <<: *pmp4
+        pmp37cfg: 
+          <<: *pmp5
+        pmp38cfg: 
+          <<: *pmp6
+        pmp39cfg: 
+          <<: *pmp7
+pmpcfg9:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp36cfg: 
+          <<: *pmp0
+        pmp37cfg: 
+          <<: *pmp1
+        pmp38cfg: 
+          <<: *pmp2
+        pmp39cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg10:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp40cfg: 
+          <<: *pmp0
+        pmp41cfg: 
+          <<: *pmp1
+        pmp42cfg: 
+          <<: *pmp2
+        pmp43cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp40cfg: 
+          <<: *pmp0
+        pmp41cfg: 
+          <<: *pmp1
+        pmp42cfg: 
+          <<: *pmp2
+        pmp43cfg: 
+          <<: *pmp3
+        pmp44cfg: 
+          <<: *pmp4
+        pmp45cfg: 
+          <<: *pmp5
+        pmp46cfg: 
+          <<: *pmp6
+        pmp47cfg: 
+          <<: *pmp7
+pmpcfg11:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp44cfg: 
+          <<: *pmp0
+        pmp45cfg: 
+          <<: *pmp1
+        pmp46cfg: 
+          <<: *pmp2
+        pmp47cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg12:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp48cfg: 
+          <<: *pmp0
+        pmp49cfg: 
+          <<: *pmp1
+        pmp50cfg: 
+          <<: *pmp2
+        pmp51cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp48cfg: 
+          <<: *pmp0
+        pmp49cfg: 
+          <<: *pmp1
+        pmp50cfg: 
+          <<: *pmp2
+        pmp51cfg: 
+          <<: *pmp3
+        pmp52cfg: 
+          <<: *pmp4
+        pmp53cfg: 
+          <<: *pmp5
+        pmp54cfg: 
+          <<: *pmp6
+        pmp55cfg: 
+          <<: *pmp7
+pmpcfg13:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp52cfg: 
+          <<: *pmp0
+        pmp53cfg: 
+          <<: *pmp1
+        pmp54cfg: 
+          <<: *pmp2
+        pmp55cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+pmpcfg14:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp56cfg: 
+          <<: *pmp0
+        pmp57cfg: 
+          <<: *pmp1
+        pmp58cfg: 
+          <<: *pmp2
+        pmp59cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp56cfg: 
+          <<: *pmp0
+        pmp57cfg: 
+          <<: *pmp1
+        pmp58cfg: 
+          <<: *pmp2
+        pmp59cfg: 
+          <<: *pmp3
+        pmp60cfg: 
+          <<: *pmp4
+        pmp61cfg: 
+          <<: *pmp5
+        pmp62cfg: 
+          <<: *pmp6
+        pmp63cfg: 
+          <<: *pmp7
+pmpcfg15:
+  type: dict
+  schema:
+    description: {type: string, default: PMP configuration register}
+    address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+    priv_mode: {type: string, default: M, allowed: [M]}
+    reset-val: {type: integer, check_with: max_length, default: 0}
+    rv32:
+      type: dict
+      default: {accessible: True}
+      schema:
+        accessible: {type: boolean, default: true, check_with: rv32_check}
+        fields: {type: list, default: []}
+        pmp60cfg: 
+          <<: *pmp0
+        pmp61cfg: 
+          <<: *pmp1
+        pmp62cfg: 
+          <<: *pmp2
+        pmp63cfg: 
+          <<: *pmp3
+    rv64:
+      type: dict
+      schema:
+        accessible:
+          default: False
+      default: {accessible: False}
+
 mcounteren:
   type: dict
   schema:
@@ -2405,10 +3086,7 @@ mcounteren:
         mode.
     address: {type: integer, default: 0x306, allowed: [0x306]}
     priv_mode: {type: string, default: M, allowed: [M]}
-    reset-val:
-      type: integer
-      default: 0
-      check_with: max_length
+    reset-val: {type: integer, check_with: max_length, default: 0}
     rv32:
       type: dict
       schema:
@@ -2507,6 +3185,7 @@ mcycle:
       default: Counts the number of clock cycles executed from an arbitrary point in time.
     address: {type: integer, default: 0xB00, allowed: [0xB00]}
     <<: *gen_flatschema
+
 minstret: 
   type: dict
   schema:
@@ -2515,6 +3194,8 @@ minstret:
       default: Counts the number of instructions completed from an arbitrary point in time.
     address: {type: integer, default: 0xB02, allowed: [0xB02]}
     <<: *gen_flatschema
+
+
 
 mhpmevent3:
   type: dict
