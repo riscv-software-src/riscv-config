@@ -8,16 +8,9 @@ import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
-from riscv_config.utils import yaml
 from riscv_config.warl import warl_interpreter
 
-import yaml as pyyaml
-
 logger = logging.getLogger(__name__)
-
-class NoAliasDumper(pyyaml.Dumper):
-    def ignore_aliases(self, data):
-        return True
 
 def nosset():
     '''Function to check and set defaults for all fields which are dependent on
@@ -616,12 +609,12 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp_yaml = utils.load_yaml(foo)
+    inp_yaml = utils.load_yaml(foo, no_anchors)
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = add_def_setters(utils.load_yaml(schema))
+    schema_yaml = add_def_setters(utils.load_yaml(schema, no_anchors))
 
     #Extract xlen
     xlen = inp_yaml['supported_xlen']
@@ -656,11 +649,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    if no_anchors:
-        pyyaml.dump(trim(normalized), outfile, Dumper=NoAliasDumper)
-    else:
-        yaml.dump(trim(normalized), outfile)
-
+    utils.dump_yaml(trim(normalized), outfile, no_anchors )
     if logging:
         logger.info('Input-Platform file')
 
@@ -673,14 +662,14 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp_yaml = utils.load_yaml(foo)
+    inp_yaml = utils.load_yaml(foo, no_anchors)
     if inp_yaml is None:
         inp_yaml = {'mtime': {'implemented': False}}
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = utils.load_yaml(schema)
+    schema_yaml = utils.load_yaml(schema, no_anchors)
 
     validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
@@ -708,5 +697,5 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(trim(normalized), outfile)
+    utils.dump_yaml(trim(normalized), outfile, no_anchors)
     return (ifile, pfile)

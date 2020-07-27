@@ -21,7 +21,7 @@ mvendorid:
       ro_constant: 0xdeadbeef
   rv64:
     accessible: false
-mhpmevent3:
+mhpmevent3: &mhpmevent
   reset-val: 0xbabadada
   rv32:
     accessible: True
@@ -29,6 +29,8 @@ mhpmevent3:
       ro_constant: 0xbabadada
   rv64:
     accessible: False
+mhpmevent4:
+  <<: *mhpmevent
 mtvec:
   reset-val: 0x80010000
   rv32:

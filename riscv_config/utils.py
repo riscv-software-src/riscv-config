@@ -4,16 +4,42 @@ import operator
 
 import ruamel
 from ruamel.yaml import YAML
+import yaml as pyyaml
 
-yaml = YAML(typ="unsafe")
-yaml.default_flow_style = False
-yaml.allow_unicode = True
-yaml.compact(seq_seq=False, seq_map=False)
-yaml.indent = 4
-yaml.block_seq_indent = 2
+def hexint_presenter(dumper, data):
+    return dumper.represent_int(hex(data))
+
+class NoAliasDumper(pyyaml.Dumper):
+    def ignore_aliases(self, data):
+        return True
 
 
-def load_yaml(foo):
+def dump_yaml(foo, outfile, no_anchors=False):
+    if no_anchors:
+        pyyaml.add_representer(int, hexint_presenter)
+        pyyaml.dump(foo, outfile, Dumper=NoAliasDumper)
+    else:
+        yaml = YAML(typ="rt")
+        yaml.default_flow_style = False
+        yaml.allow_unicode = True
+        yaml.compact(seq_seq=False, seq_map=False)
+        yaml.indent = 4
+        yaml.block_seq_indent = 2
+        yaml.dump(foo, outfile)
+
+
+def load_yaml(foo, no_anchors=False):
+
+    if no_anchors:
+        yaml = YAML(typ="safe")
+    else:
+        yaml = YAML(typ="rt")
+    yaml.default_flow_style = False
+    yaml.allow_unicode = True
+    yaml.compact(seq_seq=False, seq_map=False)
+    yaml.indent = 4
+    yaml.block_seq_indent = 2
+
     try:
         with open(foo, "r") as file:
             return yaml.load(file)
