@@ -3,21 +3,25 @@ Vendor: {type: string}
 
 Device: {type: string}
 
+hart_ids:
+  type: list
+  required: True
+  contains: 0
+  schema:
+    type: integer
+    min: 0
+
+
 ISA: { type: string, required: true, check_with: capture_isa_specifics, 
        regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$" }
-
 User_Spec_Version: {type: string,  default: '2.2', required: true, check_with: user_version_check}
-
 Privilege_Spec_Version: { type: string, default: '1.10', required: true, 
                           check_with: priv_version_check}
-
 hw_data_misaligned_support: {type: boolean, default: false}
-
 supported_xlen:
   type: list
   schema: { type: integer, allowed: [ 32, 64, 128] }
   required: true
-
 schema_node:
   type: dict
   allow_unknown: false
@@ -47,7 +51,6 @@ schema_node:
         schema:
           type: string
           regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
-
 gen_flatschema:
   schema:  &gen_flatschema
     priv_mode: {type: string, default: M, allowed: [M]}
@@ -91,7 +94,6 @@ gen_flatschema:
           default: true
           check_with: rv64_check
       default: {accessible: True}
-
 gen_flatschema32:
   schema:  &gen_flatschema32
     priv_mode: {type: string, default: M, allowed: [M]}
@@ -124,8 +126,6 @@ gen_flatschema32:
         accessible:
           default: False
       default: {accessible: False}
-
-
 misa:
   type: dict
   schema:
@@ -223,7 +223,6 @@ misa:
           default: true
           check_with: [rv64_check, cannot_be_false_rv64]
       default: {accessible: false}
-
 mstatus:
   type: dict
   schema:
@@ -927,7 +926,6 @@ mstatus:
           default: false
           check_with: rv64_check
       default: {accessible: true}
-
 mvendorid:
   type: dict
   schema:
@@ -979,7 +977,6 @@ mvendorid:
           - rv64_check
           - cannot_be_false_rv64
       default: {accessible: false}
-
 marchid:
   type: dict
   schema:
@@ -1031,7 +1028,6 @@ marchid:
           - rv64_check
           - cannot_be_false_rv64
       default: {accessible: false}
-
 mimpid:
   type: dict
   schema:
@@ -1082,7 +1078,6 @@ mimpid:
           - rv64_check
           - cannot_be_false_rv64
       default: {accessible: false}
-
 mhartid:
   type: dict
   schema:
@@ -1130,7 +1125,6 @@ mhartid:
           default: true
           check_with: rv64_check
       default: {accessible: false}
-
 mtvec:
   type: dict
   schema:
@@ -1229,7 +1223,6 @@ mtvec:
           - rv64_check
           - cannot_be_false_rv64
       default: {accessible: false}
-
 mideleg:
   type: dict
   schema:
@@ -1291,7 +1284,6 @@ mideleg:
           - rv64_check
       default: {accessible: false}
   check_with: mdeleg_checks
-
 medeleg:
   type: dict
   schema:
@@ -1355,7 +1347,6 @@ medeleg:
           - rv64_check
       default: {accessible: false}
   check_with: mdeleg_checks
-
 mip:
   type: dict
   schema:
@@ -2103,7 +2094,6 @@ mie:
           check_with: rv64_check
       required: true  
   required: true
-
 mscratch:
   type: dict
   schema:
@@ -2169,7 +2159,6 @@ mscratch:
           default: true
           check_with: rv64_check
       default: {accessible: false}
-
 mepc:
   type: dict
   schema:
@@ -2231,7 +2220,6 @@ mepc:
           default: true
           check_with: rv64_check
       default: {accessible: false}
-
 mtval:
   type: dict
   schema:
@@ -2293,7 +2281,6 @@ mtval:
           check_with: rv64_check
       default: {accessible: false}
   required: true
-
 mcause:
   type: dict
   schema:
@@ -2393,7 +2380,6 @@ mcause:
           default: false
           check_with: rv64_check
       default: {accessible: false}
-
 pmpcfg0:
   type: dict
   schema:
@@ -3076,7 +3062,6 @@ pmpcfg15:
         accessible:
           default: False
       default: {accessible: False}
-
 mcounteren:
   type: dict
   schema:
@@ -3133,7 +3118,6 @@ mcounteren:
           default: true
           check_with: rv64_check
       default: {accessible: false}
-
 mcountinhibit:
   type: dict
   schema:
@@ -3177,7 +3161,6 @@ mcountinhibit:
             ro_constant: 0
         accessible: { default: true, check_with: rv64_check}
       default: {accessible: false}
-
 mcycle:
   type: dict
   schema:
@@ -3186,7 +3169,6 @@ mcycle:
       default: Counts the number of clock cycles executed from an arbitrary point in time.
     address: {type: integer, default: 0xB00, allowed: [0xB00]}
     <<: *gen_flatschema
-
 minstret: 
   type: dict
   schema:
@@ -3195,9 +3177,6 @@ minstret:
       default: Counts the number of instructions completed from an arbitrary point in time.
     address: {type: integer, default: 0xB02, allowed: [0xB02]}
     <<: *gen_flatschema
-
-
-
 mhpmevent3:
   type: dict
   schema:
