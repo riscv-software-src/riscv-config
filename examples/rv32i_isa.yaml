@@ -1,61 +1,69 @@
-hart_ids: [0]
-hart0:
-    ISA: RV32IMAFCZicsr_Zifencei
-    User_Spec_Version: '2.3'
-    supported_xlen: [32]
-    misa:
-     reset-val: 0x40001125
-     rv32:
-       accessible: true
-       mxl:
-         implemented: true
-         type:
-           ro_constant: 0x01
-       extensions:
-         implemented: true
-         type:
-           ro_constant: 0x1125
-    mvendorid:
-      reset-val: 0xdeadbeef
-      rv32:
-        accessible: true
-        type:
-          ro_constant: 0xdeadbeef
-      rv64:
-        accessible: false
-    mhpmevent3: &mhpmevent
-      reset-val: 0xbabadada
-      rv32:
-        accessible: True
-        type:
-          ro_constant: 0xbabadada
-      rv64:
-        accessible: False
-    mhpmevent4:
-      <<: *mhpmevent
-    mtvec:
-      reset-val: 0x80010000
-      rv32:
-        accessible: true
-        base:
-          implemented: true
-          type:                             
-            warl: 
-              dependency_fields: [mtvec::mode]
-              legal:
-                - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
-                - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
-              wr_illegal:
-                - "[0] -> Unchanged"
-                - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
-                - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
-        mode:
-          implemented: true
-          type:                             
-            warl:
-              dependency_fields: []
-              legal: 
-                - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
-              wr_illegal:
-                - "Unchanged"
-    
+hart_ids: [0,1]
+hart0: &hart0
+  ISA: RV32IMAFCZicsr_Zifencei
+  User_Spec_Version: '2.3'
+  supported_xlen: [32]
+  misa:
+   reset-val: 0x40001125
+   rv32:
+     accessible: true
+     mxl:
+       implemented: true
+       type:
+         ro_constant: 0x01
+     extensions:
+       implemented: true
+       type:
+         ro_constant: 0x1125
+  mvendorid:
+    reset-val: 0xdeadbeef
+    rv32:
+      accessible: true
+      type:
+        ro_constant: 0xdeadbeef
+    rv64:
+      accessible: false
+  mhpmevent3: &mhpmevent
+    reset-val: 0xbabadada
+    rv32:
+      accessible: True
+      type:
+        ro_constant: 0xbabadada
+    rv64:
+      accessible: False
+  mhpmevent4:
+    <<: *mhpmevent
+  mtvec:
+    reset-val: 0x80010000
+    rv32:
+      accessible: true
+      base:
+        implemented: true
+        type:                             
+          warl: 
+            dependency_fields: [mtvec::mode]
+            legal:
+              - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+              - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+            wr_illegal:
+              - "[0] -> Unchanged"
+              - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
+              - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+      mode:
+        implemented: true
+        type:                             
+          warl:
+            dependency_fields: []
+            legal: 
+              - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
+            wr_illegal:
+              - "Unchanged"
+  
+hart1: 
+  <<: *hart0
+  mhartid: 
+    reset-val : 1
+    rv32:
+      accessible: true
+      type:
+        ro_constant: 1

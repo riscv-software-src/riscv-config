@@ -51,6 +51,12 @@ hart0:
               wr_illegal:
                 - "Unchanged"
 hart2:
+    mhartid:
+      reset-val: 2
+      rv64:
+        accessible: True
+        type:
+          ro_constant: 2
     ISA: RV64I
     supported_xlen: [64]
     misa:

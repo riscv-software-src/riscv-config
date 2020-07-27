@@ -1,5 +1,6 @@
 import os
 import logging
+import copy
 
 from cerberus import Validator
 
@@ -632,66 +633,46 @@ def check_specs(isa_spec,
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp = utils.load_yaml(foo, no_anchors)
+    master_inp_yaml = utils.load_yaml(foo, no_anchors)
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = add_def_setters(utils.load_yaml(schema, no_anchors))
+    master_schema_yaml = utils.load_yaml(schema, no_anchors)
 
-    normalized = {}
-    hart_ids = inp['hart_ids']
-    if not isinstance(hart_ids, list):
-        raise ValidationError("Error in " + foo + ".",
-                              {'hart_ids': ['Invalid type of node.']})
-    if not all([isinstance(x, int) for x in hart_ids]):
-        raise ValidationError("Error in " + foo + ".",
-                              {'hart_ids': ['Invalid value.']})
-    if not all([x >= 0 for x in hart_ids]):
-        raise ValidationError("Error in " + foo + ".",
-                              {'hart_ids': ['Invalid value.']})
-    if 0 not in hart_ids:
-        raise ValidationError("Error in " + foo + ".",
-                              {'hart_ids': ['0 must be present.']})
-    errors = {}
-    normalized['hart_ids'] = hart_ids
-    for entry in hart_ids:
-        key = "hart" + str(entry)
-        if key not in inp:
-            if 'NodeError' in errors.keys():
-                errors['NodeError'].append(key + " not found in input.")
-            else:
-                errors['NodeError'] = [key + " not found in input."]
-            continue
-        inp_yaml = inp[key]
+    outyaml = copy.deepcopy(master_inp_yaml)
+    for x in master_inp_yaml['hart_ids']:
+        logger.debug('Processing Hart: hart'+str(x))
+        inp_yaml = master_inp_yaml['hart'+str(x)]
+        schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
 
-        # schema_yaml = add_def_setters(schema_yaml)
         validator = schemaValidator(schema_yaml, xlen=xlen)
         validator.allow_unknown = False
         validator.purge_readonly = True
+        normalized = validator.normalized(inp_yaml, schema_yaml)
 
-        node = validator.normalized(inp_yaml, schema_yaml)
         # Perform Validation
         if logging:
-            logger.info('Initiating Validation for ' + key + " .")
-        valid = validator.validate(node)
+            logger.info('Initiating Validation')
+        valid = validator.validate(normalized)
 
         # Print out errors
         if valid:
             if logging:
-                logger.info('No Syntax errors in ' + key)
+                logger.info('No Syntax errors in Input ISA Yaml. :)')
         else:
-            errors[key] = [validator.errors]
-            continue
-        if logging:
-            logger.info("Initiating post processing and reset value checks.")
-        normalized[key], error_list = check_reset_fill_fields(node)
-        if error_list:
-            errors[key] = error_list
-    if errors:
-        raise ValidationError("Error in " + foo + ".", errors)
+            error_list = validator.errors
+            raise ValidationError("Error in " + foo + ".", error_list)
+        logger.info("Initiating post processing and reset value checks.")
+        normalized, errors = check_reset_fill_fields(normalized)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        if normalized['mhartid']['reset-val'] != x:
+            raise ValidationError('Error in ' + foo + ".", 
+                    {'mhartid': ['wrong reset-val of for hart'+str(x)]})
+        outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
     output_filename = os.path.join(
@@ -700,7 +681,7 @@ def check_specs(isa_spec,
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(trim(normalized), outfile, no_anchors)
+    utils.dump_yaml(outyaml, outfile, no_anchors )
     if logging:
         logger.info('Input-Platform file')
 
