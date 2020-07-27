@@ -93,8 +93,8 @@ CSRs without sub-fields
       fields: []                          # This should be empty always.
       shadow: <csr-name>::<register>      # which this register shadows,'none' indicates that 
                                           # this register does not shadow anything.
-      msb: <int>                          # msb index of the csr. max: 31, min:31
-      lsb: <int>                          # lsb index of the csr. max: 0, min:0
+      msb: <int>                          # msb index of the csr. max: 31, min:0
+      lsb: <int>                          # lsb index of the csr. max: 31, min:0
       type:                               # type of field. Can be only one of the following
         wlrl: [list of value-descriptors] # field is wlrl and the set of legal values.
         ro_constant: <hex>                # field is readonly and will return the same value.

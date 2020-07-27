@@ -1,5 +1,6 @@
 import os
 import logging
+import copy
 
 from cerberus import Validator
 
@@ -8,7 +9,6 @@ import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
-from riscv_config.utils import yaml
 from riscv_config.warl import warl_interpreter
 
 logger = logging.getLogger(__name__)
@@ -103,6 +103,8 @@ def counterhset():
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
+
+    counthsetter = lambda doc: counterhset()
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
@@ -116,6 +118,24 @@ def add_def_setters(schema_yaml):
     schema_yaml['mepc']['default_setter'] = regsetter
     schema_yaml['mtval']['default_setter'] = regsetter
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
+    schema_yaml['mcycle']['default_setter'] = regsetter
+    schema_yaml['minstret']['default_setter'] = regsetter
+    schema_yaml['pmpcfg0']['default_setter'] = regsetter
+    schema_yaml['pmpcfg1']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg2']['default_setter'] = regsetter
+    schema_yaml['pmpcfg3']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg4']['default_setter'] = regsetter
+    schema_yaml['pmpcfg5']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg6']['default_setter'] = regsetter
+    schema_yaml['pmpcfg7']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg8']['default_setter'] = regsetter
+    schema_yaml['pmpcfg9']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg10']['default_setter'] = regsetter
+    schema_yaml['pmpcfg11']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg12']['default_setter'] = regsetter
+    schema_yaml['pmpcfg13']['default_setter'] = counthsetter
+    schema_yaml['pmpcfg14']['default_setter'] = regsetter
+    schema_yaml['pmpcfg15']['default_setter'] = counthsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter
@@ -177,8 +197,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mhpmcounter29']['default_setter'] = regsetter
     schema_yaml['mhpmcounter30']['default_setter'] = regsetter
     schema_yaml['mhpmcounter31']['default_setter'] = regsetter
-
-    counthsetter = lambda doc: counterhset()
 
     schema_yaml['mhpmcounter3h']['default_setter'] = counthsetter
     schema_yaml['mhpmcounter4h']['default_setter'] = counthsetter
@@ -391,7 +409,7 @@ def check_reset_fill_fields(spec):
     '''The check_reset_fill_fields function fills the field node with the names of the sub-fields of the register and then checks whether the reset-value of the register is a legal value. To do so, it iterates over all the subfields and extracts the corresponding field value from the reset-value. Then it checks the legality of the value according to the given field description. If the fields is implemented i.e accessible in both 64 bit and 32 bit modes, the 64 bit mode is given preference. '''
     errors = {}
     for node in spec:
-       
+
         if isinstance(spec[node], dict):
             if spec[node]['rv32']['accessible']:
                 spec[node]['rv32']['fields'] = get_fields(
@@ -440,7 +458,7 @@ def check_reset_fill_fields(spec):
                                 "Reset value doesnt match the 'wlrl' description for the register."
                             )
                     elif 'ro_constant' in keys:
-                        if reset_val not in desc['ro_constant']:
+                        if reset_val != desc['ro_constant']:
                             error.append(
                                 "Reset value doesnt match the 'ro_constant' description for the register."
                             )
@@ -528,7 +546,7 @@ def check_reset_fill_fields(spec):
                                             " doesnt match the 'wlrl' description."
                                         )
                                 elif 'ro_constant' in keys:
-                                    if test_val not in desc['ro_constant']:
+                                    if test_val != desc['ro_constant']:
                                         error.append(
                                             "Reset value for " + field +
                                             " doesnt match the 'ro_constant' description."
@@ -573,7 +591,11 @@ def check_reset_fill_fields(spec):
     return spec, errors
 
 
-def check_specs(isa_spec, platform_spec, work_dir, logging=False):
+def check_specs(isa_spec,
+                platform_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
     '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -611,38 +633,46 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp_yaml = utils.load_yaml(foo)
+    master_inp_yaml = utils.load_yaml(foo, no_anchors)
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = add_def_setters(utils.load_yaml(schema))
+    master_schema_yaml = utils.load_yaml(schema, no_anchors)
 
-    #Extract xlen
-    xlen = inp_yaml['supported_xlen']
+    outyaml = copy.deepcopy(master_inp_yaml)
+    for x in master_inp_yaml['hart_ids']:
+        logger.debug('Processing Hart: hart'+str(x))
+        inp_yaml = master_inp_yaml['hart'+str(x)]
+        schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
+        #Extract xlen
+        xlen = inp_yaml['supported_xlen']
 
-    # schema_yaml = add_def_setters(schema_yaml)
-    validator = schemaValidator(schema_yaml, xlen=xlen)
-    validator.allow_unknown = False
-    validator.purge_readonly = True
-    normalized = validator.normalized(inp_yaml, schema_yaml)
+        validator = schemaValidator(schema_yaml, xlen=xlen)
+        validator.allow_unknown = False
+        validator.purge_readonly = True
+        normalized = validator.normalized(inp_yaml, schema_yaml)
 
-    # Perform Validation
-    if logging:
-        logger.info('Initiating Validation')
-    valid = validator.validate(normalized)
-
-    # Print out errors
-    if valid:
+        # Perform Validation
         if logging:
-            logger.info('No Syntax errors in Input ISA Yaml. :)')
-    else:
-        error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".", error_list)
-    logger.info("Initiating post processing and reset value checks.")
-    normalized, errors = check_reset_fill_fields(normalized)
-    if errors:
-        raise ValidationError("Error in " + foo + ".", errors)
+            logger.info('Initiating Validation')
+        valid = validator.validate(normalized)
+
+        # Print out errors
+        if valid:
+            if logging:
+                logger.info('No Syntax errors in Input ISA Yaml. :)')
+        else:
+            error_list = validator.errors
+            raise ValidationError("Error in " + foo + ".", error_list)
+        logger.info("Initiating post processing and reset value checks.")
+        normalized, errors = check_reset_fill_fields(normalized)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        if normalized['mhartid']['reset-val'] != x:
+            raise ValidationError('Error in ' + foo + ".", 
+                    {'mhartid': ['wrong reset-val of for hart'+str(x)]})
+        outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
     output_filename = os.path.join(
@@ -651,8 +681,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(trim(normalized), outfile)
-
+    utils.dump_yaml(outyaml, outfile, no_anchors )
     if logging:
         logger.info('Input-Platform file')
 
@@ -665,14 +694,14 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp_yaml = utils.load_yaml(foo)
+    inp_yaml = utils.load_yaml(foo, no_anchors)
     if inp_yaml is None:
         inp_yaml = {'mtime': {'implemented': False}}
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
-    schema_yaml = utils.load_yaml(schema)
+    schema_yaml = utils.load_yaml(schema, no_anchors)
 
     validator = schemaValidator(schema_yaml, xlen=xlen)
     validator.allow_unknown = False
@@ -700,5 +729,5 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False):
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    yaml.dump(trim(normalized), outfile)
+    utils.dump_yaml(trim(normalized), outfile, no_anchors)
     return (ifile, pfile)
