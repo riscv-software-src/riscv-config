@@ -101,6 +101,8 @@ def counterhset():
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
+
+    counthsetter = lambda doc: counterhset()
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
@@ -117,21 +119,21 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter
     schema_yaml['pmpcfg0']['default_setter'] = regsetter
-    schema_yaml['pmpcfg1']['default_setter'] = regsetter
+    schema_yaml['pmpcfg1']['default_setter'] = counthsetter
     schema_yaml['pmpcfg2']['default_setter'] = regsetter
-    schema_yaml['pmpcfg3']['default_setter'] = regsetter
+    schema_yaml['pmpcfg3']['default_setter'] = counthsetter
     schema_yaml['pmpcfg4']['default_setter'] = regsetter
-    schema_yaml['pmpcfg5']['default_setter'] = regsetter
+    schema_yaml['pmpcfg5']['default_setter'] = counthsetter
     schema_yaml['pmpcfg6']['default_setter'] = regsetter
-    schema_yaml['pmpcfg7']['default_setter'] = regsetter
+    schema_yaml['pmpcfg7']['default_setter'] = counthsetter
     schema_yaml['pmpcfg8']['default_setter'] = regsetter
-    schema_yaml['pmpcfg9']['default_setter'] = regsetter
+    schema_yaml['pmpcfg9']['default_setter'] = counthsetter
     schema_yaml['pmpcfg10']['default_setter'] = regsetter
-    schema_yaml['pmpcfg11']['default_setter'] = regsetter
+    schema_yaml['pmpcfg11']['default_setter'] = counthsetter
     schema_yaml['pmpcfg12']['default_setter'] = regsetter
-    schema_yaml['pmpcfg13']['default_setter'] = regsetter
+    schema_yaml['pmpcfg13']['default_setter'] = counthsetter
     schema_yaml['pmpcfg14']['default_setter'] = regsetter
-    schema_yaml['pmpcfg15']['default_setter'] = regsetter
+    schema_yaml['pmpcfg15']['default_setter'] = counthsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter
@@ -193,8 +195,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mhpmcounter29']['default_setter'] = regsetter
     schema_yaml['mhpmcounter30']['default_setter'] = regsetter
     schema_yaml['mhpmcounter31']['default_setter'] = regsetter
-
-    counthsetter = lambda doc: counterhset()
 
     schema_yaml['mhpmcounter3h']['default_setter'] = counthsetter
     schema_yaml['mhpmcounter4h']['default_setter'] = counthsetter

@@ -2583,6 +2583,7 @@ pmpcfg1:
       type: dict
       schema:
         accessible:
+          type: boolean
           default: False
       default: {accessible: False}
 pmpcfg2:
@@ -2610,7 +2611,7 @@ pmpcfg2:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp8cfg: 
           <<: *pmp0
@@ -2680,7 +2681,7 @@ pmpcfg4:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp16cfg: 
           <<: *pmp0
@@ -2750,7 +2751,7 @@ pmpcfg6:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp24cfg: 
           <<: *pmp0
@@ -2820,7 +2821,7 @@ pmpcfg8:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp32cfg: 
           <<: *pmp0
@@ -2890,7 +2891,7 @@ pmpcfg10:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp40cfg: 
           <<: *pmp0
@@ -2960,7 +2961,7 @@ pmpcfg12:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp48cfg: 
           <<: *pmp0
@@ -3030,7 +3031,7 @@ pmpcfg14:
       type: dict
       default: {accessible: True}
       schema:
-        accessible: {type: boolean, default: true, check_with: rv32_check}
+        accessible: {type: boolean, default: true, check_with: rv64_check}
         fields: {type: list, default: []}
         pmp56cfg: 
           <<: *pmp0

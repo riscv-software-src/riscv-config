@@ -9,11 +9,11 @@ misa:
     mxl:
       implemented: true
       type:
-        ro_constant: [0x02]
+        ro_constant: 0x02
     extensions:
       implemented: true
       type:
-        ro_constant: [0x100]
+        ro_constant: 0x100
 mvendorid:
   reset-val: 0xdeadbeef
   rv32:
@@ -21,7 +21,7 @@ mvendorid:
   rv64:
     accessible: true
     type:
-      ro_constant: [0xdeadbeef]
+      ro_constant: 0xdeadbeef
 mtvec:
   reset-val: 0x0000000080000000
   rv64:
