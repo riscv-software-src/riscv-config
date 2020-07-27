@@ -12,6 +12,7 @@ from riscv_config.warl import warl_interpreter
 
 logger = logging.getLogger(__name__)
 
+
 def nosset():
     '''Function to check and set defaults for all fields which are dependent on
         the presence of 'S' extension.'''
@@ -407,7 +408,7 @@ def check_reset_fill_fields(spec):
     '''The check_reset_fill_fields function fills the field node with the names of the sub-fields of the register and then checks whether the reset-value of the register is a legal value. To do so, it iterates over all the subfields and extracts the corresponding field value from the reset-value. Then it checks the legality of the value according to the given field description. If the fields is implemented i.e accessible in both 64 bit and 32 bit modes, the 64 bit mode is given preference. '''
     errors = {}
     for node in spec:
-       
+
         if isinstance(spec[node], dict):
             if spec[node]['rv32']['accessible']:
                 spec[node]['rv32']['fields'] = get_fields(
@@ -589,7 +590,11 @@ def check_reset_fill_fields(spec):
     return spec, errors
 
 
-def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=False):
+def check_specs(isa_spec,
+                platform_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
     '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -627,36 +632,64 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
-    inp_yaml = utils.load_yaml(foo, no_anchors)
+    inp = utils.load_yaml(foo, no_anchors)
 
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
     schema_yaml = add_def_setters(utils.load_yaml(schema, no_anchors))
 
-    #Extract xlen
-    xlen = inp_yaml['supported_xlen']
+    normalized = {}
+    hart_ids = inp['hart_ids']
+    if not isinstance(hart_ids, list):
+        raise ValidationError("Error in " + foo + ".",
+                              {'hart_ids': ['Invalid type of node.']})
+    if not all([isinstance(x, int) for x in hart_ids]):
+        raise ValidationError("Error in " + foo + ".",
+                              {'hart_ids': ['Invalid value.']})
+    if not all([x >= 0 for x in hart_ids]):
+        raise ValidationError("Error in " + foo + ".",
+                              {'hart_ids': ['Invalid value.']})
+    if 0 not in hart_ids:
+        raise ValidationError("Error in " + foo + ".",
+                              {'hart_ids': ['0 must be present.']})
+    errors = {}
+    normalized['hart_ids'] = hart_ids
+    for entry in hart_ids:
+        key = "hart" + str(entry)
+        if key not in inp:
+            if 'NodeError' in errors.keys():
+                errors['NodeError'].append(key + " not found in input.")
+            else:
+                errors['NodeError'] = [key + " not found in input."]
+            continue
+        inp_yaml = inp[key]
+        #Extract xlen
+        xlen = inp_yaml['supported_xlen']
 
-    # schema_yaml = add_def_setters(schema_yaml)
-    validator = schemaValidator(schema_yaml, xlen=xlen)
-    validator.allow_unknown = False
-    validator.purge_readonly = True
-    normalized = validator.normalized(inp_yaml, schema_yaml)
+        # schema_yaml = add_def_setters(schema_yaml)
+        validator = schemaValidator(schema_yaml, xlen=xlen)
+        validator.allow_unknown = False
+        validator.purge_readonly = True
 
-    # Perform Validation
-    if logging:
-        logger.info('Initiating Validation')
-    valid = validator.validate(normalized)
-
-    # Print out errors
-    if valid:
+        node = validator.normalized(inp_yaml, schema_yaml)
+        # Perform Validation
         if logging:
-            logger.info('No Syntax errors in Input ISA Yaml. :)')
-    else:
-        error_list = validator.errors
-        raise ValidationError("Error in " + foo + ".", error_list)
-    logger.info("Initiating post processing and reset value checks.")
-    normalized, errors = check_reset_fill_fields(normalized)
+            logger.info('Initiating Validation for ' + key + " .")
+        valid = validator.validate(node)
+
+        # Print out errors
+        if valid:
+            if logging:
+                logger.info('No Syntax errors in ' + key)
+        else:
+            errors[key] = [validator.errors]
+            continue
+        if logging:
+            logger.info("Initiating post processing and reset value checks.")
+        normalized[key], error_list = check_reset_fill_fields(node)
+        if error_list:
+            errors[key] = error_list
     if errors:
         raise ValidationError("Error in " + foo + ".", errors)
     file_name = os.path.split(foo)
@@ -667,7 +700,7 @@ def check_specs(isa_spec, platform_spec, work_dir, logging=False, no_anchors=Fal
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(trim(normalized), outfile, no_anchors )
+    utils.dump_yaml(trim(normalized), outfile, no_anchors)
     if logging:
         logger.info('Input-Platform file')
 

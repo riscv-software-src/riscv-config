@@ -3,14 +3,6 @@ Vendor: {type: string}
 
 Device: {type: string}
 
-hart_ids:
-  type: list
-  required: True
-  contains: 0
-  schema:
-    type: integer
-    min: 0
-
 
 ISA: { type: string, required: true, check_with: capture_isa_specifics, 
        regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zam|Ztso|){,1}(_Zifencei){,1}(_Zam){,1}(_Ztso){,1}$" }
