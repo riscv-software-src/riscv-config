@@ -149,7 +149,7 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-                - schema: {ro_constant: {type: integer, max: 4611686018427387903}}
+                - schema: {ro_constant: {type: integer, max: 0x3, min: 0x1}}
                 - schema: {ro_variable: {type: boolean}}
                 - schema: { warl: *ref_warl }
           default: {implemented: false}
@@ -168,7 +168,7 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
           default: {implemented: false}
@@ -195,7 +195,7 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max:  3, min: 1}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
           default: {implemented: false}
@@ -214,7 +214,7 @@ misa:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
           default: {implemented: false}
@@ -403,7 +403,7 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max: 0, min: 0 }}
               - schema: { warl: *ref_warl }
           default: {implemented: false}
         xs:
@@ -734,7 +734,7 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
               - schema: { warl: *ref_warl }
           default: {implemented: false}
         xs:
@@ -886,7 +886,7 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max: 0, min: 0}}
               - schema: { warl: *ref_warl }
           default: {implemented: true}
         uxl:
@@ -903,7 +903,7 @@ mstatus:
               type: dict
               check_with: wr_illegal
               oneof:
-              - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+              - schema: {ro_constant: {type: integer, max: 0, min: 0}}
               - schema: { warl: *ref_warl }
           default: {implemented: true}
         sd:
@@ -951,7 +951,7 @@ mvendorid:
         lsb: {type: integer, default: 0, allowed: [0]}
         type:
           type: dict
-          schema: {ro_constant: {type: integer, max:  4294967295}}
+          schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           default:
             ro_constant: 0
         accessible:
@@ -970,7 +970,7 @@ mvendorid:
         lsb: {type: integer, default: 0, allowed: [0]}
         type:
           type: dict
-          schema: {ro_constant: {type: integer, max:  4294967295}}
+          schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           default:
             ro_constant: 0
         accessible:
@@ -1002,7 +1002,7 @@ marchid:
         lsb: {type: integer, default: 0, allowed: [0]}
         type:
           type: dict
-          schema: {ro_constant: {type: integer, max:  4294967295}}
+          schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           default:
             ro_constant: 0
         accessible:
@@ -1053,7 +1053,7 @@ mimpid:
         lsb: {type: integer, default: 0, allowed: [0]}
         type:
           type: dict
-          schema: {ro_constant: {type: integer, max:  4294967295}}
+          schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
           default:
             ro_constant: 0
         accessible:
@@ -2128,7 +2128,7 @@ mscratch:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           - schema: {ro_variable: {type: boolean}}
           - schema: { warl: *ref_warl }
           default:
@@ -2154,7 +2154,7 @@ mscratch:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
           - schema: {ro_variable: {type: boolean}}
           - schema: { warl: *ref_warl }
           default:
@@ -3154,7 +3154,7 @@ mcountinhibit:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           - schema: { warl: *ref_warl }
           default: {ro_constant: 0}
         accessible: { type: boolean, default: true, check_with: rv32_check}
@@ -3170,7 +3170,7 @@ mcountinhibit:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           - schema: { warl: *ref_warl }
           default:
             ro_constant: 0
@@ -3917,7 +3917,7 @@ sedeleg:
           type: dict
           check_with: wr_illegal
           oneof:
-          - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+          - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
           - schema: {ro_variable: {type: boolean}}
           - schema: { warl: *ref_warl }
         accessible: { type: boolean, default: true, check_with: [rv32_check, s_check] }
