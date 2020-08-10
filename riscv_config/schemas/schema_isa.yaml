@@ -3057,6 +3057,518 @@ hart_schema:
             accessible:
               default: False
           default: {accessible: False}
+    pmpaddr0:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B0, allowed: [0x3B0]}
+    pmpaddr1:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B1, allowed: [0x3B1]}
+    pmpaddr2:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B2, allowed: [0x3B2]}
+    pmpaddr3:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B3, allowed: [0x3B3]}
+    pmpaddr4:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B4, allowed: [0x3B4]}
+    pmpaddr5:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B5, allowed: [0x3B5]}
+    pmpaddr6:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B6, allowed: [0x3B6]}
+    pmpaddr7:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B7, allowed: [0x3B7]}
+    pmpaddr8:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B8, allowed: [0x3B8]}
+    pmpaddr9:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3B9, allowed: [0x3B9]}
+    pmpaddr10:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BA, allowed: [0x3BA]}
+    pmpaddr11:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BB, allowed: [0x3BB]}
+    pmpaddr12:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BC, allowed: [0x3BC]}
+    pmpaddr13:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BD, allowed: [0x3BD]}
+    pmpaddr14:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BE, allowed: [0x3BE]}
+    pmpaddr15:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3BF, allowed: [0x3BF]}
+    pmpaddr16:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C0, allowed: [0x3C0]}
+    pmpaddr17:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C1, allowed: [0x3C1]}
+    pmpaddr18:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C2, allowed: [0x3C2]}
+    pmpaddr19:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C3, allowed: [0x3C3]}
+    pmpaddr20:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C4, allowed: [0x3C4]}
+    pmpaddr21:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C5, allowed: [0x3C5]}
+    pmpaddr22:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C6, allowed: [0x3C6]}
+    pmpaddr23:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C7, allowed: [0x3C7]}
+    pmpaddr24:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C8, allowed: [0x3C8]}
+    pmpaddr25:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3C9, allowed: [0x3C9]}
+    pmpaddr26:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CA, allowed: [0x3CA]}
+    pmpaddr27:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CB, allowed: [0x3CB]}
+    pmpaddr28:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CC, allowed: [0x3CC]}
+    pmpaddr29:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CD, allowed: [0x3CD]}
+    pmpaddr30:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CE, allowed: [0x3CE]}
+    pmpaddr31:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3CF, allowed: [0x3CF]}
+    pmpaddr32:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D0, allowed: [0x3D0]}
+    pmpaddr33:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D1, allowed: [0x3D1]}
+    pmpaddr34:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D2, allowed: [0x3D2]}
+    pmpaddr35:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D3, allowed: [0x3D3]}
+    pmpaddr36:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D4, allowed: [0x3D4]}
+    pmpaddr37:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D5, allowed: [0x3D5]}
+    pmpaddr38:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D6, allowed: [0x3D6]}
+    pmpaddr39:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D7, allowed: [0x3D7]}
+    pmpaddr40:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D8, allowed: [0x3D8]}
+    pmpaddr41:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3D9, allowed: [0x3D9]}
+    pmpaddr42:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DA, allowed: [0x3DA]}
+    pmpaddr43:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DB, allowed: [0x3DB]}
+    pmpaddr44:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DC, allowed: [0x3DC]}
+    pmpaddr45:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DD, allowed: [0x3DD]}
+    pmpaddr46:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DE, allowed: [0x3DE]}
+    pmpaddr47:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3DF, allowed: [0x3DF]}
+    pmpaddr48:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E0, allowed: [0x3E0]}
+    pmpaddr49:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E1, allowed: [0x3E1]}
+    pmpaddr50:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E2, allowed: [0x3E2]}
+    pmpaddr51:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E3, allowed: [0x3E3]}
+    pmpaddr52:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E4, allowed: [0x3E4]}
+    pmpaddr53:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E5, allowed: [0x3E5]}
+    pmpaddr54:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E6, allowed: [0x3E6]}
+    pmpaddr55:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E7, allowed: [0x3E7]}
+    pmpaddr56:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E8, allowed: [0x3E8]}
+    pmpaddr57:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3E9, allowed: [0x3E9]}
+    pmpaddr58:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3EA, allowed: [0x3EA]}
+    pmpaddr59:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3EB, allowed: [0x3EB]}
+    pmpaddr60:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3EC, allowed: [0x3EC]}
+    pmpaddr61:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3ED, allowed: [0x3ED]}
+    pmpaddr62:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3EE, allowed: [0x3EE]}
+    pmpaddr63:
+      type: dict
+      schema:
+        <<: *gen_flatschema
+        description:
+          type: string
+          default: Physical memory protection address register
+        address: {type: integer, default: 0x3EF, allowed: [0x3EF]}
     mcounteren:
       type: dict
       schema:
@@ -3164,6 +3676,14 @@ hart_schema:
           default: Counts the number of clock cycles executed from an arbitrary point in time.
         address: {type: integer, default: 0xB00, allowed: [0xB00]}
         <<: *gen_flatschema
+    mcycleh:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: upper 32 bits of mcycle 
+        address: {type: integer, default: 0xB80, allowed: [0xB80]}
+        <<: *gen_flatschema32
     minstret: 
       type: dict
       schema:
@@ -3172,6 +3692,14 @@ hart_schema:
           default: Counts the number of instructions completed from an arbitrary point in time.
         address: {type: integer, default: 0xB02, allowed: [0xB02]}
         <<: *gen_flatschema
+    minstreth: 
+      type: dict
+      schema:
+        description:
+          type: string
+          default: Upper 32 bits of minstret.
+        address: {type: integer, default: 0xB82, allowed: [0xB82]}
+        <<: *gen_flatschema32
     mhpmevent3:
       type: dict
       schema:

@@ -34,22 +34,6 @@ class schemaValidator(Validator):
         if rv32 and not value:
             self._error(field, "This field cannot be False")
 
-    def _check_with_priv_version_check(self, field, value):
-        '''Function to check whether the Privileged spec version specified is valid or not.'''
-        if value not in constants.priv_versions:
-            self._error(
-                field,
-                "Invalid privilege spec version. Please select one of the following- "
-                + ", ".join(constants.priv_versions))
-
-    def _check_with_user_version_check(self, field, value):
-        '''Function to check whether the User spec version specified is valid or not.'''
-        if value not in constants.user_versions:
-            self._error(
-                field,
-                "Invalid User spec version. Please select one of the following- "
-                + ", ".join(constants.user_versions))
-
     def _check_with_capture_isa_specifics(self, field, value):
         '''
         Function to extract and store ISA specific information(such as xlen,user
