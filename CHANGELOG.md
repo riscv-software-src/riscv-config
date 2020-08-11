@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.3.1 - 2020-08-11
+### Added
+- PMPADDR csrs added.
+- mcycleh and minstreth added.
+
 ## 2.3.0 - 2020-07-27
 ### Changed
 - Size of the isa schema has been reduced significantly.
