@@ -2572,7 +2572,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A2, allowed: [0x3A2]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2615,7 +2615,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A3, allowed: [0x3A3]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2642,7 +2642,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A4, allowed: [0x3A4]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2685,7 +2685,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A5, allowed: [0x3A5]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2712,7 +2712,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A6, allowed: [0x3A6]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2755,7 +2755,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A7, allowed: [0x3A7]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2782,7 +2782,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A8, allowed: [0x3A8]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2825,7 +2825,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3A9, allowed: [0x3A9]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2852,7 +2852,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AA, allowed: [0x3AA]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2895,7 +2895,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AB, allowed: [0x3AB]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2922,7 +2922,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AC, allowed: [0x3AC]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2965,7 +2965,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AD, allowed: [0x3AD]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -2992,7 +2992,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AE, allowed: [0x3AE]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
@@ -3035,7 +3035,7 @@ hart_schema:
       type: dict
       schema:
         description: {type: string, default: PMP configuration register}
-        address: {type: integer, default: 0x3A1, allowed: [0x3A1]}
+        address: {type: integer, default: 0x3AF, allowed: [0x3AF]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
