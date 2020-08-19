@@ -120,6 +120,9 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter
+    schema_yaml['fflags']['default_setter'] = regsetter
+    schema_yaml['frm']['default_setter'] = regsetter
+    schema_yaml['fcsr']['default_setter'] = regsetter
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
     schema_yaml['pmpcfg0']['default_setter'] = regsetter

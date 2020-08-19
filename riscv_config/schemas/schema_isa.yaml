@@ -4489,3 +4489,155 @@ hart_schema:
               check_with: [rv64_check, s_check]
           default: {accessible: true}
       check_with: ndeleg_checks
+    fflags:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: 32-bit register to hold floating point accrued exceptions.
+        address: {type: integer, default: 001, allowed: [001]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              type: boolean
+              default: true
+              check_with:
+              - rv32_check
+              - cannot_be_false_rv32
+          default: {accessible: true}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              default: true
+              check_with:
+              - rv64_check
+              - cannot_be_false_rv64
+          default: {accessible: true}
+    frm:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: 32-bit register to hold Floating-Point Dynamic Rounding Mode.
+        address: {type: integer, default: 002, allowed: [002]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              type: boolean
+              default: true
+              check_with:
+              - rv32_check
+              - cannot_be_false_rv32
+          default: {accessible: true}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              default: false
+              check_with:
+              - rv64_check
+              - cannot_be_false_rv64
+          default: {accessible: true}     
+    fcsr:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: 32-bit register to hold Floating-Point Control and Status Register.
+        address: {type: integer, default: 003, allowed: [003]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              type: boolean
+              default: true
+              check_with:
+              - rv32_check
+              - cannot_be_false_rv32
+          default: {accessible: true}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              default: true
+              check_with:
+              - rv64_check
+              - cannot_be_false_rv64
+          default: {accessible: true}  
+  
+  
