@@ -32,6 +32,18 @@ def uset():
     else:
         return {'implemented': False}
 
+def uregset():
+    '''Function to set defaults based on presence of 'U' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'U' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
+        
+
 
 def nuset():
     '''Function to check and set defaults for all fields which are dependent on
@@ -120,9 +132,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter
-    schema_yaml['fflags']['default_setter'] = regsetter
-    schema_yaml['frm']['default_setter'] = regsetter
-    schema_yaml['fcsr']['default_setter'] = regsetter
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
     schema_yaml['pmpcfg0']['default_setter'] = regsetter
@@ -317,6 +326,10 @@ def add_def_setters(schema_yaml):
         'default_setter'] = usetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
         'default_setter'] = usetter
+    uregsetter = lambda doc: uregset()
+    schema_yaml['fflags']['default_setter'] = uregsetter
+    schema_yaml['frm']['default_setter'] = uregsetter
+    schema_yaml['fcsr']['default_setter'] = uregsetter
 
     schema_yaml['mip']['schema']['rv32']['schema']['ueip'][
         'default_setter'] = nusetter
