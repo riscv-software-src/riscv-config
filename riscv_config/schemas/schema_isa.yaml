@@ -4530,7 +4530,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
@@ -4561,7 +4563,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
@@ -4580,7 +4584,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
@@ -4610,8 +4616,10 @@ hart_schema:
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
-              type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              type: dict              
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
@@ -4629,8 +4637,10 @@ hart_schema:
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
-              type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              type: dict              
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
