@@ -4511,7 +4511,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+              - schema: { warl: *ref_warl }
               default:
                 ro_constant: 0
             accessible:
