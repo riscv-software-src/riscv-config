@@ -4618,8 +4618,8 @@ hart_schema:
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
-              type: dict              
-              oneof:
+              type: dict
+              oneof:               
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
@@ -4651,5 +4651,93 @@ hart_schema:
               - rv64_check
               - cannot_be_false_rv64
           default: {accessible: true}  
-  
+    time:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: Timer for RDTIME instruction and RTC in the processor.
+        priv_mode: {type: string, default: U, allowed: [U]}
+        address: {type: integer, default: 0xC01, allowed: [0xC01]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0              
+            accessible:
+              type: boolean
+              default: true
+              check_with:
+              - rv32_check
+              - cannot_be_false_rv32
+          default: {accessible: true}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict              
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0
+            accessible:
+              default: true
+              check_with:
+              - rv64_check
+              - cannot_be_false_rv64
+          default: {accessible: true}    
+    timeh:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: Upper 32-bits of the Timer for RDTIME instruction and RTC in the processor; only for rv32.
+        address: {type: integer, default: 0xC81, allowed: [0xC81]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              default:
+                ro_constant: 0              
+            accessible:
+              type: boolean
+              default: true
+              check_with:
+              - rv32_check
+              - cannot_be_false_rv32
+          default: {accessible: true}
+        rv64:
+            type: dict
+            schema:
+              accessible:
+                 default: False
+            default: {accessible: False}    
+    
   
