@@ -130,6 +130,18 @@ class schemaValidator(Validator):
             if (mxl[33 - s:34 - s] != '1'):
                 self._error(field, "S is not present(32)")
 
+    def _check_with_u_check(self, field, value):
+        u = 20
+        if rv64 and value == True:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - u:66 - u] != '1'):
+                self._error(field, "U is not present(64)")
+
+        elif rv32 and value == True:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - u:34 - u] != '1'):
+                self._error(field, "U is not present(32)")
+
     def _check_with_n_check(self, field, value):
         n = 13
         if rv64:

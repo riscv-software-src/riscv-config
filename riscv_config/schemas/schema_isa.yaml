@@ -4521,7 +4521,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - cannot_be_false_rv32
+              - u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4541,7 +4541,7 @@ hart_schema:
               default: true
               check_with:
               - rv64_check
-              - cannot_be_false_rv64
+              - u_check
           default: {accessible: true}
     frm:
       type: dict
@@ -4575,7 +4575,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - cannot_be_false_rv32
+              - u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4595,7 +4595,7 @@ hart_schema:
               default: false
               check_with:
               - rv64_check
-              - cannot_be_false_rv64
+              - u_check
           default: {accessible: true}     
     fcsr:
       type: dict
@@ -4629,7 +4629,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - cannot_be_false_rv32
+              - u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4649,7 +4649,7 @@ hart_schema:
               default: true
               check_with:
               - rv64_check
-              - cannot_be_false_rv64
+              - u_check
           default: {accessible: true}  
     time:
       type: dict
@@ -4681,7 +4681,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - cannot_be_false_rv32
+              - u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4699,7 +4699,7 @@ hart_schema:
               default: true
               check_with:
               - rv64_check
-              - cannot_be_false_rv64
+              - u_check
           default: {accessible: true}    
     timeh:
       type: dict
@@ -4731,7 +4731,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - cannot_be_false_rv32
+              - u_check
           default: {accessible: true}
         rv64:
             type: dict
