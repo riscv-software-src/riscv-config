@@ -41,6 +41,11 @@ def uregset():
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
+    else:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = False
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = False
     return temp
         
 
