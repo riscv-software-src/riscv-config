@@ -47,8 +47,8 @@ hart_schema:
             schema:
               type: string
               regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
-    gen_flatschema:
-      schema:  &gen_flatschema
+    gen_flatschema_machine:
+      schema:  &gen_flatschema_machine
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val: {type: integer,  default: 0}
         rv32:
@@ -90,8 +90,8 @@ hart_schema:
               default: true
               check_with: rv64_check
           default: {accessible: True}
-    gen_flatschema32:
-      schema:  &gen_flatschema32
+    gen_flatschema_machine32:
+      schema:  &gen_flatschema_machine32
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer
@@ -3059,7 +3059,7 @@ hart_schema:
     pmpaddr0:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3067,7 +3067,7 @@ hart_schema:
     pmpaddr1:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3075,7 +3075,7 @@ hart_schema:
     pmpaddr2:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3083,7 +3083,7 @@ hart_schema:
     pmpaddr3:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3091,7 +3091,7 @@ hart_schema:
     pmpaddr4:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3099,7 +3099,7 @@ hart_schema:
     pmpaddr5:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3107,7 +3107,7 @@ hart_schema:
     pmpaddr6:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3115,7 +3115,7 @@ hart_schema:
     pmpaddr7:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3123,7 +3123,7 @@ hart_schema:
     pmpaddr8:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3131,7 +3131,7 @@ hart_schema:
     pmpaddr9:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3139,7 +3139,7 @@ hart_schema:
     pmpaddr10:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3147,7 +3147,7 @@ hart_schema:
     pmpaddr11:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3155,7 +3155,7 @@ hart_schema:
     pmpaddr12:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3163,7 +3163,7 @@ hart_schema:
     pmpaddr13:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3171,7 +3171,7 @@ hart_schema:
     pmpaddr14:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3179,7 +3179,7 @@ hart_schema:
     pmpaddr15:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3187,7 +3187,7 @@ hart_schema:
     pmpaddr16:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3195,7 +3195,7 @@ hart_schema:
     pmpaddr17:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3203,7 +3203,7 @@ hart_schema:
     pmpaddr18:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3211,7 +3211,7 @@ hart_schema:
     pmpaddr19:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3219,7 +3219,7 @@ hart_schema:
     pmpaddr20:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3227,7 +3227,7 @@ hart_schema:
     pmpaddr21:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3235,7 +3235,7 @@ hart_schema:
     pmpaddr22:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3243,7 +3243,7 @@ hart_schema:
     pmpaddr23:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3251,7 +3251,7 @@ hart_schema:
     pmpaddr24:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3259,7 +3259,7 @@ hart_schema:
     pmpaddr25:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3267,7 +3267,7 @@ hart_schema:
     pmpaddr26:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3275,7 +3275,7 @@ hart_schema:
     pmpaddr27:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3283,7 +3283,7 @@ hart_schema:
     pmpaddr28:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3291,7 +3291,7 @@ hart_schema:
     pmpaddr29:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3299,7 +3299,7 @@ hart_schema:
     pmpaddr30:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3307,7 +3307,7 @@ hart_schema:
     pmpaddr31:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3315,7 +3315,7 @@ hart_schema:
     pmpaddr32:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3323,7 +3323,7 @@ hart_schema:
     pmpaddr33:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3331,7 +3331,7 @@ hart_schema:
     pmpaddr34:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3339,7 +3339,7 @@ hart_schema:
     pmpaddr35:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3347,7 +3347,7 @@ hart_schema:
     pmpaddr36:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3355,7 +3355,7 @@ hart_schema:
     pmpaddr37:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3363,7 +3363,7 @@ hart_schema:
     pmpaddr38:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3371,7 +3371,7 @@ hart_schema:
     pmpaddr39:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3379,7 +3379,7 @@ hart_schema:
     pmpaddr40:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3387,7 +3387,7 @@ hart_schema:
     pmpaddr41:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3395,7 +3395,7 @@ hart_schema:
     pmpaddr42:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3403,7 +3403,7 @@ hart_schema:
     pmpaddr43:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3411,7 +3411,7 @@ hart_schema:
     pmpaddr44:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3419,7 +3419,7 @@ hart_schema:
     pmpaddr45:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3427,7 +3427,7 @@ hart_schema:
     pmpaddr46:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3435,7 +3435,7 @@ hart_schema:
     pmpaddr47:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3443,7 +3443,7 @@ hart_schema:
     pmpaddr48:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3451,7 +3451,7 @@ hart_schema:
     pmpaddr49:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3459,7 +3459,7 @@ hart_schema:
     pmpaddr50:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3467,7 +3467,7 @@ hart_schema:
     pmpaddr51:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3475,7 +3475,7 @@ hart_schema:
     pmpaddr52:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3483,7 +3483,7 @@ hart_schema:
     pmpaddr53:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3491,7 +3491,7 @@ hart_schema:
     pmpaddr54:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3499,7 +3499,7 @@ hart_schema:
     pmpaddr55:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3507,7 +3507,7 @@ hart_schema:
     pmpaddr56:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3515,7 +3515,7 @@ hart_schema:
     pmpaddr57:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3523,7 +3523,7 @@ hart_schema:
     pmpaddr58:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3531,7 +3531,7 @@ hart_schema:
     pmpaddr59:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3539,7 +3539,7 @@ hart_schema:
     pmpaddr60:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3547,7 +3547,7 @@ hart_schema:
     pmpaddr61:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3555,7 +3555,7 @@ hart_schema:
     pmpaddr62:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3563,7 +3563,7 @@ hart_schema:
     pmpaddr63:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: Physical memory protection address register
@@ -3674,7 +3674,7 @@ hart_schema:
           type: string
           default: Counts the number of clock cycles executed from an arbitrary point in time.
         address: {type: integer, default: 0xB00, allowed: [0xB00]}
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
     mcycleh:
       type: dict
       schema:
@@ -3682,7 +3682,7 @@ hart_schema:
           type: string
           default: upper 32 bits of mcycle 
         address: {type: integer, default: 0xB80, allowed: [0xB80]}
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
     minstret: 
       type: dict
       schema:
@@ -3690,7 +3690,7 @@ hart_schema:
           type: string
           default: Counts the number of instructions completed from an arbitrary point in time.
         address: {type: integer, default: 0xB02, allowed: [0xB02]}
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
     minstreth: 
       type: dict
       schema:
@@ -3698,11 +3698,11 @@ hart_schema:
           type: string
           default: Upper 32 bits of minstret.
         address: {type: integer, default: 0xB82, allowed: [0xB82]}
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
     mhpmevent3:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent3 is a MXLEN-bit event register which controls mhpmcounter3.
@@ -3710,7 +3710,7 @@ hart_schema:
     mhpmcounter3:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -3718,7 +3718,7 @@ hart_schema:
     mhpmcounter3h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter3h returns the upper half word in RV32I systems.
@@ -3726,7 +3726,7 @@ hart_schema:
     mhpmevent4:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent4 is a MXLEN-bit event register which controls mhpmcounter4.
@@ -3734,7 +3734,7 @@ hart_schema:
     mhpmcounter4:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter4 is a 64-bit counter. Returns lower 42 bits in RV42I mode.
@@ -3742,7 +3742,7 @@ hart_schema:
     mhpmcounter4h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter4h returns the upper half word in RV42I systems.
@@ -3750,7 +3750,7 @@ hart_schema:
     mhpmevent5:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent5 is a MXLEN-bit event register which controls mhpmcounter5.
@@ -3758,7 +3758,7 @@ hart_schema:
     mhpmcounter5:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter5 is a 64-bit counter. Returns lower 52 bits in RV52I mode.
@@ -3766,7 +3766,7 @@ hart_schema:
     mhpmcounter5h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter5h returns the upper half word in RV52I systems.
@@ -3774,7 +3774,7 @@ hart_schema:
     mhpmevent6:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent6 is a MXLEN-bit event register which controls mhpmcounter6.
@@ -3782,7 +3782,7 @@ hart_schema:
     mhpmcounter6:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter6 is a 64-bit counter. Returns lower 62 bits in RV62I
@@ -3791,7 +3791,7 @@ hart_schema:
     mhpmcounter6h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter6h returns the upper half word in RV62I systems.
@@ -3799,7 +3799,7 @@ hart_schema:
     mhpmevent7:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent7 is a MXLEN-bit event register which controls mhpmcounter7.
@@ -3807,7 +3807,7 @@ hart_schema:
     mhpmcounter7:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter7 is a 64-bit counter. Returns lower 72 bits in RV72I mode.
@@ -3815,7 +3815,7 @@ hart_schema:
     mhpmcounter7h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter7h returns the upper half word in RV72I systems.
@@ -3823,7 +3823,7 @@ hart_schema:
     mhpmevent8:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent8 is a MXLEN-bit event register which controls mhpmcounter8.
@@ -3831,7 +3831,7 @@ hart_schema:
     mhpmcounter8:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter8 is a 64-bit counter. Returns lower 82 bits in RV82I mode.
@@ -3839,7 +3839,7 @@ hart_schema:
     mhpmcounter8h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter8h returns the upper half word in RV82I systems.
@@ -3847,7 +3847,7 @@ hart_schema:
     mhpmevent9:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent9 is a MXLEN-bit event register which controls mhpmcounter9.
@@ -3855,7 +3855,7 @@ hart_schema:
     mhpmcounter9:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter9 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -3863,7 +3863,7 @@ hart_schema:
     mhpmcounter9h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter9h returns the upper half word in RV32I systems.
@@ -3871,7 +3871,7 @@ hart_schema:
     mhpmevent10:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent10 is a MXLEN-bit event register which controls mhpmcounter10.
@@ -3879,7 +3879,7 @@ hart_schema:
     mhpmcounter10:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter10 is a 64-bit counter. Returns lower 102 bits in RV102I mode.
@@ -3887,7 +3887,7 @@ hart_schema:
     mhpmcounter10h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter10h returns the upper half word in RV102I systems.
@@ -3895,7 +3895,7 @@ hart_schema:
     mhpmevent11:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent11 is a MXLEN-bit event register which controls mhpmcounter11.
@@ -3903,7 +3903,7 @@ hart_schema:
     mhpmcounter11:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter11 is a 64-bit counter. Returns lower 112 bits in RV112I mode.
@@ -3911,7 +3911,7 @@ hart_schema:
     mhpmcounter11h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter11h returns the upper half word in RV112I systems.
@@ -3919,7 +3919,7 @@ hart_schema:
     mhpmevent12:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent12 is a MXLEN-bit event register which controls mhpmcounter12.
@@ -3927,7 +3927,7 @@ hart_schema:
     mhpmcounter12:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter12 is a 64-bit counter. Returns lower 122 bits in RV122I mode.
@@ -3935,7 +3935,7 @@ hart_schema:
     mhpmcounter12h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter12h returns the upper half word in RV122I systems.
@@ -3943,7 +3943,7 @@ hart_schema:
     mhpmevent13:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent13 is a MXLEN-bit event register which controls mhpmcounter13.
@@ -3951,7 +3951,7 @@ hart_schema:
     mhpmcounter13:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter13 is a 64-bit counter. Returns lower 132 bits in RV132I mode.
@@ -3959,7 +3959,7 @@ hart_schema:
     mhpmcounter13h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter13h returns the upper half word in RV132I systems.
@@ -3967,7 +3967,7 @@ hart_schema:
     mhpmevent14:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent14 is a MXLEN-bit event register which controls mhpmcounter14.
@@ -3975,7 +3975,7 @@ hart_schema:
     mhpmcounter14:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter14 is a 64-bit counter. Returns lower 142 bits in RV142I mode.
@@ -3983,7 +3983,7 @@ hart_schema:
     mhpmcounter14h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter14h returns the upper half word in RV142I systems.
@@ -3991,7 +3991,7 @@ hart_schema:
     mhpmevent15:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent15 is a MXLEN-bit event register which controls mhpmcounter15.
@@ -3999,7 +3999,7 @@ hart_schema:
     mhpmcounter15:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter15 is a 64-bit counter. Returns lower 152 bits in RV152I mode.
@@ -4007,7 +4007,7 @@ hart_schema:
     mhpmcounter15h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter15h returns the upper half word in RV152I systems.
@@ -4015,7 +4015,7 @@ hart_schema:
     mhpmevent16:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent16 is a MXLEN-bit event register which controls mhpmcounter16.
@@ -4023,7 +4023,7 @@ hart_schema:
     mhpmcounter16:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter16 is a 64-bit counter. Returns lower 162 bits in RV162I mode.
@@ -4031,7 +4031,7 @@ hart_schema:
     mhpmcounter16h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter16h returns the upper half word in RV162I systems.
@@ -4039,7 +4039,7 @@ hart_schema:
     mhpmevent17:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent17 is a MXLEN-bit event register which controls mhpmcounter17.
@@ -4047,7 +4047,7 @@ hart_schema:
     mhpmcounter17:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter17 is a 64-bit counter. Returns lower 172 bits in RV172I mode.
@@ -4055,7 +4055,7 @@ hart_schema:
     mhpmcounter17h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter17h returns the upper half word in RV172I systems.
@@ -4063,7 +4063,7 @@ hart_schema:
     mhpmevent18:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent18 is a MXLEN-bit event register which controls mhpmcounter18.
@@ -4071,7 +4071,7 @@ hart_schema:
     mhpmcounter18:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter18 is a 64-bit counter. Returns lower 182 bits in RV182I mode.
@@ -4079,7 +4079,7 @@ hart_schema:
     mhpmcounter18h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter18h returns the upper half word in RV182I systems.
@@ -4087,7 +4087,7 @@ hart_schema:
     mhpmevent19:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent19 is a MXLEN-bit event register which controls mhpmcounter19.
@@ -4095,7 +4095,7 @@ hart_schema:
     mhpmcounter19:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter19 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -4103,7 +4103,7 @@ hart_schema:
     mhpmcounter19h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter19h returns the upper half word in RV32I systems.
@@ -4111,7 +4111,7 @@ hart_schema:
     mhpmevent20:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent20 is a MXLEN-bit event register which controls mhpmcounter20.
@@ -4119,7 +4119,7 @@ hart_schema:
     mhpmcounter20:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter20 is a 64-bit counter. Returns lower 202 bits in RV202I mode.
@@ -4127,7 +4127,7 @@ hart_schema:
     mhpmcounter20h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter20h returns the upper half word in RV202I systems.
@@ -4135,7 +4135,7 @@ hart_schema:
     mhpmevent21:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent21 is a MXLEN-bit event register which controls mhpmcounter21.
@@ -4143,7 +4143,7 @@ hart_schema:
     mhpmcounter21:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter21 is a 64-bit counter. Returns lower 212 bits in RV212I mode.
@@ -4151,7 +4151,7 @@ hart_schema:
     mhpmcounter21h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter21h returns the upper half word in RV212I systems.
@@ -4159,7 +4159,7 @@ hart_schema:
     mhpmevent22:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent22 is a MXLEN-bit event register which controls mhpmcounter22.
@@ -4167,7 +4167,7 @@ hart_schema:
     mhpmcounter22:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter22 is a 64-bit counter. Returns lower 222 bits in RV222I mode.
@@ -4175,7 +4175,7 @@ hart_schema:
     mhpmcounter22h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter22h returns the upper half word in RV222I systems.
@@ -4183,7 +4183,7 @@ hart_schema:
     mhpmevent23:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent23 is a MXLEN-bit event register which controls mhpmcounter23.
@@ -4191,7 +4191,7 @@ hart_schema:
     mhpmcounter23:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter23 is a 64-bit counter. Returns lower 232 bits in RV232I mode.
@@ -4199,7 +4199,7 @@ hart_schema:
     mhpmcounter23h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter23h returns the upper half word in RV232I systems.
@@ -4207,7 +4207,7 @@ hart_schema:
     mhpmevent24:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent24 is a MXLEN-bit event register which controls mhpmcounter24.
@@ -4215,7 +4215,7 @@ hart_schema:
     mhpmcounter24:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter24 is a 64-bit counter. Returns lower 242 bits in RV242I mode.
@@ -4223,7 +4223,7 @@ hart_schema:
     mhpmcounter24h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter24h returns the upper half word in RV242I systems.
@@ -4231,7 +4231,7 @@ hart_schema:
     mhpmevent25:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent25 is a MXLEN-bit event register which controls mhpmcounter25.
@@ -4239,7 +4239,7 @@ hart_schema:
     mhpmcounter25:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter25 is a 64-bit counter. Returns lower 252 bits in RV252I mode.
@@ -4247,7 +4247,7 @@ hart_schema:
     mhpmcounter25h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter25h returns the upper half word in RV252I systems.
@@ -4255,7 +4255,7 @@ hart_schema:
     mhpmevent26:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent26 is a MXLEN-bit event register which controls mhpmcounter26.
@@ -4263,7 +4263,7 @@ hart_schema:
     mhpmcounter26:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter26 is a 64-bit counter. Returns lower 262 bits in RV262I mode.
@@ -4271,7 +4271,7 @@ hart_schema:
     mhpmcounter26h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter26h returns the upper half word in RV262I systems.
@@ -4279,7 +4279,7 @@ hart_schema:
     mhpmevent27:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent27 is a MXLEN-bit event register which controls mhpmcounter27.
@@ -4287,7 +4287,7 @@ hart_schema:
     mhpmcounter27:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter27 is a 64-bit counter. Returns lower 272 bits in RV272I mode.
@@ -4295,7 +4295,7 @@ hart_schema:
     mhpmcounter27h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter27h returns the upper half word in RV272I systems.
@@ -4303,7 +4303,7 @@ hart_schema:
     mhpmevent28:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent28 is a MXLEN-bit event register which controls mhpmcounter28.
@@ -4311,7 +4311,7 @@ hart_schema:
     mhpmcounter28:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter28 is a 64-bit counter. Returns lower 282 bits in RV282I mode.
@@ -4319,7 +4319,7 @@ hart_schema:
     mhpmcounter28h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter28h returns the upper half word in RV282I systems.
@@ -4327,7 +4327,7 @@ hart_schema:
     mhpmevent29:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent29 is a MXLEN-bit event register which controls mhpmcounter29.
@@ -4335,7 +4335,7 @@ hart_schema:
     mhpmcounter29:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter29 is a 64-bit counter. Returns lower 32 bits in RV32I mode.
@@ -4343,7 +4343,7 @@ hart_schema:
     mhpmcounter29h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter29h returns the upper half word in RV32I systems.
@@ -4351,7 +4351,7 @@ hart_schema:
     mhpmevent30:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent30 is a MXLEN-bit event register which controls mhpmcounter30.
@@ -4359,7 +4359,7 @@ hart_schema:
     mhpmcounter30:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter30 is a 64-bit counter. Returns lower 302 bits in RV302I mode.
@@ -4367,7 +4367,7 @@ hart_schema:
     mhpmcounter30h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter30h returns the upper half word in RV302I systems.
@@ -4375,7 +4375,7 @@ hart_schema:
     mhpmevent31:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmevent31 is a MXLEN-bit event register which controls mhpmcounter31.
@@ -4383,7 +4383,7 @@ hart_schema:
     mhpmcounter31:
       type: dict
       schema:
-        <<: *gen_flatschema
+        <<: *gen_flatschema_machine
         description:
           type: string
           default: The mhpmcounter31 is a 64-bit counter. Returns lower 312 bits in RV312I mode.
@@ -4391,7 +4391,7 @@ hart_schema:
     mhpmcounter31h:
       type: dict
       schema:
-        <<: *gen_flatschema32
+        <<: *gen_flatschema_machine32
         description:
           type: string
           default: The mhpmcounter31h returns the upper half word in RV312I systems.
@@ -4737,5 +4737,1337 @@ hart_schema:
               accessible:
                  default: False
             default: {accessible: False}    
-    
-  
+    hpmcounter3:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter3, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter3, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC03, allowed: [0xC03]}    
+    hpmcounter4:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter4, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter4, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter4 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC04, allowed: [0xC04]}    
+    hpmcounter5:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter5, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter5, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter5 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC05, allowed: [0xC05]}    
+    hpmcounter6:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter6, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter6, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter6 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC06, allowed: [0xC06]}    
+    hpmcounter7:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter7, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter7, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter7 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC07, allowed: [0xC07]}    
+    hpmcounter8:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter8, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter8, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter8 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC08, allowed: [0xC08]}    
+    hpmcounter9:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter9, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter9, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter9 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC09, allowed: [0xC09]}    
+    hpmcounter10:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter10, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter10, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter10 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0A, allowed: [0xC0A]}    
+    hpmcounter11:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter11, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter11, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter11 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0B, allowed: [0xC0B]}    
+    hpmcounter12:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter12, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter12, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter12 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0C, allowed: [0xC0C]}    
+    hpmcounter13:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter13, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter13, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter13 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0D, allowed: [0xC0D]}    
+    hpmcounter14:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter14, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter14, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter14 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0E, allowed: [0xC0E]}    
+    hpmcounter15:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter15, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter15, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter15 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC0F, allowed: [0xC0F]}    
+    hpmcounter16:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter16, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter16, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter16 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC10, allowed: [0xC10]}    
+    hpmcounter17:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter17, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter17, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter17 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC11, allowed: [0xC11]}    
+    hpmcounter18:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter18, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter18, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter18 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC12, allowed: [0xC12]}    
+    hpmcounter19:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter19, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter19, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter19 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC13, allowed: [0xC13]}    
+    hpmcounter20:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter20, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter20, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter20 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC14, allowed: [0xC14]}    
+    hpmcounter21:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter21, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter21, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter21 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC15, allowed: [0xC15]}    
+    hpmcounter22:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter22, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter22, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter22 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC16, allowed: [0xC16]}    
+    hpmcounter23:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter23, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter23, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter23 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC17, allowed: [0xC17]}    
+    hpmcounter24:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter24, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter24, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter24 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC18, allowed: [0xC18]}    
+    hpmcounter25:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter25, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter25, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter25 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC19, allowed: [0xC19]}    
+    hpmcounter26:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter26, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter26, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter26 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1A, allowed: [0xC1A]}    
+    hpmcounter27:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter27, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter27, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter27 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1B, allowed: [0xC1B]}    
+    hpmcounter28:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter28, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter28, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter28 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1C, allowed: [0xC1C]}    
+    hpmcounter29:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter29, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter29, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter29 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1D, allowed: [0xC1D]}    
+    hpmcounter30:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter30, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter30, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter30 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1E, allowed: [0xC1E]}    
+    hpmcounter31:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter31, nullable: False}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema: 
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter31, nullable: False}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+          default: {accessible: True}
+        description: {type: string, default: The hpmcounter31 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
+        address: {type: integer, default: 0xC1F, allowed: [0xC1F]}    
+    hpmcounter3h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter3h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter3h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC83, allowed: [0xC83]}
+    hpmcounter4h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter4h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter4h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC84, allowed: [0xC84]}
+    hpmcounter5h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter5h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter5h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC85, allowed: [0xC85]}
+    hpmcounter6h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter6h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter6h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC86, allowed: [0xC86]}
+    hpmcounter7h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter7h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter7h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC87, allowed: [0xC87]}
+    hpmcounter8h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter8h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter8h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC88, allowed: [0xC88]}
+    hpmcounter9h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter9h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter9h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC89, allowed: [0xC89]}
+    hpmcounter10h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter10h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter10h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8A, allowed: [0xC8A]}
+    hpmcounter11h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter11h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter11h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8B, allowed: [0xC8B]}
+    hpmcounter12h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter12h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter12h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8C, allowed: [0xC8C]}
+    hpmcounter13h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter13h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter13h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8D, allowed: [0xC8D]}
+    hpmcounter14h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter14h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter14h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8E, allowed: [0xC8E]}
+    hpmcounter15h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter15h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter15h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC8F, allowed: [0xC8F]}
+    hpmcounter16h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter16h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter16h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC90, allowed: [0xC90]}
+    hpmcounter17h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter17h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter17h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC91, allowed: [0xC91]}
+    hpmcounter18h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter18h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter18h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC92, allowed: [0xC92]}
+    hpmcounter19h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter19h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter19h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC93, allowed: [0xC93]}
+    hpmcounter20h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter20h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter20h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC94, allowed: [0xC94]}
+    hpmcounter21h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter21h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter21h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC95, allowed: [0xC95]}
+    hpmcounter22h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter22h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter22h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC96, allowed: [0xC96]}
+    hpmcounter23h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter23h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter23h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC97, allowed: [0xC97]}
+    hpmcounter24h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter24h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter24h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC98, allowed: [0xC98]}
+    hpmcounter25h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter25h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter25h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC99, allowed: [0xC99]}
+    hpmcounter26h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter26h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter26h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9A, allowed: [0xC9A]}
+    hpmcounter27h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter27h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter27h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9B, allowed: [0xC9B]}
+    hpmcounter28h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter28h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter28h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9C, allowed: [0xC9C]}
+    hpmcounter29h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter29h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter29h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9D, allowed: [0xC9D]}
+    hpmcounter30h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter30h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter30h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9E, allowed: [0xC9E]}
+    hpmcounter31h:
+      type: dict
+      schema:
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val: {type: integer, default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: mhpmcounter31h, nullable: false}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible: {default: False}
+          default: {accessible: False}
+        description: { type: string, default: The hpmcounter31h returns the upper half word in RV32I systems.}
+        address: {type: integer, default: 0xC9F, allowed: [0xC9F]}
