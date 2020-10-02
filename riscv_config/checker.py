@@ -499,13 +499,14 @@ def get_fields(node, bitwidth):
         return fields
 
 
-def check_reset_fill_fields(spec):
+def check_reset_fill_fields(spec, logging= False):
     '''The check_reset_fill_fields function fills the field node with the names of the sub-fields of the register and then checks whether the reset-value of the register is a legal value. To do so, it iterates over all the subfields and extracts the corresponding field value from the reset-value. Then it checks the legality of the value according to the given field description. If the fields is implemented i.e accessible in both 64 bit and 32 bit modes, the 64 bit mode is given preference. '''
     errors = {}
     for node in spec:
 
         if isinstance(spec[node], dict):
-            logger.debug(node)
+            if logging:
+                logger.debug(node)
             if spec[node]['rv32']['accessible']:
                 spec[node]['rv32']['fields'] = get_fields(
                     spec[node]['rv32'], 32)
@@ -732,7 +733,8 @@ def check_isa_specs(isa_spec,
 
     outyaml = copy.deepcopy(master_inp_yaml)
     for x in master_inp_yaml['hart_ids']:
-        logger.info('Processing Hart: hart'+str(x))
+        if logging:
+            logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_inp_yaml['hart'+str(x)]
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
@@ -755,8 +757,9 @@ def check_isa_specs(isa_spec,
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
-        logger.info("Initiating post processing and reset value checks.")
-        normalized, errors = check_reset_fill_fields(normalized)
+        if logging:
+            logger.info("Initiating post processing and reset value checks.")
+        normalized, errors = check_reset_fill_fields(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
         if normalized['mhartid']['reset-val'] != x:
