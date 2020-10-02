@@ -1191,12 +1191,10 @@ hart_schema:
                 implemented: {type: boolean, default: true, allowed: [true]}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: true}
             mode:
               type: dict
               schema:

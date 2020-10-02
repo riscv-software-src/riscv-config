@@ -234,7 +234,7 @@ class schemaValidator(Validator):
                 value['warl']['legal']
         ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
                 'warl']['legal'][0]:
-            self._error(field, "illegal value cannot exist")
+            self._error(field, "illegal value cannot exist for bitmask type")
 
     def _check_with_key_check(self, field, value):
         if value['base']['type']['warl']['dependency_fields'] != []:
