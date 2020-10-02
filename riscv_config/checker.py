@@ -505,6 +505,7 @@ def check_reset_fill_fields(spec):
     for node in spec:
 
         if isinstance(spec[node], dict):
+            logger.debug(node)
             if spec[node]['rv32']['accessible']:
                 spec[node]['rv32']['fields'] = get_fields(
                     spec[node]['rv32'], 32)
@@ -685,8 +686,7 @@ def check_reset_fill_fields(spec):
     return spec, errors
 
 
-def check_specs(isa_spec,
-                platform_spec,
+def check_isa_specs(isa_spec,
                 work_dir,
                 logging=False,
                 no_anchors=False):
@@ -697,15 +697,11 @@ def check_specs(isa_spec,
 
         :param isa_spec: The path to the DUT isa specification yaml file.
 
-        :param platform_spec: The path to the DUT platform specification yaml file.
-
         :param logging: A boolean to indicate whether log is to be printed.
 
         :type logging: bool
 
         :type isa_spec: str
-
-        :type platform_spec: str
 
         :raise ValidationError: It is raised when the specifications violate the
             schema rules. It also contains the specific errors in each of the fields.
@@ -736,7 +732,7 @@ def check_specs(isa_spec,
 
     outyaml = copy.deepcopy(master_inp_yaml)
     for x in master_inp_yaml['hart_ids']:
-        logger.debug('Processing Hart: hart'+str(x))
+        logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_inp_yaml['hart'+str(x)]
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
@@ -755,7 +751,7 @@ def check_specs(isa_spec,
         # Print out errors
         if valid:
             if logging:
-                logger.info('No Syntax errors in Input ISA Yaml. :)')
+                logger.info('No errors for Hart: '+str(x) + ' :)')
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
@@ -776,11 +772,16 @@ def check_specs(isa_spec,
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
-    if logging:
-        logger.info('Input-Platform file')
+    return ifile
 
+def check_platform_specs(platform_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
     foo = platform_spec
     schema = constants.platform_schema
+    if logging:
+        logger.info('Input-Platform file')
     """
       Read the input-platform foo (yaml file) and validate with schema-platform for feature values
       and constraints
@@ -796,8 +797,7 @@ def check_specs(isa_spec,
     if logging:
         logger.info('Load Schema ' + str(schema))
     schema_yaml = utils.load_yaml(schema, no_anchors)
-
-    validator = schemaValidator(schema_yaml, xlen=xlen)
+    validator = schemaValidator(schema_yaml, xlen=[])
     validator.allow_unknown = False
     validator.purge_readonly = True
     normalized = validator.normalized(inp_yaml, schema_yaml)
@@ -824,4 +824,5 @@ def check_specs(isa_spec,
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(trim(normalized), outfile, no_anchors)
-    return (ifile, pfile)
+
+    return pfile

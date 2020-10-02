@@ -116,11 +116,13 @@ def riscv_config_cmdline_args():
                         '-ispec',
                         type=str,
                         metavar='YAML',
+                        default=None,
                         help='The YAML which contains the ISA specs.')
     parser.add_argument('--platform_spec',
                         '-pspec',
                         type=str,
                         metavar='YAML',
+                        default=None,
                         help='The YAML which contains the Platfrorm specs.')
     parser.add_argument(
         '--work_dir',
