@@ -42,6 +42,15 @@ def uregset():
       if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
     return temp
+
+def uregseth():
+    '''Function to set defaults based on presence of 'U' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'U' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+    return temp
         
 
 
@@ -327,11 +336,12 @@ def add_def_setters(schema_yaml):
     schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
         'default_setter'] = usetter
     uregsetter = lambda doc: uregset()
+    ureghsetter = lambda doc: uregseth()
     schema_yaml['fflags']['default_setter'] = uregsetter
     schema_yaml['frm']['default_setter'] = uregsetter
     schema_yaml['fcsr']['default_setter'] = uregsetter
     schema_yaml['time']['default_setter'] = uregsetter
-    schema_yaml['timeh']['default_setter'] = uregsetter
+    schema_yaml['timeh']['default_setter'] = ureghsetter
 
     schema_yaml['mip']['schema']['rv32']['schema']['ueip'][
         'default_setter'] = nusetter
