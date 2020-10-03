@@ -273,11 +273,11 @@ class schemaValidator(Validator):
             self._error(field, "There should be only one legal value")
         elif value['warl']['dependency_fields'] == [] and pri == 1:
             self._error(field, "no mode must exist(illlegal)")
-        elif value['warl']['dependency_fields'] == [] and len(
-                value['warl']['legal']
-        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
-                'warl']['legal'][0]:
-            self._error(field, "illegal value cannot exist for bitmask type")
+#        elif value['warl']['dependency_fields'] == [] and len(
+#                value['warl']['legal']
+#        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
+#                'warl']['legal'][0]:
+#            self._error(field, "illegal value cannot exist for bitmask type")
 
     def _check_with_key_check(self, field, value):
         if value['base']['type']['warl']['dependency_fields'] != []:
