@@ -402,6 +402,10 @@ def add_def_setters(schema_yaml):
     schema_yaml['fcsr']['default_setter'] = uregsetter
     schema_yaml['time']['default_setter'] = uregsetter
     schema_yaml['timeh']['default_setter'] = ureghsetter
+    schema_yaml['cycle']['default_setter'] = uregsetter
+    schema_yaml['cycleh']['default_setter'] = ureghsetter
+    schema_yaml['instret']['default_setter'] = uregsetter
+    schema_yaml['instreth']['default_setter'] = ureghsetter
 
     schema_yaml['mip']['schema']['rv32']['schema']['ueip'][
         'default_setter'] = nusetter
