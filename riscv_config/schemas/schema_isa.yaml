@@ -887,9 +887,7 @@ hart_schema:
             uxl:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Controls the xlen for User mode.
+                description: {type: string, default: Controls the xlen for User mode.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 33, allowed: [33]}
                 lsb: {type: integer, default: 32, allowed: [32]}
@@ -897,8 +895,9 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
+                  default: {ro_constant: 0}
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 0, min: 0}}
+                  - schema: {ro_constant: {type: integer, max:  2}}
                   - schema: { warl: *ref_warl }
               default: {implemented: true}
             sd:

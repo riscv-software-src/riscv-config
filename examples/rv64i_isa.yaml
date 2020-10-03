@@ -1,7 +1,13 @@
 hart_ids: [0,2]
 hart0:
-    ISA: RV64I
+    ISA: RV64IU
     supported_xlen: [64]
+    hpmcounter3:
+      rv32:
+        accessible: false
+      rv64:
+        accessible: true
+      reset-val: 0x0
     misa:
       reset-val: 0x8000000000000100
       rv32:

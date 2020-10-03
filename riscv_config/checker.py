@@ -128,6 +128,8 @@ def add_def_setters(schema_yaml):
     counthsetter = lambda doc: counterhset()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
+    ssetter = lambda doc: nosset()
+
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
@@ -426,7 +428,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mie']['schema']['rv64']['schema']['usie'][
         'default_setter'] = nusetter
 
-    ssetter = lambda doc: nosset()
     schema_yaml['mstatus']['schema']['rv32']['schema']['sie'][
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['sie'][
@@ -672,6 +673,7 @@ def check_reset_fill_fields(spec, logging= False):
                                 base=2)
                             if field_desc[field]['implemented']:
                                 if field_desc[field]['shadow'] is None:
+                                    logger.debug('--> Subfield: ' + field)
                                     desc = field_desc[field]['type']
                                     keys = desc.keys()
                                     if 'wlrl' in keys:
