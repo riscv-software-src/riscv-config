@@ -239,9 +239,7 @@ hart_schema:
             uie:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Stores the state of the user mode interrupts.
+                description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
@@ -250,17 +248,15 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default: 
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: n_check
             sie:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Stores the state of the supervisor mode interrupts.
+                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
@@ -269,11 +265,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mie:
               type: dict
               schema:
@@ -286,10 +282,9 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
+                  check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default:
-                    wlrl:
-                    - 0:1
+                  default: { wlrl: [0:1] }
               default: {implemented: true}
             upie:
               type: dict
@@ -305,11 +300,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: n_check
             spie:
               type: dict
               schema:
@@ -325,9 +320,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mpie:
               type: dict
               schema:
@@ -341,10 +338,9 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
+                  check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default:
-                    wlrl:
-                    - 0:1
+                  default: { wlrl: [0:1]}
               default: {implemented: true}
             spp:
               type: dict
@@ -360,9 +356,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mpp:
               type: dict
               schema:
@@ -377,11 +375,9 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: 
-                    - "0"
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  default: {ro_constant: 3}
               default: {implemented: true}
             fs:
               type: dict
@@ -398,8 +394,9 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 0, min: 0 }}
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
               default: {implemented: false}
             xs:
               type: dict
@@ -415,9 +412,11 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  schema: {ro_variable: {type: boolean}}
-                  default: {ro_variable: True}
-                  readonly: true
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_variable: {type: boolean}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
             mprv:
               type: dict
@@ -434,11 +433,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 1}
               default: {implemented: false}
+              check_with: u_check
             sum:
               type: dict
               schema:
@@ -454,11 +453,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mxr:
               type: dict
               schema:
@@ -473,11 +472,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             tvm:
               type: dict
               schema:
@@ -493,11 +492,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             tw:
               type: dict
               schema:
@@ -512,11 +511,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: su_check
             tsr:
               type: dict
               schema:
@@ -531,11 +530,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             sd:
               type: dict
               schema:
@@ -544,19 +543,18 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 31, allowed: [31]}
-                lsb: {type: integer, default: 31, allowed: [31]}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   schema: {ro_variable: {type: boolean}}
-                  default: {ro_variable: True}
+                  default: {ro_variable: true}
               default: {implemented: true}
             accessible:
               type: boolean
               default: false
               check_with: rv32_check
-          default: {accessible: true}
         rv64:
           type: dict
           schema:
@@ -564,9 +562,7 @@ hart_schema:
             uie:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Stores the state of the user mode interrupts.
+                description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
@@ -575,17 +571,15 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: n_check
             sie:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Stores the state of the supervisor mode interrupts.
+                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
@@ -594,11 +588,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default: 
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mie:
               type: dict
               schema:
@@ -613,9 +607,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default:
-                    wlrl:
-                    - 0:1
+                  default: { wlrl: [0:1] }
               default: {implemented: true}
             upie:
               type: dict
@@ -631,11 +623,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: n_check
             spie:
               type: dict
               schema:
@@ -651,11 +643,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default: 
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mpie:
               type: dict
               schema:
@@ -671,9 +663,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default:
-                    wlrl:
-                    - 0:1
+                  default: { wlrl: [0:1]}
               default: {implemented: true}
             spp:
               type: dict
@@ -689,11 +679,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default: 
-                    wlrl: [0:1]
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mpp:
               type: dict
               schema:
@@ -708,11 +698,9 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl:
-                    - "0"
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  default: {ro_constant: 3}
               default: {implemented: true}
             fs:
               type: dict
@@ -729,8 +717,9 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
               default: {implemented: false}
             xs:
               type: dict
@@ -746,9 +735,11 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  schema: {ro_variable: {type: boolean}}
-                  readonly: true
-                  default: {ro_variable: true}
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
               default: {implemented: false}
             mprv:
               type: dict
@@ -765,11 +756,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 1}
               default: {implemented: false}
+              check_with: u_check
             sum:
               type: dict
               schema:
@@ -785,11 +776,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             mxr:
               type: dict
               schema:
@@ -804,11 +795,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             tvm:
               type: dict
               schema:
@@ -824,11 +815,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             tw:
               type: dict
               schema:
@@ -843,11 +834,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: su_check
             tsr:
               type: dict
               schema:
@@ -862,11 +853,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: 
-                    wlrl: [0:1]
+                  default: {ro_constant: 0}
               default: {implemented: false}
+              check_with: s_check
             sxl:
               type: dict
               schema:
@@ -881,9 +872,11 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 0, min: 0}}
+                  - schema: {ro_constant: {type: integer, max: 2, min: 1}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 2}
               default: {implemented: true}
+              check_with: s_check
             uxl:
               type: dict
               schema:
@@ -895,11 +888,12 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  default: {ro_constant: 0}
                   oneof:
-                  - schema: {ro_constant: {type: integer, max:  2}}
+                  - schema: {ro_constant: {type: integer, max:  2, min: 1}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 2}
               default: {implemented: true}
+              check_with: u_check
             sd:
               type: dict
               schema:
@@ -4421,7 +4415,8 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
-            accessible: { type: boolean, default: true, check_with: [rv32_check, s_check] }
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: s_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4437,7 +4432,8 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
-            accessible: { type: boolean, default: true, check_with: [rv64_check, s_check]}
+            accessible: { type: boolean, default: true, check_with: [rv64_check]}
+          check_with: s_check
           default: {accessible: true}
       check_with: ndeleg_checks
     sideleg:
@@ -4464,7 +4460,8 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
-            accessible: { type: boolean, default: true, check_with: [rv32_check, s_check] }
+            accessible: { type: boolean, default: true, check_with: [rv32_check]} 
+          check_with: s_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4483,7 +4480,8 @@ hart_schema:
             accessible:
               type: boolean
               default: true
-              check_with: [rv64_check, s_check]
+              check_with: [rv64_check]
+          check_with: s_check
           default: {accessible: true}
       check_with: ndeleg_checks
     fflags:
@@ -4516,9 +4514,8 @@ hart_schema:
             accessible:
               type: boolean
               default: true
-              check_with:
-              - rv32_check
-              - u_check
+              check_with: rv32_check
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4536,9 +4533,8 @@ hart_schema:
                 ro_constant: 0
             accessible:
               default: true
-              check_with:
-              - rv64_check
-              - u_check
+              check_with: rv64_check
+          check_with: u_check
           default: {accessible: true}
     frm:
       type: dict
@@ -4572,7 +4568,7 @@ hart_schema:
               default: true
               check_with:
               - rv32_check
-              - u_check
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4592,7 +4588,7 @@ hart_schema:
               default: false
               check_with:
               - rv64_check
-              - u_check
+          check_with: u_check
           default: {accessible: true}     
     fcsr:
       type: dict
@@ -4605,8 +4601,7 @@ hart_schema:
         reset-val:
           type: integer
           default: 0
-          check_with:
-          - max_length
+          check_with: max_length
         rv32:
           type: dict
           schema:
@@ -4624,9 +4619,8 @@ hart_schema:
             accessible:
               type: boolean
               default: true
-              check_with:
-              - rv32_check
-              - u_check
+              check_with: rv32_check
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4644,9 +4638,8 @@ hart_schema:
                 ro_constant: 0
             accessible:
               default: true
-              check_with:
-              - rv64_check
-              - u_check
+              check_with: rv64_check
+          check_with: u_check
           default: {accessible: true}  
     cycle:
       type: dict
@@ -4662,7 +4655,8 @@ hart_schema:
             shadow: {type: string, default: mcycle, nullable: True}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [rv32_check]} 
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4671,7 +4665,8 @@ hart_schema:
             shadow: {type: string, default: mcycle, nullable: True}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check, u_check]}
+            accessible: {default: true, check_with: [rv64_check]} 
+          check_with: u_check
           default: {accessible: true}    
     cycleh:
       type: dict
@@ -4689,7 +4684,8 @@ hart_schema:
             shadow: {type: string, default: mcycleh, nullable: True}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean,  default: true,  check_with: [rv32_check , u_check]}
+            accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: true}
         rv64:
             type: dict
@@ -4713,7 +4709,8 @@ hart_schema:
               type: dict
               schema: {ro_variable: {type: boolean}}
               default: {ro_variable: true}
-            accessible: {type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4726,7 +4723,8 @@ hart_schema:
               type: dict              
               schema: {ro_variable: {type: boolean}}
               default: {ro_variable: true}
-            accessible: {default: true, check_with: [rv64_check, u_check]}
+            accessible: {default: true, check_with: [rv64_check]}
+          check_with: u_check
           default: {accessible: true}    
     timeh:
       type: dict
@@ -4748,7 +4746,8 @@ hart_schema:
               type: dict
               schema: {ro_variable: {type: boolean}}
               default: { ro_variable: true}
-            accessible: {type: boolean,  default: true,  check_with: [rv32_check , u_check]}
+            accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: true}
         rv64:
             type: dict
@@ -4768,7 +4767,8 @@ hart_schema:
             shadow: {type: string, default: minstret, nullable: True}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [rv32_check] }
+          check_with: u_check
           default: {accessible: true}
         rv64:
           type: dict
@@ -4777,7 +4777,8 @@ hart_schema:
             shadow: {type: string, default: minstret, nullable: True}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check, u_check]}
+            accessible: {default: true, check_with: [rv64_check]} 
+          check_with: u_check
           default: {accessible: true}    
     instreth:
       type: dict
@@ -4795,7 +4796,8 @@ hart_schema:
             shadow: {type: string, default: minstreth, nullable: True}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean,  default: true,  check_with: [rv32_check , u_check]}
+            accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: true}
         rv64:
             type: dict
@@ -4813,7 +4815,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter3, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4822,7 +4825,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter3, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter3 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC03, allowed: [0xC03]}    
@@ -4838,7 +4842,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter4, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]} 
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4847,7 +4852,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter4, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check] }
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter4 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC04, allowed: [0xC04]}    
@@ -4863,7 +4869,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter5, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check] }
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4872,7 +4879,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter5, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check] }
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter5 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC05, allowed: [0xC05]}    
@@ -4888,7 +4896,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter6, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4897,7 +4906,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter6, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter6 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC06, allowed: [0xC06]}    
@@ -4913,7 +4923,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter7, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4922,7 +4933,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter7, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter7 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC07, allowed: [0xC07]}    
@@ -4938,7 +4950,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter8, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4947,7 +4960,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter8, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter8 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC08, allowed: [0xC08]}    
@@ -4963,7 +4977,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter9, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4972,7 +4987,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter9, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter9 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC09, allowed: [0xC09]}    
@@ -4988,7 +5004,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter10, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -4997,7 +5014,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter10, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter10 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0A, allowed: [0xC0A]}    
@@ -5013,7 +5031,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter11, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5022,7 +5041,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter11, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter11 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0B, allowed: [0xC0B]}    
@@ -5038,7 +5058,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter12, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5047,7 +5068,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter12, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter12 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0C, allowed: [0xC0C]}    
@@ -5063,7 +5085,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter13, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5072,7 +5095,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter13, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter13 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0D, allowed: [0xC0D]}    
@@ -5088,7 +5112,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter14, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5097,7 +5122,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter14, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter14 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0E, allowed: [0xC0E]}    
@@ -5113,7 +5139,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter15, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5122,7 +5149,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter15, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter15 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC0F, allowed: [0xC0F]}    
@@ -5138,7 +5166,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter16, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5147,7 +5176,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter16, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter16 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC10, allowed: [0xC10]}    
@@ -5163,7 +5193,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter17, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5172,7 +5203,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter17, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter17 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC11, allowed: [0xC11]}    
@@ -5188,7 +5220,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter18, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5197,7 +5230,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter18, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter18 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC12, allowed: [0xC12]}    
@@ -5213,7 +5247,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter19, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5222,7 +5257,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter19, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter19 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC13, allowed: [0xC13]}    
@@ -5238,7 +5274,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter20, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5247,7 +5284,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter20, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter20 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC14, allowed: [0xC14]}    
@@ -5263,7 +5301,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter21, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5272,7 +5311,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter21, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter21 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC15, allowed: [0xC15]}    
@@ -5288,7 +5328,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter22, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5297,7 +5338,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter22, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter22 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC16, allowed: [0xC16]}    
@@ -5313,7 +5355,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter23, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5322,7 +5365,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter23, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter23 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC17, allowed: [0xC17]}    
@@ -5338,7 +5382,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter24, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5347,7 +5392,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter24, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter24 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC18, allowed: [0xC18]}    
@@ -5363,7 +5409,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter25, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5372,7 +5419,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter25, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter25 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC19, allowed: [0xC19]}    
@@ -5388,7 +5436,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter26, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5397,7 +5446,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter26, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter26 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1A, allowed: [0xC1A]}    
@@ -5413,7 +5463,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter27, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5422,7 +5473,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter27, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter27 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1B, allowed: [0xC1B]}    
@@ -5438,7 +5490,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter28, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5447,7 +5500,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter28, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter28 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1C, allowed: [0xC1C]}    
@@ -5463,7 +5517,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter29, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5472,7 +5527,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter29, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter29 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1D, allowed: [0xC1D]}    
@@ -5488,7 +5544,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter30, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5497,7 +5554,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter30, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter30 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1E, allowed: [0xC1E]}    
@@ -5513,7 +5571,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter31, nullable: False}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv32_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5522,7 +5581,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter31, nullable: False}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [ rv64_check, u_check]}
+            accessible: {type: boolean, default: true, check_with: [ rv64_check]}
+          check_with: u_check
           default: {accessible: True}
         description: {type: string, default: The hpmcounter31 is a 64-bit counter. Returns lower 32 bits in RV32UI mode.}
         address: {type: integer, default: 0xC1F, allowed: [0xC1F]}    
@@ -5538,7 +5598,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter3h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5559,7 +5620,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter4h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5580,7 +5642,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter5h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5601,7 +5664,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter6h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5622,7 +5686,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter7h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5643,7 +5708,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter8h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5664,7 +5730,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter9h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5685,7 +5752,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter10h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5706,7 +5774,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter11h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5727,7 +5796,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter12h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5748,7 +5818,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter13h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5769,7 +5840,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter14h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5790,7 +5862,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter15h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5811,7 +5884,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter16h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5832,7 +5906,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter17h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5853,7 +5928,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter18h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5874,7 +5950,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter19h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5895,7 +5972,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter20h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5916,7 +5994,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter21h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5937,7 +6016,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter22h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5958,7 +6038,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter23h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -5979,7 +6060,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter24h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6000,7 +6082,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter25h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6021,7 +6104,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter26h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6042,7 +6126,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter27h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6063,7 +6148,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter28h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6084,7 +6170,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter29h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6105,7 +6192,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter30h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict
@@ -6126,7 +6214,8 @@ hart_schema:
             shadow: {type: string, default: mhpmcounter31h, nullable: false}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: { type: boolean, default: true, check_with: [rv32_check, u_check]}
+            accessible: { type: boolean, default: true, check_with: [rv32_check]}
+          check_with: u_check
           default: {accessible: True}
         rv64:
           type: dict

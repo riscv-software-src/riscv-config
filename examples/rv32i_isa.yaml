@@ -75,6 +75,13 @@ hart0: &hart0
       implemented: false
      mpp:
       implemented: true
+      type:
+        warl:
+          dependency_fields: []
+          legal: 
+            - mpp[1:0] in [0x0, 0x3]
+          wr_illegal: 
+            - Unchanged
      fs:
       implemented: false
      xs:

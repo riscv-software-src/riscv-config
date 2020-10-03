@@ -120,36 +120,79 @@ class schemaValidator(Validator):
 
     def _check_with_s_check(self, field, value):
         s = 18
-        if rv64 and value == True:
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+
+        if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - s:66 - s] != '1'):
                 self._error(field, "S is not present(64)")
 
-        elif rv32 and value == True:
+        elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1'):
                 self._error(field, "S is not present(32)")
 
     def _check_with_u_check(self, field, value):
         u = 20
-        if rv64 and value == True:
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+        if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - u:66 - u] != '1'):
                 self._error(field, "U is not present(64)")
 
-        elif rv32 and value == True:
+        elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "U is not present(32)")
 
+    def _check_with_su_check(self, field, value):
+        s = 18
+        u = 20
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - s:66 - s] != '1') or (mxl[65 - u:66 - u] != '1'):
+                self._error(field, "neither S nor U is not present(64)")
+
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - s:34 - s] != '1') or (mxl[33 - u:34 - u] != '1'):
+                self._error(field, "neither S nor U is not present(32)")
+
     def _check_with_n_check(self, field, value):
         n = 13
-        if rv64:
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+        if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - n:66 - n] != '1'):
                 self._error(field, "N is not present")
 
-        elif rv32:
+        elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - n:34 - n] != '1'):
                 self._error(field, "N is not present")
