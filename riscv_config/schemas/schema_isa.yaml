@@ -543,8 +543,8 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 63, allowed: [63]}
-                lsb: {type: integer, default: 63, allowed: [63]}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
