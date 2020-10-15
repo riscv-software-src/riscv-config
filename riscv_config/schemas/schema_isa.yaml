@@ -250,6 +250,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: n_check
@@ -267,6 +268,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -302,6 +304,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: n_check
@@ -322,6 +325,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -358,6 +362,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -377,6 +382,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 3}
               default: {implemented: true}
             fs:
@@ -435,7 +441,8 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 1}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
               default: {implemented: false}
               check_with: u_check
             sum:
@@ -455,6 +462,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -472,6 +480,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
@@ -492,6 +501,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
@@ -511,6 +521,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
@@ -530,6 +541,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
@@ -571,6 +583,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   default: {ro_constant: 0}
@@ -588,6 +601,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   default: {ro_constant: 0}
@@ -623,6 +637,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   default: {ro_constant: 0}
@@ -643,6 +658,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   default: {ro_constant: 0}
@@ -679,6 +695,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   default: {ro_constant: 0}
@@ -700,6 +717,7 @@ hart_schema:
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 3}
               default: {implemented: true}
             fs:
@@ -719,6 +737,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
             xs:
@@ -739,6 +758,7 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
             mprv:
@@ -758,6 +778,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 1}
               default: {implemented: false}
               check_with: u_check
@@ -778,6 +799,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -797,6 +819,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -817,6 +840,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -836,6 +860,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: su_check
@@ -855,6 +880,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: s_check
@@ -874,6 +900,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 2, min: 1}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 2}
               default: {implemented: true}
               check_with: s_check
@@ -891,6 +918,7 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  2, min: 1}}
                   - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 2}
               default: {implemented: true}
               check_with: u_check
@@ -1159,6 +1187,7 @@ hart_schema:
                 implemented: {type: boolean, default: true, allowed: [true]}
                 type:
                   type: dict
+                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
@@ -1202,6 +1231,7 @@ hart_schema:
                 implemented: {type: boolean, default: true, allowed: [true]}
                 type:
                   type: dict
+                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
@@ -1289,6 +1319,7 @@ hart_schema:
           - medeleg_reset
         rv32:
           type: dict
+          check_with: su_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -1354,6 +1385,7 @@ hart_schema:
             fields: {type: list, default: []}
             usip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1374,6 +1406,7 @@ hart_schema:
               default: {implemented: False}
             ssip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1410,6 +1443,7 @@ hart_schema:
               default: {implemented: true}
             utip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1430,6 +1464,7 @@ hart_schema:
               default: {implemented: False}
             stip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1466,6 +1501,7 @@ hart_schema:
               default: {implemented: true}
             ueip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1486,6 +1522,7 @@ hart_schema:
               default: {implemented: False}
             seip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1524,13 +1561,13 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv32_check
-          required: true
         rv64:
           type: dict
           schema:
             fields: {type: list, default: []}
             usip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1551,6 +1588,7 @@ hart_schema:
               default: {implemented: False}
             ssip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1587,6 +1625,7 @@ hart_schema:
               default: {implemented: true}
             utip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1607,6 +1646,7 @@ hart_schema:
               default: {implemented: False}
             stip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1643,6 +1683,7 @@ hart_schema:
               default: {implemented: true}
             ueip:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1663,6 +1704,7 @@ hart_schema:
               default: {implemented: False}
             seip:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1701,7 +1743,6 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv64_check
-          required: true
         
     mie:
       type: dict
@@ -1722,6 +1763,7 @@ hart_schema:
             fields: {type: list, default: []}
             usie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1742,6 +1784,7 @@ hart_schema:
               default: {implemented: False}
             ssie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1781,6 +1824,7 @@ hart_schema:
               default: {implemented: True}
             utie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1801,6 +1845,7 @@ hart_schema:
               default: {implemented: False}
             stie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1839,6 +1884,7 @@ hart_schema:
               default: {implemented: true}
             ueie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1859,6 +1905,7 @@ hart_schema:
               default: {implemented: False}
             seie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1898,13 +1945,13 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv32_check
-          required: true
         rv64:
           type: dict
           schema:
             fields: {type: list, default: []}
             usie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1925,6 +1972,7 @@ hart_schema:
               default: {implemented: False}
             ssie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1964,6 +2012,7 @@ hart_schema:
               default: {implemented: True}
             utie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -1984,6 +2033,7 @@ hart_schema:
               default: {implemented: False}
             stie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -2022,6 +2072,7 @@ hart_schema:
               default: {implemented: true}
             ueie:
               type: dict
+              check_with: n_check
               schema:
                 description:
                   type: string
@@ -2042,6 +2093,7 @@ hart_schema:
               default: {implemented: False}
             seie:
               type: dict
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -2081,8 +2133,6 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv64_check
-          required: true  
-      required: true
     mscratch:
       type: dict
       schema:
@@ -2269,7 +2319,6 @@ hart_schema:
               default: true
               check_with: rv64_check
           default: {accessible: false}
-      required: true
     mcause:
       type: dict
       schema:
@@ -4405,6 +4454,7 @@ hart_schema:
           - sedeleg_reset
         rv32:
           type: dict
+          check_with: n_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -4418,10 +4468,10 @@ hart_schema:
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
-          check_with: s_check
           default: {accessible: true}
         rv64:
           type: dict
+          check_with: n_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -4435,7 +4485,6 @@ hart_schema:
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
             accessible: { type: boolean, default: true, check_with: [rv64_check]}
-          check_with: s_check
           default: {accessible: true}
       check_with: ndeleg_checks
     sideleg:
@@ -4450,6 +4499,7 @@ hart_schema:
           check_with: max_length
         rv32:
           type: dict
+          check_with: n_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -4463,10 +4513,10 @@ hart_schema:
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
             accessible: { type: boolean, default: true, check_with: [rv32_check]} 
-          check_with: s_check
           default: {accessible: true}
         rv64:
           type: dict
+          check_with: n_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -4483,7 +4533,6 @@ hart_schema:
               type: boolean
               default: true
               check_with: [rv64_check]
-          check_with: s_check
           default: {accessible: true}
       check_with: ndeleg_checks
     fflags:
@@ -6226,3 +6275,1094 @@ hart_schema:
           default: {accessible: False}
         description: { type: string, default: The hpmcounter31h returns the upper half word in RV32I systems.}
         address: {type: integer, default: 0xC9F, allowed: [0xC9F]}
+    sstatus:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The sstatus register keeps track of the processor’s current operating state.
+        address: {type: integer, default: 0x100, allowed: [0x100]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            uie:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of the user mode interrupts.}
+                shadow: {type: string, default: mstatus.uie, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: n_check
+            sie:
+              type: dict
+              schema:
+                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
+                shadow: {type: string, default: mstatus.sie, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            upie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the state of the user mode interrupts prior to the trap.
+                shadow: {type: string, default: mstatus.upie, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: n_check
+            spie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the state of the supervisor mode interrupts prior to
+                    the trap.
+                shadow: {type: string, default: mstatus.spie, nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            spp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the previous priority mode for supervisor.
+                shadow: {type: string, default: mstatus.spp, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            fs:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the status of the floating-point unit, including the
+                    CSR fcsr and floating-point data registers.
+                shadow: {type: string, default: mstatus.fs, nullable: True}
+                msb: {type: integer, default: 14, allowed: [14]}
+                lsb: {type: integer, default: 13, allowed: [13]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+            xs:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the status of additional user-mode extensions and associated
+                    state.
+                shadow: {type: string, default: mstatus.xs, nullable: True}
+                msb: {type: integer, default: 16, allowed: [16]}
+                lsb: {type: integer, default: 15, allowed: [15]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+            sum:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Modifies the privilege with which S-mode loads and stores access
+                    virtual memory.
+                shadow: {type: string, default: mstatus.sum, nullable: True}
+                msb: {type: integer, default: 18, allowed: [18]}
+                lsb: {type: integer, default: 18, allowed: [18]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            mxr:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Modifies the privilege with which loads access virtual memory.
+                shadow: {type: string, default: mstatus.mxr, nullable: True}
+                msb: {type: integer, default: 19, allowed: [19]}
+                lsb: {type: integer, default: 19, allowed: [19]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            sd:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Read-only bit that summarizes whether either the FS field or
+                    XS field signals the presence of some dirty state.
+                shadow: {type: string, default: mstatus.sd, nullable: True}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            uie:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of the user mode interrupts.}
+                shadow: {type: string, default: mstatus.uie, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: n_check
+            sie:
+              type: dict
+              schema:
+                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
+                shadow: {type: string, default: mstatus.sie, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            upie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the state of the user mode interrupts prior to the trap.
+                shadow: {type: string, default: mstatus.upie, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: n_check
+            spie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the state of the supervisor mode interrupts prior to
+                    the trap.
+                shadow: {type: string, default: mstatus.spie, nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            spp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Stores the previous priority mode for supervisor.
+                shadow: {type: string, default: mstatus.spp, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            fs:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the status of the floating-point unit, including the
+                    CSR fcsr and floating-point data registers.
+                shadow: {type: string, default: mstatus.fs, nullable: True}
+                msb: {type: integer, default: 14, allowed: [14]}
+                lsb: {type: integer, default: 13, allowed: [13]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+            xs:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the status of additional user-mode extensions and associated
+                    state.
+                shadow: {type: string, default: mstatus.xs, nullable: True}
+                msb: {type: integer, default: 16, allowed: [16]}
+                lsb: {type: integer, default: 15, allowed: [15]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+            sum:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Modifies the privilege with which S-mode loads and stores access
+                    virtual memory.
+                shadow: {type: string, default: mstatus.sum, nullable: True}
+                msb: {type: integer, default: 18, allowed: [18]}
+                lsb: {type: integer, default: 18, allowed: [18]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            mxr:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Modifies the privilege with which loads access virtual memory.
+                shadow: {type: string, default: mstatus.mxr, nullable: True}
+                msb: {type: integer, default: 19, allowed: [19]}
+                lsb: {type: integer, default: 19, allowed: [19]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            uxl:
+              type: dict
+              schema:
+                description: {type: string, default: Controls the xlen for User mode.}
+                shadow: {type: string, default: mstatus.uxl, nullable: True}
+                msb: {type: integer, default: 33, allowed: [33]}
+                lsb: {type: integer, default: 32, allowed: [32]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: true}
+              check_with: u_check
+            sd:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Read-only bit that summarizes whether either the FS field or
+                    XS field signals the presence of some dirty state.
+                shadow: {type: string, default: mstatus.sd, nullable: True}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+          default: {accessible: true}
+    sie:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The sie register is an SXLEN-bit read/write register containing interrupt
+            enable bits.
+        address: {type: integer, default: 0x104, allowed: [0x104]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            usie:
+              type: dict
+              schema:
+                description: {type: string, default: User Software Interrupt enable.}
+                shadow: {type: string, default: mie.usie, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ssie:
+              type: dict
+              schema:
+                description: {type: string, default: Supervisor Software Interrupt enable.}
+                shadow: {type: string, default: mie.ssie, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            utie:
+              type: dict
+              schema:
+                description: { type: string, default: User Timer Interrupt enable.}
+                shadow: {type: string, default: mie.utie, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            stie:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor Timer Interrupt enable.}
+                shadow: {type: string, default: mie.stie , nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ueie:
+              type: dict
+              schema:
+                description: { type: string, default: User External Interrupt enable.}
+                shadow: {type: string, default: mie.ueie, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            seie:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor External Interrupt enable.}
+                shadow: {type: string, default: mie.seie, nullable: True}
+                msb: {type: integer, default: 9, allowed: [9]}
+                lsb: {type: integer, default: 9, allowed: [9]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            usie:
+              type: dict
+              schema:
+                description: {type: string, default: User Software Interrupt enable.}
+                shadow: {type: string, default: mie.usie, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ssie:
+              type: dict
+              schema:
+                description: {type: string, default: Supervisor Software Interrupt enable.}
+                shadow: {type: string, default: mie.ssie, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            utie:
+              type: dict
+              schema:
+                description: { type: string, default: User Timer Interrupt enable.}
+                shadow: {type: string, default: mie.utie, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            stie:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor Timer Interrupt enable.}
+                shadow: {type: string, default: mie.stie , nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ueie:
+              type: dict
+              schema:
+                description: { type: string, default: User External Interrupt enable.}
+                shadow: {type: string, default: mie.ueie, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            seie:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor External Interrupt enable.}
+                shadow: {type: string, default: mie.seie, nullable: True}
+                msb: {type: integer, default: 9, allowed: [9]}
+                lsb: {type: integer, default: 9, allowed: [9]}
+                implemented: {type: boolean, default: False}
+              default: {implemented: False}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+    sip:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The sip register is an SXLEN-bit read/write register containing interrupt
+            pending bits.
+        address: {type: integer, default: 0x144, allowed: [0x144]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            usip:
+              type: dict
+              schema:
+                description: {type: string, default: User Software Interrupt enable.}
+                shadow: {type: string, default: mip.usip, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ssip:
+              type: dict
+              schema:
+                description: {type: string, default: Supervisor Software Interrupt enable.}
+                shadow: {type: string, default: mip.ssip, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            utip:
+              type: dict
+              schema:
+                description: { type: string, default: User Timer Interrupt enable.}
+                shadow: {type: string, default: mip.utip, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            stip:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor Timer Interrupt enable.}
+                shadow: {type: string, default: mip.stip , nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ueip:
+              type: dict
+              schema:
+                description: { type: string, default: User External Interrupt enable.}
+                shadow: {type: string, default: mip.ueip, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            seip:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor External Interrupt enable.}
+                shadow: {type: string, default: mip.seip, nullable: True}
+                msb: {type: integer, default: 9, allowed: [9]}
+                lsb: {type: integer, default: 9, allowed: [9]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            usip:
+              type: dict
+              schema:
+                description: {type: string, default: User Software Interrupt enable.}
+                shadow: {type: string, default: mip.usip, nullable: True}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ssip:
+              type: dict
+              schema:
+                description: {type: string, default: Supervisor Software Interrupt enable.}
+                shadow: {type: string, default: mip.ssip, nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 1, allowed: [1]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            utip:
+              type: dict
+              schema:
+                description: { type: string, default: User Timer Interrupt enable.}
+                shadow: {type: string, default: mip.utip, nullable: True}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            stip:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor Timer Interrupt enable.}
+                shadow: {type: string, default: mip.stip , nullable: True}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            ueip:
+              type: dict
+              schema:
+                description: { type: string, default: User External Interrupt enable.}
+                shadow: {type: string, default: mip.ueip, nullable: True}
+                msb: {type: integer, default: 8, allowed: [8]}
+                lsb: {type: integer, default: 8, allowed: [8]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            seip:
+              type: dict
+              schema:
+                description: { type: string, default: Supervisor External Interrupt enable.}
+                shadow: {type: string, default: mip.seip, nullable: True}
+                msb: {type: integer, default: 9, allowed: [9]}
+                lsb: {type: integer, default: 9, allowed: [9]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+    sscratch:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The sscratch register is an MXLEN-bit read/write register dedicated
+            for use by machine mode.
+        address: {type: integer, default: 0x140, allowed: [0x140]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: {ro_variable: {type: boolean}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - sscratch[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
+              - schema: {ro_variable: {type: boolean}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - sscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+    sepc:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The sepc is a warl register that must be able to hold all valid physical
+            and virtual addresses.
+        address: {type: integer, default: 0x141, allowed: [0x141]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - sepc[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - sepc[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+    stval:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The stval is a warl register that holds the address of the instruction
+            which caused the exception.
+        address: {type: integer, default: 0x143, allowed: [0x143]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - stval[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - stval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+    scause:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The scause register stores the information regarding the trap.
+        address: {type: integer, default: 0x142, allowed: [0x142]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            interrupt:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether the trap was due to an interrupt.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl: 
+                    - 0x0:0x1
+                  readonly: True
+              default: {implemented: true}
+            exception_code:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the exception code.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 30, allowed: [30]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl: 
+                    - 0:15
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            interrupt:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether the trap was due to an interrupt.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 63, allowed: [63]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0:1
+              default: {implemented: true}
+            exception_code:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the exception code.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 62, allowed: [62]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0:15
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+          default: {accessible: false}
+    stvec:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: SXLEN-bit read/write register that holds trap vector configuration.
+        address: {type: integer, default: 0x105, allowed: [0x105]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            base:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector base address.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  1073741823}}
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            mode:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector mode.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  1}}
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              check_with:
+              - rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            base:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector base address.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            mode:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector mode.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 1, allowed: [1]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  1}}
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              check_with:
+              - rv64_check
+          default: {accessible: false}
+    satp:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: SXLEN-bit register which controls supervisor-mode address translation and protection
+        address: {type: integer, default: 0x180, allowed: [0x180]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with:
+          - max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            ppn:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Physical Page Number
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 21, allowed: [21]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  4194303}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            asid:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Address Space identifier.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 30, allowed: [30]}
+                lsb: {type: integer, default: 22, allowed: [22]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 511 }}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            mode:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector mode.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  1}}
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: [0:1] }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              check_with:
+              - rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            ppn:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Physical Page Number
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 43, allowed: [43]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  17592186044415}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            asid:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Address Space identifier.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 59, allowed: [59]}
+                lsb: {type: integer, default: 44, allowed: [44]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 65535}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            mode:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Vector mode.
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 60, allowed: [60]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  15}}
+                  - schema: { warl: *ref_warl }
+                  default: {ro_constant : 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              check_with:
+              - rv64_check
+          default: {accessible: false}

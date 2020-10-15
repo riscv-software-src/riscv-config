@@ -14,20 +14,19 @@ from riscv_config.warl import warl_interpreter
 logger = logging.getLogger(__name__)
 
 
-def nosset():
-    '''Function to check and set defaults for all fields which are dependent on
-        the presence of 'S' extension.'''
-    global inp_yaml
-    if 'S' in inp_yaml['ISA']:
-        return {'implemented': True}
-    else:
-        return {'implemented': False}
-
 
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
     global inp_yaml
     if 'U' in inp_yaml['ISA']:
+        return {'implemented': True}
+    else:
+        return {'implemented': False}
+
+def sset():
+    '''Function to set defaults based on presence of 'S' extension.'''
+    global inp_yaml
+    if 'S' in inp_yaml['ISA']:
         return {'implemented': True}
     else:
         return {'implemented': False}
@@ -52,6 +51,25 @@ def uregseth():
         temp['rv32']['accessible'] = True
     return temp
         
+def sregset():
+    '''Function to set defaults based on presence of 'S' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'S' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
+
+def sregseth():
+    '''Function to set defaults based on presence of 'S' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'S' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+    return temp
 
 
 def nuset():
@@ -128,7 +146,53 @@ def add_def_setters(schema_yaml):
     counthsetter = lambda doc: counterhset()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
-    ssetter = lambda doc: nosset()
+    ssetter = lambda doc: sset()
+    sregsetter = lambda doc: sregset()
+    sregsetterh = lambda doc: sregseth()
+    nusetter = lambda doc: nuset()
+    usetter = lambda doc: uset()
+    twsetter = lambda doc: twset()
+    delegsetter = lambda doc: delegset()
+
+
+    schema_yaml['sstatus']['default_setter'] = sregsetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['upie'][
+        'default_setter'] = nusetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['upie'][
+        'default_setter'] = nusetter
+
+    schema_yaml['sstatus']['schema']['rv64']['schema']['uxl'][
+        'default_setter'] = usetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv32']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['sstatus']['schema']['rv64']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['default_setter'] = sregsetter
+    schema_yaml['sip']['default_setter'] = sregsetter
+    schema_yaml['stvec']['default_setter'] = sregsetter
+    schema_yaml['sepc']['default_setter'] = sregsetter
+    schema_yaml['stval']['default_setter'] = sregsetter
+    schema_yaml['scause']['default_setter'] = sregsetter
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
@@ -380,7 +444,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcounteren']['default_setter'] = lambda doc: countset()
 
     schema_yaml['mcause']['default_setter'] = regsetter
-    nusetter = lambda doc: nuset()
     schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][
         'default_setter'] = nusetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['uie'][
@@ -390,7 +453,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['mstatus']['schema']['rv64']['schema']['upie'][
         'default_setter'] = nusetter
 
-    usetter = lambda doc: uset()
     schema_yaml['mstatus']['schema']['rv32']['schema']['mprv'][
         'default_setter'] = usetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['mprv'][
@@ -486,12 +548,10 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['ssie'][
         'default_setter'] = ssetter
-    twsetter = lambda doc: twset()
     schema_yaml['mstatus']['schema']['rv32']['schema']['tw'][
         'default_setter'] = twsetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['tw'][
         'default_setter'] = twsetter
-    delegsetter = lambda doc: delegset()
     schema_yaml['medeleg']['default_setter'] = delegsetter
     schema_yaml['mideleg']['default_setter'] = delegsetter
     return schema_yaml
@@ -560,6 +620,68 @@ def get_fields(node, bitwidth):
     else:
         fields.append(bits)
         return fields
+
+def check_shadows(spec, logging = False):
+    ''' Check if the shadowed fields are implemented and of the same size as the
+    source'''
+    errors = {}
+    _rvxlen = ['rv32', 'rv64']
+    for csr, content in spec.items():
+        if logging:
+            logger.debug('Checking Shadows for ' + csr)
+        error = []
+        if isinstance(content, dict) and 'description' in content:
+            for rvxlen in _rvxlen:
+                if content[rvxlen]['accessible'] and not content[rvxlen]['fields']:
+                    if content[rvxlen]['shadow'] is None: 
+                        continue
+                    else:
+                        shadow = content[rvxlen]['shadow'].split('.')
+                        if len(shadow) != 1:
+                            error.append('Shadow field of should not have dot')
+                            continue
+                        else:
+                            scsr = shadow[0]
+                            if not spec[scsr][rvxlen]['accessible']:
+                                error.append('Shadow field ' + scsr + ' not implemented')
+                                continue
+                            scsr_size = spec[scsr][rvxlen]['msb'] - spec[scsr][rvxlen]['lsb']
+                            csr_size = spec[csr][rvxlen]['msb'] - spec[csr][rvxlen]['lsb']
+                            if scsr_size != csr_size :
+                                error.append('Shadow field '+ scsr +\
+                                        'does not match in size') 
+                elif content[rvxlen]['accessible']:
+                    for subfield in content[rvxlen]['fields']:
+                        if isinstance(subfield ,list):
+                            continue
+                        if content[rvxlen][subfield]['shadow'] is None:
+                           continue
+                        elif content[rvxlen][subfield]['implemented']:
+                            shadow = content[rvxlen][subfield]['shadow'].split('.')
+                            if len(shadow) != 2:
+                                error.append('Shadow field of should only 1 dot')
+                                continue
+                            else:
+                                scsr = shadow[0]
+                                subscsr = shadow[1]
+                                if not spec[scsr][rvxlen][subscsr]['implemented']:
+                                    error.append('Subfield ' + subfield + \
+                                            ' shadowing ' + scsr + '.' +\
+                                            subscsr + ' not implemented')
+                                    continue
+                                scsr_size = spec[scsr][rvxlen][subscsr]['msb'] -\
+                                        spec[scsr][rvxlen][subfield]['lsb']
+                                csr_size = spec[csr][rvxlen][subfield]['msb'] -\
+                                        spec[csr][rvxlen][subfield]['lsb']
+                                if scsr_size != csr_size :
+                                    error.append('Subfield ' + subfield +'shadowing'+ \
+                                            scsr + '.' + subscsr + \
+                                            ' does not match in size') 
+
+        if error:
+            errors[csr] = error
+    return errors
+
 
 
 def check_reset_fill_fields(spec, logging= False):
@@ -831,6 +953,9 @@ def check_isa_specs(isa_spec,
         if normalized['mhartid']['reset-val'] != x:
             raise ValidationError('Error in ' + foo + ".", 
                     {'mhartid': ['wrong reset-val of for hart'+str(x)]})
+        errors = check_shadows(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')

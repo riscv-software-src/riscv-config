@@ -177,6 +177,27 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') or (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "neither S nor U is not present(32)")
+    
+    def _check_with_sn_check(self, field, value):
+        s = 18
+        n = 13
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - s:66 - s] != '1') or (mxl[65 - n:66 - n] != '1'):
+                self._error(field, "neither S nor N is not present(64)")
+
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - s:34 - s] != '1') or (mxl[33 - n:34 - n] != '1'):
+                self._error(field, "neither S nor N is not present(32)")
 
     def _check_with_n_check(self, field, value):
         n = 13
