@@ -610,8 +610,18 @@ def get_fields(node, bitwidth):
     fields = list(
         set(node.keys()) -
         set(['fields', 'msb', 'lsb', 'accessible', 'shadow', 'type']))
+
     if not fields:
         return fields
+    nf = {}
+    for x in fields:
+        nf[x] = node[x]['lsb']
+    nf = sorted(nf.items(), key=lambda x: x[1], reverse=False)
+    nfields=[]
+    for k, v in nf:
+        nfields.append(k)
+
+    fields = nfields
     bits = set(range(bitwidth))
     for entry in fields:
         bits -= set(range(node[entry]['lsb'], node[entry]['msb'] + 1))
