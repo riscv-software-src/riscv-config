@@ -193,6 +193,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['sepc']['default_setter'] = sregsetter
     schema_yaml['stval']['default_setter'] = sregsetter
     schema_yaml['scause']['default_setter'] = sregsetter
+    schema_yaml['satp']['default_setter'] = sregsetter
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter

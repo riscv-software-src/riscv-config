@@ -7048,7 +7048,7 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   schema: { wlrl: *ref_wlrl }
@@ -7056,7 +7056,7 @@ hart_schema:
                     wlrl: 
                     - 0x0:0x1
                   readonly: True
-              default: {implemented: true}
+              default: {implemented: False}
             exception_code:
               type: dict
               schema:
@@ -7066,14 +7066,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   schema: { wlrl: *ref_wlrl }
                   default:
                     wlrl: 
                     - 0:15
-              default: {implemented: true}
+              default: {implemented: False}
             accessible:
               type: boolean
               default: false
@@ -7093,14 +7093,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   schema: { wlrl: *ref_wlrl }
                   default:
                     wlrl:
                     - 0:1
-              default: {implemented: true}
+              default: {implemented: False}
             exception_code:
               type: dict
               schema:
@@ -7110,14 +7110,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 62, allowed: [62]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   schema: { wlrl: *ref_wlrl }
                   default:
                     wlrl:
                     - 0:15
-              default: {implemented: true}
+              default: {implemented: false}
             accessible:
               type: boolean
               default: false
@@ -7149,7 +7149,7 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -7158,7 +7158,7 @@ hart_schema:
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             mode:
               type: dict
               schema:
@@ -7168,7 +7168,7 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -7177,7 +7177,7 @@ hart_schema:
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: false}
             accessible:
               type: boolean
               check_with:
@@ -7197,7 +7197,7 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -7206,7 +7206,7 @@ hart_schema:
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             mode:
               type: dict
               schema:
@@ -7216,7 +7216,7 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -7225,7 +7225,7 @@ hart_schema:
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: false}
             accessible:
               type: boolean
               check_with:
@@ -7234,15 +7234,10 @@ hart_schema:
     satp:
       type: dict
       schema:
-        description:
-          type: string
-          default: SXLEN-bit register which controls supervisor-mode address translation and protection
+        description: { type: string, default: SXLEN-bit register which controls supervisor-mode address translation and protection }
         address: {type: integer, default: 0x180, allowed: [0x180]}
         priv_mode: {type: string, default: S, allowed: [S]}
-        reset-val:
-          type: integer
-          check_with:
-          - max_length
+        reset-val: { type: integer, check_with: max_length }
         rv32:
           type: dict
           check_with: s_check
@@ -7251,55 +7246,48 @@ hart_schema:
             ppn:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Physical Page Number
+                description: { type: string , default: Physical Page Number }
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 21, allowed: [21]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  4194303}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             asid:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Address Space identifier.
+                description: { type: string, default: Address Space identifier. }
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 22, allowed: [22]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 511 }}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             mode:
               type: dict
               schema:
-                description:
-                  type: string
-                  default: Vector mode.
+                description: { type: string, default: Vector mode. }
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: { warl: *ref_warl }
-                  - schema: { wlrl: [0:1] }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             accessible:
               type: boolean
               check_with:
@@ -7319,14 +7307,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 43, allowed: [43]}
                 lsb: {type: integer, default: 0, allowed: [0]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  17592186044415}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             asid:
               type: dict
               schema:
@@ -7336,14 +7324,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 59, allowed: [59]}
                 lsb: {type: integer, default: 44, allowed: [44]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 65535}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             mode:
               type: dict
               schema:
@@ -7353,14 +7341,14 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 60, allowed: [60]}
-                implemented: {type: boolean, default: true, allowed: [true]}
+                implemented: {type: boolean, default: true}
                 type:
                   type: dict
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  15}}
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
-              default: {implemented: true}
+              default: {implemented: False}
             accessible:
               type: boolean
               check_with:
