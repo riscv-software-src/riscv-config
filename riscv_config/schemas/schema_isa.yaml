@@ -7135,6 +7135,7 @@ hart_schema:
           type: integer
           check_with:
           - max_length
+          default: 0
         rv32:
           type: dict
           check_with: s_check
@@ -7237,7 +7238,7 @@ hart_schema:
         description: { type: string, default: SXLEN-bit register which controls supervisor-mode address translation and protection }
         address: {type: integer, default: 0x180, allowed: [0x180]}
         priv_mode: {type: string, default: S, allowed: [S]}
-        reset-val: { type: integer, check_with: max_length }
+        reset-val: { type: integer, check_with: max_length , default: 0}
         rv32:
           type: dict
           check_with: s_check
