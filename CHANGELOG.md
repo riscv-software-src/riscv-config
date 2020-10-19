@@ -2,10 +2,29 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.3.1 - 2020-08-11
+## 2.4.0 - 2020-10-19
 ### Added
-- PMPADDR csrs added.
-- mcycleh and minstreth added.
+- Added support for pmp csrs in the schema
+- Added support for mcycleh and minstreth
+- Added special checks for ensuring the shadows are implemented correctly.
+- Added support for the following supervisor csrs in the schema: sstatus, sie, sip, stvec, sepc, stval, scause and satp
+- Added support for user performance counters, frm, fcsr, time[h], cycle[h] and instret[h] csrs in
+  the schema.
+### Changed
+- all fields are not subsumed under a hartid. This allows specifying multiple harts in the same
+  yaml
+- logging mechanism improved.
+- isa spec is now validated independently of the platform spec
+- privilege and unprivilege version checks are no longer required. This satisfied via the
+  "allowed" field now.
+- improved the 'implemented/accessible' checks for s, u and n extensions
+- the "fields" node is now populated by subfields in the increasing order of the placement in the
+  csr.
+- using aliases to reduce the code size
+
+## 2.3.1 - 2020-10-6
+### Changed
+- Added Zihintpause to ISA string (for PAUSE Hint instruction extension)..
 
 ## 2.3.0 - 2020-07-27
 ### Changed
