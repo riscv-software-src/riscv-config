@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added support for user performance counters, frm, fcsr, time[h], cycle[h] and instret[h] csrs in
   the schema.
 ### Changed
-- all fields are not subsumed under a hartid. This allows specifying multiple harts in the same
+- all fields are now subsumed under a hartid. This allows specifying multiple harts in the same
   yaml
 - logging mechanism improved.
 - isa spec is now validated independently of the platform spec
