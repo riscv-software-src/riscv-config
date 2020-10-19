@@ -8,9 +8,8 @@ hart_schema:
   type : dict
   schema: 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
-    User_Spec_Version: {type: string,  default: '2.2', required: true, 
-                        allowed: ["2.2", "2.3"]}
+           regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
+    User_Spec_Version: {type: string,  default: '2.2', required: true, allowed: ["2.2", "2.3"]}
     Privilege_Spec_Version: { type: string, default: '1.10', required: true, 
                               allowed: ["1.10", "1.11", "0"] }
     hw_data_misaligned_support: {type: boolean, default: false}
