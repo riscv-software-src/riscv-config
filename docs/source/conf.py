@@ -15,14 +15,15 @@
 import os
 import sys
 import re
+import textwrap
 
 def gen_schema_doc(infile, outfile):
     text = open(infile,'r').read()
     rst_file = open(outfile,'w')
-    x = re.findall("^###(?:(?:\r\n|[\r\n]).+$)*",text,re.M|re.U)
+    x = re.findall("^\s*###(?:(?:\r\n|[\r\n]).+$)*",text,re.M|re.U)
     for y in x:
         y = y.replace('#','')
-        y = y.lstrip(' ')
+        y = textwrap.dedent(y)
         rst_file.write(y+'\n')
     
     rst_file.close()

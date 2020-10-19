@@ -1,22 +1,143 @@
 
+###
+#Vendor
+#------
+#
+# **Description**: Vendor name.
+#
+# **Examples**:
+#
+# .. code-block:: yaml
+#
+#   Vendor: Shakti
+#   Vendor: Incoresemi
+
 Vendor: {type: string}
 
-Device: {type: string}
+###
+#Device
+#------
+#
+# **Description**: Device Name.
+#
+# **Examples**:
+#
+# .. code-block:: yaml
+#
+#   Device: E-Class
+#   Device: C-Class
+#
+# **Constraints**:
+#
+#   - None
 
+Device: {type: string}
 
 hart_schema:
   type : dict
   schema: 
+    ###
+    #ISA
+    #---
+    #
+    # **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
+    # (other than Zext) should be mentioned in upper-case. Z extensions should begin with an upper-case
+    # 'Z' followed by lower-case extension name (without Camel casing)
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   ISA: RV32IMA
+    #   ISA: RV64IMAFDCZifencei
+    #
+    # **Constraints**:
+    #
+    #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
+    #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
+
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
            regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
+    
+    ###
+    #User_Spec_Version
+    #-----------------
+    #
+    # **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   User_Spec_Version: "2.2"
+    #   User_Spec_Version: "2.3"
+    #
+    # **Constraints**:
+    #
+    #   - should be a valid version later than 2.2
+
     User_Spec_Version: {type: string,  default: '2.2', required: true, allowed: ["2.2", "2.3"]}
+    ###
+    #Privilege_Spec_Version
+    #----------------------
+    #
+    # **Description**: Version number of Priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   Privilege_Spec_Version: "1.10"
+    #   Privilege_Spec_Version: "1.11"
+    #
+    # **Constraints**:
+    #
+    #   - should be a valid version later than 1.10
+
     Privilege_Spec_Version: { type: string, default: '1.10', required: true, 
                               allowed: ["1.10", "1.11", "0"] }
+    ###
+    #hw_data_misaligned_support
+    #--------------------------
+    #
+    # **Description**: A boolean value indicating whether hardware support for misaligned load/store requests exists.
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #    hw_data_misaligned_support: True
+    #    hw_data_misaligned_support: False
+    #
+    # **Constraints**:
+    #
+    #   - None
+
     hw_data_misaligned_support: {type: boolean, default: false}
+
+    ###
+    #supported_xlen
+    #--------------
+    #
+    # **Description**: list of supported xlen on the target
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   supported_xlen : [32]
+    #   supported_xlen : [64, 32]
+    #   supported_xlen : [64]
+    #
+    # **Constraints**:
+    #
+    #   - None
+
     supported_xlen:
       type: list
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
+      
     schema_node:
       type: dict
       allow_unknown: false
