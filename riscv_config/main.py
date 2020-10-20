@@ -7,7 +7,6 @@ import riscv_config.checker as checker
 import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 
-
 def main():
     '''
         Entry point for riscv_config.
@@ -39,8 +38,12 @@ def main():
         os.mkdir(work_dir)
 
     try:
-        checker.check_specs(os.path.abspath(args.isa_spec),
-                            os.path.abspath(args.platform_spec), 
+        if args.isa_spec is not None:
+            checker.check_isa_specs(os.path.abspath(args.isa_spec),
+                            work_dir, 
+                            True, args.no_anchors)
+        if args.platform_spec is not None:
+            checker.check_platform_specs(os.path.abspath(args.platform_spec),
                             work_dir, 
                             True, args.no_anchors)
     except ValidationError as msg:

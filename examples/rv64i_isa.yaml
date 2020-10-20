@@ -1,7 +1,13 @@
-hart_ids: [0,2]
+hart_ids: [0]
 hart0:
-    ISA: RV64I
+    ISA: RV64IU
     supported_xlen: [64]
+    hpmcounter3:
+      rv32:
+        accessible: false
+      rv64:
+        accessible: true
+      reset-val: 0x0
     misa:
       reset-val: 0x8000000000000100
       rv32:
@@ -50,60 +56,65 @@ hart0:
                 - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
               wr_illegal:
                 - "Unchanged"
-hart2:
-    mhartid:
-      reset-val: 2
-      rv64:
-        accessible: True
-        type:
-          ro_constant: 2
-    ISA: RV64I
-    supported_xlen: [64]
-    misa:
-      reset-val: 0x8000000000000100
-      rv32:
-        accessible: false
-      rv64:
-        accessible: true
-        mxl:
-          implemented: true
-          type:
-            ro_constant: 0x02
-        extensions:
-          implemented: true
-          type:
-            ro_constant: 0x100
-    mvendorid:
-      reset-val: 0xdeadbeef
-      rv32:
-        accessible: false
-      rv64:
-        accessible: true
-        type:
-          ro_constant: 0xdeadbeef
-    mtvec:
-      reset-val: 0x0000000080000000
-      rv64:
-        accessible: true
-        base:
-          implemented: true
-          type:                             
-            warl: 
-              dependency_fields: [mtvec::mode]
-              legal:
-                - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  
-                - "[1] -> base[29:6] in [0x000000:0xf00000] base[5:0] in [0x00]"
-              wr_illegal:
-                - "[0] -> Unchanged"
-                - "[1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
-                - "[1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
-              
-        mode:
-          implemented: true
-          type:                             
-            warl:
-              dependency_fields: []
-              legal: 
-                - "mode[1:0] in [0x0:0x1] # Range of 0 to 1 (inclusive)"
-              wr_illegal:
-                - "Unchanged"
+    mstatus:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            uie:
+                implemented: false
+            sie:
+                implemented: false
+            mie:
+                implemented: true
+            upie:
+                implemented: false
+            spie:
+                implemented: false
+            mpie:
+                implemented: true
+            spp:
+                implemented: false
+            mpp:
+                implemented: true
+                type:
+                  warl:
+                    dependency_fields: []
+                    legal: 
+                      - mpp[1:0] in [0x0, 0x3]
+                    wr_illegal: 
+                      - Unchanged
+            fs:
+                implemented: false
+            xs:
+                implemented: false
+            mprv:
+                implemented: false
+                type:
+                  warl:
+                    dependency_fields: []
+                    legal: 
+                      - mprv[0] in [0x0,0x1]
+                    wr_illegal:
+                      - Unchanged
+            sum:
+                implemented: false
+            mxr:
+                implemented: false
+            tvm:
+                implemented: false
+            tw:
+                implemented: false
+            tsr:
+                implemented: false
+            sxl:
+                implemented: false
+            uxl:
+                implemented: true
+                type: 
+                  ro_constant: 2
+            sd:
+                implemented: true
+                type:
+                    ro_variable: true
+        reset-val: 0x200000000

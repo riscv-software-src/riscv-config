@@ -71,9 +71,9 @@ class ColoredFormatter(logging.Formatter):
         level_name = str(record.levelname)
         name = str(record.name)
         color_prefix = self.colors[level_name]
-        return '{0}{1:<9s} : {2}{3}'.format(color_prefix,
+        return '{0}{1:<9s} {4}: {2}{3}'.format(color_prefix,
                                             '[' + level_name + ']', msg,
-                                            self.reset)
+                                            self.reset, name)
 
 
 def setup_logging(log_level):
@@ -116,11 +116,13 @@ def riscv_config_cmdline_args():
                         '-ispec',
                         type=str,
                         metavar='YAML',
+                        default=None,
                         help='The YAML which contains the ISA specs.')
     parser.add_argument('--platform_spec',
                         '-pspec',
                         type=str,
                         metavar='YAML',
+                        default=None,
                         help='The YAML which contains the Platfrorm specs.')
     parser.add_argument(
         '--work_dir',
