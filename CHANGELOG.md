@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.4.1 - 2020-10-22
+### Changed
+- default mpp value to 0
+- adding defaults to sub-fields of mtvec
+
 ## 2.4.0 - 2020-10-19
 ### Added
 - Added support for pmp csrs in the schema
