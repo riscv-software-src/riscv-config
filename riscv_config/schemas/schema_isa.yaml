@@ -503,7 +503,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 3}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             fs:
               type: dict
@@ -838,7 +838,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 3}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             fs:
               type: dict
@@ -1274,6 +1274,7 @@ hart_schema:
           type: integer
           check_with:
           - max_length
+          default: 0
         rv32:
           type: dict
           schema:
@@ -1295,6 +1296,8 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
             mode:
               type: dict
               schema:
@@ -1312,6 +1315,8 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
             accessible:
               type: boolean
               check_with:
@@ -1339,6 +1344,8 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
             mode:
               type: dict
               schema:
@@ -1356,6 +1363,8 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
             accessible:
               type: boolean
               check_with:
