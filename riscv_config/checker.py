@@ -62,6 +62,17 @@ def sregset():
         temp['rv64']['accessible'] = True
     return temp
 
+def nregset():
+    '''Function to set defaults based on presence of 'N' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'N' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
+    
 def sregseth():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
@@ -148,6 +159,7 @@ def add_def_setters(schema_yaml):
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
     sregsetter = lambda doc: sregset()
+    nregsetter = lambda doc: nregset()
     sregsetterh = lambda doc: sregseth()
     nusetter = lambda doc: nuset()
     usetter = lambda doc: uset()
@@ -194,6 +206,47 @@ def add_def_setters(schema_yaml):
     schema_yaml['stval']['default_setter'] = sregsetter
     schema_yaml['scause']['default_setter'] = sregsetter
     schema_yaml['satp']['default_setter'] = sregsetter
+    schema_yaml['sscratch']['default_setter'] = sregsetter
+    
+    schema_yaml['ustatus']['default_setter'] = nregsetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['upie'][
+        'default_setter'] = nusetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['upie'][
+        'default_setter'] = nusetter
+
+    schema_yaml['ustatus']['schema']['rv64']['schema']['uxl'][
+        'default_setter'] = usetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv32']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['ustatus']['schema']['rv64']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['uie']['default_setter'] = nregsetter
+    schema_yaml['uip']['default_setter'] = nregsetter
+    schema_yaml['utvec']['default_setter'] = nregsetter
+    schema_yaml['uepc']['default_setter'] = nregsetter
+    schema_yaml['utval']['default_setter'] = nregsetter
+    schema_yaml['ucause']['default_setter'] = nregsetter
+    schema_yaml['uscratch']['default_setter'] = nregsetter
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
@@ -443,6 +496,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['hpmcounter31h']['default_setter'] = ureghsetter
 
     schema_yaml['mcounteren']['default_setter'] = lambda doc: countset()
+    schema_yaml['scounteren']['default_setter'] = lambda doc: countset()
 
     schema_yaml['mcause']['default_setter'] = regsetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][
