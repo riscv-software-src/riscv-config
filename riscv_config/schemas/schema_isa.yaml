@@ -4588,8 +4588,8 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
-            msb: {type: integer, default: 63, allowed: [63]}
-            lsb: {type: integer, default: 2, allowed: [2]}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
               check_with: wr_illegal
@@ -4635,8 +4635,8 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
-            msb: {type: integer, default: 63, allowed: [63]}
-            lsb: {type: integer, default: 2, allowed: [2]}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
               check_with: wr_illegal
