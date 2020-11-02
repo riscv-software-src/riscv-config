@@ -4581,6 +4581,7 @@ hart_schema:
           check_with:
           - max_length
           - sedeleg_reset
+          default: 0
         rv32:
           type: dict
           check_with: n_check
@@ -4596,6 +4597,7 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
+              default: {ro_constant : 0}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
           default: {accessible: true}
         rv64:
@@ -4626,6 +4628,7 @@ hart_schema:
         reset-val:
           type: integer
           check_with: max_length
+          default: 0
         rv32:
           type: dict
           check_with: n_check
@@ -4641,6 +4644,7 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
+              default: {ro_constant : 0}
             accessible: { type: boolean, default: true, check_with: [rv32_check]} 
           default: {accessible: true}
         rv64:
