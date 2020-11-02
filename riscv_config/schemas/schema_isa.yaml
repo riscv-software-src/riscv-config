@@ -4615,6 +4615,7 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
+              default: {ro_constant : 0}
             accessible: { type: boolean, default: true, check_with: [rv64_check]}
           default: {accessible: true}
       check_with: ndeleg_checks
@@ -4662,6 +4663,7 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
               - schema: {ro_variable: {type: boolean}}
               - schema: { warl: *ref_warl }
+              default: {ro_constant : 0}
             accessible:
               type: boolean
               default: true
