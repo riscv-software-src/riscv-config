@@ -587,6 +587,8 @@ def add_def_setters(schema_yaml):
         'default_setter'] = twsetter
     schema_yaml['medeleg']['default_setter'] = delegsetter
     schema_yaml['mideleg']['default_setter'] = delegsetter
+    schema_yaml['sedeleg']['default_setter'] = delegsetter
+    schema_yaml['sideleg']['default_setter'] = delegsetter
     return schema_yaml
 
 
