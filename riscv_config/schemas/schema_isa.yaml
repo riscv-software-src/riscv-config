@@ -7511,16 +7511,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: n_check
-            sie:
-              type: dict
-              schema:
-                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
-                shadow: {type: string, default: mstatus.sie, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
             upie:
               type: dict
               schema:
@@ -7533,92 +7523,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: n_check
-            spie:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Stores the state of the supervisor mode interrupts prior to
-                    the trap.
-                shadow: {type: string, default: mstatus.spie, nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            spp:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Stores the previous priority mode for supervisor.
-                shadow: {type: string, default: mstatus.spp, nullable: True}
-                msb: {type: integer, default: 8, allowed: [8]}
-                lsb: {type: integer, default: 8, allowed: [8]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            fs:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Encodes the status of the floating-point unit, including the
-                    CSR fcsr and floating-point data registers.
-                shadow: {type: string, default: mstatus.fs, nullable: True}
-                msb: {type: integer, default: 14, allowed: [14]}
-                lsb: {type: integer, default: 13, allowed: [13]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-            xs:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Encodes the status of additional user-mode extensions and associated
-                    state.
-                shadow: {type: string, default: mstatus.xs, nullable: True}
-                msb: {type: integer, default: 16, allowed: [16]}
-                lsb: {type: integer, default: 15, allowed: [15]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-            sum:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Modifies the privilege with which S-mode loads and stores access
-                    virtual memory.
-                shadow: {type: string, default: mstatus.sum, nullable: True}
-                msb: {type: integer, default: 18, allowed: [18]}
-                lsb: {type: integer, default: 18, allowed: [18]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            mxr:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Modifies the privilege with which loads access virtual memory.
-                shadow: {type: string, default: mstatus.mxr, nullable: True}
-                msb: {type: integer, default: 19, allowed: [19]}
-                lsb: {type: integer, default: 19, allowed: [19]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            sd:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Read-only bit that summarizes whether either the FS field or
-                    XS field signals the presence of some dirty state.
-                shadow: {type: string, default: mstatus.sd, nullable: True}
-                msb: {type: integer, default: 31, allowed: [31]}
-                lsb: {type: integer, default: 31, allowed: [31]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: true}
             accessible:
               type: boolean
               default: false
@@ -7638,16 +7542,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: n_check
-            sie:
-              type: dict
-              schema:
-                description: { type: string, default: Stores the state of the supervisor mode interrupts.}
-                shadow: {type: string, default: mstatus.sie, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
             upie:
               type: dict
               schema:
@@ -7660,102 +7554,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: n_check
-            spie:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Stores the state of the supervisor mode interrupts prior to
-                    the trap.
-                shadow: {type: string, default: mstatus.spie, nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            spp:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Stores the previous priority mode for supervisor.
-                shadow: {type: string, default: mstatus.spp, nullable: True}
-                msb: {type: integer, default: 8, allowed: [8]}
-                lsb: {type: integer, default: 8, allowed: [8]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            fs:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Encodes the status of the floating-point unit, including the
-                    CSR fcsr and floating-point data registers.
-                shadow: {type: string, default: mstatus.fs, nullable: True}
-                msb: {type: integer, default: 14, allowed: [14]}
-                lsb: {type: integer, default: 13, allowed: [13]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-            xs:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Encodes the status of additional user-mode extensions and associated
-                    state.
-                shadow: {type: string, default: mstatus.xs, nullable: True}
-                msb: {type: integer, default: 16, allowed: [16]}
-                lsb: {type: integer, default: 15, allowed: [15]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-            sum:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Modifies the privilege with which S-mode loads and stores access
-                    virtual memory.
-                shadow: {type: string, default: mstatus.sum, nullable: True}
-                msb: {type: integer, default: 18, allowed: [18]}
-                lsb: {type: integer, default: 18, allowed: [18]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            mxr:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Modifies the privilege with which loads access virtual memory.
-                shadow: {type: string, default: mstatus.mxr, nullable: True}
-                msb: {type: integer, default: 19, allowed: [19]}
-                lsb: {type: integer, default: 19, allowed: [19]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: false}
-              check_with: s_check
-            uxl:
-              type: dict
-              schema:
-                description: {type: string, default: Controls the xlen for User mode.}
-                shadow: {type: string, default: mstatus.uxl, nullable: True}
-                msb: {type: integer, default: 33, allowed: [33]}
-                lsb: {type: integer, default: 32, allowed: [32]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: true}
-              check_with: u_check
-            sd:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: Read-only bit that summarizes whether either the FS field or
-                    XS field signals the presence of some dirty state.
-                shadow: {type: string, default: mstatus.sd, nullable: True}
-                msb: {type: integer, default: 31, allowed: [31]}
-                lsb: {type: integer, default: 31, allowed: [31]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: true}
             accessible:
               type: boolean
               default: false
@@ -7788,15 +7586,6 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            ssie:
-              type: dict
-              schema:
-                description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mie.ssie, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             utie:
               type: dict
               schema:
@@ -7806,15 +7595,6 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            stie:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mie.stie , nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             ueie:
               type: dict
               schema:
@@ -7822,15 +7602,6 @@ hart_schema:
                 shadow: {type: string, default: mie.ueie, nullable: True}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            seie:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mie.seie, nullable: True}
-                msb: {type: integer, default: 9, allowed: [9]}
-                lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             accessible:
@@ -7851,15 +7622,6 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            ssie:
-              type: dict
-              schema:
-                description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mie.ssie, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             utie:
               type: dict
               schema:
@@ -7867,15 +7629,6 @@ hart_schema:
                 shadow: {type: string, default: mie.utie, nullable: True}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            stie:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mie.stie , nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             ueie:
@@ -7886,15 +7639,6 @@ hart_schema:
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            seie:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mie.seie, nullable: True}
-                msb: {type: integer, default: 9, allowed: [9]}
-                lsb: {type: integer, default: 9, allowed: [9]}
-                implemented: {type: boolean, default: False}
               default: {implemented: False}
             accessible:
               type: boolean
@@ -7927,15 +7671,6 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            ssip:
-              type: dict
-              schema:
-                description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mip.ssip, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             utip:
               type: dict
               schema:
@@ -7945,15 +7680,6 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            stip:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mip.stip , nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             ueip:
               type: dict
               schema:
@@ -7961,15 +7687,6 @@ hart_schema:
                 shadow: {type: string, default: mip.ueip, nullable: True}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            seip:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mip.seip, nullable: True}
-                msb: {type: integer, default: 9, allowed: [9]}
-                lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             accessible:
@@ -7990,15 +7707,6 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            ssip:
-              type: dict
-              schema:
-                description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mip.ssip, nullable: True}
-                msb: {type: integer, default: 1, allowed: [1]}
-                lsb: {type: integer, default: 1, allowed: [1]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             utip:
               type: dict
               schema:
@@ -8008,15 +7716,6 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-            stip:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mip.stip , nullable: True}
-                msb: {type: integer, default: 5, allowed: [5]}
-                lsb: {type: integer, default: 5, allowed: [5]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
             ueip:
               type: dict
               schema:
@@ -8024,15 +7723,6 @@ hart_schema:
                 shadow: {type: string, default: mip.ueip, nullable: True}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            seip:
-              type: dict
-              schema:
-                description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mip.seip, nullable: True}
-                msb: {type: integer, default: 9, allowed: [9]}
-                lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             accessible:
