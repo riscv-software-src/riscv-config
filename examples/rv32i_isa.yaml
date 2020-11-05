@@ -156,7 +156,7 @@ hart0: &hart0
      usip:
       implemented: true
      ssip:
-      implemented: false
+      implemented: true
      msip:
       implemented: true
       type:
@@ -164,7 +164,7 @@ hart0: &hart0
      utip:
       implemented: true
      stip:
-      implemented: false
+      implemented: true
      mtip:
       implemented: true
       type:
@@ -172,7 +172,7 @@ hart0: &hart0
      ueip:
       implemented: true
      seip:
-      implemented: false
+      implemented: true
      meip:
       implemented: true
       type:
@@ -186,7 +186,7 @@ hart0: &hart0
      usie:
       implemented: true
      ssie:
-      implemented: false
+      implemented: true
      msie:
       implemented: true
       type:
@@ -194,13 +194,13 @@ hart0: &hart0
      utie:
       implemented: true
      stie:
-      implemented: false
+      implemented: true
      mtie:
       implemented: true
      ueie:
       implemented: true
      seie:
-      implemented: false
+      implemented: true
      meie:
       implemented: true
    rv64:

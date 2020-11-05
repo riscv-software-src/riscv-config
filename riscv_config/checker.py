@@ -200,7 +200,55 @@ def add_def_setters(schema_yaml):
     schema_yaml['sstatus']['schema']['rv64']['schema']['sum'][
         'default_setter'] = ssetter
     schema_yaml['sie']['default_setter'] = sregsetter
+    schema_yaml['sie']['schema']['rv32']['schema']['ueie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv64']['schema']['ueie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv32']['schema']['utie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv64']['schema']['utie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv32']['schema']['usie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv64']['schema']['usie'][
+        'default_setter'] = nusetter
+    schema_yaml['sie']['schema']['rv32']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['schema']['rv64']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['schema']['rv32']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['schema']['rv64']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['schema']['rv32']['schema']['ssie'][
+        'default_setter'] = ssetter
+    schema_yaml['sie']['schema']['rv64']['schema']['ssie'][
+        'default_setter'] = ssetter
     schema_yaml['sip']['default_setter'] = sregsetter
+    schema_yaml['sip']['schema']['rv32']['schema']['ueip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv64']['schema']['ueip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv32']['schema']['utip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv64']['schema']['utip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv32']['schema']['usip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv64']['schema']['usip'][
+        'default_setter'] = nusetter
+    schema_yaml['sip']['schema']['rv32']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['sip']['schema']['rv64']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['sip']['schema']['rv32']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['sip']['schema']['rv64']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['sip']['schema']['rv32']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['sip']['schema']['rv64']['schema']['ssip'][
+        'default_setter'] = ssetter
     schema_yaml['stvec']['default_setter'] = sregsetter
     schema_yaml['sepc']['default_setter'] = sregsetter
     schema_yaml['stval']['default_setter'] = sregsetter
@@ -219,7 +267,31 @@ def add_def_setters(schema_yaml):
         'default_setter'] = nusetter
 
     schema_yaml['uie']['default_setter'] = nregsetter
+    schema_yaml['uie']['schema']['rv32']['schema']['ueie'][
+        'default_setter'] = nusetter
+    schema_yaml['uie']['schema']['rv64']['schema']['ueie'][
+        'default_setter'] = nusetter
+    schema_yaml['uie']['schema']['rv32']['schema']['utie'][
+        'default_setter'] = nusetter
+    schema_yaml['uie']['schema']['rv64']['schema']['utie'][
+        'default_setter'] = nusetter
+    schema_yaml['uie']['schema']['rv32']['schema']['usie'][
+        'default_setter'] = nusetter
+    schema_yaml['uie']['schema']['rv64']['schema']['usie'][
+        'default_setter'] = nusetter
     schema_yaml['uip']['default_setter'] = nregsetter
+    schema_yaml['uip']['schema']['rv32']['schema']['ueip'][
+        'default_setter'] = nusetter
+    schema_yaml['uip']['schema']['rv64']['schema']['ueip'][
+        'default_setter'] = nusetter
+    schema_yaml['uip']['schema']['rv32']['schema']['utip'][
+        'default_setter'] = nusetter
+    schema_yaml['uip']['schema']['rv64']['schema']['utip'][
+        'default_setter'] = nusetter
+    schema_yaml['uip']['schema']['rv32']['schema']['usip'][
+        'default_setter'] = nusetter
+    schema_yaml['uip']['schema']['rv64']['schema']['usip'][
+        'default_setter'] = nusetter
     schema_yaml['utvec']['default_setter'] = nregsetter
     schema_yaml['uepc']['default_setter'] = nregsetter
     schema_yaml['utval']['default_setter'] = nregsetter
