@@ -1,6 +1,11 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## 2.5.0 - 2020-11-6
+### Added
+- added all n extension csrs
+- added missing supervisor csrs
+- added default setters for subfields in sip, sie , uip and uie to make it depend as shadows on machine csrs
 
 ## 2.4.1 - 2020-10-22
 ### Changed

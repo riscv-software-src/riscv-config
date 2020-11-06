@@ -1,6 +1,6 @@
 hart_ids: [0]
 hart0: &hart0
-  ISA: RV32IMAFSCUZicsr_Zifencei
+  ISA: RV32IMANFSCUZicsr_Zifencei
   User_Spec_Version: '2.3'
   supported_xlen: [32]
   misa:
@@ -86,7 +86,7 @@ hart0: &hart0
    rv32:
      accessible: true
      uie:
-      implemented: false
+      implemented: true
      sie:
       implemented: true
       type:
@@ -94,7 +94,7 @@ hart0: &hart0
      mie:
       implemented: true
      upie:
-      implemented: false
+      implemented: true
      spie:
       implemented: true
       type:
@@ -154,25 +154,25 @@ hart0: &hart0
    rv32:
      accessible: true
      usip:
-      implemented: false
+      implemented: true
      ssip:
-      implemented: false
+      implemented: true
      msip:
       implemented: true
       type:
         ro_variable: true
      utip:
-      implemented: false
+      implemented: true
      stip:
-      implemented: false
+      implemented: true
      mtip:
       implemented: true
       type:
         ro_variable: [0x01]
      ueip:
-      implemented: false
+      implemented: true
      seip:
-      implemented: false
+      implemented: true
      meip:
       implemented: true
       type:
@@ -184,23 +184,23 @@ hart0: &hart0
    rv32:
      accessible: true
      usie:
-      implemented: false
+      implemented: true
      ssie:
-      implemented: false
+      implemented: true
      msie:
       implemented: true
       type:
         ro_variable: true
      utie:
-      implemented: false
+      implemented: true
      stie:
-      implemented: false
+      implemented: true
      mtie:
       implemented: true
      ueie:
-      implemented: false
+      implemented: true
      seie:
-      implemented: false
+      implemented: true
      meie:
       implemented: true
    rv64:
