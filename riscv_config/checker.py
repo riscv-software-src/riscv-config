@@ -546,7 +546,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['hpmcounter31h']['default_setter'] = ureghsetter
 
     schema_yaml['mcounteren']['default_setter'] = lambda doc: countset()
-    schema_yaml['scounteren']['default_setter'] = lambda doc: countset()
+    schema_yaml['scounteren']['default_setter'] = uregsetter
 
     schema_yaml['mcause']['default_setter'] = regsetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['uie'][
