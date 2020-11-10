@@ -107,10 +107,7 @@ def delegset():
     # return True
     global inp_yaml
     var = True
-    if 'U' not in inp_yaml['ISA']:
-        var = False
-    elif (('U' in inp_yaml['ISA']) and
-          not ('N' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA'])):
+    if 'S' not in inp_yaml['ISA'] and 'N' not in inp_yaml['ISA']:
         var = False
 
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
@@ -659,8 +656,8 @@ def add_def_setters(schema_yaml):
         'default_setter'] = twsetter
     schema_yaml['medeleg']['default_setter'] = delegsetter
     schema_yaml['mideleg']['default_setter'] = delegsetter
-    schema_yaml['sedeleg']['default_setter'] = delegsetter
-    schema_yaml['sideleg']['default_setter'] = delegsetter
+    schema_yaml['sedeleg']['default_setter'] = nregsetter
+    schema_yaml['sideleg']['default_setter'] = nregsetter
     return schema_yaml
 
 
