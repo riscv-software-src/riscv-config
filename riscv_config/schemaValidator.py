@@ -191,12 +191,12 @@ class schemaValidator(Validator):
 
         if rv64 and check:
             mxl = format(extensions, '#066b')
-            if (mxl[65 - s:66 - s] != '1') or (mxl[65 - n:66 - n] != '1'):
+            if (mxl[65 - s:66 - s] != '1') and (mxl[65 - n:66 - n] != '1'):
                 self._error(field, "neither S nor N is not present(64)")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
-            if (mxl[33 - s:34 - s] != '1') or (mxl[33 - n:34 - n] != '1'):
+            if (mxl[33 - s:34 - s] != '1') and (mxl[33 - n:34 - n] != '1'):
                 self._error(field, "neither S nor N is not present(32)")
 
     def _check_with_n_check(self, field, value):
