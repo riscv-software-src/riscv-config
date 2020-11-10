@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - modified sn_check and su_check
 - scounteren checks to make it depend only on u
-- medeleg check for S or U extension
+- medeleg, mideleg check for S or N extension
 
 
 ## 2.5.0 - 2020-11-6
