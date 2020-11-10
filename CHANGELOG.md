@@ -1,6 +1,14 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 2.5.1 - 2020-11-6
+### Changed
+- modified sn_check and su_check
+- scounteren checks to make it depend only on u
+- medeleg, mideleg check for S or N extension
+
+
 ## 2.5.0 - 2020-11-6
 ### Added
 - added all n extension csrs

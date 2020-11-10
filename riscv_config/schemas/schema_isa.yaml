@@ -1385,6 +1385,7 @@ hart_schema:
           default: 0
         rv32:
           type: dict
+          check_with: sn_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -1409,6 +1410,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
+          check_with: sn_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -1448,7 +1450,7 @@ hart_schema:
           - medeleg_reset
         rv32:
           type: dict
-          check_with: su_check
+          check_with: sn_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -1473,6 +1475,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
+          check_with: sn_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -3754,6 +3757,7 @@ hart_schema:
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
           type: dict
+          check_with: su_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -3777,6 +3781,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
+          check_with: su_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -8150,7 +8155,7 @@ hart_schema:
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
           type: dict
-          check_with: s_check
+          check_with: u_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -8174,7 +8179,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
-          check_with: s_check
+          check_with: u_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
