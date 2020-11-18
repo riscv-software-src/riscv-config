@@ -218,6 +218,25 @@ class schemaValidator(Validator):
             if (mxl[33 - n:34 - n] != '1'):
                 self._error(field, "N is not present")
 
+    def _check_with_h_check(self, field, value):
+        h = 7
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - h:66 - h] != '1'):
+                self._error(field, "h is not present")
+
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - h:34 - h] != '1'):
+                self._error(field, "h is not present")
+
     def _check_with_mdeleg_checks(self, field, value):
         if rv32:
             if (value['rv32']['accessible'] == True and
