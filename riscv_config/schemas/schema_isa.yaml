@@ -57,7 +57,7 @@ hart_schema:
     #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
+           regex: "^RV(32|64|128)[IE]+[ACDEFGHIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
     
     ###
     #User_Spec_Version
@@ -2206,6 +2206,15 @@ hart_schema:
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}        
             msie:
               type: dict
@@ -2277,6 +2286,15 @@ hart_schema:
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             mtie:
               type: dict
@@ -2347,6 +2365,15 @@ hart_schema:
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             meie:
               type: dict
@@ -2374,6 +2401,15 @@ hart_schema:
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             accessible:
               type: boolean
@@ -2434,6 +2470,15 @@ hart_schema:
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}        
             msie:
               type: dict
@@ -2505,6 +2550,15 @@ hart_schema:
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             mtie:
               type: dict
@@ -2575,6 +2629,15 @@ hart_schema:
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             meie:
               type: dict
@@ -2602,6 +2665,15 @@ hart_schema:
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
             accessible:
               type: boolean
               default: false
@@ -9283,6 +9355,15 @@ hart_schema:
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             accessible:
               type: boolean
@@ -9329,6 +9410,15 @@ hart_schema:
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
               default: {implemented: False}
             accessible:
               type: boolean
