@@ -1,6 +1,6 @@
 hart_ids: [0]
 hart0: &hart0
-  ISA: RV32IMANFSCUZicsr_Zifencei
+  ISA: RV32IMANFHSCUZicsr_Zifencei
   User_Spec_Version: '2.3'
   supported_xlen: [32]
   physical_addr_sz: 32
@@ -58,6 +58,32 @@ hart0: &hart0
            wr_illegal:
              - "Unchanged"
   sstatus:
+   reset-val: 0x0
+   rv32:
+     accessible: true
+     uie:
+      implemented: false
+     sie:
+      implemented: true
+     upie:
+      implemented: false
+     spie:
+      implemented: true
+     spp:
+      implemented: true
+     fs:
+      implemented: false
+     xs:
+      implemented: true
+     sum:
+      implemented: true
+     mxr:
+      implemented: true
+     sd:
+      implemented: true
+   rv64:
+     accessible: false
+  vsstatus:
    reset-val: 0x0
    rv32:
      accessible: true
@@ -181,6 +207,22 @@ hart0: &hart0
         ro_variable: true
    rv64:
      accessible: false
+  hip:
+   reset-val: 0
+   rv32:
+     accessible: true
+     vssip:
+      implemented: true
+     vstip:
+      implemented: true
+     vseip:
+      implemented: true
+     sgeip:
+      implemented: true
+      type:
+        ro_variable: true
+   rv64:
+     accessible: false
   mie:
    reset-val: 0
    rv32:
@@ -204,6 +246,20 @@ hart0: &hart0
      seie:
       implemented: true
      meie:
+      implemented: true
+   rv64:
+     accessible: false
+  hie:
+   reset-val: 0
+   rv32:
+     accessible: true
+     vssie:
+      implemented: true
+     vstie:
+      implemented: true
+     vseie:
+      implemented: true
+     sgeie:
       implemented: true
    rv64:
      accessible: false
