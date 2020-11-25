@@ -328,7 +328,7 @@ def add_def_setters(schema_yaml):
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
-    schema_yaml['mstatush']['default_setter'] = regsetter    
+    schema_yaml['mstatush']['default_setter'] = counthsetter   
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
@@ -339,8 +339,8 @@ def add_def_setters(schema_yaml):
     schema_yaml['mscratch']['default_setter'] = regsetter
     schema_yaml['mepc']['default_setter'] = regsetter
     schema_yaml['mtval']['default_setter'] = regsetter
-    schema_yaml['mtval2']['default_setter'] = regsetter
-    schema_yaml['mtinst']['default_setter'] = regsetter
+    schema_yaml['mtval2']['default_setter'] = hregsetter
+    schema_yaml['mtinst']['default_setter'] = hregsetter
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter

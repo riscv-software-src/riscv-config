@@ -1601,6 +1601,7 @@ hart_schema:
               - rv64_check
           default: {accessible: false}
       check_with: mdeleg_checks
+    
     mip:
       type: dict
       schema:
@@ -1666,7 +1667,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vssip, nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -1745,7 +1746,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vstip, nullable: True}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -1824,7 +1825,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vseip, nullable: True}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -1861,7 +1862,7 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.sgeip, nullable: True}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
@@ -1928,7 +1929,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vssip, nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -2007,7 +2008,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vstip, nullable: True}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -2086,7 +2087,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.vseip, nullable: True}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -2123,7 +2124,7 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.sgeip, nullable: True}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
@@ -2133,6 +2134,185 @@ hart_schema:
                   readonly: true
                   default: {ro_variable: True}
               default: {implemented: false}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+            
+    hie:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The hie register is an HSXLEN-bit read/write register containing interrupt
+            enable bits.
+        address: {type: integer, default: 0x604, allowed: [0x604]}
+        priv_mode: {type: string, default: H, allowed: [H]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: h_check
+          schema:
+            fields: {type: list, default: []}
+            vssie:
+              type: dict
+              schema:
+                description: {type: string, default: VS-level Software Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            vstie:
+              type: dict
+              schema:
+                description: {type: string, default: VS-level Timer Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            vseie:
+              type: dict
+              schema:
+                description: { type: string, default: VS-level External Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            sgeie:
+              type: dict
+              check_with: h_check
+              schema:
+                description: { type: string, default: HS-level External Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 12, allowed: [12]}
+                lsb: {type: integer, default: 12, allowed: [12]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
+              default: {implemented: False}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            vssie:
+              type: dict
+              schema:
+                description: {type: string, default: VS-level Software Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            vstie:
+              type: dict
+              schema:
+                description: {type: string, default: VS-level Timer Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            vseie:
+              type: dict
+              schema:
+                description: { type: string, default: VS-level External Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl: 
+                    - 0:1
+                implemented: {type: boolean, default: true}
+              default: {implemented: False}
+            sgeie:
+              type: dict
+              check_with: h_check
+              schema:
+                description: { type: string, default: HS-level External Interrupt enable.}
+                shadow: {type: string, default: , nullable: True}
+                msb: {type: integer, default: 12, allowed: [12]}
+                lsb: {type: integer, default: 12, allowed: [12]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    wlrl:
+                    - 0:1
+              default: {implemented: False}
             accessible:
               type: boolean
               default: false
@@ -2202,7 +2382,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: {type: string, default: VS-level Software Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vssie, nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -2282,7 +2462,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: {type: string, default: VS-level Timer Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vstie, nullable: True}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -2361,7 +2541,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: { type: string, default: VS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vseie, nullable: True}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -2397,7 +2577,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: { type: string, default: HS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.sgeie, nullable: True}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
@@ -2466,7 +2646,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: {type: string, default: VS-level Software Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vssie, nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -2546,7 +2726,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: {type: string, default: VS-level Timer Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vstie, nullable: True}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -2625,7 +2805,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: { type: string, default: VS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.vseie, nullable: True}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -2661,7 +2841,7 @@ hart_schema:
               check_with: h_check
               schema:
                 description: { type: string, default: HS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hie.sgeie, nullable: True}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean}
@@ -9301,129 +9481,6 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv64_check
-    hie:
-      type: dict
-      schema:
-        description:
-          type: string
-          default: The hie register is an HSXLEN-bit read/write register containing interrupt
-            enable bits.
-        address: {type: integer, default: 0x604, allowed: [0x604]}
-        priv_mode: {type: string, default: H, allowed: [H]}
-        reset-val:
-          type: integer
-          check_with: max_length
-          default: 0
-        rv32:
-          type: dict
-          check_with: h_check
-          schema:
-            fields: {type: list, default: []}
-            vssie:
-              type: dict
-              schema:
-                description: {type: string, default: VS-level Software Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 2, allowed: [2]}
-                lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            vstie:
-              type: dict
-              schema:
-                description: {type: string, default: VS-level Timer Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 6, allowed: [6]}
-                lsb: {type: integer, default: 6, allowed: [6]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            vseie:
-              type: dict
-              schema:
-                description: { type: string, default: VS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 10, allowed: [10]}
-                lsb: {type: integer, default: 10, allowed: [10]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            sgeie:
-              type: dict
-              check_with: h_check
-              schema:
-                description: { type: string, default: HS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 12, allowed: [12]}
-                lsb: {type: integer, default: 12, allowed: [12]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  check_with: wr_illegal
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    wlrl:
-                    - 0:1
-              default: {implemented: False}
-            accessible:
-              type: boolean
-              default: false
-              check_with: rv32_check
-        rv64:
-          type: dict
-          check_with: s_check
-          schema:
-            fields: {type: list, default: []}
-            vssie:
-              type: dict
-              schema:
-                description: {type: string, default: VS-level Software Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 2, allowed: [2]}
-                lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            vstie:
-              type: dict
-              schema:
-                description: {type: string, default: VS-level Timer Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 6, allowed: [6]}
-                lsb: {type: integer, default: 6, allowed: [6]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            vseie:
-              type: dict
-              schema:
-                description: { type: string, default: VS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 10, allowed: [10]}
-                lsb: {type: integer, default: 10, allowed: [10]}
-                implemented: {type: boolean, default: true}
-              default: {implemented: False}
-            sgeie:
-              type: dict
-              check_with: h_check
-              schema:
-                description: { type: string, default: HS-level External Interrupt enable.}
-                shadow: {type: string, default: , nullable: True}
-                msb: {type: integer, default: 12, allowed: [12]}
-                lsb: {type: integer, default: 12, allowed: [12]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  check_with: wr_illegal
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    wlrl:
-                    - 0:1
-              default: {implemented: False}
-            accessible:
-              type: boolean
-              default: false
-              check_with: rv64_check
     hvip:
       type: dict
       schema:
@@ -9826,7 +9883,8 @@ hart_schema:
           default: 0
           check_with: max_length
         rv32:
-          type: dict
+          type: dict          
+          check_with: h_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -9849,7 +9907,8 @@ hart_schema:
               check_with: rv32_check
           default: {accessible: false}
         rv64:
-          type: dict
+          type: dict          
+          check_with: h_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -9884,6 +9943,7 @@ hart_schema:
           check_with: max_length
         rv32:
           type: dict
+          check_with: h_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -9907,6 +9967,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
+          check_with: h_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
