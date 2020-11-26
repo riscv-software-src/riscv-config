@@ -212,3 +212,4 @@ hart0:
                 type:
                     ro_variable: true
         reset-val: 0x200000000
+
