@@ -9654,14 +9654,10 @@ hart_schema:
             type:
               type: dict
               check_with: wr_illegal
-              schema: { warl: *ref_warl }
-              default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - hgeip[31:0] in [0x00000000:0xFFFFFFFF]
-                  wr_illegal:
-                  - unchanged    
+              oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x3, min: 0x1}}
+                    - schema: {ro_variable: {type: boolean}}  
+              default: {ro_variable: True}                                  
             accessible:
               type: boolean
               default: true
@@ -9678,14 +9674,10 @@ hart_schema:
             type:
               type: dict
               check_with: wr_illegal
-              schema: { warl: *ref_warl }
-              default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - hgeip[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
-                  wr_illegal:
-                  - unchanged    
+              oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x3, min: 0x1}}
+                    - schema: {ro_variable: {type: boolean}}
+              default: {ro_variable: True}
             accessible:
               type: boolean
               default: true
