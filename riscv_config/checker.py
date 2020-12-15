@@ -739,9 +739,25 @@ def check_fields(spec):
      for node in spec :
          fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(spec[node].keys()) )
          if spec[node]['rv32']['accessible']:
-            subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv32'].keys()) )
+            sub_fields = list(set(spec[node]['rv32'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
+            if not sub_fields :
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv32'].keys()) )
+            else:
+              for x in sub_fields :
+                subfields = list(set(['msb', 'lsb', 'description', 'shadow', 'type']) - set(spec[node]['rv32'][x].keys()) )
+                if subfields :                   
+                   node = str(node + "-" + str(x))
+                   break
          if spec[node]['rv64']['accessible']:
-            subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv64'].keys()))
+            sub_fields = list(set(spec[node]['rv64'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
+            if not sub_fields :
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv64'].keys()))
+            else:
+              for x in sub_fields :
+                subfields = list(set(['msb', 'lsb', 'description', 'shadow', 'type']) - set(spec[node]['rv64'][x].keys()) )
+                if subfields :
+                   node = str(node + "-" + str(x))
+                   break
          if fields != [] or subfields != [] :
             return subfields, fields, str(node)
      return subfields, fields, "No error"
