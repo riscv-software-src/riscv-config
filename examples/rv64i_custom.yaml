@@ -11,7 +11,6 @@ hart0:
                  shadow:
                  msb: 63
                  lsb: 0
-             description: 32-bit read-only register providing the JEDEC manufacturer ID
-                 of the provider of the core.
+             description: dtim base
              address: 0x7C3
              priv_mode: M
