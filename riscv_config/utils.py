@@ -124,6 +124,12 @@ def riscv_config_cmdline_args():
                         metavar='YAML',
                         default=None,
                         help='The YAML which contains the Platfrorm specs.')
+    parser.add_argument('--custom_spec',
+                        '-cspec',
+                        type=str,
+                        metavar='YAML',
+                        default=None,
+                        help='The YAML which contains the custom csr specs.')                        
     parser.add_argument(
         '--work_dir',
         type=str,

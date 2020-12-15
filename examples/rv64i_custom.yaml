@@ -1,0 +1,17 @@
+hart_ids: [0]
+hart0:
+    dtim_base:
+             reset-val: 0x0
+             rv32:
+                 accessible: false
+             rv64:
+                 accessible: true
+                 type:
+                     ro_constant: 0x0
+                 shadow:
+                 msb: 63
+                 lsb: 0
+             description: 32-bit read-only register providing the JEDEC manufacturer ID
+                 of the provider of the core.
+             address: 0x7C3
+             priv_mode: M

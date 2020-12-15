@@ -734,7 +734,17 @@ def get_fields(node, bitwidth):
     else:
         fields.append(bits)
         return fields
-
+        
+def check_fields(spec):
+     for node in spec :
+         fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(spec[node].keys()) )
+         if spec[node]['rv32']['accessible']:
+            subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv32'].keys()) )
+         if spec[node]['rv64']['accessible']:
+            subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv64'].keys()))
+         if fields != [] or subfields != [] :
+            return subfields, fields, str(node)
+     return subfields, fields, "No error"
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
     source'''
@@ -1081,7 +1091,62 @@ def check_isa_specs(isa_spec,
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return ifile
+    
+def check_custom_specs(custom_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
+    '''
+        Function to perform ensure that the isa and platform specifications confirm
+        to their schemas. The :py:mod:`Cerberus` module is used to validate that the
+        specifications confirm to their respective schemas.
 
+        :param isa_spec: The path to the DUT isa specification yaml file.
+
+        :param logging: A boolean to indicate whether log is to be printed.
+
+        :type logging: bool
+
+        :type isa_spec: str
+
+        :raise ValidationError: It is raised when the specifications violate the
+            schema rules. It also contains the specific errors in each of the fields.
+
+        :return: A tuple with the first entry being the absolute path to normalized isa file
+            and the second being the absolute path to the platform spec file.
+    '''
+    if logging:
+        logger.info('Custom CSR Spec')
+
+    foo = custom_spec
+    
+    # Load input YAML file
+    if logging:
+        logger.info('Loading input file: ' + str(foo))
+    master_custom_yaml = utils.load_yaml(foo, no_anchors)
+
+    outyaml = copy.deepcopy(master_custom_yaml)
+    for x in master_custom_yaml['hart_ids']:
+        if logging:
+            logger.info('Processing Hart: hart'+str(x))
+        inp_yaml = master_custom_yaml['hart'+str(x)]
+    subfields, fields, node = check_fields(inp_yaml)
+    if fields != [] :
+       logger.error(" Add " + str(fields) + " fields to custom csr " + node )
+    elif  subfields != [] :
+       logger.error(" Add " + str(subfields) + " subfields to custom csr " + node )
+    outyaml['hart'+str(x)] = trim(inp_yaml)
+    file_name = os.path.split(foo)
+    file_name_split = file_name[1].split('.')
+    output_filename = os.path.join(
+        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+    cfile = output_filename
+    outfile = open(output_filename, 'w')
+    if logging:
+        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+    utils.dump_yaml(outyaml, outfile, no_anchors )
+    return cfile
+    
 def check_platform_specs(platform_spec,
                 work_dir,
                 logging=False,
