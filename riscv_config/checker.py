@@ -737,6 +737,7 @@ def get_fields(node, bitwidth):
         
 def check_fields(spec):
      for node in spec :
+         fault_node = node
          fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(spec[node].keys()) )
          if spec[node]['rv32']['accessible']:
             sub_fields = list(set(spec[node]['rv32'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
@@ -744,9 +745,9 @@ def check_fields(spec):
              subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv32'].keys()) )
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'description', 'shadow', 'type']) - set(spec[node]['rv32'][x].keys()) )
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(spec[node]['rv32'][x].keys()) )
                 if subfields :                   
-                   node = str(node + "-" + str(x))
+                   fault_node = str(node + "-" + str(x))
                    break
          if spec[node]['rv64']['accessible']:
             sub_fields = list(set(spec[node]['rv64'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
@@ -754,12 +755,12 @@ def check_fields(spec):
              subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv64'].keys()))
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'description', 'shadow', 'type']) - set(spec[node]['rv64'][x].keys()) )
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(spec[node]['rv64'][x].keys()) )
                 if subfields :
-                   node = str(node + "-" + str(x))
+                   fault_node = str(node + "-" + str(x))
                    break
          if fields != [] or subfields != [] :
-            return subfields, fields, str(node)
+            return subfields, fields, str(fault_node)
      return subfields, fields, "No error"
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
