@@ -137,6 +137,28 @@ hart_schema:
       type: list
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
+
+    ###
+    #pmp_granularity
+    #---------------
+    #
+    # **Description**: Granularity of pmps
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   pmp_granularity : 2
+    #   pmp_granularity : 4
+    #
+    # **Constraints**:
+    #
+    #   - None
+    
+    pmp_granularity:
+      type: integer
+      schema : {type: integer, min: 0}
+      default: 2
       
     schema_node:
       type: dict

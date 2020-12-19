@@ -889,7 +889,7 @@ def check_reset_fill_fields(spec, logging= False):
                             pass
                         elif "warl" in keys:
                             warl = (warl_interpreter(desc['warl']))
-                            deps = warl.dependencies()
+                            deps = warl.dependencies
                             dep_vals = []
                             for dep in deps:
                                 reg = dep.split("::")
@@ -898,14 +898,11 @@ def check_reset_fill_fields(spec, logging= False):
                                 else:
                                     bin_str = bin(spec[reg[0]]
                                                   ['reset-val'])[2:].zfill(bit_len)
+                                    msb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']
+                                    lsb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']
                                     dep_vals.append(
-                                        int(bin_str[bit_len - 1 - spec[reg[0]][
-                                            'rv{}'.format(bit_len
-                                                         )][reg[1]]['msb']:bit_len -
-                                                    spec[reg[0]]['rv{}'.format(
-                                                        bit_len)][reg[1]]['lsb']],
-                                            base=2))
-                            if (warl.islegal(hex(reset_val)[2:], dep_vals) != True):
+                                        int(bin_str[::-1][lsb:msb+1][::-1], base=2))
+                            if (warl.islegal(int(reset_val), dep_vals) != True):
                                 error.append(
                                     "Reset value doesnt match the 'warl' description for the register."
                                 )
@@ -980,7 +977,7 @@ def check_reset_fill_fields(spec, logging= False):
                                         pass
                                     elif "warl" in keys:
                                         warl = (warl_interpreter(desc['warl']))
-                                        deps = warl.dependencies()
+                                        deps = warl.dependencies
                                         dep_vals = []
                                         for dep in deps:
                                             reg = dep.split("::")
@@ -1002,7 +999,7 @@ def check_reset_fill_fields(spec, logging= False):
                                                         )][reg[1]]['lsb']],
                                                         base=2))
                                         if (warl.islegal(
-                                                hex(test_val)[2:], dep_vals) !=
+                                                int(test_val), dep_vals) !=
                                                 True):
                                             error.append(
                                                 "Reset value for " + field +

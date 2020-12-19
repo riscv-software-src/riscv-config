@@ -145,3 +145,10 @@ def riscv_config_cmdline_args():
                         action='store_true',
                         help='Unroll/Disable all anchors')
     return parser
+
+def pretty_print_yaml(yaml):
+    res = ''''''
+    for line in ruamel.yaml.round_trip_dump(yaml, indent=5, block_seq_indent=3).splitlines(True):
+        res += line
+    return res
+
