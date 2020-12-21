@@ -40,12 +40,12 @@ hart0:
             warl: 
               dependency_fields: [mtvec::mode]
               legal:
-                - "[0] -> base[29:0] in [0x20000000, 0x20004000]"  
-                - "[1] -> base[29:6] in [0x000000:0xf00000] base[5:0] in [0x00]"
+                - "mode[1:0] in [0] -> base[29:0] in [0x20000000, 0x20004000]"  
+                - "mode[1:0] in [1] -> base[29:6] in [0x000000:0xf00000] base[5:0] in [0x00]"
               wr_illegal:
-                - "[0] -> Unchanged"
-                - "[1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
-                - "[1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
+                - "mode[1:0] in [0] -> Unchanged"
+                - "mode[1:0] in [1] wr_val in [0x2000000:0x4000000] -> 0x200000000"
+                - "mode[1:0] in [1] wr_val in [0x4000001:0x1FFFFFFF] -> addr"
               
         mode:
           implemented: true
