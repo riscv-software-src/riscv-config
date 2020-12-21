@@ -114,7 +114,30 @@ hart_schema:
     #   - None
 
     hw_data_misaligned_support: {type: boolean, default: false}
+    
+    ###
+    #supported_xlen
+    #--------------
+    #
+    # **Description**: list of supported xlen on the target
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   supported_xlen : [32]
+    #   supported_xlen : [64, 32]
+    #   supported_xlen : [64]
+    #
+    # **Constraints**:
+    #
+    #   - None
 
+    supported_xlen:
+      type: list
+      schema: { type: integer, allowed: [ 32, 64, 128] }
+      required: true
+      
     ###
     #pmp_granularity
     #--------------
