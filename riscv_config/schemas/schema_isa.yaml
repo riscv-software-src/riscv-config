@@ -157,8 +157,30 @@ hart_schema:
 
     pmp_granularity:
       type: integer
-      schema : {type: integer, min: 0}
-      default: 2
+      min: 0
+      default: 0
+      
+    ###
+    #physical_addr_sz
+    #----------------
+    #
+    # **Description**: size of the physical address
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   physical_addr_sz : 32
+    #
+    # **Constraints**:
+    #
+    #   - None
+
+    physical_addr_sz:
+      type: integer
+      max: [56]
+      required: true
+      check_with: phy_addr
 
     schema_node:
       type: dict
