@@ -15,7 +15,7 @@ hart0:
              address: 0x7C3
              priv_mode: M
     customcontrol:
-      reset-val: 0x8000000000000100
+      reset-val: 0x7
       rv32:
         accessible: false
       rv64:
@@ -23,7 +23,7 @@ hart0:
         ienable:
           implemented: true
           type:
-            ro_constant: 0x02
+            ro_constant: 0x1
           description: bit for cache-enable of instruction cache, part of rg_customcontrol
           shadow:
           msb: 0
@@ -31,7 +31,7 @@ hart0:
         denable:
           implemented: true
           type:
-            ro_constant: 0x100    
+            ro_constant: 0x1    
           description: bit for cache-enable of data cache, part of rg_customcontrol
           shadow:
           msb: 1
@@ -39,7 +39,7 @@ hart0:
         bpuenable:
           implemented: true
           type:
-            ro_constant: 0x100    
+            ro_constant: 0x1    
           description: bit for enabling branch predictor unit, part of rg_customcontrol
           shadow:
           msb: 2
@@ -47,7 +47,7 @@ hart0:
         arith_excep:
           implemented: true
           type:
-            ro_constant: 0x100    
+            ro_constant: 0x0    
           description: bit for enabling arithmetic exceptions, part of rg_customcontrol
           shadow:
           msb: 3

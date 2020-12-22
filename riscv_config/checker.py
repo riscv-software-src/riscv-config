@@ -737,32 +737,52 @@ def get_fields(node, bitwidth):
         return fields
         
 def check_fields(spec):
-     for node in spec :
+    errors = {} 
+    for csr, node, in spec.items() :
          fault_node = node
-         fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(spec[node].keys()) )
-         if spec[node]['rv32']['accessible']:
-            sub_fields = list(set(spec[node]['rv32'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
+         error=[]
+         if node['rv32']['accessible']:
+                node['rv32']['fields'] = get_fields(node['rv32'], 32)
+         if node['rv64']['accessible']:
+                node['rv64']['fields'] = get_fields(node['rv64'], 64)
+         fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(node.keys()) )
+         if fields:
+            error.append("The fields " + "".join(fields) + " are missing")
+         if node['rv32']['accessible']:
+            if any(type(e)==list for e in node['rv32']['fields']): 
+             sub_fields = node['rv32']['fields'][:-1]
+            else:
+             sub_fields = node['rv32']['fields']
             if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv32'].keys()) )
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'fields', 'type']) - set(node['rv32'].keys()) )    
+             if subfields:
+                error.append("The subfield " + "".join(subfields) + " are not present")         
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(spec[node]['rv32'][x].keys()) )
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv32'][x].keys()) )
                 if subfields :                   
-                   fault_node = str(node + "-" + str(x))
-                   break
-         if spec[node]['rv64']['accessible']:
-            sub_fields = list(set(spec[node]['rv64'].keys()) - set(['msb', 'lsb', 'accessible', 'shadow', 'type']))
+                   error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
+         if node['rv64']['accessible']:            
+            if any(type(e)==list for e in node['rv64']['fields']): 
+             sub_fields = node['rv64']['fields'][:-1]
+            else:
+             sub_fields = node['rv64']['fields']
             if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'type']) - set(spec[node]['rv64'].keys()))
+             subfields = list(set(['msb', 'lsb', 'accessible', 'fields', 'shadow', 'type']) - set(node['rv64'].keys()))
+             if subfields:
+                error.append("The subfield " + "".join(subfields) + " are not present")
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(spec[node]['rv64'][x].keys()) )
-                if subfields :
-                   fault_node = str(node + "-" + str(x))
-                   break
-         if fields != [] or subfields != [] :
-            return subfields, fields, str(fault_node)
-     return subfields, fields, "No error"
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv64'][x].keys()) )
+                if subfields :                   
+                   error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
+         if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
+             error.append('Address is not in custom csr ranges')
+         if (bin(node['address'])[2:][::-1][8:10] == '00' and node['priv_mode'] != 'U' ) or (bin(node['address'])[2:][::-1][8:10] == '01' and node['priv_mode'] != 'S' ) or (bin(node['address'])[2:][::-1][8:10] == '11' and node['priv_mode'] != 'M') :
+            error.append('Privilege does not match with the address')
+         if error:
+            errors[csr] = error
+    return errors 
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
     source'''
@@ -834,45 +854,26 @@ def check_mhpm(spec, logging = False):
             index = int(re.findall('\d+',csrname.lower())[0])
             if content['rv64']['accessible'] :
                 if not spec['mhpmevent'+str(index)]['rv64']['accessible']:
-                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessile")
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessible")
             if content['rv32']['accessible'] :
                 if not spec['mhpmevent'+str(index)]['rv32']['accessible']:
-                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessile")
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessible")
         if 'mhpmevent' in csrname:
             index = int(re.findall('\d+',csrname.lower())[0])
             if content['rv64']['accessible'] :
                 if not spec['mhpmcounter'+str(index)]['rv64']['accessible']:
-                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessile")
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessible")
             if content['rv32']['accessible'] :
                 if not spec['mhpmcounter'+str(index)]['rv32']['accessible']:
-                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessile")
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessible")
+            if content['rv64']['accessible'] :
+                if not spec['mhpmcounter'+str(index)+'h']['rv64']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter 'h' counterpart register accessible")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmcounter'+str(index)+'h']['rv32']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter 'h' counterpart register accessible")
         if error:
             errors[csrname] = error
-    #_rvxlen = ['rv32', 'rv64']
-    #mhpm=['mhpmcounter', 'mhpmevent']
-    #flag=False	
-    #for _mhpm in mhpm:
-    # for csr, content in spec.items():
-    #    error = []
-    #    if isinstance(content, dict) and 'description' in content:
-    #        for rvxlen in _rvxlen:
-    #            if content[rvxlen]['accessible'] and _mhpm in csr:
-    #               s = csr.replace(_mhpm, '')
-    #               if 'h' in s :
-    #                  continue
-    #               for csrname, content_yaml in spec.items():
-    #                 if isinstance(content_yaml, dict) and 'description' in content_yaml:
-    #                   for rvxl in _rvxlen:
-    #                       mhpm_ = list(set(mhpm) - set(_mhpm.split()))
-    #                       if content_yaml[rvxl]['accessible'] and ((csrname ==' '.join(map(str, mhpm_))+str(s)) ):
-    #                          flag=True
-    #               if flag==False and 'counter' in csr:
-    #                  error.append('Corresponding event csr not declared')
-    #               if flag==False and 'event' in csr:
-    #                  error.append('Corresponding counter csr not declared')
-    #               flag=False
-    #    if error:
-    #        errors[csr] = error
     return errors
 
 
@@ -1198,11 +1199,9 @@ def check_custom_specs(custom_spec,
         if logging:
             logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_custom_yaml['hart'+str(x)]
-    subfields, fields, node = check_fields(inp_yaml)
-    if fields != [] :
-       logger.error(" Add " + str(fields) + " fields to custom csr " + node )
-    elif  subfields != [] :
-       logger.error(" Add " + str(subfields) + " subfields to custom csr " + node )
+    errors = check_fields(inp_yaml)
+    if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
     outyaml['hart'+str(x)] = trim(inp_yaml)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
