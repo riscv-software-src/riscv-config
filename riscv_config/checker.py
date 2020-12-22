@@ -823,6 +823,38 @@ def check_shadows(spec, logging = False):
             errors[csr] = error
     return errors
 
+def check_mhpm(spec, logging = False):
+    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
+    source'''
+    errors = {}
+    _rvxlen = ['rv32', 'rv64']
+    mhpm=['mhpmcounter', 'mhpmevent']
+    flag=False	
+    for _mhpm in mhpm:
+     for csr, content in spec.items():
+        error = []
+        if isinstance(content, dict) and 'description' in content:
+            for rvxlen in _rvxlen:
+                if content[rvxlen]['accessible'] and _mhpm in csr:
+                   s = csr.replace(_mhpm, '')
+                   if 'h' in s :
+                      continue
+                   for csrname, content_yaml in spec.items():
+                     if isinstance(content_yaml, dict) and 'description' in content_yaml:
+                       for rvxl in _rvxlen:
+                           mhpm_ = list(set(mhpm) - set(_mhpm.split()))
+                           if content_yaml[rvxl]['accessible'] and ((csrname ==' '.join(map(str, mhpm_))+str(s)) ):
+                              flag=True
+                   if flag==False and 'counter' in csr:
+                      error.append('Corresponding event csr not declared')
+                   if flag==False and 'event' in csr:
+                      error.append('Corresponding counter csr not declared')
+                   flag=False
+        if error:
+            errors[csr] = error
+    return errors
+
+
 
 
 def check_reset_fill_fields(spec, logging= False):
@@ -1092,6 +1124,7 @@ def check_isa_specs(isa_spec,
             raise ValidationError('Error in ' + foo + ".", 
                     {'mhartid': ['wrong reset-val of for hart'+str(x)]})
         errors = check_shadows(normalized, logging)
+        errors = check_mhpm(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
         outyaml['hart'+str(x)] = trim(normalized)
