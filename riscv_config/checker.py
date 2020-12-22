@@ -1,6 +1,7 @@
 import os
 import logging
 import copy
+import re
 
 from cerberus import Validator
 
@@ -827,31 +828,51 @@ def check_mhpm(spec, logging = False):
     ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
     source'''
     errors = {}
-    _rvxlen = ['rv32', 'rv64']
-    mhpm=['mhpmcounter', 'mhpmevent']
-    flag=False	
-    for _mhpm in mhpm:
-     for csr, content in spec.items():
+    for csrname, content, in spec.items():
         error = []
-        if isinstance(content, dict) and 'description' in content:
-            for rvxlen in _rvxlen:
-                if content[rvxlen]['accessible'] and _mhpm in csr:
-                   s = csr.replace(_mhpm, '')
-                   if 'h' in s :
-                      continue
-                   for csrname, content_yaml in spec.items():
-                     if isinstance(content_yaml, dict) and 'description' in content_yaml:
-                       for rvxl in _rvxlen:
-                           mhpm_ = list(set(mhpm) - set(_mhpm.split()))
-                           if content_yaml[rvxl]['accessible'] and ((csrname ==' '.join(map(str, mhpm_))+str(s)) ):
-                              flag=True
-                   if flag==False and 'counter' in csr:
-                      error.append('Corresponding event csr not declared')
-                   if flag==False and 'event' in csr:
-                      error.append('Corresponding counter csr not declared')
-                   flag=False
+        if 'mhpmcounter' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :
+                if not spec['mhpmevent'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessile")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmevent'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessile")
+        if 'mhpmevent' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :
+                if not spec['mhpmcounter'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessile")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmcounter'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessile")
         if error:
-            errors[csr] = error
+            errors[csrname] = error
+    #_rvxlen = ['rv32', 'rv64']
+    #mhpm=['mhpmcounter', 'mhpmevent']
+    #flag=False	
+    #for _mhpm in mhpm:
+    # for csr, content in spec.items():
+    #    error = []
+    #    if isinstance(content, dict) and 'description' in content:
+    #        for rvxlen in _rvxlen:
+    #            if content[rvxlen]['accessible'] and _mhpm in csr:
+    #               s = csr.replace(_mhpm, '')
+    #               if 'h' in s :
+    #                  continue
+    #               for csrname, content_yaml in spec.items():
+    #                 if isinstance(content_yaml, dict) and 'description' in content_yaml:
+    #                   for rvxl in _rvxlen:
+    #                       mhpm_ = list(set(mhpm) - set(_mhpm.split()))
+    #                       if content_yaml[rvxl]['accessible'] and ((csrname ==' '.join(map(str, mhpm_))+str(s)) ):
+    #                          flag=True
+    #               if flag==False and 'counter' in csr:
+    #                  error.append('Corresponding event csr not declared')
+    #               if flag==False and 'event' in csr:
+    #                  error.append('Corresponding counter csr not declared')
+    #               flag=False
+    #    if error:
+    #        errors[csr] = error
     return errors
 
 
