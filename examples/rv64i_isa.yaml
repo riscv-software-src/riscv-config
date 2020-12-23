@@ -3,6 +3,7 @@ hart0:
     ISA: RV64IU
     supported_xlen: [64]
     physical_addr_sz: 32
+    pmp_granularity: 5
     hpmcounter3:
       rv32:
         accessible: false
@@ -109,8 +110,8 @@ hart0:
                          - pmp15cfg[7:0] in [0x00:0xFF]
                        wr_illegal:
                          - unchanged 
-        reset-val: 0
-    pmpaddr54:
+        reset-val: 0x10
+    pmpaddr8:
         rv32:
             accessible: false
         rv64:
@@ -119,10 +120,10 @@ hart0:
                 warl:
                     dependency_fields: []
                     legal:
-                      - pmpaddr54[63:0] in [0x0000000000000000:0xFFFFFFFFFFFFFFFF]
+                      - pmpaddr8[63:0] in [0x0000000000000000:0xFFFFFFFFFFFFFFFF]
                     wr_illegal:
                       - unchanged
-        reset-val: 0
+        reset-val: 0x2F
     mtvec:
       reset-val: 0x0000000080000000
       rv64:

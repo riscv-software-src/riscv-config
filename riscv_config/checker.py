@@ -879,18 +879,35 @@ def check_pmp(spec, logging = False):
     errors = {}
     for csrname, content, in spec.items():
         error = []
+        Grain=int(spec['pmp_granularity'])
         if 'pmpaddr' in csrname:
             index = int(re.findall('\d+',csrname.lower())[0])
-            if content['rv64']['accessible'] :
+            if content['rv64']['accessible'] :                
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(64))[::-1] 
+                reset_val_cfg  = (bin(spec['pmpcfg'+str(int(int(index/8)*2))]['reset-val'])[2:].zfill(64))[::-1]
                 if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['accessible']:
                     error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
                 if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['pmp'+str(index)+'cfg']['implemented'] :
                     error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+                if reset_val_cfg[8*(index-(int(index/8)*8)) + 4] == '1' and Grain >=2 :     #NAPOT, Bit A of pmpXcfg is set
+                  if '0' in reset_val_addr[0:(Grain-1)] or (reset_val_addr[Grain-1] != '0') :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                elif Grain >= 1: #TOR
+                  if int(content['reset-val']) % (2**Grain) != 0 :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
             if content['rv32']['accessible'] :
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(32))[::-1] 
+                reset_val_cfg  = (bin(spec['pmpcfg'+str(int(index/4))]['reset-val'])[2:].zfill(32))[::-1]
                 if not spec['pmpcfg'+str(int(index/4))]['rv32']['accessible']:
                     error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
                 if not spec['pmpcfg'+str(int(index/4))]['rv32']['pmp'+str(index)+'cfg']['implemented'] :
                     error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+                if reset_val_cfg[8*(index-(int(index/4)*4)) + 4] == '1' and Grain >=2 :     #NAPOT, Bit A of pmpXcfg is set
+                 if '0' in reset_val_addr[0:(Grain-1)] or (reset_val_addr[Grain-1] != '0') :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                elif Grain >= 1: #TOR
+                  if int(content['reset-val']) % (2**Grain) != 0 :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
         if 'pmpcfg' in csrname:
             if content['rv64']['accessible'] :
                 for subfield in content['rv64']['fields']:
