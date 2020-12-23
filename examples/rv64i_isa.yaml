@@ -2,6 +2,7 @@ hart_ids: [0]
 hart0:
     ISA: RV64IU
     supported_xlen: [64]
+    physical_addr_sz: 32
     hpmcounter3:
       rv32:
         accessible: false
@@ -30,6 +31,98 @@ hart0:
         accessible: true
         type:
           ro_constant: 0xdeadbeef
+    pmpcfg2:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            pmp8cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp8cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp9cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp9cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp10cfg:
+                implemented: true
+                lsb: 16                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp10cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp11cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp11cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp12cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp12cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp13cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp13cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp14cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp14cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+            pmp15cfg:
+                implemented: true                
+                type:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - pmp15cfg[7:0] in [0x00:0xFF]
+                       wr_illegal:
+                         - unchanged 
+        reset-val: 0
+    pmpaddr54:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - pmpaddr54[63:0] in [0x0000000000000000:0xFFFFFFFFFFFFFFFF]
+                    wr_illegal:
+                      - unchanged
+        reset-val: 0
     mtvec:
       reset-val: 0x0000000080000000
       rv64:

@@ -866,15 +866,47 @@ def check_mhpm(spec, logging = False):
             if content['rv32']['accessible'] :
                 if not spec['mhpmcounter'+str(index)]['rv32']['accessible']:
                     error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessible")
-            if content['rv64']['accessible'] :
-                if not spec['mhpmcounter'+str(index)+'h']['rv64']['accessible']:
-                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter 'h' counterpart register accessible")
             if content['rv32']['accessible'] :
                 if not spec['mhpmcounter'+str(index)+'h']['rv32']['accessible']:
                     error.append(csrname + " event reg doesn't have the corresponding mhpmcounter 'h' counterpart register accessible")
         if error:
             errors[csrname] = error
     return errors
+  
+def check_pmp(spec, logging = False):
+    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
+    source'''
+    errors = {}
+    for csrname, content, in spec.items():
+        error = []
+        if 'pmpaddr' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :
+                if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['accessible']:
+                    error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
+                if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['pmp'+str(index)+'cfg']['implemented'] :
+                    error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+            if content['rv32']['accessible'] :
+                if not spec['pmpcfg'+str(int(index/4))]['rv32']['accessible']:
+                    error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
+                if not spec['pmpcfg'+str(int(index/4))]['rv32']['pmp'+str(index)+'cfg']['implemented'] :
+                    error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+        if 'pmpcfg' in csrname:
+            if content['rv64']['accessible'] :
+                for subfield in content['rv64']['fields']:
+                 index = int(re.findall('\d+',subfield)[0])
+                 if not spec['pmpaddr'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
+            if content['rv32']['accessible'] :
+                for subfield in content['rv32']['fields']:
+                 index = int(re.findall('\d+',subfield)[0])
+                 if not spec['pmpaddr'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
+        if error:
+            errors[csrname] = error
+    return errors
+   
+
 
 
 
@@ -1146,9 +1178,14 @@ def check_isa_specs(isa_spec,
             raise ValidationError('Error in ' + foo + ".", 
                     {'mhartid': ['wrong reset-val of for hart'+str(x)]})
         errors = check_shadows(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
         errors = check_mhpm(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+        errors = check_pmp(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)        
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
