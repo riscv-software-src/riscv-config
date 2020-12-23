@@ -3,6 +3,7 @@ hart0: &hart0
   ISA: RV32IMANFSCUZicsr_Zifencei
   User_Spec_Version: '2.3'
   supported_xlen: [32]
+  physical_addr_sz: 32
   misa:
    reset-val: 0x40001125
    rv32:
