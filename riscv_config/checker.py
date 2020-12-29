@@ -138,8 +138,32 @@ def regset():
     if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
     return temp
+    
+def pmpregset():
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}} 
+    try:   
+     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
+        temp['rv32']['accessible'] = True
+    except:
+        temp['rv32']['accessible'] = False
+    try: 
+     if 64 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv64']['accessible']:
+        temp['rv64']['accessible'] = True
+    except:
+        temp['rv64']['accessible'] = False
+    return temp    
 
-
+def pmpcounterhset():
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    try: 
+     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
+        temp['rv32']['accessible'] = True
+    except:
+        temp['rv32']['accessible'] = False
+    return temp
+    
 def counterhset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
@@ -151,8 +175,9 @@ def counterhset():
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
-
+    pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
+    pmpcounthsetter = lambda doc: pmpcounterhset()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
@@ -313,86 +338,86 @@ def add_def_setters(schema_yaml):
     schema_yaml['minstret']['default_setter'] = regsetter
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg0']['default_setter'] = regsetter
-    schema_yaml['pmpcfg1']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg2']['default_setter'] = regsetter
-    schema_yaml['pmpcfg3']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg4']['default_setter'] = regsetter
-    schema_yaml['pmpcfg5']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg6']['default_setter'] = regsetter
-    schema_yaml['pmpcfg7']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg8']['default_setter'] = regsetter
-    schema_yaml['pmpcfg9']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg10']['default_setter'] = regsetter
-    schema_yaml['pmpcfg11']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg12']['default_setter'] = regsetter
-    schema_yaml['pmpcfg13']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg14']['default_setter'] = regsetter
-    schema_yaml['pmpcfg15']['default_setter'] = counthsetter
-    schema_yaml['pmpaddr0']['default_setter'] = regsetter
-    schema_yaml['pmpaddr1']['default_setter'] = regsetter
-    schema_yaml['pmpaddr2']['default_setter'] = regsetter
-    schema_yaml['pmpaddr3']['default_setter'] = regsetter
-    schema_yaml['pmpaddr4']['default_setter'] = regsetter
-    schema_yaml['pmpaddr5']['default_setter'] = regsetter
-    schema_yaml['pmpaddr6']['default_setter'] = regsetter
-    schema_yaml['pmpaddr7']['default_setter'] = regsetter
-    schema_yaml['pmpaddr8']['default_setter'] = regsetter
-    schema_yaml['pmpaddr9']['default_setter'] = regsetter
-    schema_yaml['pmpaddr10']['default_setter'] = regsetter
-    schema_yaml['pmpaddr11']['default_setter'] = regsetter
-    schema_yaml['pmpaddr12']['default_setter'] = regsetter
-    schema_yaml['pmpaddr13']['default_setter'] = regsetter
-    schema_yaml['pmpaddr14']['default_setter'] = regsetter
-    schema_yaml['pmpaddr15']['default_setter'] = regsetter
-    schema_yaml['pmpaddr16']['default_setter'] = regsetter
-    schema_yaml['pmpaddr17']['default_setter'] = regsetter
-    schema_yaml['pmpaddr18']['default_setter'] = regsetter
-    schema_yaml['pmpaddr19']['default_setter'] = regsetter
-    schema_yaml['pmpaddr20']['default_setter'] = regsetter
-    schema_yaml['pmpaddr21']['default_setter'] = regsetter
-    schema_yaml['pmpaddr22']['default_setter'] = regsetter
-    schema_yaml['pmpaddr23']['default_setter'] = regsetter
-    schema_yaml['pmpaddr24']['default_setter'] = regsetter
-    schema_yaml['pmpaddr25']['default_setter'] = regsetter
-    schema_yaml['pmpaddr26']['default_setter'] = regsetter
-    schema_yaml['pmpaddr27']['default_setter'] = regsetter
-    schema_yaml['pmpaddr28']['default_setter'] = regsetter
-    schema_yaml['pmpaddr29']['default_setter'] = regsetter
-    schema_yaml['pmpaddr30']['default_setter'] = regsetter
-    schema_yaml['pmpaddr31']['default_setter'] = regsetter
-    schema_yaml['pmpaddr32']['default_setter'] = regsetter
-    schema_yaml['pmpaddr33']['default_setter'] = regsetter
-    schema_yaml['pmpaddr34']['default_setter'] = regsetter
-    schema_yaml['pmpaddr35']['default_setter'] = regsetter
-    schema_yaml['pmpaddr36']['default_setter'] = regsetter
-    schema_yaml['pmpaddr37']['default_setter'] = regsetter
-    schema_yaml['pmpaddr38']['default_setter'] = regsetter
-    schema_yaml['pmpaddr39']['default_setter'] = regsetter
-    schema_yaml['pmpaddr40']['default_setter'] = regsetter
-    schema_yaml['pmpaddr41']['default_setter'] = regsetter
-    schema_yaml['pmpaddr42']['default_setter'] = regsetter
-    schema_yaml['pmpaddr43']['default_setter'] = regsetter
-    schema_yaml['pmpaddr44']['default_setter'] = regsetter
-    schema_yaml['pmpaddr45']['default_setter'] = regsetter
-    schema_yaml['pmpaddr46']['default_setter'] = regsetter
-    schema_yaml['pmpaddr47']['default_setter'] = regsetter
-    schema_yaml['pmpaddr48']['default_setter'] = regsetter
-    schema_yaml['pmpaddr49']['default_setter'] = regsetter
-    schema_yaml['pmpaddr50']['default_setter'] = regsetter
-    schema_yaml['pmpaddr51']['default_setter'] = regsetter
-    schema_yaml['pmpaddr52']['default_setter'] = regsetter
-    schema_yaml['pmpaddr53']['default_setter'] = regsetter
-    schema_yaml['pmpaddr54']['default_setter'] = regsetter
-    schema_yaml['pmpaddr55']['default_setter'] = regsetter
-    schema_yaml['pmpaddr56']['default_setter'] = regsetter
-    schema_yaml['pmpaddr57']['default_setter'] = regsetter
-    schema_yaml['pmpaddr58']['default_setter'] = regsetter
-    schema_yaml['pmpaddr59']['default_setter'] = regsetter
-    schema_yaml['pmpaddr60']['default_setter'] = regsetter
-    schema_yaml['pmpaddr61']['default_setter'] = regsetter
-    schema_yaml['pmpaddr62']['default_setter'] = regsetter
-    schema_yaml['pmpaddr63']['default_setter'] = regsetter
+    schema_yaml['pmpcfg0']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg1']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg2']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg3']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg4']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg5']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg6']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg7']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg8']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg9']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg10']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg11']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg12']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg13']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg14']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg15']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpaddr0']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr1']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr2']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr3']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr4']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr5']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr6']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr7']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr8']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr9']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr10']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr11']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr12']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr13']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr14']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr15']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr16']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr17']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr18']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr19']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr20']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr21']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr22']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr23']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr24']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr25']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr26']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr27']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr28']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr29']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr30']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr31']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr32']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr33']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr34']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr35']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr36']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr37']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr38']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr39']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr40']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr41']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr42']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr43']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr44']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr45']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr46']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr47']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr48']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr49']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr50']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr51']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr52']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr53']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr54']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr55']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr56']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr57']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr58']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr59']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr60']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr61']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr62']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr63']['default_setter'] = pmpregsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter
