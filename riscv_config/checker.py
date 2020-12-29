@@ -937,12 +937,12 @@ def check_pmp(spec, logging = False):
             if content['rv64']['accessible'] :
                 for subfield in content['rv64']['fields']:
                  index = int(re.findall('\d+',subfield)[0])
-                 if not spec['pmpaddr'+str(index)]['rv64']['accessible']:
+                 if content['rv64'][subfield]['implemented'] and not spec['pmpaddr'+str(index)]['rv64']['accessible']:
                     error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
             if content['rv32']['accessible'] :
                 for subfield in content['rv32']['fields']:
                  index = int(re.findall('\d+',subfield)[0])
-                 if not spec['pmpaddr'+str(index)]['rv32']['accessible']:
+                 if content['rv32'][subfield]['implemented'] and not spec['pmpaddr'+str(index)]['rv32']['accessible']:
                     error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
         if error:
             errors[csrname] = error
