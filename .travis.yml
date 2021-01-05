@@ -10,6 +10,7 @@ script:
   - pip install -r requirements.txt
   - make latexpdf
   - cd ../
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then pip install idna==2.5; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then python setup.py sdist; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then python -m twine upload --username $pypiusername --password $pypipassword dist/*; fi
 before_deploy:
