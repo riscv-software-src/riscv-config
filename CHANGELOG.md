@@ -4,9 +4,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## 2.6.0 - 2021-1-5
 ### Added
-- Added custom csr yaml facility
+- Added support for custom csr yaml
+- Added new nodes in isa_schema: pmp_granularity and physical_addr_sz
 - Checks for pmp, counters and custom csrs
 - medeleg, mideleg check for S or N extension
+- updated the warl syntax slightly for easier parsing.
 
 ### Changed
 - fixed warl parsing and islegal function to check reset values 
