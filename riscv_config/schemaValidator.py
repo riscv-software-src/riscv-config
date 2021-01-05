@@ -24,6 +24,13 @@ class schemaValidator(Validator):
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
 
+    def _check_with_phy_addr(self, field, value):
+        if rv32 and value > 34:
+            self._error(field, "Physical address size should not exceed 34 for RV32")
+        if rv64 and value > 56:
+            self._error(field, "Physical address size should not exceed 56 for RV64")
+
+
     def _check_with_cannot_be_false_rv64(self, field, value):
         ''' Functions ensures that the field cannot be False in rv64 mode'''
         if rv64 and not value:

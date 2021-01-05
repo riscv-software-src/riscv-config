@@ -159,12 +159,12 @@ Following is an example of how a user can define the mtvec csr in the input ISA 
         warl: 
           dependency_fields: [mtvec::mode]
           legal:
-            - "[0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
-            - "[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
+            - "mode[1:0] in [0] -> base[29:0] in [0x20000000, 0x20004000]"             # can take only 2 fixed values in direct mode.
+            - "mode[1:0] in [1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]" # 256 byte aligned values only in vectored mode.
           wr_illegal:
-            - "[0] -> Unchanged"
-            - "[1] wr_val in [0x2000000:0x4000000] -> 0x2000000"
-            - "[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
+            - "mode[1:0] in [0] -> Unchanged"
+            - "mode[1:0] in [1] and wr_val in [0x2000000:0x4000000] -> 0x2000000"
+            - "mode[1:0] in [1] and wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged"
     mode:
       implemented: true
       type:                             
@@ -193,12 +193,12 @@ above user-input:
             warl:
               dependency_fields: [mtvec::mode]
               legal:
-              - '[0] -> base[29:0] in [0x20000000, 0x20004000]'               # can take only 2 fixed values in direct mode.
-              - '[1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]'   # 256 byte aligned values only in vectored mode.
+              - 'mode[1:0] in [0] -> base[29:0] in [0x20000000, 0x20004000]'               # can take only 2 fixed values in direct mode.
+              - 'mode[1:0] in [1] -> base[29:6] in [0x000000:0xF00000] base[5:0] in [0x00]'   # 256 byte aligned values only in vectored mode.
               wr_illegal:
-              - '[0] -> Unchanged'
-              - '[1] wr_val in [0x2000000:0x4000000] -> 0x2000000'
-              - '[1] wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged'
+              - 'mode[1:0] in [0] -> Unchanged'
+              - 'mode[1:0] in [1] and wr_val in [0x2000000:0x4000000] -> 0x2000000'
+              - 'mode[1:0] in [1] and wr_val in [0x4000001:0x3FFFFFFF] -> Unchanged'
           description: Vector base address.
           shadow: none
           msb: 31

@@ -1,6 +1,9 @@
 import re
 import os
+import logging
+import riscv_config.utils as utils
 
+logger = logging.getLogger(__name__)
 
 class warl_interpreter():
     global val
@@ -9,7 +12,11 @@ class warl_interpreter():
 
     def __init__(self, warl):
         ''' the warl_description in the yaml is given as input to the constructor '''
-        self.val = warl
+        self.warl = warl
+        self.dependencies = warl['dependency_fields']
+        self.exp  = re.compile('(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(?P<csr_op>.*?)\s*\[(?P<csr_vals>.*?)\]')
+        self.rexp = re.compile('(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(in|bitmask)\s*\s*\[(?P<csr_vals>.*?)\]')
+        self.rexp_dependencies = re.compile('(?P<dep_csr>.*?)\[(?P<dep_ind>.*?)\]\s*(in|bitmask)\s*\[(?P<dep_vals>.*?)\]\s*->\s*(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(in|bitmask)\s*\s*\[(?P<csr_vals>.*?)\]')
 
     def prevsum(self, i, k):
         sump = 0
@@ -17,170 +24,125 @@ class warl_interpreter():
             sump = sump + k[j]
         return sump
 
-    def dependencies(self):
-        dp = []
-        for i in self.val['dependency_fields']:
-            dp.append(i)
-        self.dep_val = dp
-        return dp
-
     def islegal(self, value, dependency_vals=[]):
-        '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
-        values of the corresponding dependency fields and checks whether the range of
-        values is legal. Returns true if its a legal range and false otherwise.
-        '''
-        flag = 0
-        hexa = "0x"
-        xf = []
-        x = []
-        ch = []
-        r1 = []
-        r2 = []
-        z = []
-        l1 = []
-        ch2 = []
-        k = []
-        cha = []
-        flag1 = 0
-        v = ""
-        j = 0
-        if self.dep_val != [] and dependency_vals != []:
-            for i in range(len(self.val['legal'])):
-                mode = re.findall('\[(\d)\]\s*->\s*', self.val['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                    if dependency_vals[i1] == int(mode[i1]):
-                        j = i
-                        flag1 = 1
+        is_legal = False
+        logger.debug('Checking for isLegal for WARL: \n\t' +
+                utils.pretty_print_yaml(self.warl) + '\n With following args:'\
+                        + 'val : ' + str(value) + ' dep_vals :'+
+                        str(dependency_vals))
+        if not self.dependencies: # no dependencies in the warl
+            for legal_str in self.warl['legal']: # iterate over every legal str
+                search = self.exp.findall(legal_str)
+                if search is None:
+                    logger.error('Warl legal string is wrong:' + legal_str)
+                    raise SystemExit
+                part_legal = False
+                for part in search:
+                    (csr, csr_ind, csr_op, csr_vals) = part
+                    msb = int(csr_ind.split(':')[0])
+                    lsb = int(csr_ind.split(':')[-1])
+                    bitmask = True if 'bitmask' in csr_op else False
+                    trunc_val = int(bin(value)[2:].zfill(64)[::-1][lsb:msb+1][::-1],base=2)
+
+                    if not bitmask: # if its not a bitmask
+                        if ":" in csr_vals: # range is specified
+                            [base, bound] = csr_vals.split(':')
+                            if 'x' in base:
+                                base = int(base,16)
+                            if 'x' in bound:
+                                bound = int(bound,16)
+                            if trunc_val >= base and trunc_val <= bound: # check legal range
+                                part_legal = True
+                        else:
+                            l_vals = csr_vals.split(',')
+                            legal_vals = []
+                            for i in l_vals : 
+                                legal_vals.append(int(i,16))
+                            if trunc_val in legal_vals:
+                                part_legal = True
+                    else: # in case of bitmask there are no illegal values
+                        part_legal = True
+                    if not part_legal:
                         break
-            if flag1 == 0:
-                print(self.dep_val, dependency_vals)
-                print("Dependency vals do not match")
-                exit()
-        else:
-            if len(self.val['legal']) != 1:
-                print("There cannot be more than one legal value")
-                exit()
-            else:
-                j = 0
-        inp1 = self.val['legal'][j]
-        nodename = re.findall(r'(?:\[.+?\] -> )*\s*(.+?)\[.+?\]\s*in\s*\[.+?\]',
-                              inp1)
-        nodename = list(dict.fromkeys(nodename))
-        if (len(nodename) == 2 and not "bitmask" in nodename.values()):
-            print('Wrong Syntax: Node name is different')
-            print(nodename)
-            exit()
-        if not "bitmask" in inp1:
-            splits = re.findall(
-                r'(?:{0}\[(\d.?)+:(\d.?)\])\s*in\s*\[(.+?)\]'.format(
-                    nodename[0]), inp1)
-            for i in range(len(splits)):
-                a = int(splits[i][0])
-                b = int(splits[i][1])
-                ch.append(list(range(b, a + 1)))
-                z.append(a - b + 1)
-                if ":" in splits[i][2]:
-                    y = re.split("\:", splits[i][2])
-                    r1.append(int(y[0], 16))  #starting ranges
-                    r2.append(int(y[1], 16))  #ending ranges
-                elif "," in splits[i][2]:
-                    y = re.split("\,", splits[i][2])
-                    for a in y:
-                        l1.append(int(a, 16))
-                    r1.append(l1)
-                    r2.append(l1)
+                if part_legal:
+                    is_legal = True
+        else: # there are dependencies
+            if len(self.dependencies) != len(dependency_vals):
+                logger.error('length of dependency_vals not the same as dependencies')
+                raise SystemExit
+            leaf_dependencies = []
+            for d in self.dependencies:
+                leaf_dependencies.append(d.split('::')[-1])
+            for legal_str in self.warl['legal']: # iterate over legal str
+                dep_str = legal_str.split('->')[0]
+                csr_str = legal_str.split('->')[1]
+                csr_search = self.exp.findall(csr_str)
+                dep_search = self.exp.search(dep_str)
+                if csr_search is None or dep_search  is None:
+                    logger.error('Warl legal string is wrong :\n\t' + legal_str)
+                    raise SystemExit
+                dep_csr = dep_search.group('csr')
+                dep_ind = dep_search.group('csr_ind')
+                dep_vals = dep_search.group('csr_vals')
+                dep_bitmask = True if 'bitmask' in legal_str.split('->')[0] else False
+
+                if dep_csr not in leaf_dependencies:
+                    logger.error(\
+            'Found a dependency in the legal_str which is not present in the dependency_fields of the warl:\n\n' + \
+                    utils.pretty_print_yaml(self.warl))
+                    raise SystemExit
+                dep_satified = False
+                recvd_val = dependency_vals[leaf_dependencies.index(dep_csr)]
+
+                # check if the dependency value is satisfied.
+                if ":" in dep_vals: # range is specified
+                    [base, bound] = dep_vals.split(':')
+                    if 'x' in base:
+                        base = int(base,16)
+                    if 'x' in bound:
+                        bound = int(bound,16)
+                    if recvd_val >= base and recvd_val <= bound: # check legal range
+                        dep_satified = True
                 else:
-                    r1.append(int(splits[i][2], 16))
-                    r2.append(int(splits[i][2], 16))
-            for i in range(len(splits)):
-                ch2.append(int(splits[i][0]))
-                ch2.append(int(splits[i][1]))
+                    l_vals = dep_vals.split(',')
+                    legal_vals = []
+                    for i in l_vals : 
+                        legal_vals.append(int(i,16))
+                    if recvd_val in legal_vals:
+                        dep_satified = True
+                
+                part_legal = False
+                for part in csr_search:
+                    (csr, csr_ind, csr_op, csr_vals) = part
+                    msb = int(csr_ind.split(':')[0])
+                    lsb = int(csr_ind.split(':')[-1])
+                    bitmask = True if 'bitmask' in csr_op else False
+                    trunc_val = int(bin(value)[2:].zfill(64)[::-1][lsb:msb+1][::-1],base=2)
 
-            for i in range(len(ch)):
-                cha = cha + ch[i]
-            for i in range(min(ch2), max(ch2) + 1):
-                if i not in cha:
-                    print("Bits missing error ")
-                    exit()
-            for i in range(len(ch)):
-                for j in range(i + 1, len(ch)):
-                    a_set = set(ch[i])
-                    b_set = set(ch[j])
-                    if (a_set & b_set):
-                        print("Overlapping error")
-                        exit()
-            for i in z:
-                if (i % 4 == 0):
-                    k.append(int(i / 4))
-                else:
-                    k.append(int(i / 4) + 1)
-            for i in range(0, len(k)):
-                if ":" in splits[i][2]:
-                    check = re.split(":", splits[i][2])
-                    if len(check[0]) - 2 > k[i] or len(check[1]) - 2 > k[i]:
-                        print("invalid range (given range exceeds)")
-                        exit()
-                elif isinstance(r1[i], list) == True:
-                    for p in range(len(r1[i])):
-                        if len(hex(r1[i][p])) - 2 > k[i]:
-                            print("invalid comma seperated (exceeding)")
-                            exit()
-                else:
-                    if len(splits[i][2]) - 2 > k[i]:
-                        print("invalid fixed value (exceeding)")
-                        exit()
-
-            sum = 0
-            for i in range(len(k)):
-                sum = sum + k[i]
-
-            self.bitsum = sum
-
-            if (len(value) > sum):
-                return False
-            elif len(value) < sum:
-                for i in range(sum - len(value)):
-                    v = v + "0"
-            value = v + value
-            for i in range(len(k)):
-                if i == 0:
-                    x.append(value[0:k[i]])
-                else:
-                    x.append(value[self.prevsum(i - 1, k):self.prevsum(i, k)])
-
-            for i in range(len(r1)):
-                if isinstance(r1[i], list) == False:
-                    if (int(x[i], 16) in range(r1[i], r2[i] + 1)):
-                        flag = 1
-                    else:
-                        flag = 0
+                    if not bitmask: # if its not a bitmask
+                        if ":" in csr_vals: # range is specified
+                            [base, bound] = csr_vals.split(':')
+                            if 'x' in base:
+                                base = int(base,16)
+                            if 'x' in bound:
+                                bound = int(bound,16)
+                            if trunc_val >= base and trunc_val <= bound: # check legal range
+                                part_legal = True
+                        else:
+                            l_vals = csr_vals.split(',')
+                            legal_vals = []
+                            for i in l_vals : 
+                                legal_vals.append(int(i,16))
+                            if trunc_val in legal_vals:
+                                part_legal = True
+                    else: # in case of bitmask there are no illegal values
+                        part_legal = True
+                    if not part_legal:
                         break
-                else:
-                    if int(x[i], 16) in r1[i]:
-                        flag = 1
-                    else:
-                        flag = 0
-                        break
-
-        else:
-            x = re.findall(
-                r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"), inp1)
-            z = re.findall(
-                r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"), inp1)
-            y1 = re.split("\,", x[0])
-            bitmask = int(y1[0], 16)
-            fixedval = int(y1[1], 16)
-            currval = int(value, 16)
-            legal = (currval & bitmask) | (~bitmask & fixedval)
-            if (hex(currval) == hex(legal)):
-                flag = 1
-            else:
-                flag = 0
-
-        if flag == 1:
-            return True
-        else:
-            return False
+                if part_legal and dep_satified:
+                    is_legal = True
+                
+        return is_legal
 
     def update(self, curr_val, wr_val, dependency_vals=[]):
         ''' The function takes the current value, write value and an optional list(optional incase there are no dependencies) containing the
@@ -193,9 +155,9 @@ class warl_interpreter():
         flag3 = 0
         flag4 = 0
         j = 0
-        if self.dep_val != [] and dependency_vals != []:
-            for i in range(len(self.val['legal'])):
-                mode1 = re.findall('\[(\d)\]\s*->\s*', self.val['legal'][i])
+        if self.dependencies != [] and dependency_vals != []:
+            for i in range(len(self.warl['legal'])):
+                mode1 = re.findall('\[(\d)\]\s*->\s*', self.warl['legal'][i])
                 for i1 in range(len(dependency_vals)):
                     if dependency_vals[i1] == int(mode1[i1]):
                         j = i
@@ -205,27 +167,27 @@ class warl_interpreter():
                 print("Dependency vals do not match")
                 exit()
         else:
-            if len(self.val['legal']) != 1:
+            if len(self.warl['legal']) != 1:
                 print("There cannot be more than one legal value")
                 exit()
             else:
                 j = 0
-        inp1 = self.val['legal'][j]
+        inp1 = self.warl['legal'][j]
         flag1 = 0
-        if self.dep_val != [] and dependency_vals != []:
-            for i in range(len(self.val['legal'])):
-                if "bitmask" in self.val['legal'][i]:
+        if self.dependencies != [] and dependency_vals != []:
+            for i in range(len(self.warl['legal'])):
+                if "bitmask" in self.warl['legal'][i]:
                     flag4 = 1
                 else:
                     flag4 = 0
                     break
 
             if flag4 == 0 and not "bitmask" in inp1:
-                for i in range(len(self.val['wr_illegal'])):
+                for i in range(len(self.warl['wr_illegal'])):
                     mode = re.findall('\[(\d)\]\s*.*->\s*',
-                                      self.val['wr_illegal'][i])
+                                      self.warl['wr_illegal'][i])
                     op = re.findall(r'in\s*\[(.*?)\]',
-                                    self.val['wr_illegal'][i])
+                                    self.warl['wr_illegal'][i])
                     if op != []:
                         z = re.split("\:", op[0])
                     for i1 in range(len(dependency_vals)):
@@ -243,16 +205,16 @@ class warl_interpreter():
                                 break
                     if flag1 == 1:
                         break
-                inp = self.val['wr_illegal'][j]
+                inp = self.warl['wr_illegal'][j]
             else:
                 inp = "no value"
                 flag1 = 1
 
-        elif self.dep_val == [] and dependency_vals == [] and not "bitmask" in self.val[
+        elif self.dependencies == [] and dependency_vals == [] and not "bitmask" in self.warl[
                 'legal'][0]:
-            for i in range(len(self.val['wr_illegal'])):
+            for i in range(len(self.warl['wr_illegal'])):
                 op = re.findall(r'\s*wr_val\s*in\s*\[(.*?)\]',
-                                self.val['wr_illegal'][i])
+                                self.warl['wr_illegal'][i])
                 if op != []:
                     z = re.split("\:", op[0])
                     if int(wr_val, 16) in range(int(z[0], 16), int(z[1], 16)):
@@ -265,10 +227,10 @@ class warl_interpreter():
                     flag1 = 1
                     break
 
-            inp = self.val['wr_illegal'][j]
+            inp = self.warl['wr_illegal'][j]
 
-        elif self.dep_val != [] and dependency_vals != [] and len(
-                self.val['legal']) == 1 and "bitmask" in self.val['legal'][0]:
+        elif self.dependencies != [] and dependency_vals != [] and len(
+                self.warl['legal']) == 1 and "bitmask" in self.warl['legal'][0]:
             flag1 = 1
 
         if flag1 == 0 and dependency_vals != []:
@@ -405,9 +367,9 @@ class warl_interpreter():
         '''
         flag1 = 0
         j = 0
-        if self.dep_val != [] and dependency_vals != []:
-            for i in range(len(self.val['legal'])):
-                mode = re.findall('\[(\d)\]\s*->\s*', self.val['legal'][i])
+        if self.dependencies != [] and dependency_vals != []:
+            for i in range(len(self.warl['legal'])):
+                mode = re.findall('\[(\d)\]\s*->\s*', self.warl['legal'][i])
                 for i1 in range(len(dependency_vals)):
                     if dependency_vals[i1] == int(mode[i1]):
                         j = i
@@ -419,12 +381,12 @@ class warl_interpreter():
                 print("Dependency vals do not match")
                 exit()
         else:
-            if len(self.val['legal']) != 1:
+            if len(self.warl['legal']) != 1:
                 print("There cannot be more than one legal value")
                 exit()
             else:
                 j = 0
-        inp = self.val['legal'][j]
+        inp = self.warl['legal'][j]
         s = re.findall(r'in\s*\[(.*?)\]', inp)
         a = []
         b = []
@@ -449,3 +411,25 @@ class warl_interpreter():
             return o
         else:
             return a
+#str1=\
+#'''
+#dependency_fields: []
+#legal:
+#  - "extensions[7:4] in [1,3,5] extensions[3:0] in [0x0:0xF]"
+#wr_illegal:
+#  - "Unchanged"
+#'''
+#
+#str2=\
+#'''
+#dependency_fields: [pmpcfg0]
+#legal:
+#  - "pmpcfg0[0] in [0] -> pmp3cfg[7:4] in [1,3,5] pmp3cfg[3:0] [0x00:0xF]"
+#wr_illegal:
+#  - "Unchanged"
+#'''
+#
+#node = yaml.load(str2)
+#warl = warl_interpreter(node)
+#print(str(warl.islegal(0x302, [0])))
+#

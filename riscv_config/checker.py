@@ -1,6 +1,7 @@
 import os
 import logging
 import copy
+import re
 
 from cerberus import Validator
 
@@ -137,8 +138,32 @@ def regset():
     if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
     return temp
+    
+def pmpregset():
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}} 
+    try:   
+     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
+        temp['rv32']['accessible'] = True
+    except:
+        temp['rv32']['accessible'] = False
+    try: 
+     if 64 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv64']['accessible']:
+        temp['rv64']['accessible'] = True
+    except:
+        temp['rv64']['accessible'] = False
+    return temp    
 
-
+def pmpcounterhset():
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    try: 
+     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
+        temp['rv32']['accessible'] = True
+    except:
+        temp['rv32']['accessible'] = False
+    return temp
+    
 def counterhset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
@@ -150,8 +175,9 @@ def counterhset():
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
-
+    pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
+    pmpcounthsetter = lambda doc: pmpcounterhset()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
@@ -312,86 +338,86 @@ def add_def_setters(schema_yaml):
     schema_yaml['minstret']['default_setter'] = regsetter
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg0']['default_setter'] = regsetter
-    schema_yaml['pmpcfg1']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg2']['default_setter'] = regsetter
-    schema_yaml['pmpcfg3']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg4']['default_setter'] = regsetter
-    schema_yaml['pmpcfg5']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg6']['default_setter'] = regsetter
-    schema_yaml['pmpcfg7']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg8']['default_setter'] = regsetter
-    schema_yaml['pmpcfg9']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg10']['default_setter'] = regsetter
-    schema_yaml['pmpcfg11']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg12']['default_setter'] = regsetter
-    schema_yaml['pmpcfg13']['default_setter'] = counthsetter
-    schema_yaml['pmpcfg14']['default_setter'] = regsetter
-    schema_yaml['pmpcfg15']['default_setter'] = counthsetter
-    schema_yaml['pmpaddr0']['default_setter'] = regsetter
-    schema_yaml['pmpaddr1']['default_setter'] = regsetter
-    schema_yaml['pmpaddr2']['default_setter'] = regsetter
-    schema_yaml['pmpaddr3']['default_setter'] = regsetter
-    schema_yaml['pmpaddr4']['default_setter'] = regsetter
-    schema_yaml['pmpaddr5']['default_setter'] = regsetter
-    schema_yaml['pmpaddr6']['default_setter'] = regsetter
-    schema_yaml['pmpaddr7']['default_setter'] = regsetter
-    schema_yaml['pmpaddr8']['default_setter'] = regsetter
-    schema_yaml['pmpaddr9']['default_setter'] = regsetter
-    schema_yaml['pmpaddr10']['default_setter'] = regsetter
-    schema_yaml['pmpaddr11']['default_setter'] = regsetter
-    schema_yaml['pmpaddr12']['default_setter'] = regsetter
-    schema_yaml['pmpaddr13']['default_setter'] = regsetter
-    schema_yaml['pmpaddr14']['default_setter'] = regsetter
-    schema_yaml['pmpaddr15']['default_setter'] = regsetter
-    schema_yaml['pmpaddr16']['default_setter'] = regsetter
-    schema_yaml['pmpaddr17']['default_setter'] = regsetter
-    schema_yaml['pmpaddr18']['default_setter'] = regsetter
-    schema_yaml['pmpaddr19']['default_setter'] = regsetter
-    schema_yaml['pmpaddr20']['default_setter'] = regsetter
-    schema_yaml['pmpaddr21']['default_setter'] = regsetter
-    schema_yaml['pmpaddr22']['default_setter'] = regsetter
-    schema_yaml['pmpaddr23']['default_setter'] = regsetter
-    schema_yaml['pmpaddr24']['default_setter'] = regsetter
-    schema_yaml['pmpaddr25']['default_setter'] = regsetter
-    schema_yaml['pmpaddr26']['default_setter'] = regsetter
-    schema_yaml['pmpaddr27']['default_setter'] = regsetter
-    schema_yaml['pmpaddr28']['default_setter'] = regsetter
-    schema_yaml['pmpaddr29']['default_setter'] = regsetter
-    schema_yaml['pmpaddr30']['default_setter'] = regsetter
-    schema_yaml['pmpaddr31']['default_setter'] = regsetter
-    schema_yaml['pmpaddr32']['default_setter'] = regsetter
-    schema_yaml['pmpaddr33']['default_setter'] = regsetter
-    schema_yaml['pmpaddr34']['default_setter'] = regsetter
-    schema_yaml['pmpaddr35']['default_setter'] = regsetter
-    schema_yaml['pmpaddr36']['default_setter'] = regsetter
-    schema_yaml['pmpaddr37']['default_setter'] = regsetter
-    schema_yaml['pmpaddr38']['default_setter'] = regsetter
-    schema_yaml['pmpaddr39']['default_setter'] = regsetter
-    schema_yaml['pmpaddr40']['default_setter'] = regsetter
-    schema_yaml['pmpaddr41']['default_setter'] = regsetter
-    schema_yaml['pmpaddr42']['default_setter'] = regsetter
-    schema_yaml['pmpaddr43']['default_setter'] = regsetter
-    schema_yaml['pmpaddr44']['default_setter'] = regsetter
-    schema_yaml['pmpaddr45']['default_setter'] = regsetter
-    schema_yaml['pmpaddr46']['default_setter'] = regsetter
-    schema_yaml['pmpaddr47']['default_setter'] = regsetter
-    schema_yaml['pmpaddr48']['default_setter'] = regsetter
-    schema_yaml['pmpaddr49']['default_setter'] = regsetter
-    schema_yaml['pmpaddr50']['default_setter'] = regsetter
-    schema_yaml['pmpaddr51']['default_setter'] = regsetter
-    schema_yaml['pmpaddr52']['default_setter'] = regsetter
-    schema_yaml['pmpaddr53']['default_setter'] = regsetter
-    schema_yaml['pmpaddr54']['default_setter'] = regsetter
-    schema_yaml['pmpaddr55']['default_setter'] = regsetter
-    schema_yaml['pmpaddr56']['default_setter'] = regsetter
-    schema_yaml['pmpaddr57']['default_setter'] = regsetter
-    schema_yaml['pmpaddr58']['default_setter'] = regsetter
-    schema_yaml['pmpaddr59']['default_setter'] = regsetter
-    schema_yaml['pmpaddr60']['default_setter'] = regsetter
-    schema_yaml['pmpaddr61']['default_setter'] = regsetter
-    schema_yaml['pmpaddr62']['default_setter'] = regsetter
-    schema_yaml['pmpaddr63']['default_setter'] = regsetter
+    schema_yaml['pmpcfg0']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg1']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg2']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg3']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg4']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg5']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg6']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg7']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg8']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg9']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg10']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg11']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg12']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg13']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg14']['default_setter'] = pmpregsetter
+    schema_yaml['pmpcfg15']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpaddr0']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr1']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr2']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr3']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr4']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr5']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr6']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr7']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr8']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr9']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr10']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr11']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr12']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr13']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr14']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr15']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr16']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr17']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr18']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr19']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr20']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr21']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr22']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr23']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr24']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr25']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr26']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr27']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr28']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr29']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr30']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr31']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr32']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr33']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr34']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr35']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr36']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr37']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr38']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr39']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr40']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr41']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr42']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr43']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr44']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr45']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr46']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr47']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr48']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr49']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr50']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr51']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr52']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr53']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr54']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr55']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr56']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr57']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr58']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr59']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr60']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr61']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr62']['default_setter'] = pmpregsetter
+    schema_yaml['pmpaddr63']['default_setter'] = pmpregsetter
 
     # event counters
     schema_yaml['mhpmevent3']['default_setter'] = regsetter
@@ -734,7 +760,54 @@ def get_fields(node, bitwidth):
     else:
         fields.append(bits)
         return fields
-
+        
+def check_fields(spec):
+    errors = {} 
+    for csr, node, in spec.items() :
+         fault_node = node
+         error=[]
+         if node['rv32']['accessible']:
+                node['rv32']['fields'] = get_fields(node['rv32'], 32)
+         if node['rv64']['accessible']:
+                node['rv64']['fields'] = get_fields(node['rv64'], 64)
+         fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(node.keys()) )
+         if fields:
+            error.append("The fields " + "".join(fields) + " are missing")
+         if node['rv32']['accessible']:
+            if any(type(e)==list for e in node['rv32']['fields']): 
+             sub_fields = node['rv32']['fields'][:-1]
+            else:
+             sub_fields = node['rv32']['fields']
+            if not sub_fields :
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'fields', 'type']) - set(node['rv32'].keys()) )    
+             if subfields:
+                error.append("The subfield " + "".join(subfields) + " are not present")         
+            else:
+              for x in sub_fields :
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv32'][x].keys()) )
+                if subfields :                   
+                   error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
+         if node['rv64']['accessible']:            
+            if any(type(e)==list for e in node['rv64']['fields']): 
+             sub_fields = node['rv64']['fields'][:-1]
+            else:
+             sub_fields = node['rv64']['fields']
+            if not sub_fields :
+             subfields = list(set(['msb', 'lsb', 'accessible', 'fields', 'shadow', 'type']) - set(node['rv64'].keys()))
+             if subfields:
+                error.append("The subfield " + "".join(subfields) + " are not present")
+            else:
+              for x in sub_fields :
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv64'][x].keys()) )
+                if subfields :                   
+                   error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
+         if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
+             error.append('Address is not in custom csr ranges')
+         if (bin(node['address'])[2:][::-1][8:10] == '00' and node['priv_mode'] != 'U' ) or (bin(node['address'])[2:][::-1][8:10] == '01' and node['priv_mode'] != 'S' ) or (bin(node['address'])[2:][::-1][8:10] == '11' and node['priv_mode'] != 'M') :
+            error.append('Privilege does not match with the address')
+         if error:
+            errors[csr] = error
+    return errors 
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
     source'''
@@ -795,6 +868,88 @@ def check_shadows(spec, logging = False):
         if error:
             errors[csr] = error
     return errors
+
+def check_mhpm(spec, logging = False):
+    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
+    source'''
+    errors = {}
+    for csrname, content, in spec.items():
+        error = []
+        if 'mhpmcounter' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :
+                if not spec['mhpmevent'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessible")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmevent'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + " counter doesn't have the corresponding mhpmevent register accessible")
+        if 'mhpmevent' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :
+                if not spec['mhpmcounter'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessible")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmcounter'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter register accessible")
+            if content['rv32']['accessible'] :
+                if not spec['mhpmcounter'+str(index)+'h']['rv32']['accessible']:
+                    error.append(csrname + " event reg doesn't have the corresponding mhpmcounter 'h' counterpart register accessible")
+        if error:
+            errors[csrname] = error
+    return errors
+  
+def check_pmp(spec, logging = False):
+    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
+    source'''
+    errors = {}
+    for csrname, content, in spec.items():
+        error = []
+        Grain=int(spec['pmp_granularity'])
+        if 'pmpaddr' in csrname:
+            index = int(re.findall('\d+',csrname.lower())[0])
+            if content['rv64']['accessible'] :                
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(64))[::-1] 
+                reset_val_cfg  = (bin(spec['pmpcfg'+str(int(int(index/8)*2))]['reset-val'])[2:].zfill(64))[::-1]
+                if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['accessible']:
+                    error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
+                if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['pmp'+str(index)+'cfg']['implemented'] :
+                    error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+                if reset_val_cfg[8*(index-(int(index/8)*8)) + 4] == '1' and Grain >=2 :     #NAPOT, Bit A of pmpXcfg is set
+                  if '0' in reset_val_addr[0:(Grain-1)] or (reset_val_addr[Grain-1] != '0') :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                elif Grain >= 1: #TOR
+                  if int(content['reset-val']) % (2**Grain) != 0 :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+            if content['rv32']['accessible'] :
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(32))[::-1] 
+                reset_val_cfg  = (bin(spec['pmpcfg'+str(int(index/4))]['reset-val'])[2:].zfill(32))[::-1]
+                if not spec['pmpcfg'+str(int(index/4))]['rv32']['accessible']:
+                    error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
+                if not spec['pmpcfg'+str(int(index/4))]['rv32']['pmp'+str(index)+'cfg']['implemented'] :
+                    error.append(csrname + " addr doesn't have the corresponding pmpcfg" +str(int(index/4)) + "_pmp" + str(index) +"cfg register implemented")
+                if reset_val_cfg[8*(index-(int(index/4)*4)) + 4] == '1' and Grain >=2 :     #NAPOT, Bit A of pmpXcfg is set
+                 if '0' in reset_val_addr[0:(Grain-1)] or (reset_val_addr[Grain-1] != '0') :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                elif Grain >= 1: #TOR
+                  if int(content['reset-val']) % (2**Grain) != 0 :
+                    error.append(csrname + 'reset value does not adhere with the pmp granularity')
+        if 'pmpcfg' in csrname:
+            if content['rv64']['accessible'] :
+                for subfield in content['rv64']['fields']:
+                 index = int(re.findall('\d+',subfield)[0])
+                 if content['rv64'][subfield]['implemented'] and not spec['pmpaddr'+str(index)]['rv64']['accessible']:
+                    error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
+            if content['rv32']['accessible'] :
+                for subfield in content['rv32']['fields']:
+                 index = int(re.findall('\d+',subfield)[0])
+                 if content['rv32'][subfield]['implemented'] and not spec['pmpaddr'+str(index)]['rv32']['accessible']:
+                    error.append(csrname + "_" + subfield + " doesn't have the corresponding pmpaddr accessible")
+        if error:
+            errors[csrname] = error
+    return errors
+   
+
+
 
 
 
@@ -862,7 +1017,7 @@ def check_reset_fill_fields(spec, logging= False):
                             pass
                         elif "warl" in keys:
                             warl = (warl_interpreter(desc['warl']))
-                            deps = warl.dependencies()
+                            deps = warl.dependencies
                             dep_vals = []
                             for dep in deps:
                                 reg = dep.split("::")
@@ -871,14 +1026,11 @@ def check_reset_fill_fields(spec, logging= False):
                                 else:
                                     bin_str = bin(spec[reg[0]]
                                                   ['reset-val'])[2:].zfill(bit_len)
+                                    msb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']
+                                    lsb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']
                                     dep_vals.append(
-                                        int(bin_str[bit_len - 1 - spec[reg[0]][
-                                            'rv{}'.format(bit_len
-                                                         )][reg[1]]['msb']:bit_len -
-                                                    spec[reg[0]]['rv{}'.format(
-                                                        bit_len)][reg[1]]['lsb']],
-                                            base=2))
-                            if (warl.islegal(hex(reset_val)[2:], dep_vals) != True):
+                                        int(bin_str[::-1][lsb:msb+1][::-1], base=2))
+                            if (warl.islegal(int(reset_val), dep_vals) != True):
                                 error.append(
                                     "Reset value doesnt match the 'warl' description for the register."
                                 )
@@ -953,7 +1105,7 @@ def check_reset_fill_fields(spec, logging= False):
                                         pass
                                     elif "warl" in keys:
                                         warl = (warl_interpreter(desc['warl']))
-                                        deps = warl.dependencies()
+                                        deps = warl.dependencies
                                         dep_vals = []
                                         for dep in deps:
                                             reg = dep.split("::")
@@ -975,7 +1127,7 @@ def check_reset_fill_fields(spec, logging= False):
                                                         )][reg[1]]['lsb']],
                                                         base=2))
                                         if (warl.islegal(
-                                                hex(test_val)[2:], dep_vals) !=
+                                                int(test_val), dep_vals) !=
                                                 True):
                                             error.append(
                                                 "Reset value for " + field +
@@ -1070,6 +1222,12 @@ def check_isa_specs(isa_spec,
         errors = check_shadows(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+        errors = check_mhpm(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        errors = check_pmp(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)        
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -1081,7 +1239,60 @@ def check_isa_specs(isa_spec,
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return ifile
+    
+def check_custom_specs(custom_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
+    '''
+        Function to perform ensure that the isa and platform specifications confirm
+        to their schemas. The :py:mod:`Cerberus` module is used to validate that the
+        specifications confirm to their respective schemas.
 
+        :param isa_spec: The path to the DUT isa specification yaml file.
+
+        :param logging: A boolean to indicate whether log is to be printed.
+
+        :type logging: bool
+
+        :type isa_spec: str
+
+        :raise ValidationError: It is raised when the specifications violate the
+            schema rules. It also contains the specific errors in each of the fields.
+
+        :return: A tuple with the first entry being the absolute path to normalized isa file
+            and the second being the absolute path to the platform spec file.
+    '''
+    if logging:
+        logger.info('Custom CSR Spec')
+
+    foo = custom_spec
+    
+    # Load input YAML file
+    if logging:
+        logger.info('Loading input file: ' + str(foo))
+    master_custom_yaml = utils.load_yaml(foo, no_anchors)
+
+    outyaml = copy.deepcopy(master_custom_yaml)
+    for x in master_custom_yaml['hart_ids']:
+        if logging:
+            logger.info('Processing Hart: hart'+str(x))
+        inp_yaml = master_custom_yaml['hart'+str(x)]
+    errors = check_fields(inp_yaml)
+    if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+    outyaml['hart'+str(x)] = trim(inp_yaml)
+    file_name = os.path.split(foo)
+    file_name_split = file_name[1].split('.')
+    output_filename = os.path.join(
+        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+    cfile = output_filename
+    outfile = open(output_filename, 'w')
+    if logging:
+        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+    utils.dump_yaml(outyaml, outfile, no_anchors )
+    return cfile
+    
 def check_platform_specs(platform_spec,
                 work_dir,
                 logging=False,
