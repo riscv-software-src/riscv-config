@@ -2,6 +2,15 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.6.0 - 2021-1-5
+### Added
+- Added custom csr yaml facility
+- Checks for pmp, counters and custom csrs
+- medeleg, mideleg check for S or N extension
+
+### Changed
+- fixed warl parsing and islegal function to check reset values 
+
 ## 2.5.1 - 2020-11-6
 ### Changed
 - modified sn_check and su_check
