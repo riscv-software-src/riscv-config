@@ -46,6 +46,10 @@ def main():
             checker.check_platform_specs(os.path.abspath(args.platform_spec),
                             work_dir, 
                             True, args.no_anchors)
+        if args.custom_spec is not None:
+            checker.check_custom_specs(os.path.abspath(args.custom_spec),
+                            work_dir, 
+                            True, args.no_anchors)
     except ValidationError as msg:
         logger.error(str(msg))
         return 1

@@ -124,6 +124,12 @@ def riscv_config_cmdline_args():
                         metavar='YAML',
                         default=None,
                         help='The YAML which contains the Platfrorm specs.')
+    parser.add_argument('--custom_spec',
+                        '-cspec',
+                        type=str,
+                        metavar='YAML',
+                        default=None,
+                        help='The YAML which contains the custom csr specs.')                        
     parser.add_argument(
         '--work_dir',
         type=str,
@@ -139,3 +145,10 @@ def riscv_config_cmdline_args():
                         action='store_true',
                         help='Unroll/Disable all anchors')
     return parser
+
+def pretty_print_yaml(yaml):
+    res = ''''''
+    for line in ruamel.yaml.round_trip_dump(yaml, indent=5, block_seq_indent=3).splitlines(True):
+        res += line
+    return res
+

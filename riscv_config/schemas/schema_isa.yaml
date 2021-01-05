@@ -114,7 +114,7 @@ hart_schema:
     #   - None
 
     hw_data_misaligned_support: {type: boolean, default: false}
-
+    
     ###
     #supported_xlen
     #--------------
@@ -138,6 +138,50 @@ hart_schema:
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
       
+    ###
+    #pmp_granularity
+    #--------------
+    #
+    # **Description**: Granularity of pmps
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   pmp_granularity : 2
+    #   pmp_granularity : 4
+    #
+    # **Constraints**:
+    #
+    #   - None
+
+    pmp_granularity:
+      type: integer
+      min: 0
+      default: 0
+      
+    ###
+    #physical_addr_sz
+    #----------------
+    #
+    # **Description**: size of the physical address
+    #
+    # **Examples**:
+    #
+    # .. code-block:: yaml
+    #
+    #   physical_addr_sz : 32
+    #
+    # **Constraints**:
+    #
+    #   - None
+
+    physical_addr_sz:
+      type: integer
+      max: [56]
+      required: true
+      check_with: phy_addr
+
     schema_node:
       type: dict
       allow_unknown: false
@@ -2113,7 +2157,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
                   default: {ro_variable: True}
               default: {implemented: true}
@@ -2246,7 +2289,6 @@ hart_schema:
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
-                
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -2317,7 +2359,6 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv64_check
-        
     mie:
       type: dict
       schema:
