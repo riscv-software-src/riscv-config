@@ -14,6 +14,8 @@ class schemaValidator(Validator):
         global extensions
         global xlen
         xlen = kwargs.get('xlen')
+        global isa_string
+        isa_string = kwargs.get('isa_string')
         if 32 in xlen:
             rv32 = True
         else:
@@ -163,6 +165,14 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "U is not present(32)")
+              
+    def _check_with_s_debug_check(self, field, value):
+        global isa_string
+
+        if 'S' not in isa_string :
+          if value['ro_constant'] != 0:
+                self._error(field, "S is not present but ro constant is not hardwired to zero")
+
 
     def _check_with_su_check(self, field, value):
         s = 18

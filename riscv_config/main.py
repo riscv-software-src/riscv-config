@@ -51,7 +51,8 @@ def main():
                             work_dir, 
                             True, args.no_anchors)
         if args.debug_spec is not None:
-            checker.check_debug_specs(os.path.abspath(args.debug_spec),
+            isa_file = checker.check_isa_specs(os.path.abspath(args.isa_spec), work_dir, True, args.no_anchors)
+            checker.check_debug_specs(os.path.abspath(args.debug_spec), isa_file,
                             work_dir, 
                             True, args.no_anchors)
     except ValidationError as msg:

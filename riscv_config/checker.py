@@ -178,26 +178,26 @@ def add_debug_setters(schema_yaml):
     usetter = lambda doc: uset()
     
     schema_yaml['dcsr']['default_setter'] = regsetter
-  #  schema_yaml['dcsr']['schema']['rv32']['schema']['v'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv64']['schema']['v'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaku'][
-  #      'default_setter'] = usetter
-  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaku'][
-  #      'default_setter'] = usetter
-  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaks'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaks'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvu'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvu'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvs'][
-  #      'default_setter'] = ssetter
-  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvs'][
-  #      'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv32']['schema']['v'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv64']['schema']['v'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaku'][
+        'default_setter'] = usetter
+    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaku'][
+        'default_setter'] = usetter
+    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaks'][
+       'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaks'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvu'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvu'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvs'][
+        'default_setter'] = ssetter
+    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvs'][
+        'default_setter'] = ssetter
     return schema_yaml
     
 def add_def_setters(schema_yaml):
@@ -1168,7 +1168,7 @@ def check_reset_fill_fields(spec, logging= False):
                     errors[node] = error
     return spec, errors
 
-def check_debug_specs(debug_spec,
+def check_debug_specs(debug_spec, isa_spec,
                 work_dir,
                 logging=False,
                 no_anchors=False):
@@ -1194,7 +1194,8 @@ def check_debug_specs(debug_spec,
 
     if logging:
         logger.info('Input-Debug file')
-
+    
+    foo1 = isa_spec
     foo = debug_spec
     schema = constants.debug_schema
     """
@@ -1206,6 +1207,12 @@ def check_debug_specs(debug_spec,
         logger.info('Loading input file: ' + str(foo))
     master_inp_debug_yaml = utils.load_yaml(foo, no_anchors)
 
+    # Load input YAML file
+    if logging:
+        logger.info('Loading input isa file: ' + str(foo1))
+    master_inp_yaml = utils.load_yaml(foo1, no_anchors)
+    isa_string = master_inp_yaml['hart0']['ISA']
+    
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
@@ -1220,7 +1227,7 @@ def check_debug_specs(debug_spec,
         #Extract xlen
         xlen = inp_debug_yaml['supported_xlen']
 
-        validator = schemaValidator(schema_yaml, xlen=xlen)
+        validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=isa_string)
         validator.allow_unknown = False
         validator.purge_readonly = True
         normalized = validator.normalized(inp_debug_yaml, schema_yaml)
