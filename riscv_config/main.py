@@ -39,7 +39,7 @@ def main():
 
     try:
         if args.isa_spec is not None:
-            checker.check_isa_specs(os.path.abspath(args.isa_spec),
+            isa_file= checker.check_isa_specs(os.path.abspath(args.isa_spec),
                             work_dir, 
                             True, args.no_anchors)
         if args.platform_spec is not None:
@@ -51,7 +51,8 @@ def main():
                             work_dir, 
                             True, args.no_anchors)
         if args.debug_spec is not None:
-            isa_file = checker.check_isa_specs(os.path.abspath(args.isa_spec), work_dir, True, args.no_anchors)
+            if args.isa_spec is None:
+             logger.error(' Isa spec missing, Compulsory for debug')
             checker.check_debug_specs(os.path.abspath(args.debug_spec), isa_file,
                             work_dir, 
                             True, args.no_anchors)
