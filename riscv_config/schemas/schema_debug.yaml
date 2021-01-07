@@ -2,28 +2,6 @@ hart_schema:
   type : dict
   schema:
     ###
-    #ISA
-    #---
-    #
-    # **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
-    # (other than Zext) should be mentioned in upper-case. Z extensions should begin with an upper-case
-    # 'Z' followed by lower-case extension name (without Camel casing)
-    #
-    # **Examples**:
-    #
-    # .. code-block:: yaml
-    #
-    #   ISA: RV32IMA
-    #   ISA: RV64IMAFDCZifencei
-    #
-    # **Constraints**:
-    #
-    #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
-    #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
-
-    ISA: { type: string, required: true, 
-           regex: "^RV(32|64|128)[IE]+[ACDEFGHIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
-    ###
     #supported_xlen
     #--------------
     #
@@ -216,7 +194,6 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             cause:
               type: dict
               schema:
@@ -324,14 +301,15 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
+                  check_with: 
+                   - wr_illegal
+                   - s_debug_check
                   oneof:
                     - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                     - schema: { warl: *ref_warl }
                     - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             ebreakm:
               type: dict
               schema:
@@ -370,7 +348,6 @@ hart_schema:
                     - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             ebreakvs:
               type: dict
               schema:
@@ -390,7 +367,6 @@ hart_schema:
                     - schema: { warl: *ref_warl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             debugver:
               type: dict
               schema:
@@ -509,7 +485,6 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             cause:
               type: dict
               schema:
@@ -606,7 +581,6 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: u_check
             ebreaks:
               type: dict
               schema:
@@ -626,7 +600,6 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 1}
               default: {implemented: false}
-              check_with: s_check
             ebreakm:
               type: dict
               schema:
@@ -665,7 +638,6 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             ebreakvs:
               type: dict
               schema:
@@ -685,7 +657,6 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
-              check_with: s_check
             debugver:
               type: dict
               schema:
