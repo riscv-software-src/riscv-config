@@ -171,7 +171,35 @@ def counterhset():
         temp['rv32']['accessible'] = True
     return temp
 
-
+def add_debug_setters(schema_yaml):
+    '''Function to set the default setters for various fields in the debug schema'''
+    regsetter = lambda doc: regset()
+    ssetter = lambda doc: sset()
+    usetter = lambda doc: uset()
+    
+    schema_yaml['dcsr']['default_setter'] = regsetter
+  #  schema_yaml['dcsr']['schema']['rv32']['schema']['v'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv64']['schema']['v'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaku'][
+  #      'default_setter'] = usetter
+  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaku'][
+  #      'default_setter'] = usetter
+  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaks'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaks'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvu'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvu'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvs'][
+  #      'default_setter'] = ssetter
+  #  schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvs'][
+  #      'default_setter'] = ssetter
+    return schema_yaml
+    
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
@@ -1140,7 +1168,92 @@ def check_reset_fill_fields(spec, logging= False):
                     errors[node] = error
     return spec, errors
 
+def check_debug_specs(debug_spec,
+                work_dir,
+                logging=False,
+                no_anchors=False):
+    '''
+        Function to perform ensure that the isa and platform specifications confirm
+        to their schemas. The :py:mod:`Cerberus` module is used to validate that the
+        specifications confirm to their respective schemas.
 
+        :param isa_spec: The path to the DUT isa specification yaml file.
+
+        :param logging: A boolean to indicate whether log is to be printed.
+
+        :type logging: bool
+
+        :type isa_spec: str
+
+        :raise ValidationError: It is raised when the specifications violate the
+            schema rules. It also contains the specific errors in each of the fields.
+
+        :return: A tuple with the first entry being the absolute path to normalized isa file
+            and the second being the absolute path to the platform spec file.
+    '''
+
+    if logging:
+        logger.info('Input-Debug file')
+
+    foo = debug_spec
+    schema = constants.debug_schema
+    """
+      Read the input-isa foo (yaml file) and validate with schema-isa for feature values
+      and constraints
+    """
+    # Load input YAML file
+    if logging:
+        logger.info('Loading input file: ' + str(foo))
+    master_inp_debug_yaml = utils.load_yaml(foo, no_anchors)
+
+    # instantiate validator
+    if logging:
+        logger.info('Load Schema ' + str(schema))
+    master_schema_yaml = utils.load_yaml(schema, no_anchors)
+
+    outyaml = copy.deepcopy(master_inp_debug_yaml)
+    for x in master_inp_debug_yaml['hart_ids']:
+        if logging:
+            logger.info('Processing Hart: hart'+str(x))
+        inp_debug_yaml = master_inp_debug_yaml['hart'+str(x)]
+        schema_yaml = add_debug_setters(master_schema_yaml['hart_schema']['schema'])
+        #Extract xlen
+        xlen = inp_debug_yaml['supported_xlen']
+
+        validator = schemaValidator(schema_yaml, xlen=xlen)
+        validator.allow_unknown = False
+        validator.purge_readonly = True
+        normalized = validator.normalized(inp_debug_yaml, schema_yaml)
+
+        # Perform Validation
+        if logging:
+            logger.info('Initiating Validation')
+        valid = validator.validate(normalized)
+
+        # Print out errors
+        if valid:
+            if logging:
+                logger.info('No errors for Hart: '+str(x) + ' :)')
+        else:
+            error_list = validator.errors
+            raise ValidationError("Error in " + foo + ".", error_list)
+        if logging:
+            logger.info("Initiating post processing and reset value checks.")
+        normalized, errors = check_reset_fill_fields(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        outyaml['hart'+str(x)] = trim(normalized)
+    file_name = os.path.split(foo)
+    file_name_split = file_name[1].split('.')
+    output_filename = os.path.join(
+        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+    ifile = output_filename
+    outfile = open(output_filename, 'w')
+    if logging:
+        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+    utils.dump_yaml(outyaml, outfile, no_anchors )
+    return ifile
+    
 def check_isa_specs(isa_spec,
                 work_dir,
                 logging=False,

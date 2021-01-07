@@ -50,6 +50,10 @@ def main():
             checker.check_custom_specs(os.path.abspath(args.custom_spec),
                             work_dir, 
                             True, args.no_anchors)
+        if args.debug_spec is not None:
+            checker.check_debug_specs(os.path.abspath(args.debug_spec),
+                            work_dir, 
+                            True, args.no_anchors)
     except ValidationError as msg:
         logger.error(str(msg))
         return 1

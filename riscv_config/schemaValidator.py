@@ -75,7 +75,7 @@ class schemaValidator(Validator):
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
+            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3" :
                 self._error(
                     field, "Z is not supported in the User Spec given version.")
         else:
