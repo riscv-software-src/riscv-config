@@ -174,30 +174,8 @@ def counterhset():
 def add_debug_setters(schema_yaml):
     '''Function to set the default setters for various fields in the debug schema'''
     regsetter = lambda doc: regset()
-    ssetter = lambda doc: sset()
-    usetter = lambda doc: uset()
     
     schema_yaml['dcsr']['default_setter'] = regsetter
-    schema_yaml['dcsr']['schema']['rv32']['schema']['v'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv64']['schema']['v'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaku'][
-        'default_setter'] = usetter
-    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaku'][
-        'default_setter'] = usetter
-    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreaks'][
-       'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreaks'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvu'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvu'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv32']['schema']['ebreakvs'][
-        'default_setter'] = ssetter
-    schema_yaml['dcsr']['schema']['rv64']['schema']['ebreakvs'][
-        'default_setter'] = ssetter
     return schema_yaml
     
 def add_def_setters(schema_yaml):

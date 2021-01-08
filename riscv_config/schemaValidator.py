@@ -172,7 +172,13 @@ class schemaValidator(Validator):
         if 'S' not in isa_string :
           if value['ro_constant'] != 0:
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
+                
+    def _check_with_u_debug_check(self, field, value):
+        global isa_string
 
+        if 'U' not in isa_string :
+          if value['ro_constant'] != 0:
+                self._error(field, "U is not present but ro constant is not hardwired to zero")
 
     def _check_with_su_check(self, field, value):
         s = 18

@@ -1,6 +1,5 @@
 hart_ids: [0]
 hart0: &hart0
-    ISA: RV32IMANFHSCUZicsr_Zifencei
     Debug_Spec_Version: '1.0.0'
     supported_xlen: [32]
     debug_mode: true
@@ -22,6 +21,8 @@ hart0: &hart0
           implemented: true
         v:
           implemented: True
+          type:
+            ro_constant: 0x0
         cause:
           implemented: True
           type:
@@ -46,4 +47,21 @@ hart0: &hart0
           implemented: True
           type:
             ro_constant: 0x0
-          
+    dpc:
+      reset-val: 0x0
+      rv32:
+        accessible: true
+      rv64:
+        accessible: false
+    dscratch0:
+      reset-val: 0x0
+      rv32:
+        accessible: true
+      rv64:
+        accessible: false
+    dscratch1:
+      reset-val: 0x0
+      rv32:
+        accessible: true
+      rv64:
+        accessible: false    
