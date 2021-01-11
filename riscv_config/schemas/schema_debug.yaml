@@ -94,7 +94,7 @@ hart_schema:
           default: The mstatus register keeps track of and controls the hart’s current
             operating state.
         address: {type: integer, default: 0x7b0, allowed: [0x7b0]}
-        priv_mode: {type: string, default: D, allowed: [D]}
+        priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer
           check_with: max_length
@@ -706,7 +706,7 @@ hart_schema:
           default: The dscratch0 register is an DXLEN-bit read/write register dedicated
             for use by debug mode.
         address: {type: integer, default: 0x7b2, allowed: [0x7b2]}
-        priv_mode: {type: string, default: D, allowed: [D]}
+        priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer
           default: 0
@@ -771,7 +771,7 @@ hart_schema:
           default: The dscratch1 register is an DXLEN-bit read/write register dedicated
             for use by debug mode.
         address: {type: integer, default: 0x7b3, allowed: [0x7b3]}
-        priv_mode: {type: string, default: D, allowed: [D]}
+        priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer
           default: 0
