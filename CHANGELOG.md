@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## 2.6.1 - 2021-01-13
 ### Fixed
 - msb,lsb values of "SD" field in mstatus must be 63 in rv64 mode
+- added checks for reset value of misa to adhere to the extensions enabled in the input yaml
 
 
 ## 2.6.0 - 2021-01-5
