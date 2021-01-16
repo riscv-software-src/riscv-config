@@ -12,7 +12,7 @@ ISA YAML Spec
 **NOTE**:
 
   1. All integer fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
-  2. An elaborate example of the full-fledge ISA-YAML file can be found here: `ISA-YAML <https://github.com/riscv/riscv-config/tree/master/examples>`_
+  2. Different examples of the input yamls and the generated checked YAMLs can be found here : `Examples <https://github.com/riscv/riscv-config/tree/master/examples>`_
 
 .. include:: schema_isa.rst
 

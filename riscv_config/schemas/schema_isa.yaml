@@ -54,7 +54,7 @@ hart_schema:
     # **Constraints**:
     #
     #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
-    #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
+    #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
            regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
