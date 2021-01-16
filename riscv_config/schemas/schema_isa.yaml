@@ -54,7 +54,7 @@ hart_schema:
     # **Constraints**:
     #
     #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
-    #   - The ISA string must be specified in the manner as specified in the specifications(like subsequent Z extensions must be separated with an '_')
+    #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
            regex: "^RV(32|64|128)[IE]+[ACDEFGIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
@@ -292,7 +292,7 @@ hart_schema:
         description: {type: string,  default: misa is a read-write register reporting the ISA supported by the hart.}
         address: { type: integer, default: 769, allowed: [769] }
         priv_mode: { type: string, allowed: [M], default: M }
-        reset-val: { type: integer, default: 0, check_with: max_length }
+        reset-val: { type: integer, default: 0, check_with: [max_length, reset_ext] }
         rv32:
           type: dict
           schema:
@@ -6727,8 +6727,8 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: mstatus.sd, nullable: True}
-                msb: {type: integer, default: 31, allowed: [31]}
-                lsb: {type: integer, default: 31, allowed: [31]}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
             accessible:
