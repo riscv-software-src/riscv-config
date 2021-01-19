@@ -4625,6 +4625,7 @@ hart_schema:
           type: string
           default: sedeleg
         address: {type: integer, default: 258, allowed: [258]}
+        priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
           type: integer
           check_with:
@@ -4674,6 +4675,7 @@ hart_schema:
         description:
           type: string
           default: sideleg
+        priv_mode: {type: string, default: S, allowed: [S]}
         address: {type: integer, default: 259, allowed: [259]}
         reset-val:
           type: integer

@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.6.3 - 2021-01-19
+### Fixed
+- added priv_mode field to sedeleg and sideleg csrs
+
 ## 2.6.2 - 2021-01-18
 ### Fixed
 - Allow B extension in ISA schema
