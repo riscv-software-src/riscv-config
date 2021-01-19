@@ -2,7 +2,21 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.6.0 - 2021-1-5
+## 2.6.3 - 2021-01-19
+### Fixed
+- added priv_mode field to sedeleg and sideleg csrs
+
+## 2.6.2 - 2021-01-18
+### Fixed
+- Allow B extension in ISA schema
+
+## 2.6.1 - 2021-01-13
+### Fixed
+- msb,lsb values of "SD" field in mstatus must be 63 in rv64 mode
+- added checks for reset value of misa to adhere to the extensions enabled in the input yaml
+- fixed dead-link in the docs.
+
+## 2.6.0 - 2021-01-5
 ### Added
 - Added support for custom csr yaml
 - Added new nodes in isa_schema: pmp_granularity and physical_addr_sz
