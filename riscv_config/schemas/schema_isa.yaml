@@ -10051,7 +10051,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
               default: {implemented: False}
-            asid:
+            vsid:
               type: dict
               schema:
                 description: { type: string, default: Address Space identifier. }
@@ -10108,7 +10108,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   default: {ro_constant : 0}
               default: {implemented: False}
-            asid:
+            vsid:
               type: dict
               schema:
                 description:
