@@ -834,18 +834,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['vsstatus']['schema']['rv64']['schema']['sum'][
         'default_setter'] = ssetter
     schema_yaml['vsie']['default_setter'] = sregsetter
-    schema_yaml['vsie']['schema']['rv32']['schema']['ueie'][
-        'default_setter'] = nusetter
-    schema_yaml['vsie']['schema']['rv64']['schema']['ueie'][
-        'default_setter'] = nusetter
-    schema_yaml['vsie']['schema']['rv32']['schema']['utie'][
-        'default_setter'] = nusetter
-    schema_yaml['vsie']['schema']['rv64']['schema']['utie'][
-        'default_setter'] = nusetter
-    schema_yaml['vsie']['schema']['rv32']['schema']['usie'][
-        'default_setter'] = nusetter
-    schema_yaml['vsie']['schema']['rv64']['schema']['usie'][
-        'default_setter'] = nusetter
     schema_yaml['vsie']['schema']['rv32']['schema']['seie'][
         'default_setter'] = ssetter
     schema_yaml['vsie']['schema']['rv64']['schema']['seie'][
@@ -859,18 +847,6 @@ def add_def_setters(schema_yaml):
     schema_yaml['vsie']['schema']['rv64']['schema']['ssie'][
         'default_setter'] = ssetter
     schema_yaml['vsip']['default_setter'] = sregsetter
-    schema_yaml['vsip']['schema']['rv32']['schema']['ueip'][
-        'default_setter'] = nusetter
-    schema_yaml['vsip']['schema']['rv64']['schema']['ueip'][
-        'default_setter'] = nusetter
-    schema_yaml['vsip']['schema']['rv32']['schema']['utip'][
-        'default_setter'] = nusetter
-    schema_yaml['vsip']['schema']['rv64']['schema']['utip'][
-        'default_setter'] = nusetter
-    schema_yaml['vsip']['schema']['rv32']['schema']['usip'][
-        'default_setter'] = nusetter
-    schema_yaml['vsip']['schema']['rv64']['schema']['usip'][
-        'default_setter'] = nusetter
     schema_yaml['vsip']['schema']['rv32']['schema']['seip'][
         'default_setter'] = ssetter
     schema_yaml['vsip']['schema']['rv64']['schema']['seip'][
@@ -1062,13 +1038,13 @@ def check_shadows(spec, logging = False):
                                             subscsr + ' not implemented')
                                     continue
                                 scsr_size = spec[scsr][rvxlen][subscsr]['msb'] -\
-                                        spec[scsr][rvxlen][subfield]['lsb']
+                                        spec[scsr][rvxlen][subscsr]['lsb']
                                 csr_size = spec[csr][rvxlen][subfield]['msb'] -\
                                         spec[csr][rvxlen][subfield]['lsb']
                                 if scsr_size != csr_size :
                                     error.append('Subfield ' + subfield +'shadowing'+ \
                                             scsr + '.' + subscsr + \
-                                            ' does not match in size') 
+                                            ' does not match in size' + str(scsr_size) + str(csr_size)) 
 
         if error:
             errors[csr] = error
