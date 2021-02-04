@@ -1924,10 +1924,12 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: {ro_variable: {type: boolean, allowed: [True]}}
-                  readonly: true
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
                   default: 
-                      warl:
+                   warl:
                       dependency_fields: []
                       legal:
                         - sgeip[0] in [0x0, 0x1]
@@ -2203,8 +2205,10 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: {ro_variable: {type: boolean, allowed: [True]}}
-                  readonly: true
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
                   default: 
                     warl:
                       dependency_fields: []
@@ -9059,7 +9063,7 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  schema: { wlrl: *ref_wlrl }
+                  schema: {ro_constant: {type: integer, max:  64, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: true}
             vtvm:
@@ -9232,7 +9236,7 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  schema: { wlrl: *ref_wlrl }
+                  schema:  {ro_constant: {type: integer, max:  64, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: true}
             vtvm:
@@ -9498,6 +9502,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max:  1, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: False}
             vseip:
@@ -9516,6 +9521,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max:  1, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: False}
             sgeip:
@@ -9533,7 +9539,7 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_constant: 0}
+                  default: {ro_variable: True}
               default: {implemented: true}
             accessible:
               type: boolean
@@ -9584,6 +9590,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max:  1, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: False}
             vseip:
@@ -9602,6 +9609,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max:  1, min : 0}}
                   default: {ro_constant: 0}
               default: {implemented: False}
             sgeip:
@@ -9619,7 +9627,7 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_constant: 0}
+                  default: {ro_variable: True}
               default: {implemented: true}
             accessible:
               type: boolean
