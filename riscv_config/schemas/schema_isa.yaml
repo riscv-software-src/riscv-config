@@ -1722,8 +1722,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             msip:
               type: dict
@@ -1801,8 +1805,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             mtip:
               type: dict
@@ -1880,8 +1888,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged              
               default: {implemented: False}
             meip:
               type: dict
@@ -1914,7 +1926,13 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_variable: True}
+                  default: 
+                      warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -1984,8 +2002,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             msip:
               type: dict
@@ -2063,8 +2085,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             mtip:
               type: dict
@@ -2142,8 +2168,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             meip:
               type: dict
@@ -2175,7 +2205,13 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_variable: True}
+                  default: 
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: false}
             accessible:
               type: boolean
@@ -2214,8 +2250,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             vstie:
@@ -2232,8 +2272,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             vseie:
@@ -2250,8 +2294,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             sgeie:
@@ -2270,8 +2318,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -2296,8 +2348,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             vstie:
@@ -2314,8 +2370,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             vseie:
@@ -2332,8 +2392,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
             sgeie:
@@ -2352,8 +2416,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -2434,8 +2502,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}        
             msie:
               type: dict
@@ -2514,8 +2586,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             mtie:
               type: dict
@@ -2593,8 +2669,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             meie:
               type: dict
@@ -2629,8 +2709,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -2698,8 +2782,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}        
             msie:
               type: dict
@@ -2778,8 +2866,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             mtie:
               type: dict
@@ -2857,8 +2949,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             meie:
               type: dict
@@ -2893,8 +2989,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl:
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - sgeie[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
             accessible:
               type: boolean
               default: false
@@ -8960,7 +9060,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default: { wlrl: [0:1]}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             vtvm:
               type: dict
@@ -9133,7 +9233,7 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   schema: { wlrl: *ref_wlrl }
-                  default: { wlrl: [0:1]}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             vtvm:
               type: dict
@@ -9243,9 +9343,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[31:0] in [0x00]"
+                   - "hideleg[31:0] bitmask [0x00000444, 0x0000000]"
                   wr_illegal:
-                  - 'unchanged'
+                   - 'unchanged'
             accessible:
               type: boolean
               default: true
@@ -9268,7 +9368,7 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[63:0] in [0x00]"
+                  - "hideleg[63:0] bitmask [0x0000000000000444, 0x0000000000000000]"
                   wr_illegal:
                   - 'unchanged'
             accessible:
@@ -9306,7 +9406,7 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[31:0] in [0x00]"
+                  - "medeleg[31:0] bitmask [0x00001BFE, 0x0000000]"
                   wr_illegal:
                   - 'unchanged'
             accessible:
@@ -9331,7 +9431,7 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[63:0] in [0x00]"
+                  - "medeleg[63:0] bitmask [0x0000000000001BFE, 0x000000000000000]"
                   wr_illegal:
                   - 'unchanged'
             accessible:
@@ -9373,9 +9473,14 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vstip:
               type: dict
@@ -9393,9 +9498,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: 
-                    - 0:1
+                  default: {ro_constant: 0}
               default: {implemented: False}
             vseip:
               type: dict
@@ -9413,9 +9516,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: 
-                    - 0:1
+                  default: {ro_constant: 0}
               default: {implemented: False}
             sgeip:
               type: dict
@@ -9432,7 +9533,7 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_variable: True}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             accessible:
               type: boolean
@@ -9460,8 +9561,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vstip:
               type: dict
@@ -9479,9 +9584,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: 
-                    - 0:1
+                  default: {ro_constant: 0}
               default: {implemented: False}
             vseip:
               type: dict
@@ -9499,9 +9602,7 @@ hart_schema:
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
-                  default:
-                    wlrl: 
-                    - 0:1
+                  default: {ro_constant: 0}
               default: {implemented: False}
             sgeip:
               type: dict
@@ -9518,7 +9619,7 @@ hart_schema:
                   type: dict
                   schema: {ro_variable: {type: boolean, allowed: [True]}}
                   readonly: true
-                  default: {ro_variable: True}
+                  default: {ro_constant: 0}
               default: {implemented: true}
             accessible:
               type: boolean
@@ -9558,8 +9659,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vstip:
               type: dict
@@ -9578,8 +9683,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vseip:
               type: dict
@@ -9598,8 +9707,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -9627,8 +9740,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vstip:
               type: dict
@@ -9647,8 +9764,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             vseip:
               type: dict
@@ -9667,8 +9788,12 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   default:
-                    wlrl: 
-                    - 0:1
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
               default: {implemented: False}
             accessible:
               type: boolean
@@ -10933,7 +11058,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                 warl:
                   dependency_fields: []
                   legal:
-                  - sscratch[31:0] in [0x00000000:0xFFFFFFFF]
+                  - vsscratch[31:0] in [0x00000000:0xFFFFFFFF]
                   wr_illegal:
                   - unchanged
             accessible:
@@ -10960,7 +11085,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                 warl:
                   dependency_fields: []
                   legal:
-                  - sscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  - vsscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
                   wr_illegal:
                   - unchanged
     
@@ -11058,7 +11183,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                 warl:
                   dependency_fields: []
                   legal:
-                  - stval[31:0] in [0x00000000:0xFFFFFFFF]
+                  - vstval[31:0] in [0x00000000:0xFFFFFFFF]
                   wr_illegal:
                   - unchanged
     
@@ -11083,7 +11208,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                 warl:
                   dependency_fields: []
                   legal:
-                  - stval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  - vstval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
                   wr_illegal:
                   - unchanged
     
@@ -11227,7 +11352,13 @@ CSR and the value returned in VS-mode or VU-mode.}
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                      warl:
+                       dependency_fields: []
+                       legal:
+                         - base[29:0] in [0x00000000:0x3FFFFFFF]
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
             mode:
               type: dict
@@ -11246,7 +11377,13 @@ CSR and the value returned in VS-mode or VU-mode.}
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                      dependency_fields: []
+                      legal:
+                        - "mode[1:0] in [0x0,0x1]"
+                      wr_illegal:
+                        - "Unchanged"
               default: {implemented: false}
             accessible:
               type: boolean
@@ -11275,7 +11412,13 @@ CSR and the value returned in VS-mode or VU-mode.}
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
             mode:
               type: dict
@@ -11294,7 +11437,13 @@ CSR and the value returned in VS-mode or VU-mode.}
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                      dependency_fields: []
+                      legal:
+                        - "mode[1:0] in [0x0,0x1]"
+                      wr_illegal:
+                        - "Unchanged"
               default: {implemented: false}
             accessible:
               type: boolean
