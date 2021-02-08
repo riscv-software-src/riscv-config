@@ -699,17 +699,17 @@ def add_def_setters(schema_yaml):
     schema_yaml['mip']['schema']['rv64']['schema']['ssip'][
         'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv32']['schema']['vssip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv64']['schema']['vssip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv32']['schema']['vstip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv64']['schema']['vstip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv32']['schema']['vseip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv64']['schema']['vseip'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv32']['schema']['sgeip'][
         'default_setter'] = hsetter
     schema_yaml['mip']['schema']['rv64']['schema']['sgeip'][
@@ -727,17 +727,17 @@ def add_def_setters(schema_yaml):
     schema_yaml['mie']['schema']['rv64']['schema']['ssie'][
         'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv32']['schema']['vssie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['vssie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv32']['schema']['vstie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['vstie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv32']['schema']['vseie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['vseie'][
-        'default_setter'] = hsetter
+        'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv32']['schema']['sgeie'][
         'default_setter'] = hsetter
     schema_yaml['mie']['schema']['rv64']['schema']['sgeie'][

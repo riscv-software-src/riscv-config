@@ -1706,7 +1706,7 @@ hart_schema:
               default: {implemented: False}
             vssip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1789,7 +1789,7 @@ hart_schema:
               default: {implemented: False}
             vstip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1872,7 +1872,7 @@ hart_schema:
               default: {implemented: False}
             vseip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -1988,7 +1988,7 @@ hart_schema:
               default: {implemented: False}
             vssip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -2071,7 +2071,7 @@ hart_schema:
               default: {implemented: False}
             vstip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -2154,7 +2154,7 @@ hart_schema:
               default: {implemented: False}
             vseip:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description:
                   type: string
@@ -2492,13 +2492,13 @@ hart_schema:
               default: {implemented: False}
             vssie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: {type: string, default: VS-level Software Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true}
+                implemented: {type: boolean, default: True}
                 type:
                   type: dict
                   check_with: wr_illegal
@@ -2576,7 +2576,7 @@ hart_schema:
               default: {implemented: False}
             vstie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: {type: string, default: VS-level Timer Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
@@ -2659,7 +2659,7 @@ hart_schema:
               default: {implemented: False}
             vseie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: { type: string, default: VS-level External Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
@@ -2772,7 +2772,7 @@ hart_schema:
               default: {implemented: False}
             vssie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: {type: string, default: VS-level Software Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
@@ -2856,7 +2856,7 @@ hart_schema:
               default: {implemented: False}
             vstie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: {type: string, default: VS-level Timer Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
@@ -2939,7 +2939,7 @@ hart_schema:
               default: {implemented: False}
             vseie:
               type: dict
-              check_with: h_check
+              check_with: s_check
               schema:
                 description: { type: string, default: VS-level External Interrupt enable.}
                 shadow: {type: string, default: , nullable: True}
