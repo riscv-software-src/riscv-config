@@ -77,7 +77,15 @@ class schemaValidator(Validator):
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3" :
+            if 'Zkg' in value and not 'B' in value:
+                self._error(field, "Zkg, Zkb  cannot exist without B.")
+            if 'Zks' in value and not 'Zkse' in value and not 'Zksd' in value and not 'Zksh' in value and not 'Zkg' in value and not 'Zkb' in value:
+                self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb ")
+            if 'Zkn' in value and not 'Zkne' in value and not 'Zknd' in value and not 'Zknh' in value and not 'Zkg' in value and not 'Zkb' in value:
+                self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb")
+            if 'K' in value and not 'Zkne' in value and not 'Zknd' in value and not 'Zknh' in value and not 'Zkg' in value and not 'Zkb' in value and not 'Zkr' in value:
+                self._error(field, "K is a abbreviation of Zkse, Zksd, Zksh, Zkg, Zkr and Zkb")
+            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(
                     field, "Z is not supported in the User Spec given version.")
         else:
