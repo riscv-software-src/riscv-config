@@ -77,13 +77,15 @@ class schemaValidator(Validator):
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Zkg' in value and not 'B' in value:
-                self._error(field, "Zkg, Zkb  cannot exist without B.")
-            if 'Zks' in value and not 'Zkse' in value and not 'Zksd' in value and not 'Zksh' in value and not 'Zkg' in value and not 'Zkb' in value:
+            if 'Zkg' in value and (not 'B' in value or not 'Zbc' in value) :
+                self._error(field, "Zkg  cannot exist without B, Zbc from B extension.")
+            if 'Zkb' in value and (not 'B' in value or  not 'Zbb' in value or not 'Zbp' in value) :
+                self._error(field, " Zkb  cannot exist without B, Zbb/Zbp from B extension.")
+            if 'Zks' in value and (not 'Zkse' in value or not 'Zksd' in value or not 'Zksh' in value or not 'Zkg' in value or not 'Zkb' in value):
                 self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb ")
-            if 'Zkn' in value and not 'Zkne' in value and not 'Zknd' in value and not 'Zknh' in value and not 'Zkg' in value and not 'Zkb' in value:
+            if 'Zkn' in value and (not 'Zkne' in value or not 'Zknd' in value or not 'Zknh' in value or not 'Zkg' in value or not 'Zkb' in value):
                 self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb")
-            if 'K' in value and not 'Zkne' in value and not 'Zknd' in value and not 'Zknh' in value and not 'Zkg' in value and not 'Zkb' in value and not 'Zkr' in value:
+            if 'K' in value and (not 'Zkn' in value or not 'Zkr' in value) :
                 self._error(field, "K is a abbreviation of Zkse, Zksd, Zksh, Zkg, Zkr and Zkb")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(
