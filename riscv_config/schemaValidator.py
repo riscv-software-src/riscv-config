@@ -65,6 +65,7 @@ class schemaValidator(Validator):
             self._error(field, "Invalid width in ISA.")
         #ISA checks
         if any(x in value for x in "EI"):
+            ext_list = list(value.split("_"))
             if 'D' in value and not 'F' in value:
                 self._error(field, "D cannot exist without F.")
             if 'Q' in value and not all(x in value for x in "FD"):
@@ -77,16 +78,16 @@ class schemaValidator(Validator):
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Zkg' in value and (not 'B' in value or not 'Zbc' in value) :
-                self._error(field, "Zkg  cannot exist without B, Zbc from B extension.")
-            if 'Zkb' in value and (not 'B' in value or  not 'Zbb' in value or not 'Zbp' in value) :
-                self._error(field, " Zkb  cannot exist without B, Zbb/Zbp from B extension.")
-            if 'Zks' in value and (not 'Zkse' in value or not 'Zksd' in value or not 'Zksh' in value or not 'Zkg' in value or not 'Zkb' in value):
-                self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb ")
-            if 'Zkn' in value and (not 'Zkne' in value or not 'Zknd' in value or not 'Zknh' in value or not 'Zkg' in value or not 'Zkb' in value):
-                self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb")
-            if 'K' in value and (not 'Zkn' in value or not 'Zkr' in value) :
-                self._error(field, "K is a abbreviation of Zkse, Zksd, Zksh, Zkg, Zkr and Zkb")
+            if 'Zkg' in value and (not 'B' in value or 'Zbc' in value) :
+                self._error(field, "Zkg  cannot exist without B; Zbc from B extension is a superset of Zkg , both should not exist at the same time.")
+         #   if 'Zkb' in value and (not 'B' in value or  not 'Zbb' in value or not 'Zbp' in value) :
+          #      self._error(field, " Zkb  cannot exist without B, Zbb/Zbp from B extension.")
+            if 'Zks' in ext_list and ( 'Zkse' in value or  'Zksd' in value or  'Zksh' in value or  'Zkg' in value or  'Zkb' in value):
+                self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb , both should not exist at the same time")
+            if 'Zkn' in ext_list and ( 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value):
+                self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb, both should not exist at the same time")
+            if 'K' in ext_list and ( 'Zkn' in ext_list or 'Zkr' in value) :
+                self._error(field, "K is a abbreviation of Zkn and Zkr , both should not exist at the same time")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(
                     field, "Z is not supported in the User Spec given version.")
