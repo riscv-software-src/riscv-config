@@ -86,7 +86,7 @@ class schemaValidator(Validator):
                 self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb , both should not exist at the same time")
             if 'Zkn' in ext_list and ( 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value):
                 self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb, both should not exist at the same time")
-            if 'K' in ext_list and ( 'Zkn' in ext_list or 'Zkr' in value) :
+            if 'K' in ext_list and ( 'Zkn' in ext_list or 'Zkr' in value or 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value) :
                 self._error(field, "K is a abbreviation of Zkn and Zkr , both should not exist at the same time")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(
