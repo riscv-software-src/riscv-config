@@ -80,13 +80,13 @@ class schemaValidator(Validator):
                 self._error(field, "S cannot exist without U.")
             if 'Zkg' in value and (not 'B' in value or 'Zbc' in value) :
                 self._error(field, "Zkg  cannot exist without B; Zbc from B extension is a superset of Zkg , both should not exist at the same time.")
-         #   if 'Zkb' in value and (not 'B' in value or  not 'Zbb' in value or not 'Zbp' in value) :
-          #      self._error(field, " Zkb  cannot exist without B, Zbb/Zbp from B extension.")
+            if 'Zkb' in value and (not 'B' in value or 'Zbp' in value ) :
+                self._error(field, " Zkb  cannot exist without B, Zkb is proper subset of Zbp so Zbp is enough.")
             if 'Zks' in ext_list and ( 'Zkse' in value or  'Zksd' in value or  'Zksh' in value or  'Zkg' in value or  'Zkb' in value):
                 self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb , both should not exist at the same time")
             if 'Zkn' in ext_list and ( 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value):
                 self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb, both should not exist at the same time")
-            if 'K' in ext_list and ( 'Zkn' in ext_list or 'Zkr' in value or 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value) :
+            if 'K' in value and ( 'Zkn' in ext_list or 'Zkr' in value or 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value) :
                 self._error(field, "K is a abbreviation of Zkn and Zkr , both should not exist at the same time")
             if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
                 self._error(
@@ -94,7 +94,7 @@ class schemaValidator(Validator):
         else:
             self._error(field, "Neither of E or I extensions are present")
         #ISA encoding for future use.
-        for x in "ABCDEFHIJLMNPQSTUVX":
+        for x in "ABCDEFHIJKLMNPQSTUVX":
             if (x in ext):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
