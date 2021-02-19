@@ -64,35 +64,56 @@ class schemaValidator(Validator):
         else:
             self._error(field, "Invalid width in ISA.")
         #ISA checks
-        if any(x in value for x in "EI"):
-            ext_list = list(value.split("_"))
-            if 'D' in value and not 'F' in value:
-                self._error(field, "D cannot exist without F.")
-            if 'Q' in value and not all(x in value for x in "FD"):
-                self._error(field, "Q cannot exist without F and D.")
-            if 'F' in value and not "Zicsr" in value:
-                self._error(field, "F cannot exist without Zicsr.")
-            if 'Zam' in value and not 'A' in value:
-                self._error(field, "Zam cannot exist without A.")
-            if 'N' in value and not 'U' in value:
-                self._error(field, "N cannot exist without U.")
-            if 'S' in value and not 'U' in value:
-                self._error(field, "S cannot exist without U.")
-            if 'Zkg' in value and (not 'B' in value or 'Zbc' in value) :
-                self._error(field, "Zkg  cannot exist without B; Zbc from B extension is a superset of Zkg , both should not exist at the same time.")
-            if 'Zkb' in value and (not 'B' in value or 'Zbp' in value ) :
-                self._error(field, " Zkb  cannot exist without B, Zkb is proper subset of Zbp so Zbp is enough.")
-            if 'Zks' in ext_list and ( 'Zkse' in value or  'Zksd' in value or  'Zksh' in value or  'Zkg' in value or  'Zkb' in value):
-                self._error(field, "Zks is a abbreviation of Zkse, Zksd, Zksh, Zkg and Zkb , both should not exist at the same time")
-            if 'Zkn' in ext_list and ( 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value):
-                self._error(field, "Zkn is a abbreviation of Zkne, Zknd, Zknh, Zkg and Zkb, both should not exist at the same time")
-            if 'K' in value and ( 'Zkn' in ext_list or 'Zkr' in value or 'Zkne' in value or 'Zknd' in value or  'Zknh' in value or  'Zkg' in value or  'Zkb' in value) :
-                self._error(field, "K is a abbreviation of Zkn and Zkr , both should not exist at the same time")
-            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
-                self._error(
-                    field, "Z is not supported in the User Spec given version.")
-        else:
-            self._error(field, "Neither of E or I extensions are present")
+        str_match = re.findall(r'([^\d]*?)(?!_)*(Z.*?)*(_|$)',value,re.M)
+        extension_list= []
+        standard_isa = ''
+        for match in str_match:
+            stdisa, z, ignore = match
+            if stdisa != '':
+                for e in stdisa:
+                    extension_list.append(e)
+                standard_isa = stdisa
+            if z != '':
+                extension_list.append(z)
+
+        # check ordering of ISA
+        canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
+        order_index = {c: i for i, c in enumerate(canonical_ordering)}
+        for i in range(len(standard_isa)-1):
+            a1 = standard_isa[i]
+            a2 = standard_isa[i+1]
+        
+            if order_index[a1] > order_index[a2]:
+                self._error(field, "Alphabet '" + a1 + "' should occur after '" + a2)
+
+        if 'I' not in extension_list and 'E' not in extension_list:
+            self._error(field, 'Either of I or E base extensions need to be present in the ISA string')
+        if 'F' in extension_list and not "Zicsr" in extension_list:
+            self._error(field, "F cannot exist without Zicsr.")
+        if 'D' in extension_list and not 'F' in extension_list:
+            self._error(field, "D cannot exist without F.")
+        if 'Q' in extension_list and not 'D' in extension_list:
+            self._error(field, "Q cannot exist without D and F.")
+        if 'Zam' in extension_list and not 'A' in extension_list:
+            self._error(field, "Zam cannot exist without A.")
+        if 'N' in extension_list and not 'U' in extension_list:
+            self._error(field, "N cannot exist without U.")
+        if 'S' in extension_list and not 'U' in extension_list:
+            self._error(field, "S cannot exist without U.")
+        if 'Zkg' in extension_list and 'Zbc' in extension_list:
+            self._error(field, "Zkg being a proper subset of Zbc (from B extension) should be ommitted from the ISA string")
+        if 'Zkb' in extension_list and 'Zbp' in extension_list :
+            self._error(field, "Zkb being a proper subset of Zbp (from B extension) should be ommitted from the ISA string")
+        if 'Zks' in extension_list and ( set(['Zkse','Zksd', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
+            self._error(field, "Zks is a superset of Zkse, Zksd, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
+        if 'Zkn' in extension_list and ( set(['Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ):
+            self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
+        if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
+            self._error(field, "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+
+#        if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
+#            self._error(
+#                field, "Z is not supported in the User Spec given version.")
         #ISA encoding for future use.
         for x in "ABCDEFHIJKLMNPQSTUVX":
             if (x in ext):
