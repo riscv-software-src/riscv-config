@@ -14,6 +14,8 @@ class schemaValidator(Validator):
         global extensions
         global xlen
         xlen = kwargs.get('xlen')
+        global isa_string
+        isa_string = kwargs.get('isa_string')
         if 32 in xlen:
             rv32 = True
         else:
@@ -75,7 +77,7 @@ class schemaValidator(Validator):
                 self._error(field, "N cannot exist without U.")
             if 'S' in value and not 'U' in value:
                 self._error(field, "S cannot exist without U.")
-            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
+            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3" :
                 self._error(
                     field, "Z is not supported in the User Spec given version.")
         else:
@@ -163,6 +165,20 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "U is not present(32)")
+              
+    def _check_with_s_debug_check(self, field, value):
+        global isa_string
+
+        if 'S' not in isa_string :
+          if value['ro_constant'] != 0:
+                self._error(field, "S is not present but ro constant is not hardwired to zero")
+                
+    def _check_with_u_debug_check(self, field, value):
+        global isa_string
+
+        if 'U' not in isa_string :
+          if value['ro_constant'] != 0:
+                self._error(field, "U is not present but ro constant is not hardwired to zero")
 
     def _check_with_su_check(self, field, value):
         s = 18
