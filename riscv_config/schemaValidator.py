@@ -69,13 +69,13 @@ class schemaValidator(Validator):
         standard_isa = ''
         for match in str_match:
             stdisa, z, ignore = match
+            print(stdisa)
             if stdisa != '':
                 for e in stdisa:
                     extension_list.append(e)
                 standard_isa = stdisa
             if z != '':
                 extension_list.append(z)
-
         # check ordering of ISA
         canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
         order_index = {c: i for i, c in enumerate(canonical_ordering)}
@@ -104,8 +104,8 @@ class schemaValidator(Validator):
             self._error(field, "Zkg being a proper subset of Zbc (from B extension) should be ommitted from the ISA string")
         if 'Zkb' in extension_list and 'Zbp' in extension_list :
             self._error(field, "Zkb being a proper subset of Zbp (from B extension) should be ommitted from the ISA string")
-        if 'Zks' in extension_list and ( set(['Zkse','Zksd', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
-            self._error(field, "Zks is a superset of Zkse, Zksd, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
+        if 'Zks' in extension_list and ( set(['Zkse', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
+            self._error(field, "Zks is a superset of Zkse, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
         if 'Zkn' in extension_list and ( set(['Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ):
             self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
         if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
