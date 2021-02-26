@@ -11,7 +11,8 @@ Welcome to RISCV-Config
    quickstart
    yaml-specs
    code-doc
-
+   new-extensions
+   
 Indices and tables
 ------------------
 
