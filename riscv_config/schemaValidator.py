@@ -69,7 +69,6 @@ class schemaValidator(Validator):
         standard_isa = ''
         for match in str_match:
             stdisa, z, ignore = match
-            print(stdisa)
             if stdisa != '':
                 for e in stdisa:
                     extension_list.append(e)
