@@ -77,3 +77,149 @@ For example, in the code below , the constraints for the K (Crypto-Scalar extens
             self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
         if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
             self._error(field, "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+
+
+Updating the schema_isa.yaml with new CSRs defined by the new ISA extension
+===========================================================================
+
+Addition of new csrs to schema
+------------------------------
+
+Taking S extension as an example, the supervisor-specific csrs from the schema is shown below :
+
+.. code-block:: yaml
+
+   stval:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The stval is a warl register that holds the address of the instruction
+            which caused the exception.
+        address: {type: integer, default: 0x143, allowed: [0x143]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - stval[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - stval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+          
+          
+Adding default setters in checker.py
+------------------------------------
+
+All new csrs added must have the corresponding default setter in the checker.py as shown below. 
+
+This must make them accessible by default when the appropriate ISA extension is enabled.
+
+.. code-block:: python
+   
+   schema_yaml['stval']['default_setter'] = sregsetter
+   
+.. code-block:: python
+  
+   def sregset():
+    '''Function to set defaults based on presence of 'S' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'S' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
+
+          
+
+Adding new schemas and a new cli argument for supporting adjoining RISC-V specs like debug, trace, etc.
+=======================================================================================================
+
+Modification to Main.py
+-----------------------
+The code below shows an example on how to add a new cli argument in main.py for adjoining RISC-V specs with their independent schemas.
+
+The example taken here is the RISC-V Debug Specification . It depends on the input ISA string and hence the isa yaml is also given as input to the debug checker function.
+
+.. code-block:: python
+
+        if args.debug_spec is not None:
+            if args.isa_spec is None:
+             logger.error(' Isa spec missing, Compulsory for debug')
+            checker.check_debug_specs(os.path.abspath(args.debug_spec), isa_file, work_dir, True, args.no_anchors)
+           
+Modifications in Utils.py
+-------------------------
+
+.. code-block:: python
+
+   parser.add_argument('--debug_spec', '-dspec', type=str, metavar='YAML', default=None, help='The YAML which contains the debug csr specs.') 
+
+
+Modifications in Constants.py
+-----------------------------
+.. code-block:: python
+
+     debug_schema = os.path.join(root, 'schemas/schema_debug.yaml')
+     
+Adding checks through checker.py and SchemaValidator.py
+-------------------------------------------------------
+The check_debug_specs() is a function that ensures the isa and debug specifications confirm to their schemas.
+For details on check_debug_specs() check here : :ref:`checker`.
+
+Details on the checks like s_debug_check() and u_debug_check, that can also be added to SchemaValidator.py are here: :ref:`schemaValidator`.
+
+
+Adding New Schema
+----------------------
+This schema shows the csrs added according to the `RISC-V Debug Specification <https://github.com/riscv/riscv-debug-spec/blob/master/riscv-debug-stable.pdf>`_ :
+
+.. include:: schema_debug.rst
+

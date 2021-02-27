@@ -198,6 +198,8 @@ class schemaValidator(Validator):
                 self._error(field, "U is not present(32)")
               
     def _check_with_s_debug_check(self, field, value):
+        ''' Function ensures that the ro_constant is hardwired to zero when S is present in the ISA string
+            Used mainly for debug schema'''
         global isa_string
 
         if 'S' not in isa_string :
@@ -205,6 +207,8 @@ class schemaValidator(Validator):
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
                 
     def _check_with_u_debug_check(self, field, value):
+        ''' Function ensures that the ro_constant is hardwired to zero when U is present in the ISA string
+            Used mainly for debug schema'''
         global isa_string
 
         if 'U' not in isa_string :

@@ -35,6 +35,7 @@ def get_version():
 
 gen_schema_doc('../../riscv_config/schemas/schema_isa.yaml', 'schema_isa.rst')
 gen_schema_doc('../../riscv_config/schemas/schema_platform.yaml', 'schema_platform.rst')
+gen_schema_doc('../../riscv_config/schemas/schema_debug.yaml', 'schema_debug.rst')
 
 sys.path.insert(0, os.path.abspath('../..'))
 sys.setrecursionlimit(1500)
