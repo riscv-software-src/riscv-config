@@ -10,8 +10,8 @@ Welcome to RISCV-Config
    overview
    quickstart
    yaml-specs
-   code-doc
    new-extensions
+   code-doc
    
 Indices and tables
 ------------------

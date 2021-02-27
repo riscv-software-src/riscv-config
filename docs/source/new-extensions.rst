@@ -1,11 +1,21 @@
-##############################
-Flow to add new ISA extensions
-##############################
+#################################
+Adding support for new Extensions
+#################################
 
-This section describe the steps to be followed while adding new extension and the corresponding constraints attached to it.
+Adding support for a new ISA extension or an adjoining spec to RISCV-CONFIG could entail one or more of the following:
 
-Step 1: Modifications in Schema_isa.yaml
-========================================
+1. Updating the ISA string and its constraints to recognize valid configurations of the new
+   extension
+2. Updating the schema_isa.yaml with new CSRs defined by the new ISA extension
+3. Adding new schemas and a new cli argument for supporting adjoining RISC-V specs like debug, trace, etc.
+
+This chapter will descrive how one can go about RISC-V achieving the above tasks.
+
+Updates to the ISA string
+=========================
+
+Modifications in Schema_isa.yaml
+----------------------------------------
 
 As shown in the example below, any new extensions and sub extensions have to be enabled by adding them in the regex expression given below. This will give the user the option to configure with the extensions in the input isa yamls. :ref:`isa_yaml_spec`. 
 
@@ -19,8 +29,8 @@ As shown in the example below, any new extensions and sub extensions have to be 
     
 
 
-Step 2: Adding constraints in the SchemaValidator.py file
-=========================================================
+Adding constraints in the SchemaValidator.py file
+---------------------------------------------------------
 
 The conditions shown below are any constraints that will have to be written while adding a new extension.
 
@@ -39,10 +49,6 @@ For example, in the code below , the constraints for the K (Crypto-Scalar extens
    4. If **B extension** Zbp is present , its subset extensions  Zkb cannot be present in the ISA string. Cross-checking across two different extensions can also be done. Zkb contains instructions from other subextensions in B extension like Zbm, Zbe, Zbf and Zbb , but unlike Zbp is not a proper superset.
    
    5. If **B extension** Zbc is present , its subset extensions Zkg cannot be present in the ISA string.
-
-
-
-
 
 
 .. code-block:: python
