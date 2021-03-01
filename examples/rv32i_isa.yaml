@@ -6,7 +6,7 @@ hart0: &hart0
   physical_addr_sz: 32
   pmp_granularity: 5
   misa:
-   reset-val: 0x40143125
+   reset-val: 0x401431A5
    rv32:
      accessible: true
      mxl:

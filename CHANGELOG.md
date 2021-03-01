@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.7.0 - 2021-02-25
+### Added
+- added new debug schema for debug based csrs and spec
+- cli now takes debug spec as input as well along with isa-spec
+- added support for defining custom exceptions and interrupts
+
 ## 2.6.3 - 2021-01-19
 ### Fixed
 - added priv_mode field to sedeleg and sideleg csrs
