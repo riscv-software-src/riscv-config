@@ -2,27 +2,33 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.7.0 - 2021-02-25
+## [2.8.0] - 2021-03-02
+### Added
+- Added checks for K (sub)extension(s) 
+- Updated docs with information on adding new extension, csrs or specs.
+- Added github actions based CI
+
+## [2.7.0] - 2021-02-25
 ### Added
 - added new debug schema for debug based csrs and spec
 - cli now takes debug spec as input as well along with isa-spec
 - added support for defining custom exceptions and interrupts
 
-## 2.6.3 - 2021-01-19
+## [2.6.3] - 2021-01-19
 ### Fixed
 - added priv_mode field to sedeleg and sideleg csrs
 
-## 2.6.2 - 2021-01-18
+## [2.6.2] - 2021-01-18
 ### Fixed
 - Allow B extension in ISA schema
 
-## 2.6.1 - 2021-01-13
+## [2.6.1] - 2021-01-13
 ### Fixed
 - msb,lsb values of "SD" field in mstatus must be 63 in rv64 mode
 - added checks for reset value of misa to adhere to the extensions enabled in the input yaml
 - fixed dead-link in the docs.
 
-## 2.6.0 - 2021-01-5
+## [2.6.0] - 2021-01-5
 ### Added
 - Added support for custom csr yaml
 - Added new nodes in isa_schema: pmp_granularity and physical_addr_sz
@@ -33,25 +39,25 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - fixed warl parsing and islegal function to check reset values 
 
-## 2.5.1 - 2020-11-6
+## [2.5.1] - 2020-11-6
 ### Changed
 - modified sn_check and su_check
 - scounteren checks to make it depend only on u
 - medeleg, mideleg check for S or N extension
 
 
-## 2.5.0 - 2020-11-6
+## [2.5.0] - 2020-11-6
 ### Added
 - added all n extension csrs
 - added missing supervisor csrs
 - added default setters for subfields in sip, sie , uip and uie to make it depend as shadows on machine csrs
 
-## 2.4.1 - 2020-10-22
+## [2.4.1] - 2020-10-22
 ### Changed
 - default mpp value to 0
 - adding defaults to sub-fields of mtvec
 
-## 2.4.0 - 2020-10-19
+## [2.4.0] - 2020-10-19
 ### Added
 - Added support for pmp csrs in the schema
 - Added support for mcycleh and minstreth
@@ -71,11 +77,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   csr.
 - using aliases to reduce the code size
 
-## 2.3.1 - 2020-10-6
+## [2.3.1] - 2020-10-6
 ### Changed
 - Added Zihintpause to ISA string (for PAUSE Hint instruction extension)..
 
-## 2.3.0 - 2020-07-27
+## [2.3.0] - 2020-07-27
 ### Changed
 - Size of the isa schema has been reduced significantly.
 - Using anchors in the schema.
@@ -83,44 +89,44 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - adding mycycle, minstret, pmpcfgs and pmpaddrs
 - added support for defining multiple harts
 
-## 2.2.2 - 2020-06-09
+## [2.2.2] - 2020-06-09
 ### Changed
 - Changed quickstart 'riscv_config' to 'riscv-config'
 - Changed checker.py to add check_reset_fill_fields() description
 
-## 2.2.1 - 2020-05-18
+## [2.2.1] - 2020-05-18
 ### Changed
 - Changed minimum python version requirement to 3.6.0 which is typically easy to install on all
   major distributions
 - Updated readme with better installation instructions
 
-## 2.2.0 - 2020-04-07
+## [2.2.0] - 2020-04-07
 ### Changed
 - Renamed the 'implemented' field  in rv32 and rv64 nodes to 'accessible'.
 - Modified appropriate definitions for fields dependent on specific extensions like NSU.
 
-## 2.1.1 - 2020-03-29
-## Fixed
+## [2.1.1] - 2020-03-29
+## [Fixed
 - doc issue for mtimecmp
 - mimpid is now part of the default setters list
 
-## 2.1.0 - 2020-03-29
-## Fixed
+## [2.1.0] - 2020-03-29
+## [Fixed
 - Moved machine timer nodes to platform yaml.
-## Added
+## [Added
 - `--version` option to arguments to print version and exit when specified.
 - Print help and exit when no options/arguments are specified.
 
-## 2.0.2 - 2020-03-28
+## [2.0.2] - 2020-03-28
 ### Fixed
 - Redundant reset-val check for mtvec and misa registers.
 
-## 2.0.1 - 2020-03-25
+## [2.0.1] - 2020-03-25
 ### Fixed
 - typos in quickstart doc
 - disabled deployment to repository until authentication issue is fixed.
 
-## 2.0.0 - 2020-03-25
+## [2.0.0] - 2020-03-25
 ### Added
 - adding support for warl fields and support
 - documentation for the warl fields added
@@ -132,19 +138,19 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - closed issues #10, #11, #12, #13
 
-## 1.0.2 - 2019-08-09
+## [1.0.2] - 2019-08-09
 ### Changed
 - Log is generated only if specified(for API calls to checker.check_specs).
 ### Fixed
 - link in readme now points to github instead of gitlab.
 
-## 1.0.0 - 2019-07-30
+## [1.0.0] - 2019-07-30
 ### Changed
 - Work directory isnt deleted if the directory exists, although the files of the same name will be overwritten.
 ### Fixed
 - Checked yaml passes validation too.
 
-## 0.1.0 - 2019-07-29
+## [0.1.0] - 2019-07-29
 ### Added
 - Added work_dir as arg and always outputs to that dir.
 - Added reset vector and nmi vector to platform.yaml
@@ -166,19 +172,19 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - remove *_checked.yaml files from Examples.
 - changed templates_platform.yaml to template_platform.yaml in docs.
 
-## 0.0.3 - 2019-07-19
+## [0.0.3] - 2019-07-19
 ### Fixed
 - doc update
 
-## 0.0.2 - 2019-07-19
+## [0.0.2] - 2019-07-19
 ### Fixed
 - pdf documentation
 - ci-cd to host pdf as well
 
-## 0.0.1 - 2019-07-18
+## [0.0.1] - 2019-07-18
 ### Added
 - Documentation to install and use pyenv 
 
-## 0.0.0 - 2019-07-18
+## [0.0.0] - 2019-07-18
 ### Added
 - Initial schemas for M mode and S mode csrs with constraints as specified in the spec.
