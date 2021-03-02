@@ -1151,9 +1151,12 @@ def check_debug_specs(debug_spec, isa_spec,
                 logging=False,
                 no_anchors=False):
     '''
-        Function to perform ensure that the isa and platform specifications confirm
+        Function to perform ensure that the isa and debug specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
         specifications confirm to their respective schemas.
+
+
+        :param debug_spec: The path to the DUT debug specification yaml file.
 
         :param isa_spec: The path to the DUT isa specification yaml file.
 

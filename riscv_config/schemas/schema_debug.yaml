@@ -232,7 +232,9 @@ hart_schema:
                 type:
                   type: dict
                   check_with: wr_illegal
-                  schema: { ro_variable: {type: boolean}}
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: {ro_variable: {type: boolean}}
                   default:
                     ro_variable: True
               default: {implemented: true}
