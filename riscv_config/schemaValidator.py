@@ -64,26 +64,57 @@ class schemaValidator(Validator):
         else:
             self._error(field, "Invalid width in ISA.")
         #ISA checks
-        if any(x in value for x in "EI"):
-            if 'D' in value and not 'F' in value:
-                self._error(field, "D cannot exist without F.")
-            if 'Q' in value and not all(x in value for x in "FD"):
-                self._error(field, "Q cannot exist without F and D.")
-            if 'F' in value and not "Zicsr" in value:
-                self._error(field, "F cannot exist without Zicsr.")
-            if 'Zam' in value and not 'A' in value:
-                self._error(field, "Zam cannot exist without A.")
-            if 'N' in value and not 'U' in value:
-                self._error(field, "N cannot exist without U.")
-            if 'S' in value and not 'U' in value:
-                self._error(field, "S cannot exist without U.")
-            if 'Z' in value and not self.document['User_Spec_Version'] == "2.3" :
-                self._error(
-                    field, "Z is not supported in the User Spec given version.")
-        else:
-            self._error(field, "Neither of E or I extensions are present")
+        str_match = re.findall(r'([^\d]*?)(?!_)*(Z.*?)*(_|$)',value,re.M)
+        extension_list= []
+        standard_isa = ''
+        for match in str_match:
+            stdisa, z, ignore = match
+            if stdisa != '':
+                for e in stdisa:
+                    extension_list.append(e)
+                standard_isa = stdisa
+            if z != '':
+                extension_list.append(z)
+        # check ordering of ISA
+        canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
+        order_index = {c: i for i, c in enumerate(canonical_ordering)}
+        for i in range(len(standard_isa)-1):
+            a1 = standard_isa[i]
+            a2 = standard_isa[i+1]
+        
+            if order_index[a1] > order_index[a2]:
+                self._error(field, "Alphabet '" + a1 + "' should occur after '" + a2)
+
+        if 'I' not in extension_list and 'E' not in extension_list:
+            self._error(field, 'Either of I or E base extensions need to be present in the ISA string')
+        if 'F' in extension_list and not "Zicsr" in extension_list:
+            self._error(field, "F cannot exist without Zicsr.")
+        if 'D' in extension_list and not 'F' in extension_list:
+            self._error(field, "D cannot exist without F.")
+        if 'Q' in extension_list and not 'D' in extension_list:
+            self._error(field, "Q cannot exist without D and F.")
+        if 'Zam' in extension_list and not 'A' in extension_list:
+            self._error(field, "Zam cannot exist without A.")
+        if 'N' in extension_list and not 'U' in extension_list:
+            self._error(field, "N cannot exist without U.")
+        if 'S' in extension_list and not 'U' in extension_list:
+            self._error(field, "S cannot exist without U.")
+        if 'Zkg' in extension_list and 'Zbc' in extension_list:
+            self._error(field, "Zkg being a proper subset of Zbc (from B extension) should be ommitted from the ISA string")
+        if 'Zkb' in extension_list and 'Zbp' in extension_list :
+            self._error(field, "Zkb being a proper subset of Zbp (from B extension) should be ommitted from the ISA string")
+        if 'Zks' in extension_list and ( set(['Zkse', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
+            self._error(field, "Zks is a superset of Zkse, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
+        if 'Zkn' in extension_list and ( set(['Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ):
+            self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
+        if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
+            self._error(field, "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+
+#        if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
+#            self._error(
+#                field, "Z is not supported in the User Spec given version.")
         #ISA encoding for future use.
-        for x in "ABCDEFHIJLMNPQSTUVX":
+        for x in "ABCDEFHIJKLMNPQSTUVX":
             if (x in ext):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
@@ -167,6 +198,8 @@ class schemaValidator(Validator):
                 self._error(field, "U is not present(32)")
               
     def _check_with_s_debug_check(self, field, value):
+        ''' Function ensures that the ro_constant is hardwired to zero when S is present in the ISA string
+            Used mainly for debug schema'''
         global isa_string
 
         if 'S' not in isa_string :
@@ -174,6 +207,8 @@ class schemaValidator(Validator):
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
                 
     def _check_with_u_debug_check(self, field, value):
+        ''' Function ensures that the ro_constant is hardwired to zero when U is present in the ISA string
+            Used mainly for debug schema'''
         global isa_string
 
         if 'U' not in isa_string :

@@ -57,7 +57,7 @@ hart_schema:
     #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ABCDEFGHIJLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
+           regex: "^RV(32|64|128)[IE]+[ABCDEFGHIJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}$" }
     
     ###
     #User_Spec_Version

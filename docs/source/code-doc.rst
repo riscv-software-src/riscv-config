@@ -1,12 +1,20 @@
 ##################
 Code Documentation
 ##################
+.. _checker:
+
+riscv_config.checker
+---------------------
 
 .. automodule:: riscv_config.checker
    :members: 
    :special-members:
    :private-members:
+   
+.. _schemaValidator:
 
+riscv_config.schemaValidator
+----------------------------
 .. automodule:: riscv_config.schemaValidator
    :members: 
    :special-members:

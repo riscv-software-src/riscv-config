@@ -424,3 +424,8 @@ Platform YAML Spec
 This section describes each node of the PLATFORM-YAML. For each node, we have identified the fields required from the user and also the various constraints involved.
 
 .. include:: schema_platform.rst
+
+Debug YAML Spec
+===============
+
+.. include:: schema_debug.rst
