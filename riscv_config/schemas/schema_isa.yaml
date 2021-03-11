@@ -10393,7 +10393,7 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - hcounteren[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  - hcounteren[31:0] in [0x00000000:0xFFFFFFFF]
                   wr_illegal:
                   - unchanged
             accessible:
