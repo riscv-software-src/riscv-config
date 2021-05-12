@@ -2,7 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.8.0] - 2021-03-02
+## [2.8.1] - 2021-05-11
+### Added
+- added Zmmul to platform.yaml, and prohibition of both Zmmul and M at the same time
+
+	## [2.8.0] - 2021-03-02
 ### Added
 - Added checks for K (sub)extension(s) 
 - Updated docs with information on adding new extension, csrs or specs.
