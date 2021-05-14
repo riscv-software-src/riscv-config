@@ -137,6 +137,7 @@ hart_schema:
       type: list
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
+      check_with: isa_xlen
       
     ###
     #pmp_granularity

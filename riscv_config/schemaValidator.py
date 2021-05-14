@@ -26,6 +26,12 @@ class schemaValidator(Validator):
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
 
+    def _check_with_isa_xlen(self, field, value):
+        global supported_xlen
+        global isa_string
+        if str(max(supported_xlen)) not in isa_string:
+            self._error(field, 'XLEN in ISA and supported_xlen fields do not match')
+
     def _check_with_phy_addr(self, field, value):
         if rv32 and value > 34:
             self._error(field, "Physical address size should not exceed 34 for RV32")
