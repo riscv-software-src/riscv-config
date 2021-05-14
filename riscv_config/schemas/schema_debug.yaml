@@ -56,6 +56,21 @@ hart_schema:
       type: boolean
       required: True
       default: False  
+
+    ###
+    #parking_loop
+    #  **Description**: Integer value indicating the address of the debug parking loop
+    #
+    #  **Examples**:
+    #
+    #  .. code-block: yaml
+    #
+    #     parking_loop: 0x800
+
+    parking_loop:
+      type: integer
+      nullable: True
+      default:
       
     schema_node:
       type: dict
