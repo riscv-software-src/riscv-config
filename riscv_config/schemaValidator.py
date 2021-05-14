@@ -366,12 +366,27 @@ class schemaValidator(Validator):
                 pass
 
         elif value['warl']['dependency_fields'] == [] and pr == 1:
-            self._error(field, "no mode must exist(legal)")
-        elif value['warl']['dependency_fields'] == [] and len(
-                value['warl']['legal']) != 1:
-            self._error(field, "There should be only one legal value")
+            self._error(field, "since dependency_fields is empty no '->' in legal fields")
+        elif value['warl']['dependency_fields'] == [] and len(value['warl']['legal']) != 1:
+            self._error(field, "There should be only one legal string")
         elif value['warl']['dependency_fields'] == [] and pri == 1:
-            self._error(field, "no mode must exist(illlegal)")
+            self._error(field, "since dependency_fields is empty illegal fields must be defined for each")
+        else:
+            for l in value['warl']['legal']:
+                if 'bitmask' in l:
+                    bmask = re.findall(r'\s*\[.*\]\s*bitmask\s*\[(.*?)\]',l)[0]
+                    if ',' not in bmask:
+                        self._error(field, 'Legal string "'+l+'" has wrong bitmask syntax')
+                    if len(bmask.split(','))!=2:
+                        self._error(field, 'Legal string "'+l+'" has wrong bitmkask syntax')
+                    for v in bmask.split(','):
+                        if '0x' not in v:
+                            try:
+                                isinstance(int(v,10),int)
+                            except:
+                                self._error(field, 'Value ' +str(v) + ' in Legal string "'+l+'" is not a valid number')
+
+
 #        elif value['warl']['dependency_fields'] == [] and len(
 #                value['warl']['legal']
 #        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
