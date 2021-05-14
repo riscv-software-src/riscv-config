@@ -122,38 +122,6 @@ mtimecmp:
     implemented: False
 
 ###
-#mcause_non_standard
-#-------------------
-#
-# **Description**: Stores the fields for the *mcause* register.
-#
-#   * implemented: A boolean field indicating that the register has been implemented.
-#   * values: The list of exception values greater than 16 as assumed by the platform as integers.
-# 
-# **Examples**: 
-# 
-# .. code-block:: yaml
-#
-#   mcause_non_standard:
-#      implemented: True
-#      value: [16,17,20]
-#
-# **Constraints**:
-#
-#       - None
-
-mcause_non_standard:
-  type: dict
-  schema:
-    implemented:
-      type: boolean
-    values:
-      type: list
-      check_with: xcause_check
-  default:
-    implemented: True
-
-###
 #mtval_condition_writes
 #-----
 #
