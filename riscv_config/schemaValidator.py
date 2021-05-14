@@ -13,14 +13,16 @@ class schemaValidator(Validator):
         global rv64
         global extensions
         global xlen
-        xlen = kwargs.get('xlen')
+        global supported_xlen
+        xlen = max(kwargs.get('xlen'))
+        supported_xlen = kwargs.get('xlen')
         global isa_string
         isa_string = kwargs.get('isa_string')
-        if 32 in xlen:
+        if 32 in supported_xlen:
             rv32 = True
         else:
             rv32 = False
-        if 64 in xlen:
+        if 64 in supported_xlen:
             rv64 = True
         else:
             rv64 = False
@@ -146,9 +148,9 @@ class schemaValidator(Validator):
 
     def _check_with_max_length(self, field, value):
         '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''
-        global xlen
+        global supported_xlen
         global extensions
-        maxv = max(xlen)
+        maxv = max(supported_xlen)
         if value > (2**maxv) - 1:
             self._error(field, "Value exceeds max supported length")
 
@@ -401,13 +403,13 @@ class schemaValidator(Validator):
                 self._error(field, " {} not present".format(par[1]))
 
     def _check_with_medeleg_reset(self, field, value):
-        global xlen
-        s = format(value, '#{}b'.format(xlen[0] + 2))
+        global supported_xlen
+        s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-10]) != '0' and value >= int("0x400", 16):
             self._error(field, " 11th bit must be hardwired to 0")
 
     def _check_with_sedeleg_reset(self, field, value):
-        global xlen
-        s = format(value, '#{}b'.format(xlen[0] + 2))
+        global supported_xlen
+        s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
