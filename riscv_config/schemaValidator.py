@@ -14,8 +14,8 @@ class schemaValidator(Validator):
         global extensions
         global xlen
         global supported_xlen
-        xlen = max(kwargs.get('xlen'))
         supported_xlen = kwargs.get('xlen')
+        xlen = 0 if len(supported_xlen)==0 else max(supported_xlen)
         global isa_string
         isa_string = kwargs.get('isa_string')
         if 32 in supported_xlen:
