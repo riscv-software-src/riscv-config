@@ -2,6 +2,17 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 2021-05-24
+### Fixed
+- fixed issue #58 by adding extra checks for bitmask
+- fixed issue #59 by removing custom cause from platform yaml
+- resolved inconsistencies in the use of "xlen" and "supported_xlen" in schemaValidator
+### Added
+- added extra "shadow_type" fields in the csr schemas. These indicate the nature of shadow
+  (read-only, read-write, etc).
+- added parking_loop node in debug_schema to indicate the address of debug rom. Can be empty in
+  implementations which do not have this feature
+
 ## [2.8.0] - 2021-03-02
 ### Added
 - Added checks for K (sub)extension(s) 

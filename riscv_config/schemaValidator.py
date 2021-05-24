@@ -13,18 +13,26 @@ class schemaValidator(Validator):
         global rv64
         global extensions
         global xlen
-        xlen = kwargs.get('xlen')
+        global supported_xlen
+        supported_xlen = kwargs.get('xlen')
+        xlen = 0 if len(supported_xlen)==0 else max(supported_xlen)
         global isa_string
         isa_string = kwargs.get('isa_string')
-        if 32 in xlen:
+        if 32 in supported_xlen:
             rv32 = True
         else:
             rv32 = False
-        if 64 in xlen:
+        if 64 in supported_xlen:
             rv64 = True
         else:
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
+
+    def _check_with_isa_xlen(self, field, value):
+        global supported_xlen
+        global isa_string
+        if str(max(supported_xlen)) not in isa_string:
+            self._error(field, 'XLEN in ISA and supported_xlen fields do not match')
 
     def _check_with_phy_addr(self, field, value):
         if rv32 and value > 34:
@@ -140,9 +148,9 @@ class schemaValidator(Validator):
 
     def _check_with_max_length(self, field, value):
         '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''
-        global xlen
+        global supported_xlen
         global extensions
-        maxv = max(xlen)
+        maxv = max(supported_xlen)
         if value > (2**maxv) - 1:
             self._error(field, "Value exceeds max supported length")
 
@@ -360,12 +368,27 @@ class schemaValidator(Validator):
                 pass
 
         elif value['warl']['dependency_fields'] == [] and pr == 1:
-            self._error(field, "no mode must exist(legal)")
-        elif value['warl']['dependency_fields'] == [] and len(
-                value['warl']['legal']) != 1:
-            self._error(field, "There should be only one legal value")
+            self._error(field, "since dependency_fields is empty no '->' in legal fields")
+        elif value['warl']['dependency_fields'] == [] and len(value['warl']['legal']) != 1:
+            self._error(field, "There should be only one legal string")
         elif value['warl']['dependency_fields'] == [] and pri == 1:
-            self._error(field, "no mode must exist(illlegal)")
+            self._error(field, "since dependency_fields is empty illegal fields must be defined for each")
+        else:
+            for l in value['warl']['legal']:
+                if 'bitmask' in l:
+                    bmask = re.findall(r'\s*\[.*\]\s*bitmask\s*\[(.*?)\]',l)[0]
+                    if ',' not in bmask:
+                        self._error(field, 'Legal string "'+l+'" has wrong bitmask syntax')
+                    if len(bmask.split(','))!=2:
+                        self._error(field, 'Legal string "'+l+'" has wrong bitmkask syntax')
+                    for v in bmask.split(','):
+                        if '0x' not in v:
+                            try:
+                                isinstance(int(v,10),int)
+                            except:
+                                self._error(field, 'Value ' +str(v) + ' in Legal string "'+l+'" is not a valid number')
+
+
 #        elif value['warl']['dependency_fields'] == [] and len(
 #                value['warl']['legal']
 #        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
@@ -380,13 +403,13 @@ class schemaValidator(Validator):
                 self._error(field, " {} not present".format(par[1]))
 
     def _check_with_medeleg_reset(self, field, value):
-        global xlen
-        s = format(value, '#{}b'.format(xlen[0] + 2))
+        global supported_xlen
+        s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-10]) != '0' and value >= int("0x400", 16):
             self._error(field, " 11th bit must be hardwired to 0")
 
     def _check_with_sedeleg_reset(self, field, value):
-        global xlen
-        s = format(value, '#{}b'.format(xlen[0] + 2))
+        global supported_xlen
+        s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")

@@ -137,6 +137,7 @@ hart_schema:
       type: list
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
+      check_with: isa_xlen
       
     ###
     #pmp_granularity
@@ -209,6 +210,7 @@ hart_schema:
         schema:
           cause_val: {type: integer, min: 24, max: 63, forbidden: [16,17,18,19,20,21,22,23,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47]}
           cause_name: {type: string}
+          priv_mode: {type: string, default: 'M', allowed: ['M','S','U']}
         nullable: True
       nullable: True
       default:
@@ -240,6 +242,8 @@ hart_schema:
         schema:
           cause_val: {type: integer, min: 16}
           cause_name: {type: string}
+          on_reset_enable: {type: integer, min: 0, max: 1, default: 0}
+          priv_mode: {type: string, default: 'M', allowed: ['M','S','U']}
         nullable: True
       nullable: True
       default:
@@ -282,6 +286,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -302,6 +307,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -327,6 +333,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -364,6 +371,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Encodes the native base integer ISA width.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: { type: integer, default: 31, allowed: [31] }
                 lsb: { type: integer, default: 30, allowed: [30] }
                 implemented: { type: boolean, default: false }
@@ -383,6 +391,7 @@ hart_schema:
                   default: Encodes the presence of the standard extensions, with a single
                     bit per letter of the alphabet.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 25, allowed: [25]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: false}
@@ -410,6 +419,7 @@ hart_schema:
                   type: string
                   default: Encodes the native base integer ISA width.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 62, allowed: [62]}
                 implemented: {type: boolean, default: true}
@@ -429,6 +439,7 @@ hart_schema:
                   default: Encodes the presence of the standard extensions, with a single
                     bit per letter of the alphabet.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 25, allowed: [25]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -467,6 +478,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -485,6 +497,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -505,6 +518,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the machine mode interrupts.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -521,6 +535,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -542,6 +557,7 @@ hart_schema:
                   default: Stores the state of the supervisor mode interrupts prior to
                     the trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -563,6 +579,7 @@ hart_schema:
                   default: Stores the state of the machine mode interrupts prior to the
                     trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -579,6 +596,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for supervisor.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -599,6 +617,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for machine.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -619,6 +638,7 @@ hart_schema:
                   default: Encodes the status of the floating-point unit, including the
                     CSR fcsr and floating-point data registers.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 14, allowed: [14]}
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
@@ -638,6 +658,7 @@ hart_schema:
                   default: Encodes the status of additional user-mode extensions and associated
                     state.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 16, allowed: [16]}
                 lsb: {type: integer, default: 15, allowed: [15]}
                 implemented: {type: boolean, default: true}
@@ -658,6 +679,7 @@ hart_schema:
                   default: Modifies the privilege level at which loads and stores execute
                     in all privilege modes.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 17, allowed: [17]}
                 lsb: {type: integer, default: 17, allowed: [17]}
                 implemented: {type: boolean, default: true}
@@ -679,6 +701,7 @@ hart_schema:
                   default: Modifies the privilege with which S-mode loads and stores access
                     virtual memory.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 18, allowed: [18]}
                 lsb: {type: integer, default: 18, allowed: [18]}
                 implemented: {type: boolean, default: true}
@@ -699,6 +722,7 @@ hart_schema:
                   type: string
                   default: Modifies the privilege with which loads access virtual memory.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 19, allowed: [19]}
                 lsb: {type: integer, default: 19, allowed: [19]}
                 implemented: {type: boolean, default: true}
@@ -720,6 +744,7 @@ hart_schema:
                   default: Supports intercepting supervisor virtual-memory management
                     operations.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 20, allowed: [20]}
                 lsb: {type: integer, default: 20, allowed: [20]}
                 implemented: {type: boolean, default: true}
@@ -740,6 +765,7 @@ hart_schema:
                   type: string
                   default: Supports intercepting the WFI instruction.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 21, allowed: [21]}
                 lsb: {type: integer, default: 21, allowed: [21]}
                 implemented: {type: boolean, default: true}
@@ -760,6 +786,7 @@ hart_schema:
                   type: string
                   default: Supports intercepting the supervisor exception return instruction.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 22, allowed: [22]}
                 lsb: {type: integer, default: 22, allowed: [22]}
                 implemented: {type: boolean, default: true}
@@ -781,6 +808,7 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
@@ -802,6 +830,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -820,6 +849,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -840,6 +870,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the machine mode interrupts.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -856,6 +887,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -877,6 +909,7 @@ hart_schema:
                   default: Stores the state of the supervisor mode interrupts prior to
                     the trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -898,6 +931,7 @@ hart_schema:
                   default: Stores the state of the machine mode interrupts prior to the
                     trap.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -914,6 +948,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for supervisor.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -934,6 +969,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for machine.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -954,6 +990,7 @@ hart_schema:
                   default: Encodes the status of the floating-point unit, including the
                     CSR fcsr and floating-point data registers.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 14, allowed: [14]}
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
@@ -974,6 +1011,7 @@ hart_schema:
                   default: Encodes the status of additional user-mode extensions and associated
                     state.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 16, allowed: [16]}
                 lsb: {type: integer, default: 15, allowed: [15]}
                 implemented: {type: boolean, default: true}
@@ -995,6 +1033,7 @@ hart_schema:
                   default: Modifies the privilege level at which loads and stores execute
                     in all privilege modes.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 17, allowed: [17]}
                 lsb: {type: integer, default: 17, allowed: [17]}
                 implemented: {type: boolean, default: true}
@@ -1016,6 +1055,7 @@ hart_schema:
                   default: Modifies the privilege with which S-mode loads and stores access
                     virtual memory.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 18, allowed: [18]}
                 lsb: {type: integer, default: 18, allowed: [18]}
                 implemented: {type: boolean, default: true}
@@ -1036,6 +1076,7 @@ hart_schema:
                   type: string
                   default: Modifies the privilege with which loads access virtual memory.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 19, allowed: [19]}
                 lsb: {type: integer, default: 19, allowed: [19]}
                 implemented: {type: boolean, default: true}
@@ -1057,6 +1098,7 @@ hart_schema:
                   default: Supports intercepting supervisor virtual-memory management
                     operations.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 20, allowed: [20]}
                 lsb: {type: integer, default: 20, allowed: [20]}
                 implemented: {type: boolean, default: true}
@@ -1077,6 +1119,7 @@ hart_schema:
                   type: string
                   default: Supports intercepting the WFI instruction.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 21, allowed: [21]}
                 lsb: {type: integer, default: 21, allowed: [21]}
                 implemented: {type: boolean, default: true}
@@ -1097,6 +1140,7 @@ hart_schema:
                   type: string
                   default: Supports intercepting the supervisor exception return instruction.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 22, allowed: [22]}
                 lsb: {type: integer, default: 22, allowed: [22]}
                 implemented: {type: boolean, default: true}
@@ -1117,6 +1161,7 @@ hart_schema:
                   type: string
                   default: Controls the value of xlen for Supervisor mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 35, allowed: [35]}
                 lsb: {type: integer, default: 34, allowed: [34]}
                 implemented: {type: boolean, default: true}
@@ -1135,6 +1180,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Controls the xlen for User mode.}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 33, allowed: [33]}
                 lsb: {type: integer, default: 32, allowed: [32]}
                 implemented: {type: boolean, default: true}
@@ -1156,6 +1202,7 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
@@ -1188,6 +1235,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1207,6 +1255,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1238,6 +1287,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1257,6 +1307,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1288,6 +1339,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1307,6 +1359,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1339,6 +1392,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1356,6 +1410,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1392,6 +1447,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -1411,6 +1467,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -1440,6 +1497,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -1459,6 +1517,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -1495,6 +1554,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1520,6 +1580,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1560,6 +1621,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1585,6 +1647,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -1629,6 +1692,7 @@ hart_schema:
                   type: string
                   default: User Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -1650,6 +1714,7 @@ hart_schema:
                   type: string
                   default: Supervisor Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -1670,6 +1735,7 @@ hart_schema:
                   type: string
                   default: Machine Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -1687,6 +1753,7 @@ hart_schema:
                   type: string
                   default: User Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -1708,6 +1775,7 @@ hart_schema:
                   type: string
                   default: Supervisor Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -1728,6 +1796,7 @@ hart_schema:
                   type: string
                   default: Machine Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -1745,6 +1814,7 @@ hart_schema:
                   type: string
                   default: User External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -1766,6 +1836,7 @@ hart_schema:
                   type: string
                   default: Supervisor External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -1786,6 +1857,7 @@ hart_schema:
                   type: string
                   default: Machine External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 11, allowed: [11]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -1811,6 +1883,7 @@ hart_schema:
                   type: string
                   default: User Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -1832,6 +1905,7 @@ hart_schema:
                   type: string
                   default: Supervisor Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -1852,6 +1926,7 @@ hart_schema:
                   type: string
                   default: Machine Software Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -1869,6 +1944,7 @@ hart_schema:
                   type: string
                   default: User Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -1890,6 +1966,7 @@ hart_schema:
                   type: string
                   default: Supervisor Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -1910,6 +1987,7 @@ hart_schema:
                   type: string
                   default: Machine Timer Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -1927,6 +2005,7 @@ hart_schema:
                   type: string
                   default: User External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -1948,6 +2027,7 @@ hart_schema:
                   type: string
                   default: Supervisor External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -1968,6 +2048,7 @@ hart_schema:
                   type: string
                   default: Machine External Interrupt Pending.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 11, allowed: [11]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -2007,6 +2088,7 @@ hart_schema:
                   type: string
                   default: User Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -2028,6 +2110,7 @@ hart_schema:
                   type: string
                   default: Supervisor Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -2048,6 +2131,7 @@ hart_schema:
                   type: string
                   default: Machine Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -2068,6 +2152,7 @@ hart_schema:
                   type: string
                   default: User Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -2089,6 +2174,7 @@ hart_schema:
                   type: string
                   default: Supervisor Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -2109,6 +2195,7 @@ hart_schema:
                   type: string
                   default: Machine Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -2128,6 +2215,7 @@ hart_schema:
                   type: string
                   default: User External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -2149,6 +2237,7 @@ hart_schema:
                   type: string
                   default: Supervisor External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -2169,6 +2258,7 @@ hart_schema:
                   type: string
                   default: Machine External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 11, allowed: [11]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -2195,6 +2285,7 @@ hart_schema:
                   type: string
                   default: User Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -2216,6 +2307,7 @@ hart_schema:
                   type: string
                   default: Supervisor Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -2236,6 +2328,7 @@ hart_schema:
                   type: string
                   default: Machine Software Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 3, allowed: [3]}
                 lsb: {type: integer, default: 3, allowed: [3]}
                 implemented: {type: boolean, default: true}
@@ -2256,6 +2349,7 @@ hart_schema:
                   type: string
                   default: User Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -2277,6 +2371,7 @@ hart_schema:
                   type: string
                   default: Supervisor Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -2297,6 +2392,7 @@ hart_schema:
                   type: string
                   default: Machine Timer Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 7, allowed: [7]}
                 implemented: {type: boolean, default: true}
@@ -2316,6 +2412,7 @@ hart_schema:
                   type: string
                   default: User External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -2337,6 +2434,7 @@ hart_schema:
                   type: string
                   default: Supervisor External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -2357,6 +2455,7 @@ hart_schema:
                   type: string
                   default: Machine External Interrupt enable.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 11, allowed: [11]}
                 lsb: {type: integer, default: 11, allowed: [11]}
                 implemented: {type: boolean, default: true}
@@ -2389,6 +2488,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2415,6 +2515,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2454,6 +2555,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2478,6 +2580,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2515,6 +2618,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2539,6 +2643,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -2580,6 +2685,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -2598,6 +2704,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -2624,6 +2731,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -2641,6 +2749,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 62, allowed: [62]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true, allowed: [true]}
@@ -2674,6 +2783,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 7, allowed: [7]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: false}
@@ -2691,6 +2801,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 15, allowed: [15]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: false}
@@ -2708,6 +2819,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 23, allowed: [23]}
                 lsb: {type: integer, default: 16, allowed: [16]}
                 implemented: {type: boolean, default: false}
@@ -2725,6 +2837,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 24, allowed: [24]}
                 implemented: {type: boolean, default: false}
@@ -2756,6 +2869,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 39, allowed: [39]}
                 lsb: {type: integer, default: 32, allowed: [32]}
                 implemented: {type: boolean, default: false}
@@ -2773,6 +2887,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 47, allowed: [47]}
                 lsb: {type: integer, default: 40, allowed: [40]}
                 implemented: {type: boolean, default: false}
@@ -2790,6 +2905,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 55, allowed: [55]}
                 lsb: {type: integer, default: 48, allowed: [48]}
                 implemented: {type: boolean, default: false}
@@ -2807,6 +2923,7 @@ hart_schema:
               schema:
                 description: {type: string, default: pmp configuration bits}
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 56, allowed: [56]}
                 implemented: {type: boolean, default: false}
@@ -3867,6 +3984,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -3891,6 +4009,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -3923,6 +4042,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -3939,6 +4059,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4700,6 +4821,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4718,6 +4840,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 2, allowed: [2]}
             type:
@@ -4749,6 +4872,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4767,6 +4891,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 2, allowed: [2]}
             type:
@@ -4801,6 +4926,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4821,6 +4947,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4853,6 +4980,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4874,6 +5002,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4906,6 +5035,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 7, allowed: [7]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4926,6 +5056,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 7, allowed: [7]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -4952,6 +5083,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycle, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [rv32_check]} 
@@ -4962,6 +5094,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycle, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {default: true, check_with: [rv64_check]} 
@@ -4981,6 +5114,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycleh, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
@@ -5002,6 +5136,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -5016,6 +5151,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -5039,6 +5175,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -5064,6 +5201,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstret, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [rv32_check] }
@@ -5074,6 +5212,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstret, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {default: true, check_with: [rv64_check]} 
@@ -5093,6 +5232,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstreth, nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
@@ -5112,6 +5252,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5122,6 +5263,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5139,6 +5281,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]} 
@@ -5149,6 +5292,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check] }
@@ -5166,6 +5310,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check] }
@@ -5176,6 +5321,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check] }
@@ -5193,6 +5339,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5203,6 +5350,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5220,6 +5368,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5230,6 +5379,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5247,6 +5397,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5257,6 +5408,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5274,6 +5426,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5284,6 +5437,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5301,6 +5455,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5311,6 +5466,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5328,6 +5484,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5338,6 +5495,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5355,6 +5513,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5365,6 +5524,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5382,6 +5542,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5392,6 +5553,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5409,6 +5571,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5419,6 +5582,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5436,6 +5600,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5446,6 +5611,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5463,6 +5629,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5473,6 +5640,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5490,6 +5658,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5517,6 +5686,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5527,6 +5697,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5544,6 +5715,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5554,6 +5726,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5571,6 +5744,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5581,6 +5755,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5598,6 +5773,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5608,6 +5784,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5625,6 +5802,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5635,6 +5813,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5652,6 +5831,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5662,6 +5842,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5679,6 +5860,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5689,6 +5871,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5706,6 +5889,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5716,6 +5900,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5733,6 +5918,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5743,6 +5929,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5760,6 +5947,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5770,6 +5958,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5787,6 +5976,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5797,6 +5987,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5814,6 +6005,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5824,6 +6016,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5841,6 +6034,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5851,6 +6045,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5868,6 +6063,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -5878,6 +6074,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -5895,6 +6092,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -5917,6 +6115,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -5939,6 +6138,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -5961,6 +6161,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -5983,6 +6184,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6005,6 +6207,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6027,6 +6230,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6049,6 +6253,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6071,6 +6276,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6093,6 +6299,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6115,6 +6322,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6137,6 +6345,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6159,6 +6368,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6181,6 +6391,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6203,6 +6414,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6225,6 +6437,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6247,6 +6460,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6269,6 +6483,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6291,6 +6506,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6313,6 +6529,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6335,6 +6552,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6357,6 +6575,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6379,6 +6598,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6401,6 +6621,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6423,6 +6644,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6445,6 +6667,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6467,6 +6690,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6489,6 +6713,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6511,6 +6736,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31h, nullable: false}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -6545,6 +6771,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: mstatus.uie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -6555,6 +6782,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: mstatus.sie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -6567,6 +6795,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: mstatus.upie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -6580,6 +6809,7 @@ hart_schema:
                   default: Stores the state of the supervisor mode interrupts prior to
                     the trap.
                 shadow: {type: string, default: mstatus.spie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -6592,6 +6822,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for supervisor.
                 shadow: {type: string, default: mstatus.spp, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -6605,6 +6836,7 @@ hart_schema:
                   default: Encodes the status of the floating-point unit, including the
                     CSR fcsr and floating-point data registers.
                 shadow: {type: string, default: mstatus.fs, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 14, allowed: [14]}
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
@@ -6617,6 +6849,7 @@ hart_schema:
                   default: Encodes the status of additional user-mode extensions and associated
                     state.
                 shadow: {type: string, default: mstatus.xs, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 16, allowed: [16]}
                 lsb: {type: integer, default: 15, allowed: [15]}
                 implemented: {type: boolean, default: true}
@@ -6629,6 +6862,7 @@ hart_schema:
                   default: Modifies the privilege with which S-mode loads and stores access
                     virtual memory.
                 shadow: {type: string, default: mstatus.sum, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 18, allowed: [18]}
                 lsb: {type: integer, default: 18, allowed: [18]}
                 implemented: {type: boolean, default: true}
@@ -6641,6 +6875,7 @@ hart_schema:
                   type: string
                   default: Modifies the privilege with which loads access virtual memory.
                 shadow: {type: string, default: mstatus.mxr, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 19, allowed: [19]}
                 lsb: {type: integer, default: 19, allowed: [19]}
                 implemented: {type: boolean, default: true}
@@ -6654,6 +6889,7 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: mstatus.sd, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
@@ -6672,6 +6908,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: mstatus.uie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -6682,6 +6919,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Stores the state of the supervisor mode interrupts.}
                 shadow: {type: string, default: mstatus.sie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -6694,6 +6932,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: mstatus.upie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -6707,6 +6946,7 @@ hart_schema:
                   default: Stores the state of the supervisor mode interrupts prior to
                     the trap.
                 shadow: {type: string, default: mstatus.spie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -6719,6 +6959,7 @@ hart_schema:
                   type: string
                   default: Stores the previous priority mode for supervisor.
                 shadow: {type: string, default: mstatus.spp, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -6732,6 +6973,7 @@ hart_schema:
                   default: Encodes the status of the floating-point unit, including the
                     CSR fcsr and floating-point data registers.
                 shadow: {type: string, default: mstatus.fs, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 14, allowed: [14]}
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
@@ -6744,6 +6986,7 @@ hart_schema:
                   default: Encodes the status of additional user-mode extensions and associated
                     state.
                 shadow: {type: string, default: mstatus.xs, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 16, allowed: [16]}
                 lsb: {type: integer, default: 15, allowed: [15]}
                 implemented: {type: boolean, default: true}
@@ -6756,6 +6999,7 @@ hart_schema:
                   default: Modifies the privilege with which S-mode loads and stores access
                     virtual memory.
                 shadow: {type: string, default: mstatus.sum, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 18, allowed: [18]}
                 lsb: {type: integer, default: 18, allowed: [18]}
                 implemented: {type: boolean, default: true}
@@ -6768,6 +7012,7 @@ hart_schema:
                   type: string
                   default: Modifies the privilege with which loads access virtual memory.
                 shadow: {type: string, default: mstatus.mxr, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 19, allowed: [19]}
                 lsb: {type: integer, default: 19, allowed: [19]}
                 implemented: {type: boolean, default: true}
@@ -6778,6 +7023,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Controls the xlen for User mode.}
                 shadow: {type: string, default: mstatus.uxl, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 33, allowed: [33]}
                 lsb: {type: integer, default: 32, allowed: [32]}
                 implemented: {type: boolean, default: true}
@@ -6791,6 +7037,7 @@ hart_schema:
                   default: Read-only bit that summarizes whether either the FS field or
                     XS field signals the presence of some dirty state.
                 shadow: {type: string, default: mstatus.sd, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
@@ -6823,6 +7070,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mie.usie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -6832,6 +7080,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
                 shadow: {type: string, default: mie.ssie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -6841,6 +7090,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mie.utie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -6850,6 +7100,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
                 shadow: {type: string, default: mie.stie , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -6859,6 +7110,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mie.ueie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -6868,6 +7120,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
                 shadow: {type: string, default: mie.seie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -6886,6 +7139,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mie.usie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -6895,6 +7149,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
                 shadow: {type: string, default: mie.ssie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -6904,6 +7159,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mie.utie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -6913,6 +7169,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
                 shadow: {type: string, default: mie.stie , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -6922,6 +7179,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mie.ueie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -6931,6 +7189,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
                 shadow: {type: string, default: mie.seie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: False}
@@ -6962,6 +7221,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mip.usip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -6971,6 +7231,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
                 shadow: {type: string, default: mip.ssip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -6980,6 +7241,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mip.utip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -6989,6 +7251,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
                 shadow: {type: string, default: mip.stip , nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -6998,6 +7261,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mip.ueip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7007,6 +7271,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
                 shadow: {type: string, default: mip.seip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -7025,6 +7290,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mip.usip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7034,6 +7300,7 @@ hart_schema:
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
                 shadow: {type: string, default: mip.ssip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
@@ -7043,6 +7310,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mip.utip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7052,6 +7320,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
                 shadow: {type: string, default: mip.stip , nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -7061,6 +7330,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mip.ueip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7070,6 +7340,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
                 shadow: {type: string, default: mip.seip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -7097,6 +7368,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7124,6 +7396,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7164,6 +7437,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7189,6 +7463,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7227,6 +7502,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7252,6 +7528,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7294,6 +7571,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
@@ -7312,6 +7590,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7339,6 +7618,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
@@ -7356,6 +7636,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 62, allowed: [62]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7396,6 +7677,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -7415,6 +7697,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7444,6 +7727,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -7463,6 +7747,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7497,6 +7782,7 @@ hart_schema:
               schema:
                 description: { type: string , default: Physical Page Number }
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 21, allowed: [21]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7512,6 +7798,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Address Space identifier. }
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 22, allowed: [22]}
                 implemented: {type: boolean, default: true}
@@ -7527,6 +7814,7 @@ hart_schema:
               schema:
                 description: { type: string, default: Vector mode. }
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
@@ -7554,6 +7842,7 @@ hart_schema:
                   type: string
                   default: Physical Page Number
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 43, allowed: [43]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7571,6 +7860,7 @@ hart_schema:
                   type: string
                   default: Address Space identifier.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 59, allowed: [59]}
                 lsb: {type: integer, default: 44, allowed: [44]}
                 implemented: {type: boolean, default: true}
@@ -7588,6 +7878,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 60, allowed: [60]}
                 implemented: {type: boolean, default: true}
@@ -7625,6 +7916,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: mstatus.uie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7637,6 +7929,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: mstatus.upie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7656,6 +7949,7 @@ hart_schema:
               schema:
                 description: {type: string,  default: Stores the state of the user mode interrupts.}
                 shadow: {type: string, default: mstatus.uie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7668,6 +7962,7 @@ hart_schema:
                   type: string
                   default: Stores the state of the user mode interrupts prior to the trap.
                 shadow: {type: string, default: mstatus.upie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7701,6 +7996,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mie.usie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7710,6 +8006,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mie.utie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7719,6 +8016,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mie.ueie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7737,6 +8035,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mie.usie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7746,6 +8045,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mie.utie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7755,6 +8055,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mie.ueie, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7786,6 +8087,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mip.usip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7795,6 +8097,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mip.utip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7804,6 +8107,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mip.ueip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7822,6 +8126,7 @@ hart_schema:
               schema:
                 description: {type: string, default: User Software Interrupt enable.}
                 shadow: {type: string, default: mip.usip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 0, allowed: [0]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -7831,6 +8136,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User Timer Interrupt enable.}
                 shadow: {type: string, default: mip.utip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
@@ -7840,6 +8146,7 @@ hart_schema:
               schema:
                 description: { type: string, default: User External Interrupt enable.}
                 shadow: {type: string, default: mip.ueip, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 8, allowed: [8]}
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
@@ -7867,6 +8174,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7894,6 +8202,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7934,6 +8243,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7959,6 +8269,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -7997,6 +8308,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -8022,6 +8334,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -8064,6 +8377,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
@@ -8082,6 +8396,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 30, allowed: [30]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -8109,6 +8424,7 @@ hart_schema:
                   type: string
                   default: Indicates whether the trap was due to an interrupt.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
@@ -8126,6 +8442,7 @@ hart_schema:
                   type: string
                   default: Encodes the exception code.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 62, allowed: [62]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -8166,6 +8483,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 31, allowed: [31]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -8185,6 +8503,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -8214,6 +8533,7 @@ hart_schema:
                   type: string
                   default: Vector base address.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 63, allowed: [63]}
                 lsb: {type: integer, default: 2, allowed: [2]}
                 implemented: {type: boolean, default: true}
@@ -8233,6 +8553,7 @@ hart_schema:
                   type: string
                   default: Vector mode.
                 shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
@@ -8267,6 +8588,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -8291,6 +8613,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
