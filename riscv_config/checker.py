@@ -896,7 +896,7 @@ def trim(foo):
             temp = foo
             for k in list(
                     set(foo.keys()) -
-                    set(['description', 'msb', 'lsb', 'implemented', 'shadow'])
+                    set(['description', 'msb', 'lsb', 'implemented', 'shadow', 'shadow_type'])
             ):
                 try:
                     temp.pop(k)
@@ -925,7 +925,7 @@ def groupc(test_list):
 def get_fields(node, bitwidth):
     fields = list(
         set(node.keys()) -
-        set(['fields', 'msb', 'lsb', 'accessible', 'shadow', 'type']))
+        set(['fields', 'msb', 'lsb', 'accessible', 'shadow', 'shadow_type','type']))
 
     if not fields:
         return fields
@@ -966,12 +966,12 @@ def check_fields(spec):
             else:
              sub_fields = node['rv32']['fields']
             if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'fields', 'type']) - set(node['rv32'].keys()) )    
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'shadow_type', 'fields', 'type']) - set(node['rv32'].keys()) )    
              if subfields:
                 error.append("The subfield " + "".join(subfields) + " are not present")         
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv32'][x].keys()) )
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv32'][x].keys()) )
                 if subfields :                   
                    error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
          if node['rv64']['accessible']:            
@@ -980,12 +980,12 @@ def check_fields(spec):
             else:
              sub_fields = node['rv64']['fields']
             if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'fields', 'shadow', 'type']) - set(node['rv64'].keys()))
+             subfields = list(set(['msb', 'lsb', 'accessible', 'fields', 'shadow', 'shadow_type', 'type']) - set(node['rv64'].keys()))
              if subfields:
                 error.append("The subfield " + "".join(subfields) + " are not present")
             else:
               for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'type']) - set(node['rv64'][x].keys()) )
+                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv64'][x].keys()) )
                 if subfields :                   
                    error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
          if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
@@ -1050,7 +1050,7 @@ def check_shadows(spec, logging = False):
                                 if scsr_size != csr_size :
                                     error.append('Subfield ' + subfield +'shadowing'+ \
                                             scsr + '.' + subscsr + \
-                                            ' does not match in size' + str(scsr_size) + str(csr_size)) 
+                                            ' does not match in size') 
 
         if error:
             errors[csr] = error
@@ -1476,7 +1476,7 @@ def check_isa_specs(isa_spec,
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
 
-        validator = schemaValidator(schema_yaml, xlen=xlen)
+        validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
         validator.allow_unknown = False
         validator.purge_readonly = True
         normalized = validator.normalized(inp_yaml, schema_yaml)
