@@ -257,13 +257,6 @@ hart0:
                 implemented: true
                 type:
                     ro_variable: true
-            debug_interrupt:
-                implemented: true
-                description: "Debug interrupt"
-                shadow_type:
-                shadow:
-                msb: 16
-                lsb: 16
         reset-val: 0
     sip:
       rv32:
