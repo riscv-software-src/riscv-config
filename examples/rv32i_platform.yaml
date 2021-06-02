@@ -5,4 +5,3 @@ reset:
 mtime:
   implemented: True
   address: 0x20000
-  neel: myname

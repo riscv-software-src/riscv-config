@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.1] - 2021-06-02
+### Fixed
+- removed an unadded feature in rv32i_platform.yaml
+- removed debug_interrupts under mip in rv64i_isa.yaml
+
 ## [2.9.0] - 2021-05-24
 ### Fixed
 - fixed issue #58 by adding extra checks for bitmask
