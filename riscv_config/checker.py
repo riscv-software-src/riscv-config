@@ -903,7 +903,25 @@ def check_mhpm(spec, logging = False):
         if error:
             errors[csrname] = error
     return errors
-  
+    
+def check_misa_reset( value, xlen, extensions, logging=False):
+    errors={}
+    error=[]
+    if xlen == [64]:
+            mxl = format(extensions, '#066b')
+            reset = format(value, '#066b')
+            if (mxl[40:66] != reset[40:66] ):
+                error.append("misa reset value does not match with extensions enabled(64)")
+
+    elif xlen==[32] :
+            mxl = format(extensions, '#034b')
+            reset = format(value, '#034b')
+            if (mxl[8:34] != reset[8:34] ):
+                error.append( " misa reset value does not match with extensions enabled(32)") 
+    if error:
+            errors['misa'] = error 
+    return errors
+     
 def check_pmp(spec, logging = False):
     ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
     source'''
@@ -1328,7 +1346,12 @@ def check_isa_specs(isa_spec,
             raise ValidationError("Error in " + foo + ".", errors)
         errors = check_pmp(normalized, logging)
         if errors:
-            raise ValidationError("Error in " + foo + ".", errors)        
+            raise ValidationError("Error in " + foo + ".", errors) 
+        if normalized['misa']['reset-val'] == 0 : 
+           normalized['misa']['reset-val']=validator.get_ext()
+        errors = check_misa_reset(normalized['misa']['reset-val'], xlen, validator.get_ext(), logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)       
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')

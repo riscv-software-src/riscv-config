@@ -361,7 +361,7 @@ hart_schema:
         description: {type: string,  default: misa is a read-write register reporting the ISA supported by the hart.}
         address: { type: integer, default: 769, allowed: [769] }
         priv_mode: { type: string, allowed: [M], default: M }
-        reset-val: { type: integer, default: 0, check_with: [max_length, reset_ext] }
+        reset-val: { type: integer, default: 0, check_with: [max_length] }
         rv32:
           type: dict
           schema:
@@ -468,7 +468,7 @@ hart_schema:
         reset-val:
           type: integer
           check_with: max_length
-          default: 0
+          default: 42949672960
         rv32:
           type: dict
           schema:
@@ -1044,7 +1044,7 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 1}
+                  default: {ro_constant: 0}
               default: {implemented: false}
               check_with: u_check
             sum:
