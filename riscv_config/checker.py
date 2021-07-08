@@ -1312,6 +1312,8 @@ def check_isa_specs(isa_spec,
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
+        if xlen==[64]:
+         schema_yaml['mstatus']['schema']['reset-val']['default']=42949672960
 
         validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
         validator.allow_unknown = False
