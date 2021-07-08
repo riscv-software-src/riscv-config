@@ -468,7 +468,7 @@ hart_schema:
         reset-val:
           type: integer
           check_with: max_length
-          default: 42949672960
+          default: 0
         rv32:
           type: dict
           schema:
