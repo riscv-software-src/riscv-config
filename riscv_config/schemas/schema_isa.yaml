@@ -382,7 +382,14 @@ hart_schema:
                     - schema: {ro_constant: {type: integer, max: 0x3, min: 0x1}}
                     - schema: {ro_variable: {type: boolean}}
                     - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - mxl[1:0] in [0x1]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
             extensions:
               type: dict
               schema:
@@ -402,7 +409,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - extensions[25:0] bitmask [0x3FFFFFFF, 0x00000000]
+                      wr_illegal:
+                        - unchanged
+                  
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
@@ -430,7 +445,14 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  3, min: 1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - mxl[1:0] in [0x2]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: true}
             extensions:
               type: dict
               schema:
@@ -450,7 +472,14 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - extensions[25:0] bitmask [0x3FFFFFFF, 0x00000000]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true

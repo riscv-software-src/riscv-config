@@ -1312,6 +1312,7 @@ def check_isa_specs(isa_spec,
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
+        rvxlen='rv'+str(xlen[0])
         if xlen==[64]:
          schema_yaml['mstatus']['schema']['reset-val']['default']=42949672960
 
@@ -1334,6 +1335,15 @@ def check_isa_specs(isa_spec,
             raise ValidationError("Error in " + foo + ".", error_list)
         if logging:
             logger.info("Initiating post processing and reset value checks.")
+        if normalized['misa']['reset-val'] == 0 : 
+           ext=format(validator.get_ext(), '#0{}b'.format(xlen[0]+2))
+           mxl='10'if xlen[0]==64 else '01'
+           ext = ext[:2] + str(mxl) + ext[4:]
+           normalized['misa']['reset-val']=int(ext, 2)
+           normalized['misa'][rvxlen]['extensions']['type']['warl']['legal'][0]=normalized['misa'][rvxlen]['extensions']['type']['warl']['legal'][0].replace('0x3FFFFFFF', str(hex(int(ext[(xlen[0]-24):(xlen[0]+2)], 2))))
+        errors = check_misa_reset(normalized['misa']['reset-val'], xlen, validator.get_ext(), logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors) 
         normalized, errors = check_reset_fill_fields(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
@@ -1349,11 +1359,7 @@ def check_isa_specs(isa_spec,
         errors = check_pmp(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors) 
-        if normalized['misa']['reset-val'] == 0 : 
-           normalized['misa']['reset-val']=validator.get_ext()
-        errors = check_misa_reset(normalized['misa']['reset-val'], xlen, validator.get_ext(), logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)       
+              
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
