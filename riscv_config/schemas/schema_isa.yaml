@@ -1487,7 +1487,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: true}
             mode:
               type: dict
@@ -1507,7 +1513,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - "mode[1:0] in [0x0,0x1]"
+                      wr_illegal:
+                        - "Unchanged"
               default: {implemented: true}
             accessible:
               type: boolean
@@ -1537,7 +1549,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
               default: {implemented: true}
             mode:
               type: dict
@@ -1557,7 +1575,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: true}
             accessible:
               type: boolean
@@ -7583,7 +7607,7 @@ hart_schema:
           type: string
           default: The scause register stores the information regarding the trap.
         address: {type: integer, default: 0x142, allowed: [0x142]}
-        priv_mode: {type: string, default: M, allowed: [M]}
+        priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
           type: integer
           check_with: max_length
@@ -7717,7 +7741,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
             mode:
               type: dict
@@ -7737,7 +7767,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
             accessible:
               type: boolean
@@ -7767,7 +7803,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
               default: {implemented: False}
             mode:
               type: dict
@@ -7787,7 +7829,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
             accessible:
               type: boolean
@@ -8523,7 +8571,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
             mode:
               type: dict
@@ -8543,7 +8597,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
             accessible:
               type: boolean
@@ -8573,7 +8633,14 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
+                   
               default: {implemented: False}
             mode:
               type: dict
@@ -8593,7 +8660,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
             accessible:
               type: boolean
