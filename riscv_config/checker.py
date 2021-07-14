@@ -31,6 +31,14 @@ def sset():
         return {'implemented': True}
     else:
         return {'implemented': False}
+        
+def fset():
+    '''Function to set defaults based on presence of 'F' extension.'''
+    global inp_yaml
+    if 'F' in inp_yaml['ISA']:
+        return {'implemented': True}
+    else:
+        return {'implemented': False}
 
 def uregset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -187,6 +195,7 @@ def add_def_setters(schema_yaml):
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
+    fsetter = lambda doc: fset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
     sregsetterh = lambda doc: sregseth()
@@ -588,9 +597,9 @@ def add_def_setters(schema_yaml):
         'default_setter'] = nusetter
 
     schema_yaml['mstatus']['schema']['rv32']['schema']['mprv'][
-        'default_setter'] = usetter
+        'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['mprv'][
-        'default_setter'] = usetter
+        'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
         'default_setter'] = usetter
     schema_yaml['fflags']['default_setter'] = uregsetter
@@ -632,6 +641,10 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['sie'][
         'default_setter'] = ssetter
+    schema_yaml['mstatus']['schema']['rv32']['schema']['fs'][
+        'default_setter'] = fsetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['fs'][
+        'default_setter'] = fsetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['spie'][
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['spie'][
