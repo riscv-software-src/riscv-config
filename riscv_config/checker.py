@@ -241,7 +241,6 @@ def add_def_setters(schema_yaml):
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
     fsetter = lambda doc: fset()
-    ftypesetter = lambda doc: ftypeset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
     sregsetterh = lambda doc: sregseth()
@@ -249,7 +248,6 @@ def add_def_setters(schema_yaml):
     usetter = lambda doc: uset()
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
-    typesetter= lambda doc: default_type()
 
     schema_yaml['sstatus']['default_setter'] = sregsetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
