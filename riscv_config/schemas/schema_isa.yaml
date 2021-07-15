@@ -1722,9 +1722,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[31:0] in [0x00]"
+                    - mideleg[31:0] bitmask [0x0000F7FF,0x00000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -1748,9 +1748,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[63:0] in [0x00]"
+                    - mideleg[63:0] bitmask [0x000000000000F7FF,0x0000000000000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -1789,9 +1789,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[31:0] in [0x00]"
+                    - medeleg[31:0] bitmask [0x0000F7FF,0x00000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged'
             accessible:
               type: boolean
               default: true
@@ -1815,9 +1815,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[63:0] in [0x00]"
+                    - medeleg[63:0] bitmask [0x000000000000F7FF,0x0000000000000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -7438,6 +7438,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssie:
               type: dict
               schema:
@@ -7459,6 +7460,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stie:
               type: dict
               schema:
@@ -7480,6 +7482,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seie:
               type: dict
               schema:
@@ -7510,6 +7513,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssie:
               type: dict
               schema:
@@ -7531,6 +7535,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stie:
               type: dict
               schema:
@@ -7552,6 +7557,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seie:
               type: dict
               schema:
@@ -7595,6 +7601,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssip:
               type: dict
               schema:
@@ -7616,7 +7623,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
-              check_with: s_check
+              check_with: n_check
             stip:
               type: dict
               schema:
@@ -7638,6 +7645,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seip:
               type: dict
               schema:
@@ -7668,6 +7676,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssip:
               type: dict
               schema:
@@ -7689,6 +7698,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stip:
               type: dict
               schema:
@@ -7710,6 +7720,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seip:
               type: dict
               schema:
