@@ -63,19 +63,6 @@ def fset():
     else:
         return {'implemented': False}
         
-def ftypeset():
-    '''Function to set defaults based on presence of 'F' extension.'''
-    global inp_yaml
-    if 'F' in inp_yaml['ISA']:
-        return { 'warl': {
-                   'dependency_fields': [],
-                   'legal':
-                      - 'fflags[4:0] in [0x00:0x1F]',
-                   'wr_illegal':
-                      - 'Unchanged' }}
-        
-    else:
-      return {'ro_constant': 0}    
 
 def uregset():
     '''Function to set defaults based on presence of 'U' extension.'''
