@@ -205,6 +205,7 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - f:34 - f] != '1'):
                 self._error(field, "F is not present(32)")
+                
 
     def _check_with_u_check(self, field, value):
         u = 20

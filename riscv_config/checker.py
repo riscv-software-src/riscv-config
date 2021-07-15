@@ -38,7 +38,7 @@ def reset():
     mxl='10'if xlen==64 else '01'
     ext_b = ext_b[:2] + str(mxl) + ext_b[4:]
     return int(ext_b, 2)
-    
+
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
     global inp_yaml
@@ -62,6 +62,20 @@ def fset():
         return {'implemented': True}
     else:
         return {'implemented': False}
+        
+def ftypeset():
+    '''Function to set defaults based on presence of 'F' extension.'''
+    global inp_yaml
+    if 'F' in inp_yaml['ISA']:
+        return { 'warl': {
+                   'dependency_fields': [],
+                   'legal':
+                      - 'fflags[4:0] in [0x00:0x1F]',
+                   'wr_illegal':
+                      - 'Unchanged' }}
+        
+    else:
+      return {'ro_constant': 0}    
 
 def uregset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -219,6 +233,15 @@ def add_reset_setters(schema_yaml):
     schema_yaml['misa']['schema'][rvxlen]['schema']['extensions']['schema']['type']['default']['warl']['legal'][0]=schema_yaml['misa']['schema'][rvxlen]['schema']['extensions']['schema']['type']['default']['warl']['legal'][0].replace('0x3FFFFFFF', extensions)
     return schema_yaml
     
+def add_fflags_type_setters(schema_yaml):
+    global inp_yaml
+    xlen=inp_yaml['supported_xlen'][0]
+    rvxlen='rv'+str(xlen)
+    if 'F' not in inp_yaml['ISA']:
+        schema_yaml['fflags']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
+        schema_yaml['frm']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
+        schema_yaml['fcsr']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
+    return schema_yaml
     
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
@@ -231,6 +254,7 @@ def add_def_setters(schema_yaml):
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
     fsetter = lambda doc: fset()
+    ftypesetter = lambda doc: ftypeset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
     sregsetterh = lambda doc: sregseth()
@@ -238,7 +262,7 @@ def add_def_setters(schema_yaml):
     usetter = lambda doc: uset()
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
-
+    typesetter= lambda doc: default_type()
 
     schema_yaml['sstatus']['default_setter'] = sregsetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
@@ -331,10 +355,39 @@ def add_def_setters(schema_yaml):
     schema_yaml['sip']['schema']['rv64']['schema']['ssip'][
         'default_setter'] = ssetter
     schema_yaml['stvec']['default_setter'] = sregsetter
+    schema_yaml['stvec']['schema']['rv32']['schema']['base'][
+        'default_setter'] = ssetter
+    schema_yaml['stvec']['schema']['rv64']['schema']['base'][
+        'default_setter'] = ssetter
+    schema_yaml['stvec']['schema']['rv32']['schema']['mode'][
+        'default_setter'] = ssetter
+    schema_yaml['stvec']['schema']['rv64']['schema']['mode'][
+        'default_setter'] = ssetter
+        
     schema_yaml['sepc']['default_setter'] = sregsetter
     schema_yaml['stval']['default_setter'] = sregsetter
     schema_yaml['scause']['default_setter'] = sregsetter
+    schema_yaml['scause']['schema']['rv32']['schema']['interrupt'][
+        'default_setter'] = ssetter
+    schema_yaml['scause']['schema']['rv64']['schema']['interrupt'][
+        'default_setter'] = ssetter
+    schema_yaml['scause']['schema']['rv32']['schema']['exception_code'][
+        'default_setter'] = ssetter
+    schema_yaml['scause']['schema']['rv64']['schema']['exception_code'][
+        'default_setter'] = ssetter
     schema_yaml['satp']['default_setter'] = sregsetter
+    schema_yaml['satp']['schema']['rv32']['schema']['ppn'][
+        'default_setter'] = ssetter
+    schema_yaml['satp']['schema']['rv64']['schema']['ppn'][
+        'default_setter'] = ssetter
+    schema_yaml['satp']['schema']['rv32']['schema']['asid'][
+        'default_setter'] = ssetter
+    schema_yaml['satp']['schema']['rv64']['schema']['asid'][
+        'default_setter'] = ssetter
+    schema_yaml['satp']['schema']['rv32']['schema']['mode'][
+        'default_setter'] = ssetter
+    schema_yaml['satp']['schema']['rv64']['schema']['mode'][
+        'default_setter'] = ssetter
     schema_yaml['sscratch']['default_setter'] = sregsetter
     
     schema_yaml['ustatus']['default_setter'] = nregsetter
@@ -381,8 +434,6 @@ def add_def_setters(schema_yaml):
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
-  #  schema_yaml['misa']['schema']['rv32']['schema']['extensions']['schema']['type']['default']['warl']['legal'][0]=schema_yaml['misa']['schema']['rv32']['schema']['extensions']['schema']['type']#['default']['warl']['legal'][0].replace('0x3FFFFFFF', str(hex(int(format(resetsetter, '#034b')[8:34], 2))))
-    #schema_yaml['misa']['schema']['rv64']['schema']['extensions']['schema']['type']['default']['warl']['legal'][0]=schema_yaml['misa']['schema']['rv64']['schema']['extensions']['schema']['type']['default']['warl']['legal'][0].replace('0x3FFFFFFF', str(hex(int(format(resetsetter, '#066b')[40:66], 2))))
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
@@ -1356,8 +1407,8 @@ def check_isa_specs(isa_spec,
             logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_inp_yaml['hart'+str(x)]
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
-        
-        schema_yaml = add_reset_setters(master_schema_yaml['hart_schema']['schema'])        
+        schema_yaml = add_reset_setters(master_schema_yaml['hart_schema']['schema']) 
+        schema_yaml = add_fflags_type_setters(master_schema_yaml['hart_schema']['schema']) 
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
         rvxlen='rv'+str(xlen[0])
