@@ -263,6 +263,21 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') and (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "neither S nor U is not present(32)")
+                
+    def _check_with_reset_ext(self, field, value):
+        
+        if rv64:
+            mxl = format(extensions, '#066b')
+            reset = format(value, '#066b')
+            if (mxl[40:66] != reset[40:66] ):
+                self._error(field, "reset value does not match with extensions enabled(64)")
+
+        elif rv32 :
+            mxl = format(extensions, '#034b')
+            reset = format(value, '#034b')
+            if (mxl[8:34] != reset[8:34] ):
+                self._error(field, "reset value does not match with extensions enabled(32)")
+                
     def _check_with_sn_check(self, field, value):
         s = 18
         n = 13
@@ -418,6 +433,3 @@ class schemaValidator(Validator):
         s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
-    def get_ext(self):
-        global extensions
-        return extensions
