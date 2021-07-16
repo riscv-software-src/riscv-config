@@ -412,9 +412,25 @@ def add_def_setters(schema_yaml):
     schema_yaml['uip']['schema']['rv64']['schema']['usip'][
         'default_setter'] = nusetter
     schema_yaml['utvec']['default_setter'] = nregsetter
+    schema_yaml['utvec']['schema']['rv32']['schema']['base'][
+        'default_setter'] = nusetter
+    schema_yaml['utvec']['schema']['rv64']['schema']['base'][
+        'default_setter'] = nusetter
+    schema_yaml['utvec']['schema']['rv32']['schema']['mode'][
+        'default_setter'] = nusetter
+    schema_yaml['utvec']['schema']['rv64']['schema']['mode'][
+        'default_setter'] = nusetter
     schema_yaml['uepc']['default_setter'] = nregsetter
     schema_yaml['utval']['default_setter'] = nregsetter
     schema_yaml['ucause']['default_setter'] = nregsetter
+    schema_yaml['ucause']['schema']['rv32']['schema']['interrupt'][
+        'default_setter'] = nusetter
+    schema_yaml['ucause']['schema']['rv64']['schema']['interrupt'][
+        'default_setter'] = nusetter
+    schema_yaml['ucause']['schema']['rv32']['schema']['exception_code'][
+        'default_setter'] = nusetter
+    schema_yaml['ucause']['schema']['rv64']['schema']['exception_code'][
+        'default_setter'] = nusetter
     schema_yaml['uscratch']['default_setter'] = nregsetter
 
     schema_yaml['misa']['default_setter'] = regsetter
