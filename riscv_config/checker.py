@@ -1413,7 +1413,11 @@ def check_isa_specs(isa_spec,
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
         rvxlen='rv'+str(xlen[0])
-        if xlen==[64]:
+        if xlen==[64] and 'U' not in inp_yaml['ISA']:
+         schema_yaml['mstatus']['schema']['reset-val']['default']=34359738368
+        elif xlen==[64] and 'S' not in inp_yaml['ISA']:
+         schema_yaml['mstatus']['schema']['reset-val']['default']=8589934592
+        elif xlen==[64]:
          schema_yaml['mstatus']['schema']['reset-val']['default']=42949672960
         validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
         validator.allow_unknown = False
