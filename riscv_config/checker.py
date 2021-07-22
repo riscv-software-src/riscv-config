@@ -38,6 +38,15 @@ def reset():
     mxl='10'if xlen==64 else '01'
     ext_b = ext_b[:2] + str(mxl) + ext_b[4:]
     return int(ext_b, 2)
+    
+def resetsu():
+    global inp_yaml
+    if 64 in inp_yaml['supported_xlen'] and 'S' not in inp_yaml['ISA'] and 'U' in inp_yaml['ISA']:
+      return 8589934592
+    elif 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA'] and 'S' in inp_yaml['ISA']:
+      return 42949672960
+    else:	
+      return 0
 
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -234,6 +243,7 @@ def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
     resetsetter=lambda doc: reset()
+    reset_susetter=lambda doc: resetsu()
     pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
     pmpcounthsetter = lambda doc: pmpcounterhset()
@@ -436,6 +446,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
+    schema_yaml['mstatus']['schema']['reset-val']['default_setter']=reset_susetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
@@ -1413,12 +1424,6 @@ def check_isa_specs(isa_spec,
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
         rvxlen='rv'+str(xlen[0])
-        if xlen==[64] and 'U' not in inp_yaml['ISA']:
-         schema_yaml['mstatus']['schema']['reset-val']['default']=34359738368
-        elif xlen==[64] and 'S' not in inp_yaml['ISA']:
-         schema_yaml['mstatus']['schema']['reset-val']['default']=8589934592
-        elif xlen==[64]:
-         schema_yaml['mstatus']['schema']['reset-val']['default']=42949672960
         validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
         validator.allow_unknown = False
         validator.purge_readonly = True
