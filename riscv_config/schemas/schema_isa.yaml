@@ -9361,7 +9361,7 @@ hart_schema:
           type: string
           default: The hstatus register keeps track of and controls the hart’s current
             operating state.
-        address: {type: integer, default: 600, allowed: [600]}
+        address: {type: integer, default: 1536, allowed: [1536]}
         priv_mode: {type: string, default: H, allowed: [H]}
         reset-val:
           type: integer
@@ -9758,7 +9758,7 @@ hart_schema:
         description:
           type: string
           default: Hypervisor Interrupt delegation Register.
-        address: {type: integer, default: 603, allowed: [603]}
+        address: {type: integer, default: 1539, allowed: [1539]}
         priv_mode: {type: string, default: H, allowed: [H]}
         reset-val:
           type: integer
@@ -9822,7 +9822,7 @@ hart_schema:
         description:
           type: string
           default: Hypervisor Exception delegation Register.
-        address: {type: integer, default: 602, allowed: [602]}
+        address: {type: integer, default: 1538, allowed: [1538]}
         priv_mode: {type: string, default: H, allowed: [H]}
         reset-val:
           type: integer
@@ -9887,7 +9887,7 @@ hart_schema:
         description:
           type: string
           default: The hip register is an HXLEN-bit read/write register containing information on pending interrupts.
-        address: {type: integer, default: 644, allowed: [644]}
+        address: {type: integer, default: 1604, allowed: [1604]}
         priv_mode: {type: string, default: H, allowed: [H]}
         reset-val:
           type: integer
@@ -10084,7 +10084,7 @@ hart_schema:
         description:
           type: string
           default: The hvip register is an HSXLEN-bit read/write register that a hypervisor can write to indicate virtual interrupts intended for VS-mode.
-        address: {type: integer, default: 645, allowed: [645]}
+        address: {type: integer, default: 1605, allowed: [1605]}
         priv_mode: {type: string, default: H, allowed: [H]}
         reset-val:
           type: integer
