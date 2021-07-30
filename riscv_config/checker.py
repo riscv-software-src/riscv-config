@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def reset():
-    '''Function to set defaults based on presence of 'U' extension.'''
+    '''Function to set defaults to reset val of misa  based on presence of ISA extensions.'''
     global inp_yaml
     global extensions
     extension_enc = list("00000000000000000000000000")
@@ -40,6 +40,7 @@ def reset():
     return int(ext_b, 2)
     
 def resetsu():
+    '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
     global inp_yaml
     if 64 in inp_yaml['supported_xlen'] and 'S' not in inp_yaml['ISA'] and 'U' in inp_yaml['ISA']:
       return 8589934592
