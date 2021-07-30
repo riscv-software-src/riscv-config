@@ -220,7 +220,7 @@ def add_debug_setters(schema_yaml):
     return schema_yaml
     
 def add_reset_setters(schema_yaml):
-    '''Function to set the default setters for various fields in the debug schema'''
+    '''Function to set the default setters for extension  subfields in the misa'''
     global inp_yaml
     global extensions
     xlen=inp_yaml['supported_xlen'][0]
