@@ -382,7 +382,14 @@ hart_schema:
                     - schema: {ro_constant: {type: integer, max: 0x3, min: 0x1}}
                     - schema: {ro_variable: {type: boolean}}
                     - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - mxl[1:0] in [0x1]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
             extensions:
               type: dict
               schema:
@@ -402,7 +409,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - extensions[25:0] bitmask [0x3FFFFFFF, 0x00000000]
+                      wr_illegal:
+                        - unchanged
+                  
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
@@ -430,7 +445,14 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  3, min: 1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - mxl[1:0] in [0x2]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: true}
             extensions:
               type: dict
               schema:
@@ -450,7 +472,14 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  0x3ffffff}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-              default: {implemented: false}
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - extensions[25:0] bitmask [0x3FFFFFFF, 0x00000000]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
@@ -489,7 +518,9 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: n_check
             sie:
@@ -508,7 +539,9 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: s_check
             mie:
@@ -546,7 +579,9 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: n_check
             spie:
@@ -568,7 +603,9 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: s_check
             mpie:
@@ -648,8 +685,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - fs[1:0] in [0x0:0x3]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
+              check_with: f_check
             xs:
               type: dict
               schema:
@@ -690,9 +734,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - mprv[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
-              check_with: u_check
+              check_with: s_check
             sum:
               type: dict
               schema:
@@ -712,7 +762,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - sum[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             mxr:
@@ -733,7 +789,13 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - mxr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             tvm:
@@ -755,7 +817,13 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - tvm[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             tw:
@@ -797,7 +865,13 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - tsr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             sd:
@@ -814,9 +888,16 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: {ro_variable: {type: boolean}}
-                  default: {ro_variable: true}
+                  check_with: wr_illegal 
+                  oneof:
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    wlrl: 
+                     - 0:1
               default: {implemented: true}
+              check_with: f_check
             accessible:
               type: boolean
               default: false
@@ -841,7 +922,9 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: n_check
             sie:
@@ -860,7 +943,9 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: s_check
             mie:
@@ -898,7 +983,9 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
-                  default: {ro_constant: 0}
+                  default: 
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: n_check
             spie:
@@ -920,7 +1007,9 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
-                  default: {ro_constant: 0}
+                  default:
+                    wlrl: 
+                    - 0:1
               default: {implemented: false}
               check_with: s_check
             mpie:
@@ -1001,8 +1090,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - fs[1:0] in [0x0:0x3]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
+              check_with: f_check
             xs:
               type: dict
               schema:
@@ -1044,9 +1140,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 1}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - mprv[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
-              check_with: u_check
+              check_with: s_check
             sum:
               type: dict
               schema:
@@ -1066,7 +1168,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - sum[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             mxr:
@@ -1087,7 +1195,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - mxr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             tvm:
@@ -1109,7 +1223,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - tvm[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             tw:
@@ -1151,7 +1271,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - tsr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
               check_with: s_check
             sxl:
@@ -1208,9 +1334,16 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: {ro_variable: {type: boolean}}
-                  default: {ro_variable: true}
+                  check_with: wr_illegal 
+                  oneof:
+                  - schema: {ro_variable: {type: boolean}}
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    wlrl: 
+                     - 0:1
               default: {implemented: true}
+              check_with: f_check
             accessible:
               type: boolean
               default: false
@@ -1458,7 +1591,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: true}
             mode:
               type: dict
@@ -1478,7 +1617,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - "mode[1:0] in [0x0,0x1]"
+                      wr_illegal:
+                        - "Unchanged"
               default: {implemented: true}
             accessible:
               type: boolean
@@ -1508,7 +1653,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
               default: {implemented: true}
             mode:
               type: dict
@@ -1528,7 +1679,13 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: true}
             accessible:
               type: boolean
@@ -1565,9 +1722,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[31:0] in [0x00]"
+                    - mideleg[31:0] bitmask [0x0000F7FF,0x00000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -1591,9 +1748,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "mideleg[63:0] in [0x00]"
+                    - mideleg[63:0] bitmask [0x000000000000F7FF,0x0000000000000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -1632,9 +1789,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[31:0] in [0x00]"
+                    - medeleg[31:0] bitmask [0x0000F7FF,0x00000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged'
             accessible:
               type: boolean
               default: true
@@ -1658,9 +1815,9 @@ hart_schema:
                 warl:
                   dependency_fields: []
                   legal:
-                  - "medeleg[63:0] in [0x00]"
+                    - medeleg[63:0] bitmask [0x000000000000F7FF,0x0000000000000000]
                   wr_illegal:
-                  - 'unchanged'
+                    - Unchanged
             accessible:
               type: boolean
               default: true
@@ -3980,7 +4137,7 @@ hart_schema:
         reset-val: {type: integer, check_with: max_length, default: 0}
         rv32:
           type: dict
-          check_with: su_check
+          check_with: u_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -3990,14 +4147,11 @@ hart_schema:
             type:
               type: dict
               check_with: wr_illegal
-              schema: { warl: *ref_warl }
-              default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - mcounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default: 
+                 ro_constant: 0
             accessible:
               type: boolean
               default: true
@@ -4005,7 +4159,7 @@ hart_schema:
           default: {accessible: false}
         rv64:
           type: dict
-          check_with: su_check
+          check_with: u_check
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
@@ -4015,14 +4169,11 @@ hart_schema:
             type:
               type: dict
               check_with: wr_illegal
-              schema: { warl: *ref_warl }
-              default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - mcounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default: 
+                ro_constant: 0
             accessible:
               default: true
               check_with: rv64_check
@@ -4079,7 +4230,59 @@ hart_schema:
           type: string
           default: Counts the number of clock cycles executed from an arbitrary point in time.
         address: {type: integer, default: 0xB00, allowed: [0xB00]}
-        <<: *gen_flatschema_machine
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - mcycle[31:0] in [0x00000000:0xFFFFFFFF]
+                    wr_illegal:
+                      - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max: 0xFFFFFFFFFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - mcycle[63:0] in [0x0000000000000000:0xFFFFFFFFFFFFFFFF]
+                    wr_illegal:
+                      - Unchanged
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: True}
     mcycleh:
       type: dict
       schema:
@@ -4087,7 +4290,42 @@ hart_schema:
           type: string
           default: upper 32 bits of mcycle 
         address: {type: integer, default: 0xB80, allowed: [0xB80]}
-        <<: *gen_flatschema_machine32
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - mcycleh[31:0] in [0x00000000:0xFFFFFFFF]
+                    wr_illegal:
+                      - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible:
+              default: False
+          default: {accessible: False}
     minstret: 
       type: dict
       schema:
@@ -4095,7 +4333,59 @@ hart_schema:
           type: string
           default: Counts the number of instructions completed from an arbitrary point in time.
         address: {type: integer, default: 0xB02, allowed: [0xB02]}
-        <<: *gen_flatschema_machine
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val: {type: integer,  default: 0}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - minstret[31:0] in [0x00000000:0xFFFFFFFF]
+                    wr_illegal:
+                      - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max: 0xFFFFFFFFFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - minstret[63:0] in [0x0000000000000000:0xFFFFFFFFFFFFFFFF]
+                    wr_illegal:
+                      - Unchanged
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: True}
     minstreth: 
       type: dict
       schema:
@@ -4103,7 +4393,42 @@ hart_schema:
           type: string
           default: Upper 32 bits of minstret.
         address: {type: integer, default: 0xB82, allowed: [0xB82]}
-        <<: *gen_flatschema_machine32
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              check_with: wr_illegal
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - minstreth[31:0] in [0x00000000:0xFFFFFFFF]
+                    wr_illegal:
+                      - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: True}
+        rv64:
+          type: dict
+          schema:
+            accessible:
+              default: False
+          default: {accessible: False}
     mhpmevent3:
       type: dict
       schema:
@@ -4931,11 +5256,18 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
+              check_with: 
+                - wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - fflags[4:0] in [0x00:0x1F]
+                    wr_illegal:
+                      - Unchanged
             accessible:
               type: boolean
               default: true
@@ -4952,11 +5284,18 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
+              check_with: 
+                - wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - fflags[4:0] in [0x00:0x1F]
+                    wr_illegal:
+                      - Unchanged
             accessible:
               default: true
               check_with: rv64_check
@@ -4989,7 +5328,12 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                 warl:
+                    dependency_fields: []
+                    legal:
+                      - frm[2:0] in [0x0:0x7]
+                    wr_illegal:
+                      - Unchanged
             accessible:
               type: boolean
               default: true
@@ -5011,7 +5355,12 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                 warl:
+                    dependency_fields: []
+                    legal:
+                      - frm[2:0] in [0x0:0x7]
+                    wr_illegal:
+                      - Unchanged
             accessible:
               default: false
               check_with:
@@ -5044,7 +5393,12 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - fcsr[7:0] in [0x00:0xFF]
+                    wr_illegal:
+                      - unchanged
             accessible:
               type: boolean
               default: true
@@ -5065,7 +5419,12 @@ hart_schema:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
               - schema: { warl: *ref_warl }
               default:
-                ro_constant: 0
+                warl:
+                    dependency_fields: []
+                    legal:
+                      - fcsr[7:0] in [0x00:0xFF]
+                    wr_illegal:
+                      - unchanged
             accessible:
               default: true
               check_with: rv64_check
@@ -6841,6 +7200,7 @@ hart_schema:
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
+              check_with: f_check              
             xs:
               type: dict
               schema:
@@ -6894,6 +7254,7 @@ hart_schema:
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
+              check_with: f_check
             accessible:
               type: boolean
               default: false
@@ -6978,6 +7339,7 @@ hart_schema:
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
+              check_with: f_check
             xs:
               type: dict
               schema:
@@ -7042,6 +7404,7 @@ hart_schema:
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
+              check_with: f_check
             accessible:
               type: boolean
               default: false
@@ -7075,6 +7438,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssie:
               type: dict
               schema:
@@ -7085,6 +7449,7 @@ hart_schema:
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             utie:
               type: dict
               schema:
@@ -7095,6 +7460,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stie:
               type: dict
               schema:
@@ -7105,6 +7471,7 @@ hart_schema:
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             ueie:
               type: dict
               schema:
@@ -7115,6 +7482,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seie:
               type: dict
               schema:
@@ -7125,6 +7493,7 @@ hart_schema:
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7144,6 +7513,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssie:
               type: dict
               schema:
@@ -7154,6 +7524,7 @@ hart_schema:
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             utie:
               type: dict
               schema:
@@ -7164,6 +7535,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stie:
               type: dict
               schema:
@@ -7174,6 +7546,7 @@ hart_schema:
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             ueie:
               type: dict
               schema:
@@ -7184,6 +7557,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seie:
               type: dict
               schema:
@@ -7194,6 +7568,7 @@ hart_schema:
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: False}
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7226,6 +7601,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssip:
               type: dict
               schema:
@@ -7236,6 +7612,7 @@ hart_schema:
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             utip:
               type: dict
               schema:
@@ -7246,6 +7623,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stip:
               type: dict
               schema:
@@ -7256,6 +7634,7 @@ hart_schema:
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             ueip:
               type: dict
               schema:
@@ -7266,6 +7645,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seip:
               type: dict
               schema:
@@ -7276,6 +7656,7 @@ hart_schema:
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7295,6 +7676,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ssip:
               type: dict
               schema:
@@ -7305,6 +7687,7 @@ hart_schema:
                 lsb: {type: integer, default: 1, allowed: [1]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             utip:
               type: dict
               schema:
@@ -7315,6 +7698,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             stip:
               type: dict
               schema:
@@ -7325,6 +7709,7 @@ hart_schema:
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             ueip:
               type: dict
               schema:
@@ -7335,6 +7720,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             seip:
               type: dict
               schema:
@@ -7345,6 +7731,7 @@ hart_schema:
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7413,7 +7800,6 @@ hart_schema:
                   - sscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
                   wr_illegal:
                   - unchanged
-    
             accessible:
               default: true
               check_with: rv64_check
@@ -7542,7 +7928,6 @@ hart_schema:
                   - stval[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
                   wr_illegal:
                   - unchanged
-    
             accessible:
               default: true
               check_with: rv64_check
@@ -7554,7 +7939,7 @@ hart_schema:
           type: string
           default: The scause register stores the information regarding the trap.
         address: {type: integer, default: 0x142, allowed: [0x142]}
-        priv_mode: {type: string, default: M, allowed: [M]}
+        priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
           type: integer
           check_with: max_length
@@ -7583,6 +7968,7 @@ hart_schema:
                     - 0x0:0x1
                   readonly: True
               default: {implemented: False}
+              check_with: s_check
             exception_code:
               type: dict
               schema:
@@ -7601,6 +7987,7 @@ hart_schema:
                     wlrl: 
                     - 0:15
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7629,6 +8016,7 @@ hart_schema:
                     wlrl:
                     - 0:1
               default: {implemented: False}
+              check_with: s_check
             exception_code:
               type: dict
               schema:
@@ -7647,6 +8035,7 @@ hart_schema:
                     wlrl:
                     - 0:15
               default: {implemented: false}
+              check_with: s_check
             accessible:
               type: boolean
               default: false
@@ -7688,8 +8077,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
+              check_with: s_check
             mode:
               type: dict
               schema:
@@ -7708,8 +8104,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
+              check_with: s_check
             accessible:
               type: boolean
               check_with:
@@ -7738,8 +8141,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
               default: {implemented: False}
+              check_with: s_check
             mode:
               type: dict
               schema:
@@ -7758,8 +8168,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
+              check_with: s_check
             accessible:
               type: boolean
               check_with:
@@ -7791,8 +8208,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  4194303}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - ppn[21:0] in [0x0:0x3FFFFF]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             asid:
               type: dict
               schema:
@@ -7807,8 +8231,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 511 }}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - asid[8:0] in [0x0:0x1FF]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             mode:
               type: dict
               schema:
@@ -7823,8 +8254,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - asid[0] in [0x0,0x1]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               check_with:
@@ -7851,8 +8289,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  17592186044415}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - ppn[43:0] in [0x0:0xFFFFFFFFFFF]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             asid:
               type: dict
               schema:
@@ -7869,8 +8314,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 65535}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default:
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - asid[15:0] in [0x0:0xFFFF]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             mode:
               type: dict
               schema:
@@ -7887,8 +8339,15 @@ hart_schema:
                   oneof:
                   - schema: {ro_constant: {type: integer, max:  15}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - asid[3:0] in [0, 8, 9]
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: False}
+              check_with: s_check
             accessible:
               type: boolean
               check_with:
@@ -8001,6 +8460,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             utie:
               type: dict
               schema:
@@ -8011,6 +8471,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ueie:
               type: dict
               schema:
@@ -8021,6 +8482,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8040,6 +8502,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             utie:
               type: dict
               schema:
@@ -8050,6 +8513,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ueie:
               type: dict
               schema:
@@ -8060,6 +8524,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8092,6 +8557,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             utip:
               type: dict
               schema:
@@ -8102,6 +8568,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ueip:
               type: dict
               schema:
@@ -8112,6 +8579,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8131,6 +8599,7 @@ hart_schema:
                 lsb: {type: integer, default: 0, allowed: [0]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             utip:
               type: dict
               schema:
@@ -8141,6 +8610,7 @@ hart_schema:
                 lsb: {type: integer, default: 4, allowed: [4]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             ueip:
               type: dict
               schema:
@@ -8151,6 +8621,7 @@ hart_schema:
                 lsb: {type: integer, default: 8, allowed: [8]}
                 implemented: {type: boolean, default: true}
               default: {implemented: False}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8389,6 +8860,7 @@ hart_schema:
                     - 0x0:0x1
                   readonly: True
               default: {implemented: False}
+              check_with: n_check
             exception_code:
               type: dict
               schema:
@@ -8407,6 +8879,7 @@ hart_schema:
                     wlrl: 
                     - 0:15
               default: {implemented: False}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8435,6 +8908,7 @@ hart_schema:
                     wlrl:
                     - 0:1
               default: {implemented: False}
+              check_with: n_check
             exception_code:
               type: dict
               schema:
@@ -8453,6 +8927,7 @@ hart_schema:
                     wlrl:
                     - 0:15
               default: {implemented: false}
+              check_with: n_check
             accessible:
               type: boolean
               default: false
@@ -8494,8 +8969,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1073741823}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                       dependency_fields: []
+                       legal:
+                         - "base[29:0] bitmask [0x3FFFFFFF, 0x00000000]"
+                       wr_illegal:
+                         - "Unchanged"
               default: {implemented: False}
+              check_with: n_check
             mode:
               type: dict
               schema:
@@ -8514,8 +8996,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
+              check_with: n_check
             accessible:
               type: boolean
               check_with:
@@ -8544,8 +9033,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  4611686018427387903}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - "base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]"
+                        wr_illegal:
+                          - "Unchanged"
               default: {implemented: False}
+              check_with: n_check
             mode:
               type: dict
               schema:
@@ -8564,8 +9060,15 @@ hart_schema:
                   - schema: {ro_constant: {type: integer, max:  1}}
                   - schema: {ro_variable: {type: boolean}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant : 0}
+                  default: 
+                     warl:
+                        dependency_fields: []
+                        legal:
+                          - 'mode[1:0] in [0x0:0x1]'
+                        wr_illegal:
+                          - Unchanged
               default: {implemented: false}
+              check_with: n_check
             accessible:
               type: boolean
               check_with:

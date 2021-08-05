@@ -185,6 +185,27 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1'):
                 self._error(field, "S is not present(32)")
+    
+    def _check_with_f_check(self, field, value):
+        f = 5
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - f:66 - f] != '1'):
+                self._error(field, "F is not present(64)")
+
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - f:34 - f] != '1'):
+                self._error(field, "F is not present(32)")
+                
 
     def _check_with_u_check(self, field, value):
         u = 20
@@ -257,7 +278,7 @@ class schemaValidator(Validator):
             reset = format(value, '#034b')
             if (mxl[8:34] != reset[8:34] ):
                 self._error(field, "reset value does not match with extensions enabled(32)")
-    
+                
     def _check_with_sn_check(self, field, value):
         s = 18
         n = 13
