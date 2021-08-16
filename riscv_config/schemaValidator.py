@@ -186,8 +186,9 @@ class schemaValidator(Validator):
             if (mxl[33 - s:34 - s] != '1'):
                 self._error(field, "S is not present(32)")
     
-    def _check_with_f_check(self, field, value):
+    def _check_with_fs_check(self, field, value):
         f = 5
+        s = 18
         check = False
         if 'implemented' in value:
             if value['implemented']:
@@ -198,13 +199,13 @@ class schemaValidator(Validator):
 
         if rv64 and check:
             mxl = format(extensions, '#066b')
-            if (mxl[65 - f:66 - f] != '1'):
-                self._error(field, "F is not present(64)")
+            if (mxl[65 - s:66 - s] != '1') and (mxl[65 - f:66 - f] != '1'):
+                self._error(field, "neither S nor F is not present(64)")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
-            if (mxl[33 - f:34 - f] != '1'):
-                self._error(field, "F is not present(32)")
+            if (mxl[33 - s:34 - s] != '1') and (mxl[33 - f:34 - f] != '1'):
+                self._error(field, "neither S nor F is not present(32)")
                 
 
     def _check_with_u_check(self, field, value):

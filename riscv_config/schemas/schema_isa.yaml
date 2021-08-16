@@ -693,7 +693,7 @@ hart_schema:
                        wr_illegal:
                          - unchanged
               default: {implemented: false}
-              check_with: f_check
+              check_with: fs_check
             xs:
               type: dict
               schema:
@@ -897,7 +897,7 @@ hart_schema:
                     wlrl: 
                      - 0:1
               default: {implemented: true}
-              check_with: f_check
+              check_with: fs_check
             accessible:
               type: boolean
               default: false
@@ -1098,7 +1098,7 @@ hart_schema:
                        wr_illegal:
                          - unchanged
               default: {implemented: false}
-              check_with: f_check
+              check_with: fs_check
             xs:
               type: dict
               schema:
@@ -1343,7 +1343,7 @@ hart_schema:
                     wlrl: 
                      - 0:1
               default: {implemented: true}
-              check_with: f_check
+              check_with: fs_check
             accessible:
               type: boolean
               default: false
@@ -7200,7 +7200,7 @@ hart_schema:
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
-              check_with: f_check              
+              check_with: fs_check              
             xs:
               type: dict
               schema:
@@ -7254,7 +7254,7 @@ hart_schema:
                 lsb: {type: integer, default: 31, allowed: [31]}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
-              check_with: f_check
+              check_with: fs_check
             accessible:
               type: boolean
               default: false
@@ -7339,7 +7339,7 @@ hart_schema:
                 lsb: {type: integer, default: 13, allowed: [13]}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
-              check_with: f_check
+              check_with: fs_check
             xs:
               type: dict
               schema:
@@ -7404,7 +7404,7 @@ hart_schema:
                 lsb: {type: integer, default: 63, allowed: [63]}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
-              check_with: f_check
+              check_with: fs_check
             accessible:
               type: boolean
               default: false
