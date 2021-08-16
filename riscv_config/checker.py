@@ -142,7 +142,7 @@ def twset():
     if 'S' not in inp_yaml['ISA'] and 'U' not in inp_yaml['ISA']:
         return {'implemented': False}
     else:
-        return {'implemented': False}
+        return {'implemented': True}
 
 
 def delegset():
