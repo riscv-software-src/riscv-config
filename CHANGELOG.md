@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.10.1] - 2021-08-06
+## [2.10.1] - 2021-08-26
 ### Fixed
    - Changed the default value of 'accessible' to false so input yamls need not declare unsupported xlen
    
