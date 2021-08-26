@@ -179,15 +179,16 @@ class schemaValidator(Validator):
         if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - s:66 - s] != '1'):
-                self._error(field, "S is not present(64)")
+                self._error(field, "should not be implemented since S is not present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1'):
-                self._error(field, "S is not present(32)")
+                self._error(field, "should not be implemented S is not present")
     
-    def _check_with_f_check(self, field, value):
+    def _check_with_fs_check(self, field, value):
         f = 5
+        s = 18
         check = False
         if 'implemented' in value:
             if value['implemented']:
@@ -198,13 +199,13 @@ class schemaValidator(Validator):
 
         if rv64 and check:
             mxl = format(extensions, '#066b')
-            if (mxl[65 - f:66 - f] != '1'):
-                self._error(field, "F is not present(64)")
+            if (mxl[65 - s:66 - s] != '1') and (mxl[65 - f:66 - f] != '1'):
+                self._error(field, "neither S nor F is present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
-            if (mxl[33 - f:34 - f] != '1'):
-                self._error(field, "F is not present(32)")
+            if (mxl[33 - s:34 - s] != '1') and (mxl[33 - f:34 - f] != '1'):
+                self._error(field, "neither S nor F is present")
                 
 
     def _check_with_u_check(self, field, value):
@@ -219,12 +220,12 @@ class schemaValidator(Validator):
         if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - u:66 - u] != '1'):
-                self._error(field, "U is not present(64)")
+                self._error(field, "should not be implemented since U is not present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - u:34 - u] != '1'):
-                self._error(field, "U is not present(32)")
+                self._error(field, "should not be implemented since U is not present")
               
     def _check_with_s_debug_check(self, field, value):
         ''' Function ensures that the ro_constant is hardwired to zero when S is present in the ISA string
@@ -258,12 +259,12 @@ class schemaValidator(Validator):
         if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - s:66 - s] != '1') and (mxl[65 - u:66 - u] != '1'):
-                self._error(field, "neither S nor U is not present(64)")
+                self._error(field, "neither S nor U is present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') and (mxl[33 - u:34 - u] != '1'):
-                self._error(field, "neither S nor U is not present(32)")
+                self._error(field, "neither S nor U is present")
                 
     def _check_with_reset_ext(self, field, value):
         
@@ -271,13 +272,13 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#066b')
             reset = format(value, '#066b')
             if (mxl[40:66] != reset[40:66] ):
-                self._error(field, "reset value does not match with extensions enabled(64)")
+                self._error(field, "reset value does not match with extensions enabled")
 
         elif rv32 :
             mxl = format(extensions, '#034b')
             reset = format(value, '#034b')
             if (mxl[8:34] != reset[8:34] ):
-                self._error(field, "reset value does not match with extensions enabled(32)")
+                self._error(field, "reset value does not match with extensions enabled")
                 
     def _check_with_sn_check(self, field, value):
         s = 18
@@ -293,12 +294,12 @@ class schemaValidator(Validator):
         if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - s:66 - s] != '1') and (mxl[65 - n:66 - n] != '1'):
-                self._error(field, "neither S nor N is not present(64)")
+                self._error(field, "neither S nor N is present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') and (mxl[33 - n:34 - n] != '1'):
-                self._error(field, "neither S nor N is not present(32)")
+                self._error(field, "neither S nor N is present")
 
     def _check_with_n_check(self, field, value):
         n = 13
@@ -312,12 +313,12 @@ class schemaValidator(Validator):
         if rv64 and check:
             mxl = format(extensions, '#066b')
             if (mxl[65 - n:66 - n] != '1'):
-                self._error(field, "N is not present")
+                self._error(field, "should not be implemented since N is not present")
 
         elif rv32 and check:
             mxl = format(extensions, '#034b')
             if (mxl[33 - n:34 - n] != '1'):
-                self._error(field, "N is not present")
+                self._error(field, "should not be implemented since N is not present")
 
     def _check_with_mdeleg_checks(self, field, value):
         if rv32:
@@ -325,27 +326,27 @@ class schemaValidator(Validator):
                 (not 'S' in self.document['ISA'] and
                  not 'N' in self.document['ISA'])):
                 value['rv32']['accessible'] = False
-                self._error(field, "S and N are not present(32)")
+                self._error(field, "S and N are not present")
 
         if rv64:
             if (value['rv64']['accessible'] == True and
                 (not 'S' in self.document['ISA'] and
                  not 'N' in self.document['ISA'])):
                 value['rv64']['accessible'] = False
-                self._error(field, "S and N are not present(64)")
+                self._error(field, "S and N are not present")
 
     def _check_with_ndeleg_checks(self, field, value):
         if rv32:
             if (value['rv32']['accessible'] == True and
                     not 'N' in self.document['ISA']):
                 value['rv32']['accessible'] = False
-                self._error(field, "N is not present(32)")
+                self._error(field, "should not be implemented since N is not present")
 
         if rv64:
             if (value['rv64']['accessible'] == True and
                     not 'N' in self.document['ISA']):
                 value['rv64']['accessible'] = False
-                self._error(field, "N is not present(64)")
+                self._error(field, "should not be implemented since N is not present")
 
     def _check_with_xcause_check(self, field, value):
         '''Function to verify the inputs for mcause.'''

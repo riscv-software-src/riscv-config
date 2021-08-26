@@ -65,10 +65,10 @@ def sset():
     else:
         return {'implemented': False}
         
-def fset():
+def fsset():
     '''Function to set defaults based on presence of 'F' extension.'''
     global inp_yaml
-    if 'F' in inp_yaml['ISA']:
+    if 'F' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA']:
         return {'implemented': True}
     else:
         return {'implemented': False}
@@ -142,7 +142,7 @@ def twset():
     if 'S' not in inp_yaml['ISA'] and 'U' not in inp_yaml['ISA']:
         return {'implemented': False}
     else:
-        return {'implemented': False}
+        return {'implemented': True}
 
 
 def delegset():
@@ -251,7 +251,7 @@ def add_def_setters(schema_yaml):
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
-    fsetter = lambda doc: fset()
+    fssetter = lambda doc: fsset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
     sregsetterh = lambda doc: sregseth()
@@ -293,13 +293,13 @@ def add_def_setters(schema_yaml):
     schema_yaml['sstatus']['schema']['rv64']['schema']['sum'][
         'default_setter'] = ssetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['fs'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['sstatus']['schema']['rv64']['schema']['fs'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['sd'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['sstatus']['schema']['rv64']['schema']['sd'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['sie']['default_setter'] = sregsetter
     schema_yaml['sie']['schema']['rv32']['schema']['ueie'][
         'default_setter'] = nusetter
@@ -752,13 +752,13 @@ def add_def_setters(schema_yaml):
     schema_yaml['mstatus']['schema']['rv64']['schema']['sie'][
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['fs'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['fs'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['sd'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['sd'][
-        'default_setter'] = fsetter
+        'default_setter'] = fssetter
     schema_yaml['mstatus']['schema']['rv32']['schema']['spie'][
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['spie'][
