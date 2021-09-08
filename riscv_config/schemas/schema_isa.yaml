@@ -11326,10 +11326,10 @@ CSR and the value returned in VS-mode or VU-mode.}
                   type: dict
                   check_with: wr_illegal
                   oneof:
+                  - schema: {ro_constant: {type: integer, max:  2, min: 1}}
                   - schema: { warl: *ref_warl }
-                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  default: {ro_constant: 2}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
               check_with: u_check
@@ -11346,12 +11346,8 @@ CSR and the value returned in VS-mode or VU-mode.}
                 lsb: {type: integer, default: 31, allowed: [31]}
                 type:
                   type: dict
-                  check_with: wr_illegal
-                  oneof:
-                  - schema: { warl: *ref_warl }
-                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
-                  - schema: { wlrl: *ref_wlrl }
-                  default: {ro_constant: 0}
+                  schema: {ro_variable: {type: boolean}}
+                  default: {ro_variable: true}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
             accessible:
