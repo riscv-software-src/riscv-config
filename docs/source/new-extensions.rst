@@ -203,7 +203,7 @@ Adding new CLI
 
 For supporting any new adjoining specs, they need to be supplied via a new cli (command line
 interface) argument. This new argument needs to be added in the to the parser module in 
-`Utils.py <https://github.com/riscv/riscv-config/blob/d969b7dc5b2b308bb43b0aa65932fe2e7f8c756c/riscv_config/utils.py#L106>`_.
+`Utils.py <https://github.com/riscv/riscv-config/blob/d969b7dc5b2b308bb43b0aa65932fe2e7f8c756c/riscv_config/utils.py#L106>`.
 
 The code below shows an example of how the debug spec is added as an argument to the cli parser
 module:
@@ -217,7 +217,7 @@ Adding a new schema
 -------------------
 
 Each new adjoining spec must have a YAML schema defined in the `schemas
-<https://github.com/riscv/riscv-config/tree/master/riscv_config/schemas>`_ director.
+<https://github.com/riscv/riscv-config/tree/master/riscv_config/schemas>` director.
 
 
 Adding checks through checker.py and SchemaValidator.py

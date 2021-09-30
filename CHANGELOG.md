@@ -2,6 +2,27 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.1] - 2021-08-26
+### Fixed
+   - Changed the default value of 'accessible' to false so input yamls need not declare unsupported xlen
+   
+   
+## [2.10.0] - 2021-07-30
+### Added
+   - added default-setters for misa's reset value to match the ISA extensions, to modify warl function of extensions under misa
+   - added default setter for reset value of mstatus
+### Fixed
+   - changed default values of types for subfields in mstatus 
+   - changed default values of types for mhpmevent*, mcountinhibit, mcounteren and mhpmcounter* to read only constant 0
+   - changed default values of types for fflags, frm and fcsr to warl if F is present, else read-only constant 0
+   - changed default values of types for mcycle[h], minstret[h] to  warl
+   - changed default values of types and added checks for subfields of scause, satp, stvec, sie, sip and sstatus
+   
+## [2.9.1] - 2021-06-02
+### Fixed
+- removed an unadded feature in rv32i_platform.yaml
+- removed debug_interrupts under mip in rv64i_isa.yaml
+
 ## [2.9.0] - 2021-05-24
 ### Fixed
 - fixed issue #58 by adding extra checks for bitmask
