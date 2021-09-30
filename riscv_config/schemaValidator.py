@@ -153,6 +153,12 @@ class schemaValidator(Validator):
         maxv = max(supported_xlen)
         if value > (2**maxv) - 1:
             self._error(field, "Value exceeds max supported length")
+    
+    def _check_with_max_length32(self, field, value):
+        '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''
+        maxv = 32
+        if value > (2**maxv) - 1:
+            self._error(field, "Value exceeds max supported length")
 
     def _check_with_xtveccheck(self, field, value):
         '''Function to check whether the inputs in range type in mtvec are valid.'''
