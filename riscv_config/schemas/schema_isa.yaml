@@ -4891,7 +4891,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
+              check_with: 
+                - wr_illegal
+                - wr_illegal32
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: { warl: *ref_warl }
@@ -4938,7 +4940,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
+              check_with: 
+                - wr_illegal
+                - wr_illegal32
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: { warl: *ref_warl }
@@ -9844,7 +9848,9 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
+              check_with: 
+                - wr_illegal
+                - wr_illegal32
               schema: { warl: *ref_warl }
               default:
                 warl:
