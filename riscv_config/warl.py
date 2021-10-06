@@ -54,8 +54,6 @@ class warl_interpreter():
                                 bound = int(bound,16)
                             else:
                                 bound = int(bound,10)
-                            print('value: {2} base {0} bound:{1}'.format(base,
-                                bound, value))
                             if value >= base and value <= bound: # check legal range
                                 part_legal = True
                         else:
