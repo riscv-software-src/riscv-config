@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.2] - 2021-10-06
+### Fixed
+  - islegal function under the warl_interpreter class fixed. The based and bound values are not
+     extracted correctly as either hex or decimal values. Also removed the logic to truncate values
+
 ## [2.10.1] - 2021-08-26
 ### Fixed
    - Changed the default value of 'accessible' to false so input yamls need not declare unsupported xlen
