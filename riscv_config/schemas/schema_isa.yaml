@@ -10050,9 +10050,16 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - vtsr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
             accessible:
               type: boolean
@@ -10232,9 +10239,16 @@ hart_schema:
                   type: dict
                   check_with: wr_illegal
                   oneof:
-                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
-                  default: {ro_constant: 0}
+                  default: 
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - vtsr[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: false}
             vsxl:
               type: dict
