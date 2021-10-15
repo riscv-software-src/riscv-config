@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.0] - 2021-10-15
+### Fixed
+  - canonical ordering requirement of `_Z` extensions fixed
+### Added
+  - adding support for Zmmul extension in ISA regex
+
 ## [2.10.2] - 2021-10-06
 ### Fixed
   - islegal function under the warl_interpreter class fixed. The based and bound values are not
