@@ -117,6 +117,16 @@ class schemaValidator(Validator):
             self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
         if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
             self._error(field, "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+        if 'Zpsfoperand' in extension_list and not "Zpn" in extension_list:
+            self._error(field, "Zpsfoperand cannot exist without Zpn.")
+        if 'Zbpbo' in extension_list and not "Zpn" in extension_list:
+            self._error(field, "Zbpbo cannot exist without Zpn.")
+        if 'Zpn' in extension_list and not "Zbpbo" in extension_list:
+            self._error(field, "Zpn cannot exist without Zbpbo.")
+        if xlen == 64 and 'Zpn' in extension_list and not "Zpsfoperand" in extension_list:
+            self._error(field, "RV64 P extension requires Zpsfoperand.")
+        if 'Zpn' in extension_list and not ('M' in extension_list or 'Zmmul' in extension_list):
+            self._error(field, "Zpn requires baseline multiplication extension.")                                                
 
 #        if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
 #            self._error(

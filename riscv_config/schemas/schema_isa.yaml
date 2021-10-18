@@ -57,7 +57,7 @@ hart_schema:
     #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ABCDEFGIJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|Zkne|Zknd|Zknh|Zkse|Zksh|Zkg|Zkb|Zkr|Zks|Zkn|Zbc|Zbb|Zbp|Zbm|Zbe|Zbf){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}(_Zkne){,1}(_Zknd){,1}(_Zknh){,1}(_Zkse){,1}(_Zksh){,1}(_Zkg){,1}(_Zkb){,1}(_Zkr){,1}(_Zks){,1}(_Zkn){,1}(_Zbc){,1}(_Zbb){,1}(_Zbp){,1}(_Zbm){,1}(_Zbe){,1}(_Zbf){,1}$" }
+           regex: "^RV(32|64|128)[IE]+[ABCDEFGIJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|Zkne|Zknd|Zknh|Zkse|Zksh|Zkg|Zkb|Zkr|Zks|Zkn|Zbc|Zbb|Zbp|Zbm|Zbe|Zbf|Zpn|Zpsfoperand|Zbpbo){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}(_Zkne){,1}(_Zknd){,1}(_Zknh){,1}(_Zkse){,1}(_Zksh){,1}(_Zkg){,1}(_Zkb){,1}(_Zkr){,1}(_Zks){,1}(_Zkn){,1}(_Zbc){,1}(_Zbb){,1}(_Zbp){,1}(_Zbm){,1}(_Zbe){,1}(_Zbf){,1}(_Zpn){,1}(_Zpsfoperand){,1}(_Zbpbo){,1}$" }
     
     ###
     #User_Spec_Version
@@ -9134,4 +9134,75 @@ hart_schema:
               default: true
               check_with: rv64_check
           default: {accessible: false}
+    vxsat:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The vxsat register records the overflow saturation condition of P and V instructions.
+        address: {type: integer, default: 9, allowed: [9]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            ov:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of overflow flag.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    wlrl: 
+                    - 0:1
+              default: {implemented: false}
+              check_with: n_check
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            ov:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of overflow flag.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default: 
+                    wlrl: 
+                    - 0:1
+              default: {implemented: false}
+              check_with: n_check
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv64_check
+          default: {accessible: False}                                                    
                   
