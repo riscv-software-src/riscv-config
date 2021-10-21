@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.0] - 2021-10-21
+### Added
+   - Added Zbpbo, Zpn, Zpsfoperand into schema_isa.yaml
+   - Added vxsat CSR into schema_isa.yaml
+   - Added ISA string legality checker for P extension into schemaValidator.py
+
 ## [2.10.2] - 2021-10-06
 ### Fixed
   - islegal function under the warl_interpreter class fixed. The based and bound values are not
