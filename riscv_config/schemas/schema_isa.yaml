@@ -6028,6 +6028,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17, nullable: False}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
