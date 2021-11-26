@@ -48,6 +48,15 @@ def resetsu():
       return 42949672960
     else:	
       return 0
+def reset_vsstatus():
+    '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
+    global inp_yaml
+    if 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
+      return 8589934592
+    elif 32 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
+      return 42949672960
+    else:	
+      return 0
 
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -273,6 +282,7 @@ def add_def_setters(schema_yaml):
     regsetter = lambda doc: regset()
     resetsetter=lambda doc: reset()
     reset_susetter=lambda doc: resetsu()
+    reset_vsssetter=lambda doc: reset_vsstatus()
     pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
     pmpcounthsetter = lambda doc: pmpcounterhset()
@@ -479,6 +489,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mstatus']['schema']['reset-val']['default_setter']=reset_susetter
+    schema_yaml['vsstatus']['schema']['reset-val']['default_setter']=reset_vsssetter
     schema_yaml['mstatush']['default_setter'] = counthsetter   
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
