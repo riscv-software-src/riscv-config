@@ -42,23 +42,26 @@ class warl_interpreter():
                     msb = int(csr_ind.split(':')[0])
                     lsb = int(csr_ind.split(':')[-1])
                     bitmask = True if 'bitmask' in csr_op else False
-                    trunc_val = int(bin(value)[2:].zfill(64)[::-1][lsb:msb+1][::-1],base=2)
 
                     if not bitmask: # if its not a bitmask
                         if ":" in csr_vals: # range is specified
                             [base, bound] = csr_vals.split(':')
                             if 'x' in base:
                                 base = int(base,16)
+                            else:
+                                base = int(base,10)
                             if 'x' in bound:
                                 bound = int(bound,16)
-                            if trunc_val >= base and trunc_val <= bound: # check legal range
+                            else:
+                                bound = int(bound,10)
+                            if value >= base and value <= bound: # check legal range
                                 part_legal = True
                         else:
                             l_vals = csr_vals.split(',')
                             legal_vals = []
                             for i in l_vals : 
                                 legal_vals.append(int(i,16))
-                            if trunc_val in legal_vals:
+                            if value in legal_vals:
                                 part_legal = True
                     else: # in case of bitmask there are no illegal values
                         part_legal = True
@@ -422,14 +425,14 @@ class warl_interpreter():
 #
 #str2=\
 #'''
-#dependency_fields: [pmpcfg0]
+#dependency_fields: []
 #legal:
-#  - "pmpcfg0[0] in [0] -> pmp3cfg[7:4] in [1,3,5] pmp3cfg[3:0] [0x00:0xF]"
+#  - "asid[8:0] in [0x00:0x1FF]"
 #wr_illegal:
-#  - "Unchanged"
+#  - Unchanged
 #'''
 #
 #node = yaml.load(str2)
 #warl = warl_interpreter(node)
-#print(str(warl.islegal(0x302, [0])))
-#
+#print(str(warl.islegal(0xFFFF, [])))
+
