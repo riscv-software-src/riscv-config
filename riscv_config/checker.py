@@ -272,9 +272,8 @@ def add_fflags_type_setters(schema_yaml):
     xlen=inp_yaml['supported_xlen'][0]
     rvxlen='rv'+str(xlen)
     if 'F' not in inp_yaml['ISA']:
-        schema_yaml['fflags']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
-        schema_yaml['frm']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
-        schema_yaml['fcsr']['schema'][rvxlen]['schema']['type']['default']={'ro_constant': 0}
+        schema_yaml['fcsr']['schema'][rvxlen]['schema']['frm']['schema']['type']['default'] = {'ro_constant': 0}
+        schema_yaml['fcsr']['schema'][rvxlen]['schema']['fflags']['schema']['type']['default'] = {'ro_constant': 0}
     return schema_yaml
     
 def add_def_setters(schema_yaml):
@@ -484,6 +483,15 @@ def add_def_setters(schema_yaml):
     schema_yaml['ucause']['schema']['rv64']['schema']['exception_code'][
         'default_setter'] = nusetter
     schema_yaml['uscratch']['default_setter'] = nregsetter
+
+    schema_yaml['fcsr']['schema']['rv32']['schema']['frm'][
+        'default_setter'] = usetter
+    schema_yaml['fcsr']['schema']['rv64']['schema']['frm'][
+        'default_setter'] = usetter
+    schema_yaml['fcsr']['schema']['rv32']['schema']['fflags'][
+        'default_setter'] = usetter
+    schema_yaml['fcsr']['schema']['rv64']['schema']['fflags'][
+        'default_setter'] = usetter
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
@@ -1149,9 +1157,23 @@ def check_shadows(spec, logging = False):
                         continue
                     else:
                         shadow = content[rvxlen]['shadow'].split('.')
-                        if len(shadow) != 1:
-                            error.append('Shadow field of should not have dot')
+                        if len(shadow) > 2:
+                            error.append('Shadow field of should only up to 1 dot')
                             continue
+                        elif len(shadow) == 2:
+                            scsr = shadow[0]
+                            subscsr = shadow[1]
+                            if not spec[scsr][rvxlen][subscsr]['implemented']:
+                                error.append(' Shadow field ' + scsr + '.' +\
+                                            subscsr + ' not implemented')
+                                continue
+                            scsr_size = spec[scsr][rvxlen][subscsr]['msb'] -\
+                                    spec[scsr][rvxlen][subscsr]['lsb']
+                            csr_size = spec[csr][rvxlen]['msb'] - spec[csr][rvxlen]['lsb']
+                            if scsr_size != csr_size :
+                                error.append('Shadow field '+ \
+                                        scsr + '.' + subscsr + \
+                                        ' does not match in size')
                         else:
                             scsr = shadow[0]
                             if not spec[scsr][rvxlen]['accessible']:
@@ -1170,9 +1192,21 @@ def check_shadows(spec, logging = False):
                            continue
                         elif content[rvxlen][subfield]['implemented']:
                             shadow = content[rvxlen][subfield]['shadow'].split('.')
-                            if len(shadow) != 2:
-                                error.append('Shadow field of should only 1 dot')
+                            if len(shadow) > 2:
+                                error.append('Shadow field of should only up to 1 dot')
                                 continue
+                            elif len(shadow) == 1:
+                                scsr = shadow[0]
+                                if not spec[scsr][rvxlen]['accessible']:
+                                    error.append('Subfield ' + subfield + \
+                                        ' shadowing ' + scsr + ' not implemented')
+                                    continue
+                                scsr_size = spec[scsr][rvxlen]['msb'] - spec[scsr][rvxlen]['lsb']
+                                csr_size = spec[csr][rvxlen][subfield]['msb'] -\
+                                        spec[csr][rvxlen][subfield]['lsb']
+                                if scsr_size != csr_size :
+                                    error.append('Subfield ' + subfield +'shadowing'+ \
+                                            scsr + ' does not match in size')
                             else:
                                 scsr = shadow[0]
                                 subscsr = shadow[1]
