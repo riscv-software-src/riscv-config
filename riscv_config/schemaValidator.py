@@ -239,7 +239,9 @@ class schemaValidator(Validator):
         global isa_string
 
         if 'S' not in isa_string :
-          if value['ro_constant'] != 0:
+          if 'ro_constant' not in value:
+              self._error(field, "S is not present to dcsr.v should be ro_constant = 0")
+          elif value['ro_constant'] != 0:
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
                 
     def _check_with_u_debug_check(self, field, value):
