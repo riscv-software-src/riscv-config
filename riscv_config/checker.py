@@ -48,6 +48,15 @@ def resetsu():
       return 42949672960
     else:	
       return 0
+def reset_vsstatus():
+    '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
+    global inp_yaml
+    if 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
+      return 8589934592
+    elif 32 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
+      return 42949672960
+    else:	
+      return 0
 
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -56,6 +65,15 @@ def uset():
         return {'implemented': True}
     else:
         return {'implemented': False}
+   
+def hset():
+    '''Function to set defaults based on presence of 'U' extension.'''
+    global inp_yaml
+    if 'H' in inp_yaml['ISA']:
+        return {'implemented': True}
+    else:
+        return {'implemented': False}
+
 
 def sset():
     '''Function to set defaults based on presence of 'S' extension.'''
@@ -93,7 +111,15 @@ def uregseth():
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
     return temp
-        
+  
+def hregseth():
+    '''Function to set defaults based on presence of 'H' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'H' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+    return temp      
 def sregset():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
@@ -110,6 +136,17 @@ def nregset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     if 'N' in inp_yaml['ISA']:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
+
+def hregset():
+    '''Function to set defaults based on presence of 'H' extension.'''
+    global inp_yaml
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'H' in inp_yaml['ISA']:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
@@ -244,6 +281,7 @@ def add_def_setters(schema_yaml):
     regsetter = lambda doc: regset()
     resetsetter=lambda doc: reset()
     reset_susetter=lambda doc: resetsu()
+    reset_vsssetter=lambda doc: reset_vsstatus()
     pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
     pmpcounthsetter = lambda doc: pmpcounterhset()
@@ -253,9 +291,12 @@ def add_def_setters(schema_yaml):
     fssetter = lambda doc: fsset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
+    hregsetter = lambda doc: hregset()
+    hreghsetter = lambda doc: hregseth()
     sregsetterh = lambda doc: sregseth()
     nusetter = lambda doc: nuset()
     usetter = lambda doc: uset()
+    hsetter = lambda doc: hset()
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
 
@@ -456,6 +497,8 @@ def add_def_setters(schema_yaml):
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mstatus']['schema']['reset-val']['default_setter']=reset_susetter
+    schema_yaml['vsstatus']['schema']['reset-val']['default_setter']=reset_vsssetter
+    schema_yaml['mstatush']['default_setter'] = counthsetter   
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
@@ -466,6 +509,8 @@ def add_def_setters(schema_yaml):
     schema_yaml['mscratch']['default_setter'] = regsetter
     schema_yaml['mepc']['default_setter'] = regsetter
     schema_yaml['mtval']['default_setter'] = regsetter
+    schema_yaml['mtval2']['default_setter'] = hregsetter
+    schema_yaml['mtinst']['default_setter'] = hregsetter
     schema_yaml['mcountinhibit']['default_setter'] = regsetter
     schema_yaml['mcycle']['default_setter'] = regsetter
     schema_yaml['minstret']['default_setter'] = regsetter
@@ -805,6 +850,22 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['mip']['schema']['rv64']['schema']['ssip'][
         'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['vssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['vssip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['vstip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['vstip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['vseip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv64']['schema']['vseip'][
+        'default_setter'] = ssetter
+    schema_yaml['mip']['schema']['rv32']['schema']['sgeip'][
+        'default_setter'] = hsetter
+    schema_yaml['mip']['schema']['rv64']['schema']['sgeip'][
+        'default_setter'] = hsetter
     schema_yaml['mie']['schema']['rv32']['schema']['seie'][
         'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['seie'][
@@ -817,14 +878,145 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['mie']['schema']['rv64']['schema']['ssie'][
         'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['vssie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['vssie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['vstie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['vstie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['vseie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv64']['schema']['vseie'][
+        'default_setter'] = ssetter
+    schema_yaml['mie']['schema']['rv32']['schema']['sgeie'][
+        'default_setter'] = hsetter
+    schema_yaml['mie']['schema']['rv64']['schema']['sgeie'][
+        'default_setter'] = hsetter
+                
     schema_yaml['mstatus']['schema']['rv32']['schema']['tw'][
         'default_setter'] = twsetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['tw'][
         'default_setter'] = twsetter
+    schema_yaml['mstatush']['schema']['rv32']['schema']['gva'][
+        'default_setter'] = hsetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['gva'][
+        'default_setter'] = hsetter
+    schema_yaml['mstatush']['schema']['rv32']['schema']['mpv'][
+        'default_setter'] = hsetter
+    schema_yaml['mstatus']['schema']['rv64']['schema']['mpv'][
+        'default_setter'] = hsetter
     schema_yaml['medeleg']['default_setter'] = delegsetter
     schema_yaml['mideleg']['default_setter'] = delegsetter
     schema_yaml['sedeleg']['default_setter'] = nregsetter
     schema_yaml['sideleg']['default_setter'] = nregsetter
+    
+    schema_yaml['hstatus']['schema']['rv32']['schema']['gva'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv64']['schema']['gva'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv32']['schema']['spv'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv64']['schema']['spv'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv32']['schema']['spvp'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv64']['schema']['spvp'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv32']['schema']['hu'][
+        'default_setter'] = hsetter
+    schema_yaml['hstatus']['schema']['rv64']['schema']['hu'][
+        'default_setter'] = hsetter
+    
+    schema_yaml['hstatus']['default_setter'] = hregsetter
+    schema_yaml['hedeleg']['default_setter'] = hregsetter
+    schema_yaml['hideleg']['default_setter'] = hregsetter
+    schema_yaml['hie']['default_setter'] = hregsetter
+    schema_yaml['hip']['default_setter'] = hregsetter
+    schema_yaml['hvip']['default_setter'] = hregsetter
+    schema_yaml['hgeip']['default_setter'] = hregsetter
+    schema_yaml['hgeie']['default_setter'] = hregsetter
+    schema_yaml['htval']['default_setter'] = hregsetter
+    schema_yaml['htinst']['default_setter'] = hregsetter
+    schema_yaml['hgatp']['default_setter'] = hregsetter
+    schema_yaml['htimedelta']['default_setter'] = hregsetter
+    schema_yaml['htimedeltah']['default_setter'] = hreghsetter
+    schema_yaml['hcounteren']['default_setter'] = uregsetter
+    
+    schema_yaml['hie']['schema']['rv32']['schema']['sgeie'][
+        'default_setter'] = hsetter
+    schema_yaml['hie']['schema']['rv64']['schema']['sgeie'][
+        'default_setter'] = hsetter
+    schema_yaml['hip']['schema']['rv32']['schema']['sgeip'][
+        'default_setter'] = hsetter
+    schema_yaml['hip']['schema']['rv64']['schema']['sgeip'][
+        'default_setter'] = hsetter
+    
+    schema_yaml['vsstatus']['default_setter'] = sregsetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['uie'][
+        'default_setter'] = nusetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['upie'][
+        'default_setter'] = nusetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['upie'][
+        'default_setter'] = nusetter
+
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['uxl'][
+        'default_setter'] = usetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['sie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['spie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['spp'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['mxr'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv32']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['vsstatus']['schema']['rv64']['schema']['sum'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['default_setter'] = sregsetter
+    schema_yaml['vsie']['schema']['rv32']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['schema']['rv64']['schema']['seie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['schema']['rv32']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['schema']['rv64']['schema']['stie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['schema']['rv32']['schema']['ssie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsie']['schema']['rv64']['schema']['ssie'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['default_setter'] = sregsetter
+    schema_yaml['vsip']['schema']['rv32']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['schema']['rv64']['schema']['seip'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['schema']['rv32']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['schema']['rv64']['schema']['stip'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['schema']['rv32']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['vsip']['schema']['rv64']['schema']['ssip'][
+        'default_setter'] = ssetter
+    schema_yaml['vstvec']['default_setter'] = sregsetter
+    schema_yaml['vsepc']['default_setter'] = sregsetter
+    schema_yaml['vstval']['default_setter'] = sregsetter
+    schema_yaml['vscause']['default_setter'] = sregsetter
+    schema_yaml['vsatp']['default_setter'] = sregsetter
+    schema_yaml['vsscratch']['default_setter'] = sregsetter
     return schema_yaml
 
 
@@ -1024,7 +1216,7 @@ def check_shadows(spec, logging = False):
                                             subscsr + ' not implemented')
                                     continue
                                 scsr_size = spec[scsr][rvxlen][subscsr]['msb'] -\
-                                        spec[scsr][rvxlen][subfield]['lsb']
+                                        spec[scsr][rvxlen][subscsr]['lsb']
                                 csr_size = spec[csr][rvxlen][subfield]['msb'] -\
                                         spec[csr][rvxlen][subfield]['lsb']
                                 if scsr_size != csr_size :

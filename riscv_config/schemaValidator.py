@@ -153,6 +153,12 @@ class schemaValidator(Validator):
         maxv = max(supported_xlen)
         if value > (2**maxv) - 1:
             self._error(field, "Value exceeds max supported length")
+    
+    def _check_with_max_length32(self, field, value):
+        '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''
+        maxv = 32
+        if value > (2**maxv) - 1:
+            self._error(field, "Value exceeds max supported length")
 
     def _check_with_xtveccheck(self, field, value):
         '''Function to check whether the inputs in range type in mtvec are valid.'''
@@ -233,7 +239,9 @@ class schemaValidator(Validator):
         global isa_string
 
         if 'S' not in isa_string :
-          if value['ro_constant'] != 0:
+          if 'ro_constant' not in value:
+              self._error(field, "S is not present to dcsr.v should be ro_constant = 0")
+          elif value['ro_constant'] != 0:
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
                 
     def _check_with_u_debug_check(self, field, value):
@@ -320,6 +328,25 @@ class schemaValidator(Validator):
             if (mxl[33 - n:34 - n] != '1'):
                 self._error(field, "should not be implemented since N is not present")
 
+    def _check_with_h_check(self, field, value):
+        h = 7
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - h:66 - h] != '1'):
+                self._error(field, "h is not present")
+
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - h:34 - h] != '1'):
+                self._error(field, "h is not present")
+
     def _check_with_mdeleg_checks(self, field, value):
         if rv32:
             if (value['rv32']['accessible'] == True and
@@ -353,6 +380,42 @@ class schemaValidator(Validator):
         if (min(value) < 16):
             self._error(
                 field, "Invalid platform specific values for exception cause.")
+
+    def _check_with_wr_illegal32(self, field, value):
+        '''Function to ensure the warl does not cross 2^32
+        '''
+        if 'warl' in value:
+            warlnode = warl_interpreter(value['warl'])
+            x = 0x8000000000000000
+            if (len(value['warl']['legal']) > 1):
+                while (x > 0x10000000):
+                    if warlnode.islegal(x):
+                        self._error(
+                            field, "Must have a warl which is only 32-bits. Value"  + \
+                                        str(hex(x)) + " was considered legal")
+                        break
+                    x = x>> 1
+            else:
+                for l in value['warl']['legal']:
+                    if 'bitmask' in l:
+                        bmask = re.findall(r'\s*\[.*\]\s*bitmask\s*\[(.*?)\]',l)[0]
+                        maxval_str = bmask.split(',')[0]
+                        if '0x' in maxval_str:
+                            maxval = int(maxval_str,16)
+                        else:
+                            maxval = int(maxval_str,10)
+                        if maxval > 0xFFFFFFFF:
+                            self._error(
+                                field, "Must have a warl which is only 32-bits. Value"  + \
+                                        str(hex(maxval)) + " was considered legal")
+                    else:
+                        while (x > 0x10000000):
+                            if warlnode.islegal(x):
+                                self._error(
+                                    field, "Must have a warl which is only 32-bits. Value"  + \
+                                                str(hex(x)) + " was considered legal")
+                                break
+                            x = x>> 1
 
     def _check_with_wr_illegal(self, field, value):
         pr = 0

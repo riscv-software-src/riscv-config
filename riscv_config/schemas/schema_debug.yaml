@@ -232,12 +232,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - v[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
+                    ro_constant: 0
               default: {implemented: false}
             cause:
               type: dict
@@ -588,12 +583,7 @@ hart_schema:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - v[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
+                    ro_constant: 0
               default: {implemented: false}
             cause:
               type: dict

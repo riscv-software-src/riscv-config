@@ -2,6 +2,14 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.0] - 2021-12-10
+
+### Added
+  
+  - support for hypervisor csrs
+  - change default for dcsr.v and fix the `check_with` function for the same
+  - ensures proper checks for csrs defined as 32-bit only registers
+
 ## [2.11.2] - 2021-11-29
 
 ### Fixed
