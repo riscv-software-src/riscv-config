@@ -5250,55 +5250,22 @@ hart_schema:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
+            shadow: {type: string, default: fcsr.fflags, nullable: True}
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            type:
-              type: dict
-              check_with: 
-                - wr_illegal
-              oneof:
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                warl:
-                    dependency_fields: []
-                    legal:
-                      - fflags[4:0] in [0x00:0x1F]
-                    wr_illegal:
-                      - Unchanged
-            accessible:
-              type: boolean
-              default: true
-              check_with: rv32_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check]}
           check_with: u_check
           default: {accessible: False}
         rv64:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
+            shadow: {type: string, default: fcsr.fflags, nullable: True}
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            type:
-              type: dict
-              check_with: 
-                - wr_illegal
-              oneof:
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                warl:
-                    dependency_fields: []
-                    legal:
-                      - fflags[4:0] in [0x00:0x1F]
-                    wr_illegal:
-                      - Unchanged
-            accessible:
-              default: true
-              check_with: rv64_check
+            accessible: {default: true, check_with: [rv64_check]}
           check_with: u_check
           default: {accessible: False}
     frm:
@@ -5318,55 +5285,24 @@ hart_schema:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
+            shadow: {type: string, default: fcsr.frm, nullable: True}
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            type:
-              type: dict
-              oneof:
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                 warl:
-                    dependency_fields: []
-                    legal:
-                      - frm[2:0] in [0x0:0x7]
-                    wr_illegal:
-                      - Unchanged
-            accessible:
-              type: boolean
-              default: true
-              check_with:
-              - rv32_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check]}
           check_with: u_check
           default: {accessible: False}
         rv64:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
+            shadow: {type: string, default: fcsr.frm, nullable: True}
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            type:
-              type: dict
-              oneof:
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                 warl:
-                    dependency_fields: []
-                    legal:
-                      - frm[2:0] in [0x0:0x7]
-                    wr_illegal:
-                      - Unchanged
-            accessible:
-              default: false
-              check_with:
-              - rv64_check
+            accessible: {default: true, check_with: [rv64_check]}
           check_with: u_check
-          default: {accessible: False}     
+          default: {accessible: False}
     fcsr:
       type: dict
       schema:
@@ -5383,22 +5319,52 @@ hart_schema:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-            msb: {type: integer, default: 7, allowed: [7]}
-            lsb: {type: integer, default: 0, allowed: [0]}
-            type:
+            frm:
               type: dict
-              oneof:               
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                warl:
-                    dependency_fields: []
-                    legal:
-                      - fcsr[7:0] in [0x00:0xFF]
-                    wr_illegal:
-                      - unchanged
+              schema:
+                description: {type: string,  default: Stores Floating-Point Dynamic Rounding Mode.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: false}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x7}}
+                    - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - frm[2:0] in [0x0:0x7]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
+            fflags:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores floating point accrued exceptions.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: false}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x1F}}
+                    - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - fflags[4:0] in [0x0:0x1F]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
@@ -5409,27 +5375,57 @@ hart_schema:
           type: dict
           schema:
             fields: {type: list, default: []}
-            shadow: {type: string, default: , nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-            msb: {type: integer, default: 7, allowed: [7]}
-            lsb: {type: integer, default: 0, allowed: [0]}
-            type:
-              type: dict              
-              oneof:
-              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF }}
-              - schema: { warl: *ref_warl }
-              default:
-                warl:
-                    dependency_fields: []
-                    legal:
-                      - fcsr[7:0] in [0x00:0xFF]
-                    wr_illegal:
-                      - unchanged
+            frm:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores Floating-Point Dynamic Rounding Mode.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x7}}
+                    - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - frm[2:0] in [0x0:0x7]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
+            fflags:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores floating point accrued exceptions.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                    - schema: {ro_constant: {type: integer, max: 0x1F}}
+                    - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - fflags[4:0] in [0x0:0x1F]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
             accessible:
               default: true
               check_with: rv64_check
           check_with: u_check
-          default: {accessible: False}  
+          default: {accessible: False}
     cycle:
       type: dict
       schema:

@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.2] - 2021-11-29
+
+### Fixed
+
+  - Fixed the relationship between fflags, frm and fcsr
+  - Enable subfield to be shadow field of whole csr, and vice versa
+
 ## [2.11.1] - 2021-11-19
 
 ### Added
