@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.1] - 2021-12-18
+### Fixed
+
+  - added mbe and sbe fields in mstatush
+  - fixed default setter for vsstatus in RV32 mode
+
 ## [2.12.0] - 2021-12-10
 
 ### Added

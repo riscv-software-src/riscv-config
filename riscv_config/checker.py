@@ -53,8 +53,6 @@ def reset_vsstatus():
     global inp_yaml
     if 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
       return 8589934592
-    elif 32 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
-      return 42949672960
     else:	
       return 0
 
