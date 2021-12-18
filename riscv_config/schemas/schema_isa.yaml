@@ -1446,6 +1446,42 @@ hart_schema:
                   default: {ro_constant: 0}
               default: {implemented: false}
               check_with: h_check
+            mbe:
+              type: dict
+              schema:
+                description: { type: string, default: control the endianness of memory accesses other than instruction fetches for machine mode}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 5, allowed: [5]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: false}
+            sbe:
+              type: dict
+              schema:
+                description: { type: string, default: control the endianness of memory accesses other than instruction fetches for supervisor mode}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 4, allowed: [4]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: false}
             accessible:
               type: boolean
               default: false
