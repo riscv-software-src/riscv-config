@@ -101,6 +101,8 @@ class schemaValidator(Validator):
             self._error(field, "D cannot exist without F.")
         if 'Q' in extension_list and not 'D' in extension_list:
             self._error(field, "Q cannot exist without D and F.")
+        if 'Zfh' in extension_list and not 'F' in extension_list:
+            self._error(field, "Zfh cannot exist without F.")
         if 'Zam' in extension_list and not 'A' in extension_list:
             self._error(field, "Zam cannot exist without A.")
         if 'N' in extension_list and not 'U' in extension_list:
