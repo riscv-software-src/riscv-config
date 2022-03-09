@@ -295,6 +295,7 @@ hart_schema:
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: { warl: *ref_warl }
+              - schema: { wlrl: *ref_wlrl }
               default:
                 ro_constant: 0
             accessible:
@@ -316,6 +317,7 @@ hart_schema:
               oneof:
               - schema: {ro_constant: {type: integer, max: 0xFFFFFFFFFFFFFFFF}}
               - schema: { warl: *ref_warl }
+              - schema: { wlrl: *ref_wlrl }
               default:
                 ro_constant: 0
             accessible:
