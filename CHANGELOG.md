@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.0] - 2022-03-09
+  - add support for detection of svnapot in ISA string
+  - genralize conversion of hex, oct, bin values to int in warl functions
+  - machine flat schema to include wlrl types as well
+
 ## [2.12.1] - 2021-12-18
 ### Fixed
 
