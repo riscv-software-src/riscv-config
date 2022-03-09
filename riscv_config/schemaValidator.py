@@ -72,17 +72,19 @@ class schemaValidator(Validator):
         else:
             self._error(field, "Invalid width in ISA.")
         #ISA checks
-        str_match = re.findall(r'([^\d]*?)(?!_)*(Z.*?)*(_|$)',value,re.M)
+        str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(_|$)',value)
         extension_list= []
         standard_isa = ''
         for match in str_match:
-            stdisa, z, ignore = match
+            stdisa, zext, sext, ignore = match
             if stdisa != '':
                 for e in stdisa:
                     extension_list.append(e)
                 standard_isa = stdisa
-            if z != '':
-                extension_list.append(z)
+            if zext != '':
+                extension_list.append(zext)
+            if sext != '':
+                extension_list.append(sext)
         # check ordering of ISA
         canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
         order_index = {c: i for i, c in enumerate(canonical_ordering)}
