@@ -26,7 +26,7 @@ class warl_interpreter():
 
     def islegal(self, value, dependency_vals=[]):
         is_legal = False
-        logger.debug('Checking for isLegal for WARL: \n\t' +
+        logger.debug('Checking for isLegal for WARL: \n' +
                 utils.pretty_print_yaml(self.warl) + '\n With following args:'\
                         + 'val : ' + str(value) + ' dep_vals :'+
                         str(dependency_vals))
@@ -46,21 +46,15 @@ class warl_interpreter():
                     if not bitmask: # if its not a bitmask
                         if ":" in csr_vals: # range is specified
                             [base, bound] = csr_vals.split(':')
-                            if 'x' in base:
-                                base = int(base,16)
-                            else:
-                                base = int(base,10)
-                            if 'x' in bound:
-                                bound = int(bound,16)
-                            else:
-                                bound = int(bound,10)
+                            base = int(base, 0)
+                            bound = int(bound, 0)
                             if value >= base and value <= bound: # check legal range
                                 part_legal = True
                         else:
                             l_vals = csr_vals.split(',')
                             legal_vals = []
                             for i in l_vals : 
-                                legal_vals.append(int(i,16))
+                                legal_vals.append(int(i,0))
                             if value in legal_vals:
                                 part_legal = True
                     else: # in case of bitmask there are no illegal values
@@ -100,17 +94,15 @@ class warl_interpreter():
                 # check if the dependency value is satisfied.
                 if ":" in dep_vals: # range is specified
                     [base, bound] = dep_vals.split(':')
-                    if 'x' in base:
-                        base = int(base,16)
-                    if 'x' in bound:
-                        bound = int(bound,16)
+                    base = int(base, 0)
+                    bound = int(bound, 0)
                     if recvd_val >= base and recvd_val <= bound: # check legal range
                         dep_satified = True
                 else:
                     l_vals = dep_vals.split(',')
                     legal_vals = []
                     for i in l_vals : 
-                        legal_vals.append(int(i,16))
+                        legal_vals.append(int(i,0))
                     if recvd_val in legal_vals:
                         dep_satified = True
                 
@@ -125,17 +117,15 @@ class warl_interpreter():
                     if not bitmask: # if its not a bitmask
                         if ":" in csr_vals: # range is specified
                             [base, bound] = csr_vals.split(':')
-                            if 'x' in base:
-                                base = int(base,16)
-                            if 'x' in bound:
-                                bound = int(bound,16)
+                            base = int(base, 0)
+                            bound = int(bound, 0)
                             if trunc_val >= base and trunc_val <= bound: # check legal range
                                 part_legal = True
                         else:
                             l_vals = csr_vals.split(',')
                             legal_vals = []
                             for i in l_vals : 
-                                legal_vals.append(int(i,16))
+                                legal_vals.append(int(i,0))
                             if trunc_val in legal_vals:
                                 part_legal = True
                     else: # in case of bitmask there are no illegal values
@@ -196,9 +186,8 @@ class warl_interpreter():
                     for i1 in range(len(dependency_vals)):
                         if dependency_vals[i1] == int(mode[i1]):
                             if op != []:
-                                if int(wr_val,
-                                       16) in range(int(z[0], 16),
-                                                    int(z[1], 16)):
+                                if int(wr_val, 0) in range(int(z[0], 0),
+                                                    int(z[1], 0)):
                                     j = i
                                     flag1 = 1
                                     break
@@ -220,7 +209,7 @@ class warl_interpreter():
                                 self.warl['wr_illegal'][i])
                 if op != []:
                     z = re.split("\:", op[0])
-                    if int(wr_val, 16) in range(int(z[0], 16), int(z[1], 16)):
+                    if int(wr_val, 0) in range(int(z[0], 0), int(z[1], 0)):
                         j = i
                         flag1 = 1
                         break
@@ -260,7 +249,7 @@ class warl_interpreter():
                 l = self.legal(dependency_vals)
                 for i in range(len(l)):
                     if len(l[i]) == 1:
-                        a.append(abs(int(wr_val, 16) - int(l[i][0], 16)))
+                        a.append(abs(int(wr_val, 0) - int(l[i][0], 0)))
                 for i in range(len(a) - 1, -1, -1):
                     if a[i] == min(a):
                         j = i
@@ -274,7 +263,7 @@ class warl_interpreter():
                 l = self.legal(dependency_vals)
                 for i in range(len(l)):
                     if len(l[i]) == 1:
-                        a.append(abs(int(wr_val, 16) - int(l[i][0], 16)))
+                        a.append(abs(int(wr_val, 0) - int(l[i][0], 0)))
                 for i in range(len(a)):
                     if a[i] == min(a):
                         j = i
@@ -286,7 +275,7 @@ class warl_interpreter():
             elif wr.lower().strip() == "nextup":
                 l = self.legal(dependency_vals)
                 for i in range(len(l)):
-                    if int(l[i][0], 16) > int(wr_val, 16) and len(l[i]) == 1:
+                    if int(l[i][0], 0) > int(wr_val, 0) and len(l[i]) == 1:
                         j = i
                         flag2 = 1
                         break
@@ -298,7 +287,7 @@ class warl_interpreter():
             elif wr.lower().strip() == "nextdown":
                 l = self.legal(dependency_vals)
                 for i in range(len(l)):
-                    if int(l[i][0], 16) > int(wr_val, 16) and len(l[i]) == 1:
+                    if int(l[i][0], 0) > int(wr_val, 0) and len(l[i]) == 1:
                         j = i
                         flag2 = 1
                         break
@@ -338,7 +327,7 @@ class warl_interpreter():
                     return y[0]
 
             elif wr.lower().strip() == "addr":
-                wr = format(int(wr_val, 16),
+                wr = format(int(wr_val, 0),
                             '#0{}b'.format(4 * self.bitsum + 2))
                 wr = wr[2:]
                 if wr[0:1] == '0':
@@ -347,7 +336,7 @@ class warl_interpreter():
                     wr_final = '0' + wr[1:]
                 else:
                     print("Invalid binary bit")
-                return hex(int(wr_final, 2))
+                return hex(int(wr_final, 0))
 
             else:
                 return "Invalid update mode"
@@ -358,9 +347,9 @@ class warl_interpreter():
             z = re.findall(
                 r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"), inp1)
             y = re.split("\,", x[0])
-            bitmask = int(y[0], 16)
-            fixedval = int(y[1], 16)
-            currval = int(wr_val, 16)
+            bitmask = int(y[0], 0)
+            fixedval = int(y[1], 0)
+            currval = int(wr_val, 0)
             legal = ((currval & bitmask) | fixedval)
             return hex(legal)
 
