@@ -324,7 +324,7 @@ A WARL csr/field has the following skeleton in the riscv-config:
     1. No legal value must exceed the maximum value which can be supported (based on the width of the field). 
     2. Functions should be exhaustive with respect to every possible combination of the dependency values.
     3. within a string for `legal` all bits of the csr/field should be covered. No bits must be left undefined.
-    4. A legal string should not be a combination ranges split into parts or a simple bitmask function for the entire field. mixing bitmask and ranges it allowed. The following example is an invalid spec:
+    4. A legal string should be a combination of ranges split into parts or a simple bitmask function for the entire field. Mixing bitmask and ranges is not allowed. The following example is an invalid spec:
 
     .. code-block:: yaml
 
