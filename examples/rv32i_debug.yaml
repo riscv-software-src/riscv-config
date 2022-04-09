@@ -47,6 +47,39 @@ hart0: &hart0
           implemented: True
           type:
             ro_constant: 0x0
+    tdata:
+      rv32:
+        accessible: true
+        index_reg: tselect
+        type:
+          indexed:
+            - index_val: 0
+              fields: []
+              shadow:
+              shadow_type: 
+              msb: 31
+              lsb: 0
+              type:
+                ro_constant: 0xdeadbeef
+              reset-val: 0xdeadbeef
+            - index_val: 2
+              fields: []
+              base:
+                  description: Vector base address.
+                  msb: 31 
+                  lsb: 2
+                  type:
+                    ro_variable: boolean
+              mode:
+                  description: Vector mode.
+                  msb: 1
+                  lsb: 0
+                  type:
+                    ro_variable: boolean
+              reset-val: 0x0
+
+      rv64:
+        accessible: false
     dpc:
       reset-val: 0x0
       rv32:

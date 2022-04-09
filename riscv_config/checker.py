@@ -1069,8 +1069,10 @@ def groupc(test_list):
 def get_fields(node, bitwidth):
     fields = list(
         set(node.keys()) -
-        set(['fields', 'msb', 'lsb', 'accessible', 'shadow', 'shadow_type','type']))
+        set(['reset-val', 'index_val', 'index_reg', 'fields', 'msb', 'lsb', 'accessible', 'shadow', 'shadow_type','type']))
 
+    if 'type' in node and 'indexed' in node['type']:
+        return []
     if not fields:
         return fields
     nf = {}
@@ -1091,39 +1093,46 @@ def get_fields(node, bitwidth):
     else:
         fields.append(bits)
         return fields
-        
+
+
 def check_fields(spec):
     errors = {} 
     for csr, node, in spec.items() :
-         fault_node = node
-         error=[]
-         if node['rv32']['accessible']:
-                node['rv32']['fields'] = get_fields(node['rv32'], 32)
-         if node['rv64']['accessible']:
-                node['rv64']['fields'] = get_fields(node['rv64'], 64)
-         fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(node.keys()) )
-         if fields:
-            error.append("The fields " + "".join(fields) + " are missing")
-         if node['rv32']['accessible']:
-            if any(type(e)==list for e in node['rv32']['fields']): 
-             sub_fields = node['rv32']['fields'][:-1]
+        fault_node = node
+        print('checking node: ' + str(csr))
+        error = []
+        if node['rv32']['accessible']:
+            node['rv32']['fields'] = get_fields(node['rv32'], 32)
+        if node['rv64']['accessible']:
+            node['rv64']['fields'] = get_fields(node['rv64'], 64)
+        fields = list(set(['rv32', 'rv64', 'description', 'address', 'priv_mode', 'reset-val']) - set(node.keys()) )
+        if node['rv32']['accessible'] and 'type' in node['rv32'] and 'indexed' in node['rv32']['type']:
+            fields.remove('reset-val')
+        if node['rv64']['accessible'] and 'type' in node['rv64'] and 'indexed' in node['rv64']['type']:
+            fields.remove('reset-val')
+        if fields:
+            error.append("The fields " + ",".join(fields) + " are missing")
+
+        if node['rv32']['accessible']:
+            if any(type(e) == list for e in node['rv32']['fields']):
+                sub_fields = node['rv32']['fields'][:-1]
             else:
-             sub_fields = node['rv32']['fields']
-            if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'shadow_type', 'fields', 'type']) - set(node['rv32'].keys()) )    
-             if subfields:
-                error.append("The subfield " + "".join(subfields) + " are not present")         
+                sub_fields = node['rv32']['fields']
+            if not sub_fields and 'indexed' not in node['rv32']['type']:
+                subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'shadow_type', 'fields', 'type']) - set(node['rv32'].keys()) )    
+                if subfields:
+                    error.append("The subfield " + ",".join(subfields) + " are not present")         
             else:
-              for x in sub_fields :
-                subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv32'][x].keys()) )
-                if subfields :                   
-                   error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
-         if node['rv64']['accessible']:            
-            if any(type(e)==list for e in node['rv64']['fields']): 
+                for x in sub_fields:
+                    subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv32'][x].keys()) )
+                    if subfields:                   
+                        error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
+        if node['rv64']['accessible']:            
+            if any(type(e) == list for e in node['rv64']['fields']): 
              sub_fields = node['rv64']['fields'][:-1]
             else:
              sub_fields = node['rv64']['fields']
-            if not sub_fields :
+            if not sub_fields and 'indexed' not in node['rv64']['type']:
              subfields = list(set(['msb', 'lsb', 'accessible', 'fields', 'shadow', 'shadow_type', 'type']) - set(node['rv64'].keys()))
              if subfields:
                 error.append("The subfield " + "".join(subfields) + " are not present")
@@ -1132,12 +1141,12 @@ def check_fields(spec):
                 subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv64'][x].keys()) )
                 if subfields :                   
                    error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
-         if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
-             error.append('Address is not in custom csr ranges')
-         if (bin(node['address'])[2:][::-1][8:10] == '00' and node['priv_mode'] != 'U' ) or (bin(node['address'])[2:][::-1][8:10] == '01' and node['priv_mode'] != 'S' ) or (bin(node['address'])[2:][::-1][8:10] == '11' and node['priv_mode'] != 'M') :
-            error.append('Privilege does not match with the address')
-         if error:
-            errors[csr] = error
+        if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
+            error.append('Address is not in custom csr ranges')
+        if (bin(node['address'])[2:][::-1][8:10] == '00' and node['priv_mode'] != 'U' ) or (bin(node['address'])[2:][::-1][8:10] == '01' and node['priv_mode'] != 'S' ) or (bin(node['address'])[2:][::-1][8:10] == '11' and node['priv_mode'] != 'M') :
+           error.append('Privilege does not match with the address')
+        if error:
+           errors[csr] = error
     return errors 
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
@@ -1325,17 +1334,36 @@ def check_reset_fill_fields(spec, logging= False):
             if spec[node]['rv64']['accessible']:
                 spec[node]['rv64']['fields'] = get_fields(
                     spec[node]['rv64'], 64)
+            field_descs = []
             if 'reset-val' in spec[node].keys():
                 reset_val = spec[node]['reset-val']
                 if spec[node]['rv64']['accessible']:
-                    field_desc = spec[node]['rv64']
-                    bit_len = 64
+                    field_descs.append((spec[node]['rv64'], reset_val, 64))
                 elif spec[node]['rv32']['accessible']:
-                    field_desc = spec[node]['rv32']
-                    bit_len = 32
-                else:
-                    continue
+                    field_descs.append((spec[node]['rv32'], reset_val, 32))
+            elif spec[node]['rv64']['accessible'] and 'type' in spec[node]['rv64'] and 'indexed' in spec[node]['rv64']['type']:
+                mylist = spec[node]['rv64']['type']['indexed']
+                mynewlist = []
+                for ind in mylist:
+                    ind['fields'] = get_fields(ind,64);
+                    mynewlist.append(ind)
+                    field_descs.append((ind, ind['reset-val'], 64))
+                spec[node]['rv64']['type']['indexed'] = mynewlist
+            elif spec[node]['rv32']['accessible'] and 'type' in spec[node]['rv32'] and 'indexed' in spec[node]['rv32']['type']:
+                mylist = spec[node]['rv32']['type']['indexed']
+                mynewlist = []
+                for ind in mylist:
+                    ind['fields'] = get_fields(ind,32);
+                    mynewlist.append(ind)
+                    field_descs.append((ind, ind['reset-val'], 32))
+                spec[node]['rv32']['type']['indexed'] = mynewlist
+            print(field_descs)                
+            if len(field_descs) == 0:
+                continue
+            else:
+              for (field_desc, reset_val, bit_len) in field_descs:
                 error = []
+                print(field_desc)
                 if not field_desc['fields']:
                     if field_desc['shadow'] is None:
                         desc = field_desc['type']
@@ -1345,20 +1373,13 @@ def check_reset_fill_fields(spec, logging= False):
                             for entry in desc['wlrl']:
                                 if ":" in entry:
                                     low, high = entry.split(":")
-                                    if "x" in low:
-                                        low = int(low, base=16)
-                                        high = int(high, base=16)
-                                    else:
-                                        low = int(low)
-                                        high = int(high)
+                                    low = int(low,0)
+                                    high = int(high,0)
                                     if reset_val >= low and reset_val <= high:
                                         res = True
                                         break
                                 else:
-                                    if "x" in entry:
-                                        val = int(entry, base=16)
-                                    else:
-                                        val = int(entry)
+                                    val = int(entry,0)
                                     if val == reset_val:
                                         res = True
                                         break
@@ -1734,7 +1755,8 @@ def check_custom_specs(custom_spec,
         if logging:
             logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_custom_yaml['hart'+str(x)]
-    errors = check_fields(inp_yaml)
+    normalized, errors = check_reset_fill_fields(inp_yaml, logging)
+    errors = check_fields(normalized)
     if errors:
             raise ValidationError("Error in " + foo + ".", errors)
     outyaml['hart'+str(x)] = trim(inp_yaml)

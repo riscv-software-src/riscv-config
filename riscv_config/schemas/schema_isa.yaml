@@ -276,6 +276,52 @@ hart_schema:
             schema:
               type: string
               regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
+      - schema:
+          indexed: &indexed
+            type: list
+            schema:
+              type: dict
+              schema:
+                reset-val:
+                  type: integer
+                  default: 0
+                  check_with: max_length
+                index_val: {type: integer}
+                fields: {type: list, default: []}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 0, min: 0}
+                lsb: {type: integer, default: 0, min: 0}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer}}
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default:
+                    ro_constant: 0
+
+    schema_indexed_node64:
+      type: list
+      schema: &schema_indexed_node64
+        type: dict
+        schema:
+          index_val: {type: integer}
+          fields: {type: list, default: []}
+          shadow: {type: string, default: , nullable: True}
+          shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+          msb: {type: integer, default: 63, min: 0, max: 63}
+          lsb: {type: integer, default: 0, min: 0, max: 63}
+          type:
+            type: dict
+            check_with: wr_illegal
+            oneof:
+            - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
+            - schema: { warl: *ref_warl }
+            - schema: { wlrl: *ref_wlrl }
+            default:
+              ro_constant: 0
     gen_flatschema_machine:
       schema:  &gen_flatschema_machine
         priv_mode: {type: string, default: M, allowed: [M]}
