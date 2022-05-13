@@ -2,6 +2,7 @@ import re
 import os
 import logging
 import riscv_config.utils as utils
+import textwrap
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,8 @@ class warl_interpreter():
     def islegal(self, value, dependency_vals=[]):
         is_legal = False
         logger.debug('Checking for isLegal for WARL: \n' +
-                utils.pretty_print_yaml(self.warl) + '\n With following args:'\
+                textwrap.indent(utils.pretty_print_yaml(self.warl),'           ')
+                        + '\n With following args:'
                         + 'val : ' + str(value) + ' dep_vals :'+
                         str(dependency_vals))
         if not self.dependencies: # no dependencies in the warl
@@ -77,9 +79,19 @@ class warl_interpreter():
                 dep_search = self.exp.search(dep_str)
                 if csr_search is None or dep_search  is None:
                     logger.error('Warl legal string is wrong :\n\t' + legal_str)
-                    raise SystemExit
+                    raise SystemExit(1)
                 dep_csr = dep_search.group('csr')
                 dep_ind = dep_search.group('csr_ind')
+                if ':' in dep_ind:
+                    msb = int(dep_ind.split(':')[0],0)
+                    lsb = int(dep_ind.split(':')[1],0)
+                else:
+                    lsb = int(dep_ind,0)
+                    msb = lsb
+                if (msb < lsb):
+                    logger.error('msb < lsb for in dependency field of warl:\n\n' + 
+                            utils.pretty_print_yaml(self.warl))
+                    raise SystemExit(1)
                 dep_vals = dep_search.group('csr_vals')
                 dep_bitmask = True if 'bitmask' in legal_str.split('->')[0] else False
 
@@ -90,6 +102,7 @@ class warl_interpreter():
                     raise SystemExit
                 dep_satified = False
                 recvd_val = dependency_vals[leaf_dependencies.index(dep_csr)]
+                recvd_val = (recvd_val >> lsb) & ((1<<(msb-lsb))-1)
 
                 # check if the dependency value is satisfied.
                 if ":" in dep_vals: # range is specified

@@ -2,9 +2,14 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.0] - 2022-05-13
+
+  - fix for index-based dependency checks in warl string.
+
 ## [2.13.1] - 2022-03-23
-- Added setup.cfg to automate bumpversion
-- Fix wording for legal strings in dependency warl fields.
+
+  - Added setup.cfg to automate bumpversion
+  - Fix wording for legal strings in dependency warl fields.
 
 ## [2.13.0] - 2022-03-09
   - add support for detection of svnapot in ISA string
