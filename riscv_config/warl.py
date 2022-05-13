@@ -88,6 +88,10 @@ class warl_interpreter():
                 else:
                     lsb = int(dep_ind,0)
                     msb = lsb
+                if (msb < lsb):
+                    logger.error('msb < lsb for in dependency field of warl:\n\n' + 
+                            utils.pretty_print_yaml(self.warl))
+                    raise SystemExit(1)
                 dep_vals = dep_search.group('csr_vals')
                 dep_bitmask = True if 'bitmask' in legal_str.split('->')[0] else False
 
