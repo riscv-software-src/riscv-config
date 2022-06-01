@@ -57,7 +57,7 @@ hart_schema:
     #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ABCDEFGHJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|Zkne|Zknd|Zknh|Zkse|Zksh|Zkg|Zkb|Zkr|Zks|Zkn|Zba|Zbc|Zbb|Zbp|Zbr|Zbm|Zbs|Zbe|Zbf|Zbt|Zmmul|Svnapot){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zmmul){,1}(_Zam){,1}(_Zba){,1}(_Zbb){,1}(_Zbc){,1}(_Zbe){,1}(_Zbf){,1}(_Zbm){,1}(_Zbp){,1}(_Zbr){,1}(_Zbs){,1}(_Zbt){,1}(_Zkb){,1}(_Zkg){,1}(_Zkr){,1}(_Zks){,1}(_Zkn){,1}(_Zknd){,1}(_Zkne){,1}(_Zknh){,1}(_Zkse){,1}(_Zksh){,1}(_Ztso){,1}(_Svnapot){,1}$" }
+           regex: "^RV(32|64|128)[IE]+[ABCDEFGHJKLMNPQSTUVX]*(Zicbom|Zicbop|Zicboz|Zicsr|Zifencei|Zihintpause|Zam|Ztso|Zkne|Zknd|Zknh|Zkse|Zksh|Zkg|Zkb|Zkr|Zks|Zkn|Zba|Zbc|Zbb|Zbp|Zbr|Zbm|Zbs|Zbe|Zbf|Zbt|Zmmul|Svnapot){,1}(_Zicbom){,1}(_Zicbop){,1}(_Zicboz){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zmmul){,1}(_Zam){,1}(_Zba){,1}(_Zbb){,1}(_Zbc){,1}(_Zbe){,1}(_Zbf){,1}(_Zbm){,1}(_Zbp){,1}(_Zbr){,1}(_Zbs){,1}(_Zbt){,1}(_Zkb){,1}(_Zkg){,1}(_Zkr){,1}(_Zks){,1}(_Zkn){,1}(_Zknd){,1}(_Zkne){,1}(_Zknh){,1}(_Zkse){,1}(_Zksh){,1}(_Ztso){,1}(_Svnapot){,1}$" }
     
     ###
     #User_Spec_Version
@@ -3677,6 +3677,157 @@ hart_schema:
                   default:
                     wlrl:
                     - 0:15
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+          default: {accessible: false}
+    menvcfg:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The menvcfg register stores the information regarding machine environment configuration.
+        address: {type: integer, default: 0x30A, allowed: [0x30A]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
               default: {implemented: true}
             accessible:
               type: boolean
@@ -8944,6 +9095,166 @@ hart_schema:
               check_with:
               - rv64_check
           default: {accessible: false}
+    senvcfg:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: SXLEN-bit read/write register that stores the information regarding machine environment configuration.
+        address: {type: integer, default: 0x10A, allowed: [0x10A]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
+              check_with: s_check
+            accessible:
+              type: boolean
+              check_with:
+              - rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
+              check_with: s_check
+            accessible:
+              type: boolean
+              check_with:
+              - rv64_check
+          default: {accessible: false}
     satp:
       type: dict
       schema:
@@ -10927,6 +11238,160 @@ hart_schema:
                   - hgeie[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
                   wr_illegal:
                   - unchanged    
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+    henvcfg:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The henvcfg register is an HSXLEN-bit read/write register that stores the information regarding hypervisor environment configuration.
+        address: {type: integer, default: 0x60A, allowed: [0x60A]}
+        priv_mode: {type: string, default: H, allowed: [H]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: h_check
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: h_check
+          schema:
+            fields: {type: list, default: []}
+            cbze:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Zero instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbcfe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Clean and Flush instructions are enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            cbie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether Cache Block Invalidate instruction is enabled.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 5, allowed: [5]}
+                lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  check_with: wr_illegal
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - cbie[1:0] in [0x0, 0x1, 0x3]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
