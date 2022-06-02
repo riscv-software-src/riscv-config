@@ -40,6 +40,9 @@ class schemaValidator(Validator):
         if rv64 and value > 56:
             self._error(field, "Physical address size should not exceed 56 for RV64")
 
+    def _check_with_cache_block_size(self, field, value):
+        if value & (value - 1) != 0:
+            self._error(field, "Cache block size should be power of 2")
 
     def _check_with_cannot_be_false_rv64(self, field, value):
         ''' Functions ensures that the field cannot be False in rv64 mode'''
