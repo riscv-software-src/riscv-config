@@ -307,3 +307,40 @@ stval_condition_writes:
   default:
     implemented: False
 
+###
+#zicbo_cache_block_sz
+#----------------
+#
+# **Description**: byte size of the cache block
+#
+# **Examples**:
+#
+# .. code-block:: yaml
+#
+#   zicbo_cache_block_sz :
+#     implemented: true
+#     zicbom_sz: 64
+#     zicboz_sz: 64
+#
+# **Constraints**:
+#
+#   - None
+
+zicbo_cache_block_sz:
+  type: dict
+  schema:
+    implemented:
+      type: boolean
+      default: False
+    zicbom_sz:
+      type: integer
+      max: [4096]
+      default: 0
+      check_with: cache_block_size
+    zicboz_sz:
+      type: integer
+      max: [4096]
+      default: 0
+      check_with: cache_block_size
+  default:
+    implemented: False

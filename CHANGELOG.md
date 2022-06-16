@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.1] - 2022-06-02
+
+  - add support for Zicbo* extensions
+  - add new node in platform_schema: zicbo_cache_block_sz
+
 ## [2.14.0] - 2022-05-13
 
   - fix for index-based dependency checks in warl string.
