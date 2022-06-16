@@ -11,3 +11,5 @@ __pycache__/*
 
 riscv_config_work/*
 .python-version
+
+riscv_config.egg-info/

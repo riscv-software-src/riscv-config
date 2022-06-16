@@ -1,8 +1,8 @@
 from cerberus import Validator
 from riscv_config.warl import warl_interpreter
 import riscv_config.constants as constants
+from riscv_config.isa_validator import *
 import re
-import os
 
 
 class schemaValidator(Validator):
@@ -74,58 +74,15 @@ class schemaValidator(Validator):
             ext = value[5:]
         else:
             self._error(field, "Invalid width in ISA.")
-        #ISA checks
-        str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(_|$)',value)
-        extension_list= []
-        standard_isa = ''
-        for match in str_match:
-            stdisa, zext, sext, ignore = match
-            if stdisa != '':
-                for e in stdisa:
-                    extension_list.append(e)
-                standard_isa = stdisa
-            if zext != '':
-                extension_list.append(zext)
-            if sext != '':
-                extension_list.append(sext)
-        # check ordering of ISA
-        canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
-        order_index = {c: i for i, c in enumerate(canonical_ordering)}
-        for i in range(len(standard_isa)-1):
-            a1 = standard_isa[i]
-            a2 = standard_isa[i+1]
-        
-            if order_index[a1] > order_index[a2]:
-                self._error(field, "Alphabet '" + a1 + "' should occur after '" + a2)
 
-        if 'I' not in extension_list and 'E' not in extension_list:
-            self._error(field, 'Either of I or E base extensions need to be present in the ISA string')
-        if 'F' in extension_list and not "Zicsr" in extension_list:
-            self._error(field, "F cannot exist without Zicsr.")
-        if 'D' in extension_list and not 'F' in extension_list:
-            self._error(field, "D cannot exist without F.")
-        if 'Q' in extension_list and not 'D' in extension_list:
-            self._error(field, "Q cannot exist without D and F.")
-        if 'Zam' in extension_list and not 'A' in extension_list:
-            self._error(field, "Zam cannot exist without A.")
-        if 'N' in extension_list and not 'U' in extension_list:
-            self._error(field, "N cannot exist without U.")
-        if 'S' in extension_list and not 'U' in extension_list:
-            self._error(field, "S cannot exist without U.")
-        if 'Zkg' in extension_list and 'Zbc' in extension_list:
-            self._error(field, "Zkg being a proper subset of Zbc (from B extension) should be ommitted from the ISA string")
-        if 'Zkb' in extension_list and 'Zbp' in extension_list :
-            self._error(field, "Zkb being a proper subset of Zbp (from B extension) should be ommitted from the ISA string")
-        if 'Zks' in extension_list and ( set(['Zkse', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
-            self._error(field, "Zks is a superset of Zkse, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
-        if 'Zkn' in extension_list and ( set(['Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ):
-            self._error(field, "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
-        if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
-            self._error(field, "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+        if not constants.isa_regex.match(value):
+            self._error(field, 'Input ISA string does not match regex')
 
-#        if 'Z' in value and not self.document['User_Spec_Version'] == "2.3":
-#            self._error(
-#                field, "Z is not supported in the User Spec given version.")
+        (extension_list, err, err_list) = get_extension_list(value)
+        if err:
+            for e in err_list:
+                self._error(field, e)
+
         #ISA encoding for future use.
         for x in "ABCDEFHIJKLMNPQSTUVX":
             if (x in ext):
