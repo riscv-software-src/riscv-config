@@ -74,6 +74,10 @@ class schemaValidator(Validator):
             ext = value[5:]
         else:
             self._error(field, "Invalid width in ISA.")
+
+        if not constants.isa_regex.match(value):
+            self._error(field, 'Input ISA string does not match regex')
+
         #ISA checks
         str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(_|$)',value)
         extension_list= []
