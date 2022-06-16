@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.0] - 2022-06-16
+  
+  - moved ISA validation as a separate api function to enable import in other python tools
+
 ## [2.14.1] - 2022-06-02
 
   - add support for Zicbo* extensions
