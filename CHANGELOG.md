@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.1] - 2022-06-18
+
+  - added missing Z extensions from Kcrypto
+  - fixed ordering of the Z extensions as per isa spec.
+
 ## [2.15.0] - 2022-06-16
   
   - moved ISA validation as a separate api function to enable import in other python tools
