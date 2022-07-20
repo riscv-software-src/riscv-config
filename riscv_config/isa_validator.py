@@ -71,20 +71,15 @@ def get_extension_list(isa):
     if 'S' in extension_list and not 'U' in extension_list:
         err_list.append( "S cannot exist without U.")
         err = True
-    if 'Zkg' in extension_list and 'Zbc' in extension_list:
-        err_list.append( "Zkg being a proper subset of Zbc (from B extension) should be ommitted from the ISA string")
+    if 'Zkn' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zkne', 'Zknd', 'Zknh']) & set(extension_list)):
+        err_list.append( "Zkn is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh. In presence of Zkn the subsets must be ignored in the ISA string.")
         err = True
-    if 'Zkb' in extension_list and 'Zbp' in extension_list :
-        err_list.append( "Zkb being a proper subset of Zbp (from B extension) should be ommitted from the ISA string")
+    if 'Zks' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zksed', 'Zksh']) & set(extension_list) ):
+        err_list.append( "Zks is a superset of Zbkb, Zbkc, Zbkx, Zksed, Zksh. In presence of Zks the subsets must be ignored in the ISA string.")
         err = True
-    if 'Zks' in extension_list and ( set(['Zkse', 'Zksh','Zkg','Zkb']) & set(extension_list) ):
-        err_list.append( "Zks is a superset of Zkse, Zksh, Zkg and Zkb. In presence of Zks the subsets must be ignored in the ISA string.")
-        err = True
-    if 'Zkn' in extension_list and ( set(['Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ):
-        err_list.append( "Zkn is a superset of Zkne, Zknd, Zknh, Zkg and Zkb, In presence of Zkn the subsets must be ignored in the ISA string")
-        err = True
-    if 'K' in extension_list and ( set(['Zkn','Zkr','Zkne','Zknd','Zknh','Zkg','Zkb']) & set(extension_list) ) :
-        err_list.append( "K is a superset of Zkn and Zkr , In presence of K the subsets must be ignored in the ISA string")
+    if 'Zk' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zkne', 'Zknd',
+        'Zknh', 'Zkn','Zkr','Zkt']) & set(extension_list)):
+        err_list.append( "Zkn is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh, Zkn, Zkt, Zkr. In presence of Zkn the subsets must be ignored in the ISA string.")
         err = True
     return (extension_list, err, err_list)
 

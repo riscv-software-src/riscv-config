@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.0] - 2022-07-20
+
+  - fixed overlap checks for crypto extensions
+  - removing K and P extension strings from regex
+
 ## [2.15.1] - 2022-06-18
 
   - added missing Z extensions from Kcrypto
