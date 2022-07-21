@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.1] - 2022-07-21
+
+  - fixed bug in regex where Zk and Zknh were missing an underscore
+
 ## [2.16.0] - 2022-07-20
 
   - fixed overlap checks for crypto extensions
