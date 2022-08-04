@@ -112,6 +112,49 @@ CSRs without sub-fields
                                           # [M/S/U]XL value can be 3
       accessible: <boolean>              # indicates if this register exists in rv128 mode 
 
+Indexed CSRs
+------------
+
+.. code-block:: yaml
+
+  <name>:                                 # name of the csr
+    description: <text>                   # textual description of the csr
+    address: <hex>                        # address of the CSR
+    priv_mode: <D/M/H/S/U>                # privilege mode that owns the register
+    rv32:                                 # this node and its subsequent fields can exist 
+                                          # if [M/S/U]XL value can be 1
+      accessible: <boolean>               # indicates if the csr is accessible in rv32 mode or not. 
+                                          # When False, all fields below will be trimmed off 
+                                          # in the checked yaml. False also indicates that 
+                                          # access-exception should be generated
+      indexing_reg: <csr-name>            # which csr is being used as index for this register.
+                                          # Cannot be none.
+      index_list:                         # list of dictionaries, containing the details of possible
+                                          # indexing_reg values
+        - index_val: <hex/int>            # value of the indexing_reg that indicates this index is
+                                          # to be chosen
+          msb: <integer>                  # msb index of the field. max- 31, min-0
+          lsb: <integer>                  # lsb index of the field. max- 31, min-0
+          reset-val: <hex>                # Reset value of this indexed register. 
+          fields: []                      # This should be empty always.
+          shadow: <csr-name>::<register>  # which this register shadows,'none' indicates that 
+                                          # this register does not shadow anything.
+          type:                           # type of field. Can be only one of the following
+            wlrl:                         # same as previous wlrl definition above
+            ro_constant: <hex>            # same as previous ro_constant definition above  
+            ro_variable: True             # same as previous ro_variable definition above 
+            warl:                         # same as previous warl definition above 
+        - index_val: <hex/int>            # The next entry in the list for indexed registers having
+                                          # the same fields as described above
+          ...                             #
+    rv64:                                 # this node and its subsequent fields can exist 
+                                          # if [M/S/U]XL value can be 2
+      accessible: <boolean>               # indicates if this register exists in rv64 mode 
+                                          # or not. Same definition as for rv32 node.
+    rv128:                                # this node and its subsequent fields can exist if 
+                                          # [M/S/U]XL value can be 3
+      accessible: <boolean>              # indicates if this register exists in rv128 mode 
+
 Constraints
 -----------
 
@@ -121,6 +164,12 @@ Each CSR undergoes the following checks:
      they comply with the supported_xlen field of the ISA yaml.
   2. The reset-val is checked against compliance with the type field specified
      by the user. All unimplemented fields are considered to be hardwired to 0.
+
+In addition to the above, the Indexed-CSRs undergo the following checks:
+  
+  1. The CSR mentioned in the `indexing_reg` is indeed implemented and accessible.
+  2. The index values (i.e. `index_val` under the index_list are indeed legal values for the csr
+     mentioned in the `indexing_reg` field.
 
 For each of the above templates the following fields for all standard CSRs
 defined by the spec are frozen and **CANNOT** be modified by the user.
@@ -141,8 +190,8 @@ Only the following fields can be modified by the user:
 * type
 * implemented
 
-Example
--------
+Example of CSR with sub-fields
+------------------------------
 
 Following is an example of how a user can define the mtvec csr in the input ISA YAML for a 
 32-bit core:
@@ -222,6 +271,55 @@ above user-input:
         - base 
       rv64:
         accessible: false
+
+Example of an Indexed CSR
+-------------------------
+
+.. code-block:: yaml
+
+   tdata1:
+      rv32:
+        accessible: true
+        indexing_reg: tselect
+        index_list:
+          - index_val: 0 # this trigger is always disabled.
+            fields: []
+            shadow:
+            shadow_type: 
+            msb: 31
+            lsb: 0
+            type:
+              ro_constant: 0x0 
+            reset-val: 0x0
+          - index_val: 1  # this trigger is either disabled or an icount trigger.
+            reset-val: 0x400 # count reset value is 1 by the spec.
+            fields: []
+            shadow_type:
+            shadow:
+            msb: 31
+            lsb: 0
+            type:
+              warl:
+                dependency_fields: [tdata1::indexval_1]
+                legal: 
+                  - indexval_1[31:28] in [0, 3] -> indexval_1[26:0] in [0x0:0x7ffffff]
+                wr_illegal:
+                  - Unchanged
+          - index_val: 2  # this trigger is either disabled or an icount or an itrigger.
+            fields: []
+            shadow_type:
+            shadow:
+            msb: 31
+            lsb: 0
+            type:
+              warl:
+                dependency_fields: [tdata1::indexval_2]
+                legal: 
+                  - indexval_2[31:28] in [0, 3] -> indexval_2[26:0] in [0x0:0x7ffffff]
+                  - indexval_2[31:28] in [4] -> indexval_2[12:0] in [0x0:0x1fff] indexval_2[25:13] in [0] indexval_2[26] in [0,1]
+                wr_illegal:
+                  - Unchanged
+
 
 WARL field Definition
 =====================
