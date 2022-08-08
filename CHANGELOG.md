@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.17.0] - 2022-08-08
+
+  - Support for Zfinx, Zdinx, Zfh, Zhinx, Zhinxmin in ISA string added.
+
 ## [2.16.1] - 2022-07-21
 
   - fixed bug in regex where Zk and Zknh were missing an underscore
