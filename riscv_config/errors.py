@@ -11,11 +11,15 @@ class ValidationError(Exception):
         '''
         error = ''
         for key in foo.keys():
-            for e in foo[key]:
-                error += space + str(key) + ":"
-                error += str(e)+"\n"
+            error += space + str(key) + ":"
+            if isinstance(foo[key][0], dict):
+                error += "\n" + self.__errPrint__(foo[key][0], space + space)
+            elif isinstance(foo[key], list):
+                for e in foo[key]:
+                    error += str(e)+"\n"
+            else:
+                error += str(foo[key][0])
             error += "\n"
-        error += "\n"
         return error.rstrip()
 
     def __str__(self):
