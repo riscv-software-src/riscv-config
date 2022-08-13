@@ -129,7 +129,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                     - schema: { wlrl: *ref_wlrl }
                     - schema: { warl: *ref_warl }
@@ -153,7 +152,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                     - schema: { wlrl: *ref_wlrl }
                     - schema: { warl: *ref_warl }
@@ -179,7 +177,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: {ro_variable: {type: boolean}}
@@ -198,7 +195,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
@@ -225,7 +221,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
@@ -247,7 +242,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: {ro_variable: {type: boolean}}
@@ -267,7 +261,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -292,7 +285,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
@@ -317,7 +309,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
@@ -343,7 +334,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - u_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
@@ -365,7 +355,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -386,7 +375,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
@@ -413,7 +401,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -435,7 +422,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -456,7 +442,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   schema: {ro_constant: {type: integer, max: 15 , min : 0}}
                   default: {ro_constant: 4}
               default: {implemented: false}
@@ -480,7 +465,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                     - schema: { wlrl: *ref_wlrl }
                     - schema: { warl: *ref_warl }
@@ -504,7 +488,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                     - schema: { wlrl: *ref_wlrl }
                     - schema: { warl: *ref_warl }
@@ -530,7 +513,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
                   - schema: {ro_variable: {type: boolean}}
@@ -549,7 +531,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }
@@ -576,7 +557,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
@@ -598,7 +578,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   schema: { ro_variable: {type: boolean}}
                   default:
                     ro_variable: True
@@ -616,7 +595,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -641,7 +619,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
@@ -666,7 +643,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
                   - schema: { warl: *ref_warl }
@@ -692,7 +668,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - u_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
@@ -714,7 +689,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -735,7 +709,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
                   - schema: { warl: *ref_warl }
@@ -762,7 +735,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -784,7 +756,6 @@ hart_schema:
                 type:
                   type: dict
                   check_with: 
-                    - wr_illegal
                     - s_debug_check
                   oneof:
                   - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
@@ -805,7 +776,6 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   schema: {ro_constant: {type: integer, max: 15 , min : 0}}
                   default: {ro_constant: 4}
               default: {implemented: false}
@@ -837,7 +807,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
@@ -864,7 +833,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
@@ -904,7 +872,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
@@ -931,7 +898,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               oneof:
               - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
               - schema: {ro_variable: {type: boolean}}
@@ -970,7 +936,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               schema: { warl: *ref_warl }
               default:
                 warl:
@@ -995,7 +960,6 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              check_with: wr_illegal
               schema: { warl: *ref_warl }
               default:
                 warl:
