@@ -9163,13 +9163,13 @@ hart_schema:
                 type:
                   type: dict
                   oneof:
-                  - schema: {ro_constant: {type: integer, max:  1}}
+                  - schema: {ro_constant: {type: integer, allowed: [0,1]}}
                   - schema: { warl: *ref_warl }
                   default: 
                     warl:
                         dependency_fields: []
                         legal:
-                          - asid[0] in [0x0,0x1]
+                          - mode[0] in [0x0,0x1]
                         wr_illegal:
                           - Unchanged
               default: {implemented: False}
@@ -9247,14 +9247,15 @@ hart_schema:
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
+                  check_with: satp_modes64
                   oneof:
-                  - schema: {ro_constant: {type: integer, max:  15}}
+                  - schema: {ro_constant: {type: integer, allowed: [0,8,9,10,14,15]}}
                   - schema: { warl: *ref_warl }
                   default: 
                     warl:
                         dependency_fields: []
                         legal:
-                          - asid[3:0] in [0, 8, 9]
+                          - mode[3:0] in [0, 8, 9, 10]
                         wr_illegal:
                           - Unchanged
               default: {implemented: False}

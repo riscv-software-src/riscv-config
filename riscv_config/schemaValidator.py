@@ -2,6 +2,7 @@ from cerberus import Validator
 import riscv_config.constants as constants
 from riscv_config.isa_validator import *
 import re
+from riscv_config.warl import warl_class
 
 
 class schemaValidator(Validator):
@@ -26,6 +27,16 @@ class schemaValidator(Validator):
         else:
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
+    
+    def _check_with_satp_modes64(self, field, value):
+
+        if 'warl' in value:
+            warl = warl_class(value['warl'], 'satp::mode',63, 60)
+            for x in [1,2,3,4,5,6,7,11,12,13]:
+                err = warl.islegal(x)
+                if not err:
+                    self._error(field, f'warl function for satp::mode accepts \
+"{x}" as a legal value - which is incorrect')
 
     def _check_with_isa_xlen(self, field, value):
         global supported_xlen
