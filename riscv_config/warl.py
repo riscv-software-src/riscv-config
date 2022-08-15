@@ -494,11 +494,11 @@ in that string')
 values in warl string "{legalstr}" for csr {csrname}')
            
             if bitcount < 0:
-                err.append(f' warl string {legalstr} defines values for bits \
-outside the size of the register {reg_bitlen}')
+                err.append(f' warl string "{legalstr}" defines values for bits \
+outside the size of the register "{reg_bitlen}"')
             elif bitcount != 0:
-                err.append(f' warl string {legalstr} for csr \
-{csrname} either does not define values for all bits or has overlapping ranges \
+                err.append(f' warl string "{legalstr}" for csr \
+"{csrname}" either does not define values for all bits or has overlapping ranges \
 defining the same bits multiple times')
 
         return err

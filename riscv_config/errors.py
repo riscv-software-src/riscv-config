@@ -14,9 +14,9 @@ class ValidationError(Exception):
             error += space + str(key) + ":"
             if isinstance(foo[key][0], dict):
                 error += "\n" + self.__errPrint__(foo[key][0], space + space)
-            elif isinstance(foo[key], list):
-                for e in foo[key]:
-                    error += str(e)+"\n"
+            elif isinstance(foo[key][0], list):
+                for e in foo[key][0]:
+                    error += f'\n{space} - {e}'
             else:
                 error += str(foo[key][0])
             error += "\n"
