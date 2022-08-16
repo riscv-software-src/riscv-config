@@ -2,6 +2,7 @@ import os
 import logging
 import copy
 import re
+import math
 
 from cerberus import Validator
 
@@ -219,26 +220,11 @@ def regset():
 def pmpregset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}} 
-    try:   
-     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
-        temp['rv32']['accessible'] = True
-    except:
-        temp['rv32']['accessible'] = False
-    try: 
-     if 64 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv64']['accessible']:
-        temp['rv64']['accessible'] = True
-    except:
-        temp['rv64']['accessible'] = False
     return temp    
 
-def pmpcounterhset():
+def pmpregseth():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    try: 
-     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
-        temp['rv32']['accessible'] = True
-    except:
-        temp['rv32']['accessible'] = False
     return temp
     
 def counterhset():
@@ -282,7 +268,7 @@ def add_def_setters(schema_yaml):
     reset_vsssetter=lambda doc: reset_vsstatus()
     pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
-    pmpcounthsetter = lambda doc: pmpcounterhset()
+    pmpreghsetter = lambda doc: pmpregseth()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
@@ -515,21 +501,21 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
     schema_yaml['pmpcfg0']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg1']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg1']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg2']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg3']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg3']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg4']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg5']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg5']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg6']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg7']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg7']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg8']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg9']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg9']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg10']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg11']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg11']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg12']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg13']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg13']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg14']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg15']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg15']['default_setter'] = pmpreghsetter
     schema_yaml['pmpaddr0']['default_setter'] = pmpregsetter
     schema_yaml['pmpaddr1']['default_setter'] = pmpregsetter
     schema_yaml['pmpaddr2']['default_setter'] = pmpregsetter

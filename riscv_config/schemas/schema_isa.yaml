@@ -3725,7 +3725,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp0cfg: &pmp0
               type: dict
@@ -3799,7 +3799,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp0cfg: 
               <<: *pmp0
@@ -3889,7 +3889,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp4cfg: 
               <<: *pmp0
@@ -3917,7 +3917,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp8cfg: 
               <<: *pmp0
@@ -3931,7 +3931,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp8cfg: 
               <<: *pmp0
@@ -3960,7 +3960,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp12cfg: 
               <<: *pmp0
@@ -3987,7 +3987,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp16cfg: 
               <<: *pmp0
@@ -4001,7 +4001,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp16cfg: 
               <<: *pmp0
@@ -4030,7 +4030,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp20cfg: 
               <<: *pmp0
@@ -4057,7 +4057,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp24cfg: 
               <<: *pmp0
@@ -4071,7 +4071,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp24cfg: 
               <<: *pmp0
@@ -4100,7 +4100,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp28cfg: 
               <<: *pmp0
@@ -4127,7 +4127,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp32cfg: 
               <<: *pmp0
@@ -4141,7 +4141,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp32cfg: 
               <<: *pmp0
@@ -4170,7 +4170,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp36cfg: 
               <<: *pmp0
@@ -4197,7 +4197,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp40cfg: 
               <<: *pmp0
@@ -4211,7 +4211,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp40cfg: 
               <<: *pmp0
@@ -4240,7 +4240,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp44cfg: 
               <<: *pmp0
@@ -4267,7 +4267,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp48cfg: 
               <<: *pmp0
@@ -4281,7 +4281,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp48cfg: 
               <<: *pmp0
@@ -4310,7 +4310,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp52cfg: 
               <<: *pmp0
@@ -4337,7 +4337,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp56cfg: 
               <<: *pmp0
@@ -4351,7 +4351,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv64_check}
+            accessible: {type: boolean, default: false, check_with: rv64_check}
             fields: {type: list, default: []}
             pmp56cfg: 
               <<: *pmp0
@@ -4380,7 +4380,7 @@ hart_schema:
           type: dict
           default: {accessible: False}
           schema:
-            accessible: {type: boolean, default: true, check_with: rv32_check}
+            accessible: {type: boolean, default: false, check_with: rv32_check}
             fields: {type: list, default: []}
             pmp60cfg: 
               <<: *pmp0
