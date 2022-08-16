@@ -1314,7 +1314,7 @@ def check_warl_legality(spec, logging = False):
                     err = warl_inst.iserr()
             elif fields != []:
                 for f in fields:
-                    if not isinstance(f, list):
+                    if not isinstance(f, list) and node[f]['implemented']:
                         if node[f]['shadow'] is None and 'warl' in node[f]['type']:
                             if logging:
                                 logger.debug(f'Checking legality of warl strings for : {csrname}.{f}')
