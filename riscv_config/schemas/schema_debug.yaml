@@ -25,7 +25,7 @@ hart_schema:
       required: true
     ###
     #Debug_Spec_Version
-    #-----------------
+    #------------------
     #
     # **Description**: Version number of Debug specification as string. Please enclose the version in "" to avoid type mismatches.
     #
@@ -44,6 +44,8 @@ hart_schema:
     
     ###
     #debug_mode
+    #----------
+    #
     #  **Description**: Boolean value indicating if the debug instructions are accessible.
     #
     #  **Examples**:
@@ -59,11 +61,13 @@ hart_schema:
 
     ###
     #parking_loop
+    #------------
+    #
     #  **Description**: Integer value indicating the address of the debug parking loop
     #
     #  **Examples**:
     #
-    #  .. code-block: yaml
+    #  .. code-block:: yaml
     #
     #     parking_loop: 0x800
 
