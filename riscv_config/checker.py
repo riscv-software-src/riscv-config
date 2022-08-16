@@ -1243,9 +1243,60 @@ def check_mhpm(spec, logging = False):
     
      
 def check_pmp(spec, logging = False):
-    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
-    source'''
+    ''' Check if the pmp csrs are implemented correctly as per spec. The
+    following checks are performed:
+
+        - the number of accessible pmpaddr csrs must be 0, 16 or 64
+        - the number of implemented pmpcfg csrs must be 0, 16 or 64
+        - the pmpaddr and pmpcfgs must be implemented implemented from the
+          lowest numbered indices and be contiguous
+        - the number of accessible pmpaddr csrs and the implemented pmpcfg csrs 
+          must be the same
+        - for each accesible pmpaddr csr the corresponding pmpcfg csr must be 
+          implemented
+        - reset values of the accessible pmpaddr csrs must be coherent with the
+          pmp_granularity field.
+    '''
+    logger.info('Performing Checks on PMP CSRs')
     errors = {}
+    isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
+    pmpaddr_count = 0
+    pmpcfg_count = 0
+    pmpaddr_reg = []
+    pmpcfg_reg = []
+    for x in range(64):
+        if spec[f'pmpaddr{x}'][isa]['accessible']:
+            pmpaddr_count += 1
+            pmpaddr_reg.append(x)
+        if '32' in isa:
+            index = int(x/4)
+        else:
+            index = int(x/8)*2
+        if spec[f'pmpcfg{index}'][isa]['accessible']:
+            if spec[f'pmpcfg{index}'][isa][f'pmp{x}cfg']['implemented']:
+                pmpcfg_count += 1
+                pmpcfg_reg.append(x)
+
+    logger.debug(f'pmpaddr_count={pmpaddr_count}')
+    logger.debug(f'pmpcfg_count={pmpcfg_count}')
+
+    if pmpaddr_count != 0 and pmpaddr_reg != list(range(0,max(pmpaddr_reg)+1)):
+        errors['PMP-ADDR'] = [f' the lowest-numbered PMP-ADDR CSRs must be \
+implemented first starting with 0. Found : {pmpaddr_reg}']
+    if pmpcfg_count!= 0 and pmpcfg_reg != list(range(0,max(pmpcfg_reg)+1)):
+        errors['PMP-CFG'] = [f' the lowest-numbered PMP-CFG CSRs must be \
+implemented first starting with 0. Found : {pmpcfg_reg}']
+
+    if pmpaddr_count not in [0, 16, 64]:
+        errors["PMP-ADDR"] = [f'The number of accessible PMPADDR* registers \
+must be 0, 16 or 64. But found {pmpaddr_count}']
+    if pmpcfg_count not in [0, 16, 64]:
+        errors["PMP-CFG"] = [f'The number of implemented PMP*CGF registers \
+must be 0, 16 or 64. But found {pmpcfg_count}']
+    if pmpcfg_count != pmpaddr_count:
+        errors["PMP"] = [f' the number of pmpaddr* csrs [{pmpaddr_count}]and \
+pmp*cfg registers [{pmpcfg_count}] do not match']
+        
     for csrname, content, in spec.items():
         error = []
         Grain=int(spec['pmp_granularity'])
