@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.0.1] - 2022-08-17
+## [3.1.0] - 2022-08-17
   
   - scounteren can be a ro\_constant now
   - the maxval checks for mask/fixedval should be based on the length of the part
