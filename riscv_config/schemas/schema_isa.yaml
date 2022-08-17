@@ -9998,14 +9998,11 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: { warl: *ref_warl }
+              oneof:
+              - schema: {ro_constant: {type: integer}}
+              - schema: { warl: *ref_warl }
               default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - scounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+                ro_constant: 0
             accessible:
               type: boolean
               default: true
@@ -10022,14 +10019,11 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: { warl: *ref_warl }
+              oneof:
+              - schema: {ro_constant: {type: integer}}
+              - schema: { warl: *ref_warl }
               default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - scounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+                ro_constant: 0
             accessible:
               default: true
               check_with: rv64_check
