@@ -5780,12 +5780,14 @@ hart0:
         rv32:
             accessible: true
             fields:
+              - sbe
+              - mbe
               - gva
               - mpv
               -
                   -
                       - 0
-                      - 5
+                      - 3
                   -
                       - 8
                       - 31
@@ -5805,6 +5807,22 @@ hart0:
                 msb: 6
                 lsb: 6
                 type: {ro_constant: 0}
+            mbe:
+                implemented: false
+                description: control the endianness of memory accesses other than
+                    instruction fetches for machine mode
+                shadow:
+                shadow_type: rw
+                msb: 5
+                lsb: 5
+            sbe:
+                implemented: false
+                description: control the endianness of memory accesses other than
+                    instruction fetches for supervisor mode
+                shadow:
+                shadow_type: rw
+                msb: 4
+                lsb: 4
         rv64:
             accessible: false
         description: The mstatush register keeps track of and controls the hart’s
@@ -7104,7 +7122,7 @@ hart0:
                     warl:
                         dependency_fields: []
                         legal:
-                          - asid[0] in [0x0,0x1]
+                          - mode[0] in [0x0,0x1]
                         wr_illegal:
                           - Unchanged
         rv64:
