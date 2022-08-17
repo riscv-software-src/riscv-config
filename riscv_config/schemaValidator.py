@@ -1,8 +1,8 @@
 from cerberus import Validator
-from riscv_config.warl import warl_interpreter
 import riscv_config.constants as constants
 from riscv_config.isa_validator import *
 import re
+from riscv_config.warl import warl_class
 
 
 class schemaValidator(Validator):
@@ -27,6 +27,16 @@ class schemaValidator(Validator):
         else:
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
+    
+    def _check_with_satp_modes64(self, field, value):
+
+        if 'warl' in value:
+            warl = warl_class(value['warl'], 'satp::mode',63, 60)
+            for x in [1,2,3,4,5,6,7,11,12,13]:
+                err = warl.islegal(x)
+                if not err:
+                    self._error(field, f'warl function for satp::mode accepts \
+"{x}" as a legal value - which is incorrect')
 
     def _check_with_isa_xlen(self, field, value):
         global supported_xlen
@@ -342,105 +352,6 @@ class schemaValidator(Validator):
         if (min(value) < 16):
             self._error(
                 field, "Invalid platform specific values for exception cause.")
-
-    def _check_with_wr_illegal32(self, field, value):
-        '''Function to ensure the warl does not cross 2^32
-        '''
-        if 'warl' in value:
-            warlnode = warl_interpreter(value['warl'])
-            x = 0x8000000000000000
-            if (len(value['warl']['legal']) > 1):
-                while (x > 0x10000000):
-                    if warlnode.islegal(x):
-                        self._error(
-                            field, "Must have a warl which is only 32-bits. Value"  + \
-                                        str(hex(x)) + " was considered legal")
-                        break
-                    x = x>> 1
-            else:
-                for l in value['warl']['legal']:
-                    if 'bitmask' in l:
-                        bmask = re.findall(r'\s*\[.*\]\s*bitmask\s*\[(.*?)\]',l)[0]
-                        maxval_str = bmask.split(',')[0]
-                        if '0x' in maxval_str:
-                            maxval = int(maxval_str,16)
-                        else:
-                            maxval = int(maxval_str,10)
-                        if maxval > 0xFFFFFFFF:
-                            self._error(
-                                field, "Must have a warl which is only 32-bits. Value"  + \
-                                        str(hex(maxval)) + " was considered legal")
-                    else:
-                        while (x > 0x10000000):
-                            if warlnode.islegal(x):
-                                self._error(
-                                    field, "Must have a warl which is only 32-bits. Value"  + \
-                                                str(hex(x)) + " was considered legal")
-                                break
-                            x = x>> 1
-
-    def _check_with_wr_illegal(self, field, value):
-        pr = 0
-        pri = 0
-        if 'warl' not in value.keys():
-            return
-        for i in range(len(value['warl']['legal'])):
-            if ' -> ' in value['warl']['legal'][i]:
-                pr = 1
-                break
-        if value['warl']['wr_illegal'] != None:
-            for i in range(len(value['warl']['wr_illegal'])):
-                split = re.findall(r'^\s*\[(\d)]\s*',
-                                   value['warl']['wr_illegal'][i])
-                if split != []:
-                    pri = 1
-                    break
-        if value['warl']['dependency_fields'] != []:
-            l = (len(value['warl']['legal']))
-            f = 0
-            for i in range(l):
-                if "bitmask" in value['warl']['legal'][i]:
-                    f = 1
-                    splits = re.findall(
-                        r'(\[\d\])\s*->\s*.*\s*\[.*\]\s*{}\s*\[.*?[,|:].*?]'.
-                        format("bitmask"), value['warl']['legal'][i])
-                    if value['warl']['wr_illegal'] != None:
-                        for j in range(len(value['warl']['wr_illegal'])):
-                            if splits[0] in value['warl']['wr_illegal'][j]:
-                                self._error(
-                                    field,
-                                    "illegal value does not exist for the given mode{}(bitmask)"
-                                    .format(splits[0]))
-            if f == 0:
-                pass
-
-        elif value['warl']['dependency_fields'] == [] and pr == 1:
-            self._error(field, "since dependency_fields is empty no '->' in legal fields")
-        elif value['warl']['dependency_fields'] == [] and len(value['warl']['legal']) != 1:
-            self._error(field, "There should be only one legal string")
-        elif value['warl']['dependency_fields'] == [] and pri == 1:
-            self._error(field, "since dependency_fields is empty illegal fields must be defined for each")
-        else:
-            for l in value['warl']['legal']:
-                if 'bitmask' in l:
-                    bmask = re.findall(r'\s*\[.*\]\s*bitmask\s*\[(.*?)\]',l)[0]
-                    if ',' not in bmask:
-                        self._error(field, 'Legal string "'+l+'" has wrong bitmask syntax')
-                    if len(bmask.split(','))!=2:
-                        self._error(field, 'Legal string "'+l+'" has wrong bitmkask syntax')
-                    for v in bmask.split(','):
-                        if '0x' not in v:
-                            try:
-                                isinstance(int(v,10),int)
-                            except:
-                                self._error(field, 'Value ' +str(v) + ' in Legal string "'+l+'" is not a valid number')
-
-
-#        elif value['warl']['dependency_fields'] == [] and len(
-#                value['warl']['legal']
-#        ) == 1 and value['warl']['wr_illegal'] != None and "bitmask" in value[
-#                'warl']['legal'][0]:
-#            self._error(field, "illegal value cannot exist for bitmask type")
 
     def _check_with_key_check(self, field, value):
         if value['base']['type']['warl']['dependency_fields'] != []:

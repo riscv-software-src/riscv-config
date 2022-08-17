@@ -47,10 +47,10 @@ hart0:
                 warl:
                     dependency_fields: []
                     legal:
-                      - "sepc[63:0] bitmask [0xFFFFFFFFFFFFFFFE, 0x0000000000000000]"
+                      - "sepc[63:60] in [1,2] spec[59:0] not in [1,2]"
                     wr_illegal:
                       - "Unchanged"
-        reset-val: 0
+        reset-val: 0x2000000000000000
     stval:
         rv32:
             accessible: false
@@ -230,13 +230,59 @@ hart0:
                       wr_illegal:
                         - Unchanged
             pmp4cfg:
-                implemented: false
+                implemented: true
+                type:
+                  ro_constant: 0
             pmp5cfg:
-                implemented: false
+                implemented: true
+                type:
+                  ro_constant: 0
             pmp6cfg:
-                implemented: false
+                implemented: true
+                type:
+                  ro_constant: 0
             pmp7cfg:
-                implemented: false
+                implemented: true
+                type:
+                  ro_constant: 0
+    pmpcfg2:
+        reset-val: 0
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            pmp8cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp9cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp10cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp11cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp12cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp13cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp14cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
+            pmp15cfg:
+                implemented: true
+                type:
+                  ro_constant: 0
     pmpaddr0:
         rv32:
             accessible: false
@@ -289,6 +335,35 @@ hart0:
                     wr_illegal:
                       - Unchanged
         reset-val: 0
+    pmpaddr4: &pmp_const
+        rv32:
+          accessible: False
+        rv64:
+          accessible: True
+          type:
+            ro_constant : 0
+    pmpaddr5: 
+      <<: *pmp_const
+    pmpaddr6: 
+      <<: *pmp_const
+    pmpaddr7: 
+      <<: *pmp_const
+    pmpaddr8: 
+      <<: *pmp_const
+    pmpaddr9: 
+      <<: *pmp_const
+    pmpaddr10: 
+      <<: *pmp_const
+    pmpaddr11: 
+      <<: *pmp_const
+    pmpaddr12: 
+      <<: *pmp_const
+    pmpaddr13: 
+      <<: *pmp_const
+    pmpaddr14: 
+      <<: *pmp_const
+    pmpaddr15: 
+      <<: *pmp_const
     mhpmcounter3:
         rv32:
             accessible: false

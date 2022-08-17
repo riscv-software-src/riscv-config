@@ -35,6 +35,9 @@ jobs:
           
       - name: Run rv32i
         run: riscv-config -ispec examples/rv32i_isa.yaml
+      
+      - name: Run rv64i
+        run: riscv-config -ispec examples/rv64i_isa.yaml
 
   check-version:
     runs-on: ubuntu-latest

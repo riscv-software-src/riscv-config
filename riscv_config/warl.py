@@ -6,435 +6,500 @@ import textwrap
 
 logger = logging.getLogger(__name__)
 
-class warl_interpreter():
-    global val
-    global bitsum
-    global dep_val
+class warl_class():
+    """This is a class for handling various operations and checks for the WARL
+    type of registers and/or subfields as defined by the riscv-config spec<TODO: 
+    link here>. While riscv-config remains to be the major user of this package,
+    this class can be used as an importable python package as well in several
+    other scenarios to perform checks on a particular WARL string.
 
-    def __init__(self, warl):
-        ''' the warl_description in the yaml is given as input to the constructor '''
-        self.warl = warl
-        self.dependencies = warl['dependency_fields']
-        self.exp  = re.compile('(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(?P<csr_op>.*?)\s*\[(?P<csr_vals>.*?)\]')
-        self.rexp = re.compile('(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(in|bitmask)\s*\s*\[(?P<csr_vals>.*?)\]')
-        self.rexp_dependencies = re.compile('(?P<dep_csr>.*?)\[(?P<dep_ind>.*?)\]\s*(in|bitmask)\s*\[(?P<dep_vals>.*?)\]\s*->\s*(?P<csr>.*?)\[(?P<csr_ind>.*?)\]\s*(in|bitmask)\s*\s*\[(?P<csr_vals>.*?)\]')
+    The basic WARL node should be dict adhering to the following syntax:
 
-    def prevsum(self, i, k):
-        sump = 0
-        for j in range(i + 1):
-            sump = sump + k[j]
-        return sump
+    .. code-block:: yaml
+        
+        warl:
+           dependency_fields: [list]
+           legal: [list of warl-string]
+           wr_illegal: [list of warl-string]
 
-    def islegal(self, value, dependency_vals=[]):
-        is_legal = False
-        logger.debug('Checking for isLegal for WARL: \n' +
-                textwrap.indent(utils.pretty_print_yaml(self.warl),'           ')
-                        + '\n With following args:'
-                        + 'val : ' + str(value) + ' dep_vals :'+
-                        str(dependency_vals))
-        if not self.dependencies: # no dependencies in the warl
-            for legal_str in self.warl['legal']: # iterate over every legal str
-                search = self.exp.findall(legal_str)
-                if search is None:
-                    logger.error('Warl legal string is wrong:' + legal_str)
-                    raise SystemExit
-                part_legal = False
-                for part in search:
-                    (csr, csr_ind, csr_op, csr_vals) = part
-                    msb = int(csr_ind.split(':')[0])
-                    lsb = int(csr_ind.split(':')[-1])
-                    bitmask = True if 'bitmask' in csr_op else False
+    :param node: This input is the dict adhering to the above syntax.
+    :type node: dict
+    :param csrname: this is string indicating the name of the csr or
+        csr::subfield which is defined as a WARL type. This primarily used to
+        generate a series of legible error and debug messages. If the input warl
+        node is for a subfield, then use ``::`` as the delimiter between the csr
+        name and the subfield name.
+    :type csrname: str
+    :param f_msb: the max msb location of the csr or subfield.
+    :type f_msb: int
+    :param f_lsb: the min lsb location of the csr or subfield.
+    :type f_lsb: int
+    :param spec: This is the entire isa-spec of a single hart. This dict is
+        primarily used by this class to perform specific checks on reset-vals
+        and on dependency_vals string validity.
+    :type spec: dict
 
-                    if not bitmask: # if its not a bitmask
-                        if ":" in csr_vals: # range is specified
-                            [base, bound] = csr_vals.split(':')
-                            base = int(base, 0)
-                            bound = int(bound, 0)
-                            if value >= base and value <= bound: # check legal range
-                                part_legal = True
-                        else:
-                            l_vals = csr_vals.split(',')
-                            legal_vals = []
-                            for i in l_vals : 
-                                legal_vals.append(int(i,0))
-                            if value in legal_vals:
-                                part_legal = True
-                    else: # in case of bitmask there are no illegal values
-                        part_legal = True
-                    if not part_legal:
-                        break
-                if part_legal:
-                    is_legal = True
-        else: # there are dependencies
-            if len(self.dependencies) != len(dependency_vals):
-                logger.error('length of dependency_vals not the same as dependencies')
-                raise SystemExit
-            leaf_dependencies = []
-            for d in self.dependencies:
-                leaf_dependencies.append(d.split('::')[-1])
-            for legal_str in self.warl['legal']: # iterate over legal str
-                dep_str = legal_str.split('->')[0]
-                csr_str = legal_str.split('->')[1]
-                csr_search = self.exp.findall(csr_str)
-                dep_search = self.exp.search(dep_str)
-                if csr_search is None or dep_search  is None:
-                    logger.error('Warl legal string is wrong :\n\t' + legal_str)
-                    raise SystemExit(1)
-                dep_csr = dep_search.group('csr')
-                dep_ind = dep_search.group('csr_ind')
-                if ':' in dep_ind:
-                    msb = int(dep_ind.split(':')[0],0)
-                    lsb = int(dep_ind.split(':')[1],0)
-                else:
-                    lsb = int(dep_ind,0)
-                    msb = lsb
-                if (msb < lsb):
-                    logger.error('msb < lsb for in dependency field of warl:\n\n' + 
-                            utils.pretty_print_yaml(self.warl))
-                    raise SystemExit(1)
-                dep_vals = dep_search.group('csr_vals')
-                dep_bitmask = True if 'bitmask' in legal_str.split('->')[0] else False
+    """
+    
+    def __init__(self, node, csrname, f_msb, f_lsb, spec=None):
+        """Constructor Method
+        """
 
-                if dep_csr not in leaf_dependencies:
-                    logger.error(\
-            'Found a dependency in the legal_str which is not present in the dependency_fields of the warl:\n\n' + \
-                    utils.pretty_print_yaml(self.warl))
-                    raise SystemExit
-                dep_satified = False
-                recvd_val = dependency_vals[leaf_dependencies.index(dep_csr)]
-                recvd_val = (recvd_val >> lsb) & ((1<<(msb-lsb))-1)
+        self.node = node
+        self.f_msb = f_msb
+        self.f_lsb = f_lsb
+        self.spec = spec
+        self.regex_legal = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]')
+        self.regex_dep_legal = re.compile('(?P<csrname>.*?)\s*\[(?P<indices>.*?)\]\s*(?P<op>in|not in.*?)\s*\[(?P<values>.*?)\]\s*')
+        self.dependencies = node['dependency_fields']
+        self.csrname = csrname
+        if spec is not None:
+            self.isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
 
-                # check if the dependency value is satisfied.
-                if ":" in dep_vals: # range is specified
-                    [base, bound] = dep_vals.split(':')
-                    base = int(base, 0)
-                    bound = int(bound, 0)
-                    if recvd_val >= base and recvd_val <= bound: # check legal range
-                        dep_satified = True
-                else:
-                    l_vals = dep_vals.split(',')
-                    legal_vals = []
-                    for i in l_vals : 
-                        legal_vals.append(int(i,0))
-                    if recvd_val in legal_vals:
-                        dep_satified = True
-                
-                part_legal = False
-                for part in csr_search:
-                    (csr, csr_ind, csr_op, csr_vals) = part
-                    msb = int(csr_ind.split(':')[0])
-                    lsb = int(csr_ind.split(':')[-1])
-                    bitmask = True if 'bitmask' in csr_op else False
-                    trunc_val = int(bin(value)[2:].zfill(64)[::-1][lsb:msb+1][::-1],base=2)
+    def check_subval_legal(self, legalstr, value):
+        """This function checks if a given value satifies the conditions present
+        in a given legal string.
 
-                    if not bitmask: # if its not a bitmask
-                        if ":" in csr_vals: # range is specified
-                            [base, bound] = csr_vals.split(':')
-                            base = int(base, 0)
-                            bound = int(bound, 0)
-                            if trunc_val >= base and trunc_val <= bound: # check legal range
-                                part_legal = True
-                        else:
-                            l_vals = csr_vals.split(',')
-                            legal_vals = []
-                            for i in l_vals : 
-                                legal_vals.append(int(i,0))
-                            if trunc_val in legal_vals:
-                                part_legal = True
-                    else: # in case of bitmask there are no illegal values
-                        part_legal = True
-                    if not part_legal:
-                        break
-                if part_legal and dep_satified:
-                    is_legal = True
-                
-        return is_legal
+        :param legalstr: This is a string following the warl-legal syntax.
+        :type legalstr: str
+        :param value: The value whose legality to be checked against the
+            warl-legal string
+        :type value: int
+        :return: A list of error strings encountered while performing the 
+            checks on a legal string
+        :rtype: list(str)
 
-    def update(self, curr_val, wr_val, dependency_vals=[]):
-        ''' The function takes the current value, write value and an optional list(optional incase there are no dependencies) containing the
-        values of the corresponding dependency fields and models the updation of
-        the register i.e if the supplied value is legal then the value is returned, else the new value of
-        the register is calculated and returned.
-        '''
-        flag1 = 0
-        flag2 = 0
-        flag3 = 0
-        flag4 = 0
-        j = 0
-        if self.dependencies != [] and dependency_vals != []:
-            for i in range(len(self.warl['legal'])):
-                mode1 = re.findall('\[(\d)\]\s*->\s*', self.warl['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                    if dependency_vals[i1] == int(mode1[i1]):
-                        j = i
-                        flag1 = 1
-                        break
-            if flag1 == 0:
-                print("Dependency vals do not match")
-                exit()
-        else:
-            if len(self.warl['legal']) != 1:
-                print("There cannot be more than one legal value")
-                exit()
+        The legal string is first broken down into smaller substrings, each of
+        which assigns certain bits a specific value. Each substring should match
+        the following regular-expression: ``\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]``
+
+        For each substring, we then extract the indicies of the csr/subfield
+        that are being assigned, the operation used (one of `bitmask`, `in` or
+        `not in`) and values being assigned. Using the indices we extract the
+        relevant sub-value of the input value argument which applies to these
+        indices (we refer to this as subval).
+
+        In case of a ``bitmask`` operation all values of the input are considered
+        legal - since the mask and fixedval will ensure only legal values are
+        set.
+
+        In case of an ``in`` operation, the values list (extracted from the
+        substring) is split into individual elements. Each element can either be
+        a range or a single integer. In case of a range we check if the input
+        subval falls within this range or not. In case of a single integer we
+        perform a direct match. We parse the entire values list and stop as soon
+        as atleast on match is detected.
+
+        In case of a ``not in`` operation, the procedure is the same as above,
+        except we parse through the entire values list to ensure the subval
+        doesn't match any of those values, only then the subval is treated as a
+        legal value.
+
+        """
+        assigns = self.regex_legal.findall(legalstr)
+        err = []
+        for a in assigns:
+            (indices, op, vals) = a
+            msb = int(indices.split(':')[0], 0)
+            if ':' in indices:
+                lsb = int(indices.split(':')[1], 0)
             else:
-                j = 0
-        inp1 = self.warl['legal'][j]
-        flag1 = 0
-        if self.dependencies != [] and dependency_vals != []:
-            for i in range(len(self.warl['legal'])):
-                if "bitmask" in self.warl['legal'][i]:
-                    flag4 = 1
-                else:
-                    flag4 = 0
-                    break
+                # if its a single value, then lsb and msb are the same
+                lsb = msb
+            bitlen = msb - lsb + 1
 
-            if flag4 == 0 and not "bitmask" in inp1:
-                for i in range(len(self.warl['wr_illegal'])):
-                    mode = re.findall('\[(\d)\]\s*.*->\s*',
-                                      self.warl['wr_illegal'][i])
-                    op = re.findall(r'in\s*\[(.*?)\]',
-                                    self.warl['wr_illegal'][i])
-                    if op != []:
-                        z = re.split("\:", op[0])
-                    for i1 in range(len(dependency_vals)):
-                        if dependency_vals[i1] == int(mode[i1]):
-                            if op != []:
-                                if int(wr_val, 0) in range(int(z[0], 0),
-                                                    int(z[1], 0)):
-                                    j = i
-                                    flag1 = 1
-                                    break
-                            else:
-                                j = i
-                                flag1 = 1
-                                break
-                    if flag1 == 1:
-                        break
-                inp = self.warl['wr_illegal'][j]
-            else:
-                inp = "no value"
-                flag1 = 1
+            # extract the value of the bits for which this particular substring
+            # is applicable.
+            subval = (value >> lsb) & ((1 << bitlen)-1)
+            values = vals.split(',')
 
-        elif self.dependencies == [] and dependency_vals == [] and not "bitmask" in self.warl[
-                'legal'][0]:
-            for i in range(len(self.warl['wr_illegal'])):
-                op = re.findall(r'\s*wr_val\s*in\s*\[(.*?)\]',
-                                self.warl['wr_illegal'][i])
-                if op != []:
-                    z = re.split("\:", op[0])
-                    if int(wr_val, 0) in range(int(z[0], 0), int(z[1], 0)):
-                        j = i
-                        flag1 = 1
-                        break
-
-                else:
-                    j = i
-                    flag1 = 1
-                    break
-
-            inp = self.warl['wr_illegal'][j]
-
-        elif self.dependencies != [] and dependency_vals != [] and len(
-                self.warl['legal']) == 1 and "bitmask" in self.warl['legal'][0]:
-            flag1 = 1
-
-        if flag1 == 0 and dependency_vals != []:
-            print("Dependency vals do not match")
-            exit()
-        if (self.islegal(curr_val, dependency_vals) == False):
-            return "Current value must be legal"
-        if (self.islegal(wr_val, dependency_vals)):
-            return wr_val
-        elif not "bitmask" in inp1:
-            if "->" in inp:
-                op2 = re.split(r'\->', inp)
-                wr = op2[1]
-            else:
-                wr = inp.strip()
-            if "0x" in wr:
-                return wr.strip()
-            elif wr.lower().strip() == "unchanged":
-                return ("0x" + curr_val)
-
-            elif wr.lower().strip() == "nearup":
-                a = []
-                flag2 = 0
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if len(l[i]) == 1:
-                        a.append(abs(int(wr_val, 0) - int(l[i][0], 0)))
-                for i in range(len(a) - 1, -1, -1):
-                    if a[i] == min(a):
-                        j = i
-                        flag2 = 1
-                        break
-                if flag2 == 1:
-                    return l[j][0]
-
-            elif wr.lower().strip() == "neardown":
-                a = []
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if len(l[i]) == 1:
-                        a.append(abs(int(wr_val, 0) - int(l[i][0], 0)))
-                for i in range(len(a)):
-                    if a[i] == min(a):
-                        j = i
-                        flag2 = 1
-                        break
-                if flag2 == 1:
-                    return l[j][0]
-
-            elif wr.lower().strip() == "nextup":
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if int(l[i][0], 0) > int(wr_val, 0) and len(l[i]) == 1:
-                        j = i
-                        flag2 = 1
-                        break
-                if flag2 == 1:
-                    return l[j][0]
-                else:
-                    return max(l)
-
-            elif wr.lower().strip() == "nextdown":
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if int(l[i][0], 0) > int(wr_val, 0) and len(l[i]) == 1:
-                        j = i
-                        flag2 = 1
-                        break
-                if flag2 == 1 and j != 0:
-                    return l[j - 1][0]
-                else:
-                    return min(l)
-
-            elif wr.lower().strip() == "max":
-                flag3 = 0
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if "," in l[i][0]:
-                        flag3 = 1
-                        j = i
+            # for `in` atleast one of the vals must be a hit. If none is a hit,
+            # then the value is illegal.
+            if op == 'in':
+                atleast_one_pass = False
+                for v in values:
+                    base = int(v.split(':')[0], 0)
+                    if ':' in v:
+                        bound = int(v.split(':')[1], 0)
                     else:
-                        flag3 = 0
-                if flag3 == 0:
-                    return max(l)
-                else:
-                    y = re.split(",", l[j][0])
-                    return y[1]
-
-            elif wr.lower().strip() == "min":
-                flag3 = 0
-                l = self.legal(dependency_vals)
-                for i in range(len(l)):
-                    if "," in l[i][0]:
-                        flag3 = 1
-                        j = i
-                    else:
-                        flag3 = 0
-                if flag3 == 0:
-                    return min(l)
-                else:
-                    y = re.split(",", l[j][0])
-                    return y[0]
-
-            elif wr.lower().strip() == "addr":
-                wr = format(int(wr_val, 0),
-                            '#0{}b'.format(4 * self.bitsum + 2))
-                wr = wr[2:]
-                if wr[0:1] == '0':
-                    wr_final = '1' + wr[1:]
-                elif wr[0:1] == '1':
-                    wr_final = '0' + wr[1:]
-                else:
-                    print("Invalid binary bit")
-                return hex(int(wr_final, 0))
-
-            else:
-                return "Invalid update mode"
-
-        else:
-            x = re.findall(
-                r'\s*.*\s*\[.*\]\s*{}\s*\[(.*?,.*?)\]'.format("bitmask"), inp1)
-            z = re.findall(
-                r'\s*.*\s*\[(.*)\]\s*{}\s*\[.*?,.*?\]'.format("bitmask"), inp1)
-            y = re.split("\,", x[0])
-            bitmask = int(y[0], 0)
-            fixedval = int(y[1], 0)
-            currval = int(wr_val, 0)
-            legal = ((currval & bitmask) | fixedval)
-            return hex(legal)
-
-    def legal(self, dependency_vals=[]):
-        '''The function takes a range(defined as a 2 tuple list) and an optional(optional incase there are no dependencies) list containing the
-        values of the corresponding dependency fields and returns the set of legal values as a list of two tuple lists.
-        '''
-        flag1 = 0
-        j = 0
-        if self.dependencies != [] and dependency_vals != []:
-            for i in range(len(self.warl['legal'])):
-                mode = re.findall('\[(\d)\]\s*->\s*', self.warl['legal'][i])
-                for i1 in range(len(dependency_vals)):
-                    if dependency_vals[i1] == int(mode[i1]):
-                        j = i
-                        flag1 = 1
+                        bound = base
+                    if subval >= base and subval <= bound:
+                        atleast_one_pass = True
                         break
-                if flag1 == 1:
+                if not atleast_one_pass:
+                    err.append(f' for csr "{self.csrname}" and warl \
+sub-string "{legalstr}" the value "{hex(value)}" is not legal since it fails the condition \
+"[{indices}] {op} [{vals}]"')
                     break
-            if flag1 == 0 and dependency_vals != []:
-                print("Dependency vals do not match")
-                exit()
-        else:
-            if len(self.warl['legal']) != 1:
-                print("There cannot be more than one legal value")
-                exit()
+            # for `not in` even a single match will treat the value as illegal.
+            elif op == 'not in':
+                all_pass = True
+                for v in values:
+                    base = int(v.split(':')[0], 0)
+                    if ':' in v:
+                        bound = int(v.split(':')[1], 0)
+                    else:
+                        bound = base
+                    if subval >= base and subval <= bound:
+                        all_pass = False
+                if not all_pass:
+                    err.append(f' for csr "{self.csrname}" and warl \
+sub-string "{legalstr}" the value "{value}" is not legal since it fails the condition \
+"[{indices}] {op} [{vals}]"')
+                    break
+            # for bitmask all values are treated as legal.
+            elif op == 'bitmask':
+                continue
             else:
-                j = 0
-        inp = self.warl['legal'][j]
-        s = re.findall(r'in\s*\[(.*?)\]', inp)
-        a = []
-        b = []
-        tup = []
-        for i in range(len(s)):
-            tup = []
-            if ":" in s[i]:
-                tup.append(s[i].replace(":", ","))
-                a.append(tup)
+                err.append(f' found op:"{op}" in legal string :"{legalstr}" \
+which is not supported')
+                break
 
-            else:
-                tup = []
-                tup.append(s[i])
-                a.append(tup)
-        if not "bitmask" in inp:
-            w = re.split(",", a[0][0])
-            o = []
-            for i in range(len(w)):
-                e = w[i].strip().split()
-                o.append(e)
-            o.sort()
-            return o
+        return err
+
+    def islegal(self, value, dependency_vals=None):
+        """This function is used to check if an input value is a legal value for
+        csr for given set of dependency values. The legality is checked against
+        all warl string listed under the `legal` node of the warl dictionary.
+
+        :param value: input integer whose legality needs to be checked for the
+            csr/subfield warl node.
+        :type value: int
+        :param dependency_vals: This is dictionary of csr:value pairs which
+            indicates the current value of csrs/subfields present in the
+            dependency_fields of the warl node.
+        :type dependency_vals: dict
+
+        If the dependency_fields of the warl node is empty, then the single
+        legal string in the legal list, is simply processed by the function
+        :py:func:`check_subval_legal` and result of which is simply returned as
+        is.
+
+        However, if the dependency_fields is not empty, then for each legal 
+        string we check if both dependency_vals substring is satisfied and the
+        assignment substring is also satisfied, else an error is generated.
+
+        for the dependency_vals substring the values of the csrs in the 
+        dependency_fields if obtained either from the input dependency_vals
+        argument or else the reset-vals of the csr in the isa spec (self.spec)
+        are used. If neither is available, then an error is posted about the
+        same.
+
+        The dependency_vals substring is again split further down to process
+        each condition individually. The checks for the dependency_vals 
+        substring include: 
+
+            - checking is the csrs in the substring are indeed present in the
+              dependency_fields list of the warl node
+            - if writeval or currval is detected, then that part of the
+              conditions is ignored.
+
+        The dependency_vals substring is treated as a boolean condition. Hence,
+        when when each part of the substring is evaluated, we replace that part
+        of the string with either True or False, and at the end perform an
+        `eval` on the new replaced dependency_vals substring. If this condition
+        evaluates to True, the corresponing assign string also evaluates to
+        True, then the input value is considered legal.
+
+        Things this function does not do:
+            
+            - this does not check if the warl strings are valid. It is assumed
+              that they are valid. If not, pass them through the function iserr
+              to check for validity.
+            - in case of dependency_fields being not empty, this function
+              doesn't check if the possible values of the dependency
+              csrs/subfields are indeed legal for them. This causes a nesting
+              problem, which is probably doesn't warrant an immediate solution ??
+            - 
+        """
+        logger.debug(f'---- WARL Value Legality Check: value:{value} csr:{self.csrname} dependency_vals:{dependency_vals}')
+        err = []
+        # if no dependencies then only one legal string is present. Simply use
+        # check_subval_legal function to detect legality.
+        if not self.dependencies:
+            for legalstr in self.node['legal']:
+                err = self.check_subval_legal(legalstr, value)
+        # in case of dependencies there can be multiple legal strings. We split
+        # the legal strings into dependency strings and assign strings. Each
+        # substring needs to be validated to indicate that value is indeed legal
+        # for the current set of dependency vals.
         else:
-            return a
-#str1=\
-#'''
-#dependency_fields: []
-#legal:
-#  - "extensions[7:4] in [1,3,5] extensions[3:0] in [0x0:0xF]"
-#wr_illegal:
-#  - "Unchanged"
-#'''
-#
-#str2=\
-#'''
-#dependency_fields: []
-#legal:
-#  - "asid[8:0] in [0x00:0x1FF]"
-#wr_illegal:
-#  - Unchanged
-#'''
-#
-#node = yaml.load(str2)
-#warl = warl_interpreter(node)
-#print(str(warl.islegal(0xFFFF, [])))
+            for legalstr in self.node['legal']:
+                depstr = legalstr.split('->')[0]
+                # we replace all boolean operators first to simple parse and the
+                # check if the (in|not in|bitmask) operators are infact legal or
+                # not.
+                raw_depstr = re.sub('\(|\)|and|or','',depstr)
+
+                # implicitly assume it passes - in case of writeval and currval.
+                dep_pass = True
+                for m in self.regex_dep_legal.finditer(raw_depstr):
+                    (csrname, indices, op, vals) = m.groups()
+                    matchstr = m.group()
+
+                    # in case the dependency is on writeval then we
+                    # assume the condition is always true.
+                    if csrname in ['writeval']:
+                        depstr = depstr.replace(matchstr, 'True')
+                        continue
+                    # in case the dependency is on the current val of the same
+                    # csr (before performing the write), then we continue by
+                    # replacing the currval string with the csrname::subfield
+                    # syntax
+                    if csrname == 'currval':
+                        if '::' in self.csrname:
+                            renamed_csr = self.csrname.split('::')[0]
+                            subfield = self.csrname.split('::')[1]
+                        else:
+                            renamed_csr = self.csrname
+                            subfield = ''
+                    else:
+                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csrname}\s*$').match, self.dependencies))[0]
+                        if '::' in renamed_csr:
+                            subfield = renamed_csr.split('::')[1]
+                        else:
+                            subfield = ''
+                        renamed_csr = renamed_csr.split('::')[0]
+                    # if the dependency_vals dict is not empty, then pick the
+                    # values of the csrs/subfields from there. Here we expect
+                    # the key in the dependency_vals dict to be a subfield
+                    # name without the `::` delimiter.
+                    if dependency_vals is not None:
+                        if csrname not in dependency_vals:
+                            err.append(f'in warl string of {self.csrname}, \
+the value of dependency field {csrname} not present in dependency_vals')
+                            return err
+                        else:
+                            dep_csr_val = dependency_vals[csrname]
+                    # else we pick the reset-vals from the isa spec (if the isa
+                    # spec was provided during contruction of the class). If the
+                    # dependency field is a subfield, then the reset-val of the
+                    # subfield has to be extracted from the reset-val of the csr
+                    elif self.spec is not None:
+                        dep_csr_val = self.spec[renamed_csr]['reset-val']
+                        if subfield != '':
+                            msb = self.spec[renamed_csr][self.isa][subfield]['msb']
+                            lsb = self.spec[renamed_csr][self.isa][subfield]['lsb']
+                            bitlen = msb - lsb + 1
+                            dep_csr_val = (dep_csr_val >> lsb) & \
+                                ((1 << bitlen)-1)
+                    else:
+                        err.append(f'No dependency_vals or spec exists to \
+check the values of the csrs in the dependency_fields of csr {self.csrname}')
+                        return err
+
+                    step_err = self.check_subval_legal(matchstr, dep_csr_val)
+                    err = err + step_err
+                    step_pass = True if step_err == [] else False
+                    depstr = depstr.replace(matchstr, str(step_pass))
+                dep_pass = eval(depstr)
+
+                assignstr = legalstr.split('->')[1]
+                assign_err = self.check_subval_legal(assignstr, value)
+                err = err + assign_err
+                assign_legal = True if assign_err == [] else False
+                # if at any point both dependency strings and the assign strings
+                # pass, then throw away the errors and treat it as a pass.
+                if assign_legal and dep_pass:
+                    logger.debug(f' warl legal string "{legalstr}" treats the \
+input value {value} as legal')
+                    err = []
+                    break
+        return err
+
+    def iserr(self):
+        csrname = self.csrname
+        reg_lsb = 0
+        if self.f_lsb != 0:
+            reg_msb = self.f_msb - self.f_lsb
+        else:
+            reg_msb = self.f_msb
+        reg_bitlen = reg_msb - reg_lsb + 1
+        reg_maxval = 2**reg_bitlen
+        err = []
+        #basic checks
+        #if dependencies is empty, then there should be only one legal string
+        if self.dependencies == [] and len(self.node['legal']) > 1:
+            err.append(f'for In absence of dependencies there should be only \
+1 legal string, instead found {len(self.node["legal"])}')
+        if err:
+            return err
+
+        # start checking legality of all legal strings
+        for legalstr in self.node['legal']:
+            depstr = legalstr.split('->')[0]
+            raw_depstr = re.sub('\(|\)|and|or','',depstr)
+            dep_str_matches = self.regex_dep_legal.findall(raw_depstr)
+
+            # if there are no dependencies then "->" should never be used in the
+            # warl legal strings
+            if '->' in legalstr and self.dependencies == []:
+                err.append(f' found "->" in legal string "legalstr" when \
+dependency_fields is empty.')
+                return err
+            if self.dependencies != [] and not '->' in legalstr:
+                err.append(f' missing "->" in legalstr since dependency_fields \
+is non empty')
+                return err
+
+            if '->' in legalstr:
+                dependencies = self.node['dependency_fields']
+                if dependencies != [] and self.spec is not None:
+                    for d in dependencies:
+                        subfield = ''
+                        if '::' in d:
+                            depcsrname = d.split('::')[0]
+                            subfield = d.split('::')[1]
+                        else:
+                            depcsrname = d
+                        # if the dependency is on writeval or currval of the
+                        # same csr, then no more checks required.
+                        if depcsrname not in ['writeval', 'currval']:
+                            # if the csr doesn't exist then its probably a typo
+                            if depcsrname not in self.spec:
+                                err.append(f' warl for csr {csrname} depends on csr \
+{depcsrname} is not a valid csrname as per spec')
+                            # if csr exists, but is not accessible, then its a
+                            # pointless dependency
+                            elif not self.spec[depcsrname][self.isa]['accessible']:
+                                err.append(f' warl for csr {csrname} depends on csr \
+{depcsrname} is not accessible or not implemented in the isa yaml')
+                            # if csr exists and is accessible but subfield
+                            # doesn't exist, then its another typo
+                            elif subfield != '' and subfield not in self.spec[depcsrname][self.isa]:
+                                err.append(f' warl for csr {csrname} depends on \
+subfield {depcsrname}::{subfield} which does not exist as per spec')
+                            # if subfield is valid, but is not implemented, then
+                            # its another pointless dependency
+                            elif not self.spec[depcsrname][self.isa][subfield]['implemented']:
+                                err.append(f' warl for csr {csrname} depends \
+on subfield {depcsrname}::{subfield} which is not implemented')
+
+                    # ensure that all dependency csrs/subfields found in the
+                    # strings, are indeed present in the dependency_fields list
+                    # of the warl node.
+                    for matches in dep_str_matches:
+                        (csr, ind, op, val) = matches
+                        csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csr}\s*$').match, dependencies))
+                        if csr_in_dependencies == []:
+                            err.append(f' dependency_vals string "{depstr}" for csr \
+{csrname} is dependent on field {csr} which is not present in the \
+dependency_fields list of the node')
+
+                for matches in dep_str_matches:
+                    (csr, indices, op, val) = matches
+                    # only in and not-in are supported inside dependency
+                    # strings. Bitmask do not make sense as a boolean operation.
+                    if op not in ['in', 'not in']:
+                        err.append(f' the dependency_vals string {depstr} for csr \
+{csr} uses operation "{op}" which is not supported. Use only "in" and "not in" \
+operations only')
+
+                    msb = int(indices.split(':')[0], 0)
+                    if ':' in indices:
+                        lsb = int(indices.split(':')[1], 0)
+                    else:
+                        lsb = msb
+                    # for range value strings, indices msb::lsb syntax to be 
+                    # followed where msb > lsb
+                    if msb < lsb:
+                        err.append(f'msb < lsb for one of the \
+dependency_vals in warl string {legalstr} in csr {csrname}')
+                    maxval = 2**(msb - lsb + 1 )
+                    values = val.split(',')
+
+                    # for each range value, check if the base and bound are
+                    # correctly ordered and within the possible values of the
+                    # csr/subfield
+                    for v in values:
+                        base = int(v.split(':')[0], 0)
+                        if ':' in v:
+                            bound = int(v.split(':')[1], 0)
+                        else:
+                            bound = base
+                        if base >= maxval or bound >= maxval:
+                            err.append(f'The range values in dependency_vals of warl\
+ string "{legalstr}" for csr {csrname} are out of bounds wrt the indices used \
+in that string')
+                        if base > bound:
+                            err.append(f' base > bound for range \
+values in dependency_vals of the warl string "{legalstr}" for csr {csrname}')
+
+            lstr = legalstr.split('->')[-1]
+            bitcount = reg_bitlen
+
+            assigns = self.regex_legal.findall(lstr)
+            # if there is not match, then something is wrong in the string.
+            if assigns == []:
+                err.append(f' The legal string "{legalstr}" for csr \
+{csrname} does not follow warl syntax')
+            # split the assignment string and process each individually.
+            for a in assigns:
+                (indices, op, vals) = a
+
+                # msb lsb checks just as before 
+                msb = int(indices.split(':')[0], 0)
+                if ':' in indices:
+                    lsb = int(indices.split(':')[1], 0)
+                else:
+                    lsb = msb
+                if msb < lsb:
+                    err.append(f'msb < lsb for one of the \
+range values in warl string {legalstr} in csr {csrname}')
+                if msb > reg_msb or lsb < reg_lsb:
+                    err.append(f' The indices used in warl \
+string "{legalstr}" of csr {csrname} do not comply with the msb[{reg_msb}] and lsb[{reg_lsb}] values \
+of the register')
+
+                # we need to ensure that the assignment string eventually
+                # defines the legal value for all the bits (and not just a few).
+                # To check this we use a counter (bitcount) which is initialized
+                # to the size of the register/subfield. And each time a part of
+                # the assignment string is evaluated, we decrease the bitcount
+                # by the size of the assigment. At the end, if the bitcount is
+                # not zero then there is something wrong in the entire
+                # assignment string.
+                bitcount = bitcount - (msb-lsb+1)
+                bitlength = msb - lsb + 1
+                maxval = 2**bitlength
+                if op not in ['in', 'not in', 'bitmask']:
+                    err.append(f' the warl string {legalstr} for csr \
+{csr} uses operation "{op}" which is not supported. Use only "in", "bitmask" and "not in" \
+operations only')
+                if 'bitmask' in op:
+                    if len(vals.split(',')) != 2:
+                        err.append(f'bitmask syntax is wrong in legal string \
+{legalstr}')
+                        break
+                    mask = int(vals.split(',')[0], 0)
+                    fixedval = int(vals.split(',')[1], 0)
+                    if mask > reg_maxval or fixedval > reg_maxval:
+                        err.append(f' The mask and/or fixedval used in \
+bitmask string "{legalstr}" of csr {csrname} have values exceeding the \
+maxvalue the csr can take.')
+                else:
+                    values = vals.split(',')
+                    for v in values:
+                        base = int(v.split(':')[0], 0)
+                        if ':' in v:
+                            bound = int(v.split(':')[1], 0)
+                        else:
+                            bound = base
+                        if base >= maxval or bound >= maxval:
+                            err.append(f'The range values in warl \
+string "{legalstr} for csr {csrname} are out of bounds wrt the indices used \
+in that string')
+                        if base > bound:
+                            err.append(f' base > bound for range \
+values in warl string "{legalstr}" for csr {csrname}')
+           
+            if bitcount < 0:
+                err.append(f' warl string "{legalstr}" defines values for bits \
+outside the size of the register "{reg_bitlen}"')
+            elif bitcount != 0:
+                err.append(f' warl string "{legalstr}" for csr \
+"{csrname}" either does not define values for all bits or has overlapping ranges \
+defining the same bits multiple times')
+
+        return err
 

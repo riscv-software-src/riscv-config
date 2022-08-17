@@ -28,3 +28,11 @@ Utils
    :members: 
    :special-members:
    :private-members:
+
+WARL
+----
+
+.. automodule:: riscv_config.warl_new
+   :members:
+   :special-members:
+   :private-members:

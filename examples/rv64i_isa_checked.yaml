@@ -61,7 +61,7 @@ hart0:
                 warl:
                     dependency_fields: []
                     legal:
-                      - sepc[63:0] bitmask [0xFFFFFFFFFFFFFFFE, 0x0000000000000000]
+                      - sepc[63:60] in [1,2] spec[59:0] not in [1,2]
                     wr_illegal:
                       - Unchanged
             fields: []
@@ -69,7 +69,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-        reset-val: 0
+        reset-val: 0x2000000000000000
         description: The sepc is a warl register that must be able to hold all valid
             physical and virtual addresses.
         address: 0x141
@@ -417,28 +417,36 @@ hart0:
                 msb: 31
                 lsb: 24
             pmp4cfg:
-                implemented: false
+                implemented: true
+                type:
+                    ro_constant: 0
                 description: pmp configuration bits
                 shadow:
                 shadow_type: rw
                 msb: 39
                 lsb: 32
             pmp5cfg:
-                implemented: false
+                implemented: true
+                type:
+                    ro_constant: 0
                 description: pmp configuration bits
                 shadow:
                 shadow_type: rw
                 msb: 47
                 lsb: 40
             pmp6cfg:
-                implemented: false
+                implemented: true
+                type:
+                    ro_constant: 0
                 description: pmp configuration bits
                 shadow:
                 shadow_type: rw
                 msb: 55
                 lsb: 48
             pmp7cfg:
-                implemented: false
+                implemented: true
+                type:
+                    ro_constant: 0
                 description: pmp configuration bits
                 shadow:
                 shadow_type: rw
@@ -455,6 +463,96 @@ hart0:
               - pmp7cfg
         description: PMP configuration register
         address: 0x3A0
+        priv_mode: M
+    pmpcfg2:
+        reset-val: 0
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            pmp8cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 7
+                lsb: 0
+            pmp9cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 15
+                lsb: 8
+            pmp10cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 23
+                lsb: 16
+            pmp11cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 31
+                lsb: 24
+            pmp12cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 39
+                lsb: 32
+            pmp13cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 47
+                lsb: 40
+            pmp14cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 55
+                lsb: 48
+            pmp15cfg:
+                implemented: true
+                type:
+                    ro_constant: 0
+                description: pmp configuration bits
+                shadow:
+                shadow_type: rw
+                msb: 63
+                lsb: 56
+            fields:
+              - pmp8cfg
+              - pmp9cfg
+              - pmp10cfg
+              - pmp11cfg
+              - pmp12cfg
+              - pmp13cfg
+              - pmp14cfg
+              - pmp15cfg
+        description: PMP configuration register
+        address: 0x3A2
         priv_mode: M
     pmpaddr0:
         rv32:
@@ -540,6 +638,187 @@ hart0:
         description: Physical memory protection address register
         address: 0x3B3
         priv_mode: M
+    pmpaddr4:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: &id001
+                ro_constant: 0
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B4
+        priv_mode: M
+        reset-val: 0
+    pmpaddr5:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B5
+        priv_mode: M
+        reset-val: 0
+    pmpaddr6:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B6
+        priv_mode: M
+        reset-val: 0
+    pmpaddr7:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B7
+        priv_mode: M
+        reset-val: 0
+    pmpaddr8:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B8
+        priv_mode: M
+        reset-val: 0
+    pmpaddr9:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3B9
+        priv_mode: M
+        reset-val: 0
+    pmpaddr10:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BA
+        priv_mode: M
+        reset-val: 0
+    pmpaddr11:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BB
+        priv_mode: M
+        reset-val: 0
+    pmpaddr12:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BC
+        priv_mode: M
+        reset-val: 0
+    pmpaddr13:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BD
+        priv_mode: M
+        reset-val: 0
+    pmpaddr14:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BE
+        priv_mode: M
+        reset-val: 0
+    pmpaddr15:
+        rv32:
+            accessible: false
+        rv64:
+            accessible: true
+            type: *id001
+            fields: []
+            shadow:
+            shadow_type: rw
+            msb: 63
+            lsb: 0
+        description: Physical memory protection address register
+        address: 0x3BF
+        priv_mode: M
+        reset-val: 0
     mhpmcounter3:
         rv32:
             accessible: false
@@ -1498,15 +1777,6 @@ hart0:
         address: 0x3A1
         priv_mode: M
         reset-val: 0
-    pmpcfg2:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: PMP configuration register
-        address: 0x3A2
-        priv_mode: M
-        reset-val: 0
     pmpcfg3:
         rv32:
             accessible: false
@@ -1622,114 +1892,6 @@ hart0:
             accessible: false
         description: PMP configuration register
         address: 0x3AF
-        priv_mode: M
-        reset-val: 0
-    pmpaddr4:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B4
-        priv_mode: M
-        reset-val: 0
-    pmpaddr5:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B5
-        priv_mode: M
-        reset-val: 0
-    pmpaddr6:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B6
-        priv_mode: M
-        reset-val: 0
-    pmpaddr7:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B7
-        priv_mode: M
-        reset-val: 0
-    pmpaddr8:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B8
-        priv_mode: M
-        reset-val: 0
-    pmpaddr9:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3B9
-        priv_mode: M
-        reset-val: 0
-    pmpaddr10:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BA
-        priv_mode: M
-        reset-val: 0
-    pmpaddr11:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BB
-        priv_mode: M
-        reset-val: 0
-    pmpaddr12:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BC
-        priv_mode: M
-        reset-val: 0
-    pmpaddr13:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BD
-        priv_mode: M
-        reset-val: 0
-    pmpaddr14:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BE
-        priv_mode: M
-        reset-val: 0
-    pmpaddr15:
-        rv32:
-            accessible: false
-        rv64:
-            accessible: false
-        description: Physical memory protection address register
-        address: 0x3BF
         priv_mode: M
         reset-val: 0
     pmpaddr16:
@@ -2245,7 +2407,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: &id001
+            type: &id002
                 ro_constant: 0
         description: The mhpmevent5 is a MXLEN-bit event register which controls mhpmcounter5.
         address: 0x325
@@ -2261,7 +2423,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter5 is a 64-bit counter. Returns lower 52 bits in
             RV52I mode.
         address: 0xB05
@@ -2286,7 +2448,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent6 is a MXLEN-bit event register which controls mhpmcounter6.
         address: 0x326
         priv_mode: M
@@ -2301,7 +2463,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter6 is a 64-bit counter. Returns lower 62 bits in
             RV62I mode.
         address: 0xB06
@@ -2326,7 +2488,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent7 is a MXLEN-bit event register which controls mhpmcounter7.
         address: 0x327
         priv_mode: M
@@ -2341,7 +2503,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter7 is a 64-bit counter. Returns lower 72 bits in
             RV72I mode.
         address: 0xB07
@@ -2366,7 +2528,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent8 is a MXLEN-bit event register which controls mhpmcounter8.
         address: 0x328
         priv_mode: M
@@ -2381,7 +2543,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter8 is a 64-bit counter. Returns lower 82 bits in
             RV82I mode.
         address: 0xB08
@@ -2406,7 +2568,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent9 is a MXLEN-bit event register which controls mhpmcounter9.
         address: 0x329
         priv_mode: M
@@ -2421,7 +2583,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter9 is a 64-bit counter. Returns lower 32 bits in
             RV32I mode.
         address: 0xB09
@@ -2446,7 +2608,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent10 is a MXLEN-bit event register which controls
             mhpmcounter10.
         address: 0x32a
@@ -2462,7 +2624,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter10 is a 64-bit counter. Returns lower 102 bits
             in RV102I mode.
         address: 0xB0A
@@ -2487,7 +2649,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent11 is a MXLEN-bit event register which controls
             mhpmcounter11.
         address: 0x32b
@@ -2503,7 +2665,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter11 is a 64-bit counter. Returns lower 112 bits
             in RV112I mode.
         address: 0xB0B
@@ -2528,7 +2690,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent12 is a MXLEN-bit event register which controls
             mhpmcounter12.
         address: 0x32c
@@ -2544,7 +2706,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter12 is a 64-bit counter. Returns lower 122 bits
             in RV122I mode.
         address: 0xB0C
@@ -2569,7 +2731,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent13 is a MXLEN-bit event register which controls
             mhpmcounter13.
         address: 0x32d
@@ -2585,7 +2747,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter13 is a 64-bit counter. Returns lower 132 bits
             in RV132I mode.
         address: 0xB0D
@@ -2610,7 +2772,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent14 is a MXLEN-bit event register which controls
             mhpmcounter14.
         address: 0x32e
@@ -2626,7 +2788,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter14 is a 64-bit counter. Returns lower 142 bits
             in RV142I mode.
         address: 0xB0E
@@ -2651,7 +2813,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent15 is a MXLEN-bit event register which controls
             mhpmcounter15.
         address: 0x32f
@@ -2667,7 +2829,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter15 is a 64-bit counter. Returns lower 152 bits
             in RV152I mode.
         address: 0xB0F
@@ -2692,7 +2854,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent16 is a MXLEN-bit event register which controls
             mhpmcounter16.
         address: 0x330
@@ -2708,7 +2870,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter16 is a 64-bit counter. Returns lower 162 bits
             in RV162I mode.
         address: 0xB10
@@ -2733,7 +2895,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent17 is a MXLEN-bit event register which controls
             mhpmcounter17.
         address: 0x331
@@ -2749,7 +2911,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter17 is a 64-bit counter. Returns lower 172 bits
             in RV172I mode.
         address: 0xB11
@@ -2774,7 +2936,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent18 is a MXLEN-bit event register which controls
             mhpmcounter18.
         address: 0x332
@@ -2790,7 +2952,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter18 is a 64-bit counter. Returns lower 182 bits
             in RV182I mode.
         address: 0xB12
@@ -2815,7 +2977,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent19 is a MXLEN-bit event register which controls
             mhpmcounter19.
         address: 0x333
@@ -2831,7 +2993,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter19 is a 64-bit counter. Returns lower 32 bits
             in RV32I mode.
         address: 0xB13
@@ -2856,7 +3018,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent20 is a MXLEN-bit event register which controls
             mhpmcounter20.
         address: 0x334
@@ -2872,7 +3034,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter20 is a 64-bit counter. Returns lower 202 bits
             in RV202I mode.
         address: 0xB14
@@ -2897,7 +3059,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent21 is a MXLEN-bit event register which controls
             mhpmcounter21.
         address: 0x335
@@ -2913,7 +3075,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter21 is a 64-bit counter. Returns lower 212 bits
             in RV212I mode.
         address: 0xB15
@@ -2938,7 +3100,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent22 is a MXLEN-bit event register which controls
             mhpmcounter22.
         address: 0x336
@@ -2954,7 +3116,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter22 is a 64-bit counter. Returns lower 222 bits
             in RV222I mode.
         address: 0xB16
@@ -2979,7 +3141,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent23 is a MXLEN-bit event register which controls
             mhpmcounter23.
         address: 0x337
@@ -2995,7 +3157,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter23 is a 64-bit counter. Returns lower 232 bits
             in RV232I mode.
         address: 0xB17
@@ -3020,7 +3182,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent24 is a MXLEN-bit event register which controls
             mhpmcounter24.
         address: 0x338
@@ -3036,7 +3198,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter24 is a 64-bit counter. Returns lower 242 bits
             in RV242I mode.
         address: 0xB18
@@ -3061,7 +3223,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent25 is a MXLEN-bit event register which controls
             mhpmcounter25.
         address: 0x339
@@ -3077,7 +3239,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter25 is a 64-bit counter. Returns lower 252 bits
             in RV252I mode.
         address: 0xB19
@@ -3102,7 +3264,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent26 is a MXLEN-bit event register which controls
             mhpmcounter26.
         address: 0x33a
@@ -3118,7 +3280,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter26 is a 64-bit counter. Returns lower 262 bits
             in RV262I mode.
         address: 0xB1A
@@ -3143,7 +3305,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent27 is a MXLEN-bit event register which controls
             mhpmcounter27.
         address: 0x33b
@@ -3159,7 +3321,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter27 is a 64-bit counter. Returns lower 272 bits
             in RV272I mode.
         address: 0xB1B
@@ -3184,7 +3346,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent28 is a MXLEN-bit event register which controls
             mhpmcounter28.
         address: 0x33c
@@ -3200,7 +3362,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter28 is a 64-bit counter. Returns lower 282 bits
             in RV282I mode.
         address: 0xB1C
@@ -3225,7 +3387,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent29 is a MXLEN-bit event register which controls
             mhpmcounter29.
         address: 0x33d
@@ -3241,7 +3403,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter29 is a 64-bit counter. Returns lower 32 bits
             in RV32I mode.
         address: 0xB1D
@@ -3266,7 +3428,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent30 is a MXLEN-bit event register which controls
             mhpmcounter30.
         address: 0x33e
@@ -3282,7 +3444,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter30 is a 64-bit counter. Returns lower 302 bits
             in RV302I mode.
         address: 0xB1E
@@ -3307,7 +3469,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmevent31 is a MXLEN-bit event register which controls
             mhpmcounter31.
         address: 0x33f
@@ -3323,7 +3485,7 @@ hart0:
             shadow_type: rw
             msb: 63
             lsb: 0
-            type: *id001
+            type: *id002
         description: The mhpmcounter31 is a 64-bit counter. Returns lower 312 bits
             in RV312I mode.
         address: 0xB1F

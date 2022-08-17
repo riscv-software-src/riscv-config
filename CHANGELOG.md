@@ -2,6 +2,25 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2022-08-16
+
+  - created new warl class for warl node handling
+
+    - better comments
+    - more functions to keep things simple
+    - fixed a lot of bugs in checking legal values
+    - bitmask and range values can now co-exist in a legal string
+    - added new and improved checks for syntax validity of warl strings
+
+  - fixed validationError function to correctly print all errors (dict and/or list)
+  - removed wr\_illegal checks from the schema since they are now done as part of the new warl class
+    checks
+  - updates to the new warl checks and reset-value checks
+  - satp.mode should have one of sv\* translation schemes as a legal value. (#89)
+  - default setters for pmps fixed
+  - pmp checks have been improved (#88)
+  - improve WARL documentation
+
 ## [2.17.0] - 2022-08-08
 
   - Support for Zfinx, Zdinx, Zfh, Zhinx, Zhinxmin in ISA string added.

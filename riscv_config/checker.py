@@ -2,6 +2,7 @@ import os
 import logging
 import copy
 import re
+import math
 
 from cerberus import Validator
 
@@ -10,7 +11,7 @@ import riscv_config.utils as utils
 from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
-from riscv_config.warl import warl_interpreter
+from riscv_config.warl import warl_class
 
 logger = logging.getLogger(__name__)
 
@@ -219,26 +220,11 @@ def regset():
 def pmpregset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}} 
-    try:   
-     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
-        temp['rv32']['accessible'] = True
-    except:
-        temp['rv32']['accessible'] = False
-    try: 
-     if 64 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv64']['accessible']:
-        temp['rv64']['accessible'] = True
-    except:
-        temp['rv64']['accessible'] = False
     return temp    
 
-def pmpcounterhset():
+def pmpregseth():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    try: 
-     if 32 in inp_yaml['supported_xlen'] and inp_yaml[temp]['rv32']['accessible'] :
-        temp['rv32']['accessible'] = True
-    except:
-        temp['rv32']['accessible'] = False
     return temp
     
 def counterhset():
@@ -282,7 +268,7 @@ def add_def_setters(schema_yaml):
     reset_vsssetter=lambda doc: reset_vsstatus()
     pmpregsetter = lambda doc: pmpregset()
     counthsetter = lambda doc: counterhset()
-    pmpcounthsetter = lambda doc: pmpcounterhset()
+    pmpreghsetter = lambda doc: pmpregseth()
     uregsetter = lambda doc: uregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
@@ -515,21 +501,21 @@ def add_def_setters(schema_yaml):
     schema_yaml['mcycleh']['default_setter'] = counthsetter
     schema_yaml['minstreth']['default_setter'] = counthsetter
     schema_yaml['pmpcfg0']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg1']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg1']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg2']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg3']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg3']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg4']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg5']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg5']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg6']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg7']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg7']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg8']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg9']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg9']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg10']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg11']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg11']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg12']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg13']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg13']['default_setter'] = pmpreghsetter
     schema_yaml['pmpcfg14']['default_setter'] = pmpregsetter
-    schema_yaml['pmpcfg15']['default_setter'] = pmpcounthsetter
+    schema_yaml['pmpcfg15']['default_setter'] = pmpreghsetter
     schema_yaml['pmpaddr0']['default_setter'] = pmpregsetter
     schema_yaml['pmpaddr1']['default_setter'] = pmpregsetter
     schema_yaml['pmpaddr2']['default_setter'] = pmpregsetter
@@ -1257,9 +1243,60 @@ def check_mhpm(spec, logging = False):
     
      
 def check_pmp(spec, logging = False):
-    ''' Check if the mhpmcounters and corresponding mhpmevents are implemented and of the same size as the
-    source'''
+    ''' Check if the pmp csrs are implemented correctly as per spec. The
+    following checks are performed:
+
+        - the number of accessible pmpaddr csrs must be 0, 16 or 64
+        - the number of implemented pmpcfg csrs must be 0, 16 or 64
+        - the pmpaddr and pmpcfgs must be implemented implemented from the
+          lowest numbered indices and be contiguous
+        - the number of accessible pmpaddr csrs and the implemented pmpcfg csrs 
+          must be the same
+        - for each accesible pmpaddr csr the corresponding pmpcfg csr must be 
+          implemented
+        - reset values of the accessible pmpaddr csrs must be coherent with the
+          pmp_granularity field.
+    '''
+    logger.info('Performing Checks on PMP CSRs')
     errors = {}
+    isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
+    pmpaddr_count = 0
+    pmpcfg_count = 0
+    pmpaddr_reg = []
+    pmpcfg_reg = []
+    for x in range(64):
+        if spec[f'pmpaddr{x}'][isa]['accessible']:
+            pmpaddr_count += 1
+            pmpaddr_reg.append(x)
+        if '32' in isa:
+            index = int(x/4)
+        else:
+            index = int(x/8)*2
+        if spec[f'pmpcfg{index}'][isa]['accessible']:
+            if spec[f'pmpcfg{index}'][isa][f'pmp{x}cfg']['implemented']:
+                pmpcfg_count += 1
+                pmpcfg_reg.append(x)
+
+    logger.debug(f'pmpaddr_count={pmpaddr_count}')
+    logger.debug(f'pmpcfg_count={pmpcfg_count}')
+
+    if pmpaddr_count != 0 and pmpaddr_reg != list(range(0,max(pmpaddr_reg)+1)):
+        errors['PMP-ADDR'] = [f' the lowest-numbered PMP-ADDR CSRs must be \
+implemented first starting with 0. Found : {pmpaddr_reg}']
+    if pmpcfg_count!= 0 and pmpcfg_reg != list(range(0,max(pmpcfg_reg)+1)):
+        errors['PMP-CFG'] = [f' the lowest-numbered PMP-CFG CSRs must be \
+implemented first starting with 0. Found : {pmpcfg_reg}']
+
+    if pmpaddr_count not in [0, 16, 64]:
+        errors["PMP-ADDR"] = [f'The number of accessible PMPADDR* registers \
+must be 0, 16 or 64. But found {pmpaddr_count}']
+    if pmpcfg_count not in [0, 16, 64]:
+        errors["PMP-CFG"] = [f'The number of implemented PMP*CGF registers \
+must be 0, 16 or 64. But found {pmpcfg_count}']
+    if pmpcfg_count != pmpaddr_count:
+        errors["PMP"] = [f' the number of pmpaddr* csrs [{pmpaddr_count}]and \
+pmp*cfg registers [{pmpcfg_count}] do not match']
+        
     for csrname, content, in spec.items():
         error = []
         Grain=int(spec['pmp_granularity'])
@@ -1305,197 +1342,144 @@ def check_pmp(spec, logging = False):
         if error:
             errors[csrname] = error
     return errors
-   
 
+def check_warl_legality(spec, logging = False):
+    errors = {}
+    for csrname, csrnode in spec.items():
+        fields = []
+        err = []
+        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
+            if csrnode['rv64']['accessible']:
+                fields = get_fields(csrnode['rv64'], 64)
+                node = csrnode['rv64']
+            elif csrnode['rv32']['accessible']:
+                fields = get_fields(csrnode['rv32'], 32)
+                node = csrnode['rv32']
+            else:
+                continue
+            if fields == [] and node['shadow'] is None:
+                if 'warl' in node['type']:
+                    if logging:
+                        logger.debug(f'Checking legality of warl strings for csr: {csrname}')
+                    warl_inst = warl_class(node['type']['warl'], csrname, node['msb'], node['lsb'], spec)
+                    err = warl_inst.iserr()
+            elif fields != []:
+                for f in fields:
+                    if not isinstance(f, list) and node[f]['implemented']:
+                        if node[f]['shadow'] is None and 'warl' in node[f]['type']:
+                            if logging:
+                                logger.debug(f'Checking legality of warl strings for : {csrname}.{f}')
+                            warl_inst = warl_class(node[f]['type']['warl'], f'{csrname}::{f}', node[f]['msb'], node[f]['lsb'], spec)
+                            err_f = warl_inst.iserr()
+                            if err_f:
+                                err.append(err_f)
+        if err:
+            errors[csrname] = err
 
-
+    return spec, errors
+                
 
 
 def check_reset_fill_fields(spec, logging= False):
     '''The check_reset_fill_fields function fills the field node with the names of the sub-fields of the register and then checks whether the reset-value of the register is a legal value. To do so, it iterates over all the subfields and extracts the corresponding field value from the reset-value. Then it checks the legality of the value according to the given field description. If the fields is implemented i.e accessible in both 64 bit and 32 bit modes, the 64 bit mode is given preference. '''
     errors = {}
-    for node in spec:
+    for csrname, csrnode in spec.items():
 
-        if isinstance(spec[node], dict):
+        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
+            if csrnode['rv32']['accessible']:
+                csrnode['rv32']['fields'] = get_fields(
+                    csrnode['rv32'], 32)
+            if csrnode['rv64']['accessible']:
+                csrnode['rv64']['fields'] = get_fields(
+                    csrnode['rv64'], 64)
+
+            csr_reset_val = csrnode['reset-val']
+            if csrnode['rv64']['accessible']:
+                csrnode = csrnode['rv64']
+            elif csrnode['rv32']['accessible']:
+                csrnode = csrnode['rv32']
+            else:
+                continue
             if logging:
-                logger.debug('Checking Reset fields for: ' +  node)
-            if spec[node]['rv32']['accessible']:
-                spec[node]['rv32']['fields'] = get_fields(
-                    spec[node]['rv32'], 32)
-            if spec[node]['rv64']['accessible']:
-                spec[node]['rv64']['fields'] = get_fields(
-                    spec[node]['rv64'], 64)
-            if 'reset-val' in spec[node].keys():
-                reset_val = spec[node]['reset-val']
-                if spec[node]['rv64']['accessible']:
-                    field_desc = spec[node]['rv64']
-                    bit_len = 64
-                elif spec[node]['rv32']['accessible']:
-                    field_desc = spec[node]['rv32']
-                    bit_len = 32
-                else:
-                    continue
-                error = []
-                if not field_desc['fields']:
-                    if field_desc['shadow'] is None:
-                        desc = field_desc['type']
-                        keys = desc.keys()
-                        if 'wlrl' in keys:
-                            res = False
-                            for entry in desc['wlrl']:
-                                if ":" in entry:
-                                    low, high = entry.split(":")
-                                    if "x" in low:
-                                        low = int(low, base=16)
-                                        high = int(high, base=16)
-                                    else:
-                                        low = int(low)
-                                        high = int(high)
-                                    if reset_val >= low and reset_val <= high:
-                                        res = True
-                                        break
-                                else:
-                                    if "x" in entry:
-                                        val = int(entry, base=16)
-                                    else:
-                                        val = int(entry)
-                                    if val == reset_val:
-                                        res = True
-                                        break
-                            if not res:
-                                error.append(
-                                    "Reset value doesnt match the 'wlrl' description for the register."
-                                )
-                        elif 'ro_constant' in keys:
-                            if reset_val != desc['ro_constant']:
-                                error.append(
-                                    "Reset value doesnt match the 'ro_constant' description for the register."
-                                )
-                        elif 'ro_variable' in keys:
-                            pass
-                        elif "warl" in keys:
-                            warl = (warl_interpreter(desc['warl']))
-                            deps = warl.dependencies
-                            dep_vals = []
-                            for dep in deps:
-                                reg = dep.split("::")
-                                if len(reg) == 1:
-                                    dep_vals.append(spec[reg[0]]['reset-val'])
-                                else:
-                                    bin_str = bin(spec[reg[0]]
-                                                  ['reset-val'])[2:].zfill(bit_len)
-                                    msb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['msb']
-                                    lsb = spec[reg[0]]['rv{}'.format(bit_len)][reg[1]]['lsb']
-                                    dep_vals.append(
-                                        int(bin_str[::-1][lsb:msb+1][::-1], base=2))
-                            if (warl.islegal(int(reset_val), dep_vals) != True):
-                                error.append(
-                                    "Reset value doesnt match the 'warl' description for the register."
-                                )
-                else:
-                    bin_str = bin(reset_val)[2:].zfill(bit_len)
-                    for field in field_desc['fields']:
-                        if isinstance(field, list):
-                            for entry in field:
-                                if len(entry) == 2:
-                                    test_val = int(
-                                        bin_str[bit_len - 1 - entry[1]:bit_len -
-                                                entry[0]],
-                                        base=2)
-                                    if test_val != 0:
-                                        error.append("WPRI bits " +
-                                                     str(entry[0]) + " to " +
-                                                     str(entry[1]) +
-                                                     " should be zero.")
-                                elif len(entry) == 1:
-                                    test_val = int(bin_str[bit_len - 1 -
-                                                           entry[0]],
-                                                   base=2)
-                                    if test_val != 0:
-                                        error.append("WPRI bit " +
-                                                     str(entry[0]) +
-                                                     " should be zero.")
-                        else:
-                            test_val = int(
-                                bin_str[bit_len - 1 -
-                                        field_desc[field]['msb']:bit_len -
-                                        field_desc[field]['lsb']],
-                                base=2)
-                            if field_desc[field]['implemented']:
-                                if field_desc[field]['shadow'] is None:
-                                    logger.debug('--> Subfield: ' + field)
-                                    desc = field_desc[field]['type']
-                                    keys = desc.keys()
-                                    if 'wlrl' in keys:
-                                        res = False
-                                        for entry in desc['wlrl']:
-                                            if ":" in entry:
-                                                low, high = entry.split(":")
-                                                if "x" in low:
-                                                    low = int(low, base=16)
-                                                    high = int(high, base=16)
-                                                else:
-                                                    low = int(low)
-                                                    high = int(high)
-                                                if test_val >= low and test_val <= high:
-                                                    res = True
-                                                    break
-                                            else:
-                                                if "x" in entry:
-                                                    val = int(entry, base=16)
-                                                else:
-                                                    val = int(entry)
-                                                if val == test_val:
-                                                    res = True
-                                                    break
-                                        if not res:
-                                            error.append(
-                                                "Reset value for " + field +
-                                                " doesnt match the 'wlrl' description."
-                                            )
-                                    elif 'ro_constant' in keys:
-                                        if test_val != desc['ro_constant']:
-                                            error.append(
-                                                "Reset value for " + field +
-                                                " doesnt match the 'ro_constant' description."
-                                            )
-                                    elif 'ro_variable' in keys:
-                                        pass
-                                    elif "warl" in keys:
-                                        warl = (warl_interpreter(desc['warl']))
-                                        deps = warl.dependencies
-                                        dep_vals = []
-                                        for dep in deps:
-                                            reg = dep.split("::")
-                                            if len(reg) == 1:
-                                                dep_vals.append(
-                                                    spec[reg[0]]['reset-val'])
-                                            else:
-                                                bin_str = bin(
-                                                    spec[reg[0]]['reset-val']
-                                                )[2:].zfill(bit_len)
-                                                dep_vals.append(
-                                                    int(bin_str[
-                                                        bit_len - 1 -
-                                                        spec[reg[0]]['rv{}'.format(
-                                                            bit_len
-                                                        )][reg[1]]['msb']:bit_len -
-                                                        spec[reg[0]]['rv{}'.format(
-                                                            bit_len
-                                                        )][reg[1]]['lsb']],
-                                                        base=2))
-                                        if (warl.islegal(
-                                                int(test_val), dep_vals) !=
-                                                True):
-                                            error.append(
-                                                "Reset value for " + field +
-                                                " doesnt match the 'warl' description."
-                                            )
-                            elif test_val != 0:
-                                error.append("Reset value for unimplemented " +
-                                             field + " cannot be non zero.")
-                if error:
-                    errors[node] = error
+                logger.debug(f'Checking Reset fields for: {csrname}')
+            error = []
+            if not csrnode['fields'] and csrnode['shadow'] is None:
+                csrtype = csrnode['type']
+                if 'wlrl' in csrtype:
+                    wlrl_atleast_one_pass = False
+                    for entry in csrtype['wlrl']:
+                        if ":" in entry:
+                            [low, high] = [ int(x,0) for x in entry.split(":")]
+                            if csr_reset_val >= low and csr_reset_val <= high:
+                                wlrl_atleast_one_pass = True
+                                break
+                            elif csr_reset_val == int(entry, 0):
+                                wlrl_atleast_one_pass = True
+                                break
+                    if not wlrl_atleast_one_pass:
+                        error.append("Reset value:{hex(csr_reset_val)} \
+doesn't match the 'wlrl' description :{csrtype['wlrl']} for the register.")
+                elif 'ro_constant' in csrtype:
+                    if csr_reset_val != csrtype['ro_constant']:
+                        error.append("Reset value doesnt match the \
+'ro_constant' description for the register.")
+                elif 'ro_variable' in csrtype:
+                    pass
+                elif "warl" in csrtype:
+                    warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], spec)
+                    legal_err = warl_inst.islegal(csr_reset_val)
+                    if legal_err != []:
+                        logger.error('f{legal_err}')
+                        error.append( " Reset value doesn't match the 'warl' description for the register.")
+                        error = error + legal_err
+            elif csrnode['fields']:
+                for field in csrnode['fields']:
+                    if isinstance(field, list):
+                        for entry in field:
+                            low = entry[0]
+                            high = entry[-1]
+                            bitlen = high - low + 1
+                            test_val = (csr_reset_val >> low) & ((1<<bitlen)-1)
+                            if test_val != 0:
+                                error.append(f'WPRI bits [{high}:{low}] should \
+be zero')
+                    else:
+                        submsb = csrnode[field]['msb']
+                        sublsb = csrnode[field]['lsb']
+                        subbitlen = submsb - sublsb + 1
+                        test_val = (csr_reset_val >> sublsb) & ((1<<subbitlen)-1)
+                        if csrnode[field]['implemented'] and csrnode[field]['shadow'] is None:
+                            logger.debug(' --> Subfield: '+field)
+                            csrtype = csrnode[field]['type']
+                            if 'wlrl' in csrtype:
+                                wlrl_atleast_one_pass = False
+                                for entry in csrtype['wlrl']:
+                                    if ":" in entry:
+                                        [low, high] = [ int(x,0) for x in entry.split(":")]
+                                        if test_val >= low and test_val <= high:
+                                            wlrl_atleast_one_pass = True
+                                            break
+                                        elif test_val == int(entry, 0):
+                                            wlrl_atleast_one_pass = True
+                                            break
+                                if not wlrl_atleast_one_pass:
+                                    error.append("Reset value:{hex(csr_reset_val)} \
+doesn't match the 'wlrl' description :{csrtype['wlrl']} for the subfield: {field}.")
+                            elif 'ro_constant' in csrtype:
+                                if test_val != csrtype['ro_constant']:
+                                    error.append("Reset value doesnt match the \
+'ro_constant' description for the subfield: {field}.")
+                            elif 'ro_variable' in csrtype:
+                                pass
+                            elif "warl" in csrtype:
+                                warl_inst = warl_class(csrnode[field]['type']['warl'], f'{csrname}::{field}', submsb, sublsb, spec)
+                                legal_err = warl_inst.islegal(test_val)
+                                if legal_err != []:
+                                    logger.error('f{legal_err}')
+                                    error.append( " Reset value doesn't match the 'warl' description for the register.")
+                                    error = error + legal_err
+            if error:
+                errors[csrname] = error
     return spec, errors
 
 def check_debug_specs(debug_spec, isa_spec,
@@ -1577,11 +1561,21 @@ def check_debug_specs(debug_spec, isa_spec,
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
+
+        normalized['ISA'] = isa_string
+
+        if logging:
+            logger.info("Initiating WARL legality checks.")
+        normalized, errors = check_warl_legality(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+
         if logging:
             logger.info("Initiating post processing and reset value checks.")
         normalized, errors = check_reset_fill_fields(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -1648,7 +1642,6 @@ def check_isa_specs(isa_spec,
         schema_yaml = add_fflags_type_setters(master_schema_yaml['hart_schema']['schema']) 
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
-        rvxlen='rv'+str(xlen[0])
         validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
         validator.allow_unknown = False
         validator.purge_readonly = True
@@ -1666,6 +1659,13 @@ def check_isa_specs(isa_spec,
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
+
+        if logging:
+            logger.info("Initiating WARL legality checks.")
+        normalized, errors = check_warl_legality(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+
         if logging:
             logger.info("Initiating post processing and reset value checks.")
         normalized, errors = check_reset_fill_fields(normalized, logging)
