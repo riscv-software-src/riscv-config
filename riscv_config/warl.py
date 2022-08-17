@@ -308,6 +308,7 @@ input value {value} as legal')
         return err
 
     def iserr(self):
+        logger.debug(f'---- Checking for Errors in {self.csrname}')
         csrname = self.csrname
         reg_lsb = 0
         if self.f_lsb != 0:
@@ -315,7 +316,6 @@ input value {value} as legal')
         else:
             reg_msb = self.f_msb
         reg_bitlen = reg_msb - reg_lsb + 1
-        reg_maxval = 2**reg_bitlen
         err = []
         #basic checks
         #if dependencies is empty, then there should be only one legal string
@@ -461,6 +461,7 @@ of the register')
                 # assignment string.
                 bitcount = bitcount - (msb-lsb+1)
                 bitlength = msb - lsb + 1
+                reg_maxval = 2**bitlength
                 maxval = 2**bitlength
                 if op not in ['in', 'not in', 'bitmask']:
                     err.append(f' the warl string {legalstr} for csr \
