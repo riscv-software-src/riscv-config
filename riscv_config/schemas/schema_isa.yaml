@@ -124,7 +124,7 @@ hart_schema:
       
     ###
     #pmp_granularity
-    #--------------
+    #---------------
     #
     # - **Description**: Granularity of pmps
     # - **Default**: 0
@@ -240,6 +240,26 @@ hart_schema:
         nullable: True
       nullable: True
       default:
+
+    ###
+    #pte_ad_hw_update
+    #-----------------
+    #
+    # - **Description**: This is a boolean field indicating that when a virtual page is accessed 
+    #   and the A bit is clear, or is written and the D bit is clear, the implementation sets 
+    #   the corresponding bit(s) in the PTE in the hardware itself and does not raise an exception
+    #   for this particular scenario. When set to False, a corresponding page-fault exception needs
+    #   to be raised.
+    # - **Default**: False
+    # - **Constraints**: Can be set to True only if 'S' mode is implemented in the ISA
+    # - **Examples**:
+    #   
+    #   .. code-block:: yaml
+    #
+    #     pte_ad_hw_update: False
+    #     pte_ad_hw_update: True
+
+    pte_ad_hw_update: {type: boolean,  default: False, check_with: s_exists}
 
     schema_node:
       type: dict
