@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   
   - scounteren can be a ro\_constant now
   - the maxval checks for mask/fixedval should be based on the length of the part
+  - adding support for mtval\_update field
+  - adding support for pte\_ad\_hw\_update field
+  - cleaned up documentation
 
 ## [3.0.0] - 2022-08-16
 
