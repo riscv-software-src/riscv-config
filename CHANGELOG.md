@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2022-08-18
+  - fix pypi dependencies for docs
+
 ## [3.1.0] - 2022-08-17
   
   - scounteren can be a ro\_constant now
