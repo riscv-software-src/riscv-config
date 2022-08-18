@@ -152,6 +152,18 @@ class schemaValidator(Validator):
         if value and 'S' not in isa_string:
             self._error(field, "cannot be set to True without 'S' mode support")
 
+    def _check_with_mtval_update(self, field, value):
+        '''Function to check if the mtval_update bitmap adhered to the required
+        restrictions.
+        '''
+        global isa_string
+        if (((value & 0xFFFF000F4000) != 0) or (value > 0xFFFFFFFFFFFFFFFF)):
+            self._error(field, 'Bits corresponding to reserved cause values should not be set')
+        if (value & 0xB000) != 0 and 'S' not in isa_string:
+            self._error(field, 'Bits corresponding to page-faults can only be set when S mode is supported')
+        if (value & 0xF00000) != 0 and 'H' not in isa_string:
+            self._error(field, 'Bits corresponding to guest-page faults can only be set when H mode is supported')
+
     def _check_with_s_check(self, field, value):
         s = 18
         check = False

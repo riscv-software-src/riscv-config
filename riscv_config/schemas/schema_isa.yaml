@@ -261,6 +261,30 @@ hart_schema:
 
     pte_ad_hw_update: {type: boolean,  default: False, check_with: s_exists}
 
+    ###
+    #mtval_update
+    #------------
+    #
+    # - **Description**: This field a basically a bitmap. If bit `n` is set, it indicates
+    #   that the device will update the mtval CSR with a non-zero value when an exception corresponding to
+    #   cause `n` occurs. A value of zero will indicate that the exception `n` will update the mtval
+    #   with value 0.
+    # - **Default**: 255 (set for exception cause values 0-7)
+    # - **Constraints**: 
+    #
+    #   - reserved bits [10, 11, 16-23, 32-47, >=64] must be zeros always
+    #   - bits corresponding to page-faults can only be set if 'S' mode is implemented
+    #   - bits corresponding to guest-page faults can only be set if 'H' mode is implemented
+    #
+    # - **Examples**:
+    #
+    #   .. code-block:: yaml
+    #     
+    #     mtval_update: 0b1110
+
+    mtval_update: {type: integer, default: 0b11111111, check_with: mtval_update}
+
+
     schema_node:
       type: dict
       allow_unknown: false
