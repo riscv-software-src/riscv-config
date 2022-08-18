@@ -251,7 +251,8 @@ hart_schema:
     #   for this particular scenario. When set to False, a corresponding page-fault exception needs
     #   to be raised.
     # - **Default**: False
-    # - **Constraints**: Can be set to True only if 'S' mode is implemented in the ISA
+    # - **Constraints**: Can be set to True only if 'S' mode is implemented in the ISA and if
+    #   stap.mode can be set to one of the virtualization modes.
     # - **Examples**:
     #   
     #   .. code-block:: yaml
