@@ -1240,6 +1240,41 @@ def check_mhpm(spec, logging = False):
         if error:
             errors[csrname] = error
     return errors
+   
+def check_supervisor(spec, logging=False):
+    ''' this function includes several supervisor related checks:
+
+    - check if pte_ad_hw_update is True, then satp.mode should be able to take
+      one of the possible virtualization modes
+    '''
+    errors = {}
+
+    pte_ad_hw_update = spec['pte_ad_hw_update']
+    xlen = 64 if 64 in spec['supported_xlen'] else 32
+    msb = 63 if xlen == 64 else 31
+    lsb = 60 if xlen == 64 else 31
+    virt_modes = [1] if xlen == 32 else [8,9,10,11]
+    satp_mode_impl = spec['satp'][f'rv{xlen}']['mode']['implemented']
+    satp_mode_type = spec['satp'][f'rv{xlen}']['mode']['type']
+    virtualization_possible = False
+    if 'ro_constant' in satp_mode_type:
+        if satp_mode_type['ro_constant'] == 0:
+            virtualization_possible = False
+        else:
+            virtualization_possible = True
+    elif 'warl' in satp_mode_type:
+        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
+        for x in virt_modes:
+            err = warl_inst.islegal(x)
+            if not err:
+                virtualization_possible = True
+                break
+
+    if pte_ad_hw_update and not virtualization_possible:
+        errors['pte_ad_hw_update'] = ['pte_ad_hw_update should be True only if satp.mode can be \
+set to one of the legal virtualization modes']
+    return errors
+        
     
      
 def check_pmp(spec, logging = False):
@@ -1681,6 +1716,9 @@ def check_isa_specs(isa_spec,
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
         errors = check_pmp(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors) 
+        errors = check_supervisor(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors) 
               
