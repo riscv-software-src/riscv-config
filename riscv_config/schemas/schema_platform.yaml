@@ -2,19 +2,19 @@
 #reset
 #-----
 #
-# **Description**: Stores the value for the reset vector. It can either be a label or an address.
+# - **Description**: Stores the value for the reset vector. It can either be a label or an address.
 #
-#   * label: A string field equal to the label in the assembly code
-#   * address: A value equal to the absolute address where the vector is present
+#     * label: A string field equal to the label in the assembly code
+#     * address: A value equal to the absolute address where the vector is present
+# - **Constraints**: label and address both cannot be defined
+# - **Examples**:
 #
-# **Examples**:
+#   .. code-block:: yaml
 #
-# .. code-block:: yaml
-#
-#    reset:
-#      label: reset_vector
-#    reset:
-#      label: 0x80000000
+#      reset:
+#        label: reset_vector
+#      reset:
+#        label: 0x80000000
 
 reset:
   type: dict
@@ -31,20 +31,20 @@ reset:
 #nmi
 #---
 #
-# **Description**: Stores the value for the nmi vector. It can either be a label or an address.
+# - **Description**: Stores the value for the nmi vector. It can either be a label or an address.
 #
-#   * label: A string field equal to the label in the assembly code.
-#   * address: A value equal to the absolute address where the vector is present.
+#     * label: A string field equal to the label in the assembly code.
+#     * address: A value equal to the absolute address where the vector is present.
+# - **Constraints**: label and address both cannot be defined
+# - **Examples**: 
 # 
-# **Examples**: 
-# 
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   nmi:
-#      label: nmi_vector
-# 
-#   nmi:
-#      address: 0x8000000
+#     nmi:
+#        label: nmi_vector
+#   
+#     nmi:
+#        address: 0x8000000
 
 nmi:
   type: dict
@@ -61,22 +61,18 @@ nmi:
 #mtime
 #-----
 #
-# **Description**: Stores the fields for memory mapped *mtime* register.
+# - **Description**: Stores the fields for memory mapped *mtime* register.
 #
 #       * implemented: A boolean field indicating that the register has been implemented.
 #       * address: A value equal to the physical address at which the register is present.
 # 
-# **Examples**: 
+# - **Examples**: 
 # 
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   mtime:
-#      implemented: True
-#      address: 0x458
-#
-# **Constraints**: 
-#
-#       - None
+#     mtime:
+#        implemented: True
+#        address: 0x458
 
 mtime:
   type: dict
@@ -93,22 +89,18 @@ mtime:
 #mtimecmp
 #--------
 # 
-# **Description**: Stores the fields for memory mapped *mtimecmp* register.
+# - **Description**: Stores the fields for memory mapped *mtimecmp* register.
 #
 #       * implemented: A boolean field indicating that the register has been implemented.
 #       * address: A value equal to the physical address at which the register is present.
 # 
-# **Examples**: 
+# - **Examples**: 
 # 
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   mtimecmp:
-#      implemented: True
-#      address: 0x458
-#
-# **Constraints**:
-#
-#       - None
+#     mtimecmp:
+#        implemented: True
+#        address: 0x458
 
 mtimecmp:
   type: dict
@@ -123,9 +115,9 @@ mtimecmp:
 
 ###
 #mtval_condition_writes
-#-----
+#----------------------
 #
-# **Description**: Stores the fields for *mtval_condition_writes* register.
+# - **Description**: Stores the fields for *mtval_condition_writes* register.
 #
 #       * implemented: A Boolean value indicating whether the register is implemented.      
 #       * behaviour: A dictionary type to specify which of the exceptions modify the mtval_condition_writes reg
@@ -146,15 +138,11 @@ mtimecmp:
 #           - e13: A string type describing the behaviour of exception 13.
 #           - e15: A string type describing the behaviour of exception 15.
 #
-# **Examples**: 
+# - **Examples**: 
 # 
-# .. code-block:: yaml
+#  .. code-block:: yaml
 #
-#    TBD: Provide a concrete use-case for the above.
-#
-# **Constraints**: 
-#
-#       - None
+#     TBD: Provide a concrete use-case for the above.
 
 mtval_condition_writes:
   type: dict
@@ -200,24 +188,20 @@ mtval_condition_writes:
 
 ###
 #scause_non_standard
-#------
+#-------------------
 #
-# **Description**: Stores the fields for the *scause* register.
+# - **Description**: Stores the fields for the *scause* register.
 #
 #   * implemented: A boolean field indicating that the register has been implemented.
 #   * values: The list of exception values greater than 16 as assumed by the platform as integers.
 # 
-# **Examples**: 
+# - **Examples**: 
 # 
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   scause_non_standard:
-#      implemented: True
-#      value: [16,17,20]
-#
-# **Constraints**: 
-#
-#       - None
+#     scause_non_standard:
+#        implemented: True
+#        value: [16,17,20]
 
 scause_non_standard:
   type: dict
@@ -232,9 +216,9 @@ scause_non_standard:
   
 ###
 #stval_condition_writes
-#-----
+#----------------------
 #
-# **Description**: Stores the fields for *stval_condition_writes* register.
+# - **Description**: Stores the fields for *stval_condition_writes* register.
 #
 #       - implemented: A Boolean value indicating whether the field is implemented.   
 #       - behaviour: A dictionary type to specify which of the exceptions modify the stval_condition_writes reg
@@ -255,15 +239,11 @@ scause_non_standard:
 #           - e13: A string type describing the behaviour of exception 13.
 #           - e15: A string type describing the behaviour of exception 15.
 #
-# **Examples**: 
+# - **Examples**: 
 # 
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#    TBD: Provide a concrete use-case for the above.
-#
-# **Constraints**: 
-#
-#       - None
+#      TBD: Provide a concrete use-case for the above.
 
 stval_condition_writes:
   type: dict
@@ -309,22 +289,23 @@ stval_condition_writes:
 
 ###
 #zicbo_cache_block_sz
-#----------------
+#--------------------
 #
-# **Description**: byte size of the cache block
+# - **Description**: byte size of the cache block
+# - **Constraints**:
 #
-# **Examples**:
+#   - zicbom_sz cannot exceed 4096
+#   - zicboz_sz cannot exceed 4096
+#   - for both the above variables the integer must be a power of 2
 #
-# .. code-block:: yaml
+# - **Examples**:
 #
-#   zicbo_cache_block_sz :
-#     implemented: true
-#     zicbom_sz: 64
-#     zicboz_sz: 64
+#   .. code-block:: yaml
 #
-# **Constraints**:
-#
-#   - None
+#     zicbo_cache_block_sz :
+#       implemented: true
+#       zicbom_sz: 64
+#       zicboz_sz: 64
 
 zicbo_cache_block_sz:
   type: dict

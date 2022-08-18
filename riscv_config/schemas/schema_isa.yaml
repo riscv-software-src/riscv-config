@@ -3,14 +3,14 @@
 #Vendor
 #------
 #
-# **Description**: Vendor name.
+# - **Description**: A string capturing the vendor name.
 #
-# **Examples**:
+# - **Examples**:
 #
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   Vendor: Shakti
-#   Vendor: Incoresemi
+#     Vendor: Shakti
+#     Vendor: Incoresemi
 
 Vendor: {type: string}
 
@@ -18,18 +18,14 @@ Vendor: {type: string}
 #Device
 #------
 #
-# **Description**: Device Name.
+# - **Description**: A string capturing the device name.
 #
-# **Examples**:
+# - **Examples**:
 #
-# .. code-block:: yaml
+#   .. code-block:: yaml
 #
-#   Device: E-Class
-#   Device: C-Class
-#
-# **Constraints**:
-#
-#   - None
+#     Device: E-Class
+#     Device: C-Class
 
 Device: {type: string}
 
@@ -40,21 +36,21 @@ hart_schema:
     #ISA
     #---
     #
-    # **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
-    # (other than Zext) should be mentioned in upper-case. Z extensions should begin with an upper-case
-    # 'Z' followed by lower-case extension name (without Camel casing)
+    # - **Description**: Takes input a string representing the ISA supported by the implementation. All extension names
+    #   (other than Zext) should be mentioned in upper-case. Z extensions should begin with an upper-case
+    #   'Z' followed by lower-case extension name (without Camel casing)
+    # - **Default**:  This is a required field to be set by the user. No defaults exist.
+    # - **Constraints**:
     #
-    # **Examples**:
+    #     - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
+    #     - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
     #
-    # .. code-block:: yaml
+    # - **Examples**:
     #
-    #   ISA: RV32IMA
-    #   ISA: RV64IMAFDCZifencei
+    #   .. code-block:: yaml
     #
-    # **Constraints**:
-    #
-    #   - Certain extensions are only valid in certain user-spec version. For, eg. Zifencei is available only in user-spec 2.3 and above.
-    #   - The ISA string must be specified as per the convention mentioned in the specifications(like subsequent Z extensions must be separated with an '_')
+    #     ISA: RV32IMA
+    #     ISA: RV64IMAFDCZifencei
 
     ISA: { type: string, required: true, check_with: capture_isa_specifics}
     
@@ -62,36 +58,30 @@ hart_schema:
     #User_Spec_Version
     #-----------------
     #
-    # **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Description**: Version number of User/Non-priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Default**: 2.2
+    # - **Constraints**: should be a valid version later than 2.2
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   User_Spec_Version: "2.2"
-    #   User_Spec_Version: "2.3"
-    #
-    # **Constraints**:
-    #
-    #   - should be a valid version later than 2.2
+    #     User_Spec_Version: "2.2"
+    #     User_Spec_Version: "2.3"
 
     User_Spec_Version: {type: string,  default: '2.2', required: true, allowed: ["2.2", "2.3"]}
     ###
     #Privilege_Spec_Version
     #----------------------
     #
-    # **Description**: Version number of Priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Description**: Version number of Priveleged ISA specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Default**: "1.10"
+    # - **Constraints**: should be a valid version later than 1.10
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   Privilege_Spec_Version: "1.10"
-    #   Privilege_Spec_Version: "1.11"
-    #
-    # **Constraints**:
-    #
-    #   - should be a valid version later than 1.10
+    #     Privilege_Spec_Version: "1.10"
+    #     Privilege_Spec_Version: "1.11"
 
     Privilege_Spec_Version: { type: string, default: '1.10', required: true, 
                               allowed: ["1.10", "1.11", "0"] }
@@ -99,18 +89,15 @@ hart_schema:
     #hw_data_misaligned_support
     #--------------------------
     #
-    # **Description**: A boolean value indicating whether hardware support for misaligned load/store requests exists.
+    # - **Description**: A boolean value indicating whether hardware support for misaligned load/store requests exists.
+    # - **Default**: False
+    # - **Constraints**: None
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #    hw_data_misaligned_support: True
-    #    hw_data_misaligned_support: False
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #      hw_data_misaligned_support: True
+    #      hw_data_misaligned_support: False
 
     hw_data_misaligned_support: {type: boolean, default: false}
     
@@ -118,19 +105,16 @@ hart_schema:
     #supported_xlen
     #--------------
     #
-    # **Description**: list of supported xlen on the target
+    # - **Description**: list of supported xlen on the target
+    # - **Default**:  This is a required field to be set by the user. No defaults exist.
+    # - **Constraints**: list should include integers from:  32, 64 and/or 128. XLEN=128 is not fully supported though.
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   supported_xlen : [32]
-    #   supported_xlen : [64, 32]
-    #   supported_xlen : [64]
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     supported_xlen : [32]
+    #     supported_xlen : [64, 32]
+    #     supported_xlen : [64]
 
     supported_xlen:
       type: list
@@ -140,20 +124,17 @@ hart_schema:
       
     ###
     #pmp_granularity
-    #--------------
+    #---------------
     #
-    # **Description**: Granularity of pmps
+    # - **Description**: Granularity of pmps
+    # - **Default**: 0
+    # - **Constraints**: None
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   pmp_granularity : 2
-    #   pmp_granularity : 4
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     pmp_granularity : 2
+    #     pmp_granularity : 4
 
     pmp_granularity:
       type: integer
@@ -164,17 +145,14 @@ hart_schema:
     #physical_addr_sz
     #----------------
     #
-    # **Description**: size of the physical address
+    # - **Description**: size of the physical address
+    # - **Default**:  This is a required field to be set by the user. No defaults exist.
+    # - **Constraints**: cannot exceed 56 bits
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   physical_addr_sz : 32
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     physical_addr_sz : 32
 
     physical_addr_sz:
       type: integer
@@ -186,21 +164,27 @@ hart_schema:
     #custom_exceptions
     #-----------------
     #
-    # **Description**: list of custom exceptions implemented
+    # - **Description**: A dictionary of custom exceptions implemented by the device. Each node in the
+    #   dictionary contains 3 fields:
     #
-    # **Examples**:
+    #     - cause_val: and integer indicating the cause value associated with that exception. Cannot
+    #       be a reserved cause value.
+    #     - cause_name: a string containing the name of the exception
+    #     - priv_mode: a string containing one-of M, S or U indicating the privilege mode to which the
+    #       exception is associated with.
+    # - **Default**: null dictionary indicating no custom exceptions exist.
+    # - **Constraints**: Reserved encodings cannot be used in cause_val
+    # - **Examples**:
     #
-    # .. code-block:: yaml
+    #   .. code-block:: yaml
     #
-    #   custom_exceptions: 
-    #     - cause_val: 25
-    #       cause_name: mycustom
-    #     - cause_val: 26
-    #       cause_name: mycustom2
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     custom_exceptions: 
+    #       - cause_val: 25
+    #         cause_name: mycustom
+    #         priv_mode: M
+    #       - cause_val: 26
+    #         cause_name: mycustom2
+    #         priv_mode: M
 
     custom_exceptions:
       type: list
@@ -218,21 +202,31 @@ hart_schema:
     #custom_interrupts
     #-----------------
     #
-    # **Description**: list of custom interrupts implemented
+    # - **Description**: A dictionary of custom interrupts implemented by the device. Each node in the
+    #   dictionary contains 4 fields:
     #
-    # **Examples**:
+    #     - cause_val: and integer indicating the cause value associated with that interrupt. Cannot
+    #       be a reserved cause value.
+    #     - cause_name: a string containing the name of the interrupt
+    #     - priv_mode: a string containing one-of M, S or U indicating the privilege mode to which the
+    #       exception is associated with.
+    #     - on_reset_enable: an integer which be 0 or 1, indicating the whether the interrupt is
+    #       enable on reset or not.
+    # - **Default**: null dictionary indicating no custom exceptions exist.
+    # - **Constraints**: Reserved encodings cannot be used in cause_val
+    # - **Examples**:
     #
-    # .. code-block:: yaml
+    #   .. code-block:: yaml
     #
-    #   custom_interrupts: 
-    #     - cause_val: 25
-    #       cause_name: mycustom
-    #     - cause_val: 26
-    #       cause_name: mycustom2
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     custom_interrupts: 
+    #       - cause_val: 25
+    #         cause_name: mycustom
+    #         priv_mode: M
+    #         on_reset_enable: 1    
+    #       - cause_val: 26
+    #         cause_name: mycustom2
+    #         priv_mode: S
+    #         on_reset_enable: 0
 
     custom_interrupts:
       type: list
@@ -246,6 +240,51 @@ hart_schema:
         nullable: True
       nullable: True
       default:
+
+    ###
+    #pte_ad_hw_update
+    #-----------------
+    #
+    # - **Description**: This is a boolean field indicating that when a virtual page is accessed 
+    #   and the A bit is clear, or is written and the D bit is clear, the implementation sets 
+    #   the corresponding bit(s) in the PTE in the hardware itself and does not raise an exception
+    #   for this particular scenario. When set to False, a corresponding page-fault exception needs
+    #   to be raised.
+    # - **Default**: False
+    # - **Constraints**: Can be set to True only if 'S' mode is implemented in the ISA and if
+    #   stap.mode can be set to one of the virtualization modes.
+    # - **Examples**:
+    #   
+    #   .. code-block:: yaml
+    #
+    #     pte_ad_hw_update: False
+    #     pte_ad_hw_update: True
+
+    pte_ad_hw_update: {type: boolean,  default: False, check_with: s_exists}
+
+    ###
+    #mtval_update
+    #------------
+    #
+    # - **Description**: This field a basically a bitmap. If bit `n` is set, it indicates
+    #   that the device will update the mtval CSR with a non-zero value when an exception corresponding to
+    #   cause `n` occurs. A value of zero will indicate that the exception `n` will update the mtval
+    #   with value 0.
+    # - **Default**: 255 (set for exception cause values 0-7)
+    # - **Constraints**: 
+    #
+    #   - reserved bits [10, 11, 16-23, 32-47, >=64] must be zeros always
+    #   - bits corresponding to page-faults can only be set if 'S' mode is implemented
+    #   - bits corresponding to guest-page faults can only be set if 'H' mode is implemented
+    #
+    # - **Examples**:
+    #
+    #   .. code-block:: yaml
+    #     
+    #     mtval_update: 0b1110
+
+    mtval_update: {type: integer, default: 0b11111111, check_with: mtval_update}
+
 
     schema_node:
       type: dict
@@ -9998,14 +10037,11 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: { warl: *ref_warl }
+              oneof:
+              - schema: {ro_constant: {type: integer}}
+              - schema: { warl: *ref_warl }
               default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - scounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+                ro_constant: 0
             accessible:
               type: boolean
               default: true
@@ -10022,14 +10058,11 @@ hart_schema:
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
               type: dict
-              schema: { warl: *ref_warl }
+              oneof:
+              - schema: {ro_constant: {type: integer}}
+              - schema: { warl: *ref_warl }
               default:
-                warl:
-                  dependency_fields: []
-                  legal:
-                  - scounteren[31:0] in [0x00000000]
-                  wr_illegal:
-                  - unchanged
+                ro_constant: 0
             accessible:
               default: true
               check_with: rv64_check

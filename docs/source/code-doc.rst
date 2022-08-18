@@ -32,7 +32,7 @@ Utils
 WARL
 ----
 
-.. automodule:: riscv_config.warl_new
+.. automodule:: riscv_config.warl
    :members:
    :special-members:
    :private-members:

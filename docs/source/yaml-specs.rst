@@ -9,10 +9,11 @@ This section provides details of the ISA and Platform spec YAML files that need 
 ISA YAML Spec
 =============
 
-**NOTE**:
+.. note::
+  
+  All integer fields accept values as integers or hexadecimals (can be used interchangeably) unless specified otherwise.
 
-  1. All integer fields accept values as integers or hexadecimals(can be used interchangeably) unless specified otherwise.
-  2. Different examples of the input yamls and the generated checked YAMLs can be found here : `Examples <https://github.com/riscv/riscv-config/tree/master/examples>`_
+  Different examples of the input yamls and the generated checked YAMLs can be found here : `Examples <https://github.com/riscv/riscv-config/tree/master/examples>`_
 
 .. include:: schema_isa.rst
 
