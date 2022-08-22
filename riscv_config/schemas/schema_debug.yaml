@@ -5,40 +5,36 @@ hart_schema:
     #supported_xlen
     #--------------
     #
-    # **Description**: list of supported xlen on the target
+    # - **Description**: list of supported xlen on the target
+    # - **Default**:  This is a required field to be set by the user. No defaults exist.
+    # - **Constraints**: list should include integers from:  32, 64 and/or 128. XLEN=128 is not fully supported though.
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
-    #
-    #   supported_xlen : [32]
-    #   supported_xlen : [64, 32]
-    #   supported_xlen : [64]
-    #
-    # **Constraints**:
-    #
-    #   - None
+    #     supported_xlen : [32]
+    #     supported_xlen : [64, 32]
+    #     supported_xlen : [64]
 
     supported_xlen:
       type: list
       schema: { type: integer, allowed: [ 32, 64, 128] }
       required: true
+
     ###
     #Debug_Spec_Version
     #------------------
     #
-    # **Description**: Version number of Debug specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Description**: Version number of Debug specification as string. Please enclose the version in "" to avoid type mismatches.
+    # - **Default**: "1.0.0"
+    # - **Constraints**: - should be a valid version later than 1.0.0
+    # - **Examples**:
     #
-    # **Examples**:
+    #   .. code-block:: yaml
     #
-    # .. code-block:: yaml
+    #     Debug_Spec_Version: "1.0.0"
+    #     Debug_Spec_Version: "0.13.2"
     #
-    #   Debug_Spec_Version: "1.0.0"
-    #   Debug_Spec_Version: "0.13.2"
-    #
-    # **Constraints**:
-    #
-    #   - should be a valid version later than 1.0.0
 
     Debug_Spec_Version: {type: string,  default: '1.0.0', required: true, allowed: ["1.0.0", "0.13.2"]}
     
@@ -46,13 +42,13 @@ hart_schema:
     #debug_mode
     #----------
     #
-    #  **Description**: Boolean value indicating if the debug instructions are accessible.
+    #  - **Description**: Boolean value indicating if the debug instructions are accessible.
+    #  - **Default**: This is a required field, and thus no defaults exists
+    #  - **Examples**:
     #
-    #  **Examples**:
+    #    .. code-block:: yaml
     #
-    #  .. code-block:: yaml
-    #
-    #    debug_mode: False
+    #      debug_mode: False
 
     debug_mode:
       type: boolean
@@ -63,13 +59,13 @@ hart_schema:
     #parking_loop
     #------------
     #
-    #  **Description**: Integer value indicating the address of the debug parking loop
+    #  - **Description**: Integer value indicating the address of the debug parking loop. Leaving it
+    #    empty indicates that a parking loop doesn't exist
+    #  - **Examples**:
     #
-    #  **Examples**:
+    #    .. code-block:: yaml
     #
-    #  .. code-block:: yaml
-    #
-    #     parking_loop: 0x800
+    #       parking_loop: 0x800
 
     parking_loop:
       type: integer
