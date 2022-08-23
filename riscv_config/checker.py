@@ -238,7 +238,9 @@ def add_debug_setters(schema_yaml):
     '''Function to set the default setters for various fields in the debug schema'''
     regsetter = lambda doc: regset()
     
+    tselectregsetter = lambda doc: pmpregset()
     schema_yaml['dcsr']['default_setter'] = regsetter
+    schema_yaml['tselect']['default_setter'] = tselectregsetter
     return schema_yaml
     
 def add_reset_setters(schema_yaml):
