@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.2] - 2022-08-23
+  - if the value being tested is out of bounds, then skip with error immediately
+
 ## [3.1.1] - 2022-08-18
   - fix pypi dependencies for docs
 
