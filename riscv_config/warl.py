@@ -48,6 +48,8 @@ class warl_class():
         self.node = node
         self.f_msb = f_msb
         self.f_lsb = f_lsb
+        self.bitlen = f_msb - f_lsb + 1
+        self.maxval = (2**(self.bitlen))-1
         self.spec = spec
         self.regex_legal = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]')
         self.regex_dep_legal = re.compile('(?P<csrname>.*?)\s*\[(?P<indices>.*?)\]\s*(?P<op>in|not in.*?)\s*\[(?P<values>.*?)\]\s*')
@@ -108,8 +110,8 @@ class warl_class():
                 lsb = msb
             bitlen = msb - lsb + 1
 
-            if value > ((2**bitlen)-1):
-                err.append(f' for csr "{self.csrname}" the value {value} is out of bounds')
+            if value > self.maxval:
+                err.append(f' for csr "{self.csrname}" the value {hex(value)} is out of bounds')
                 continue
 
             # extract the value of the bits for which this particular substring
