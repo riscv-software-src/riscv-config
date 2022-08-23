@@ -101,6 +101,143 @@ hart_schema:
             schema:
               type: string
               regex: (^0x[012456789abcdef]+:0x[0123456789abcdef]+$)|(^[0-9]+:[0-9]+$)|(^[0-9]+$)|(^0x[012456789abcdef]+$)
+
+    tselect:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: describes the different triggers implemented. 
+        address: {type: integer, default: 0x7a0, allowed: [0x7a0]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - tselect[31:0] in [0x00000000:0x2]
+                  wr_illegal:
+                  - unchanged
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - tselect[63:0] in [0x00000000:0x2]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              default: true
+              check_with: rv64_check
+          default: {accessible: false}
+
+    tdata1:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: describes the different triggers implemented. 
+        address: {type: integer, default: 0x7a1, allowed: [0x7a1]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        indexing_reg: {type: boolean, default: True, allowed: [True]}
+        rv32:
+          type: dict
+          schema:
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible:
+              type: boolean
+              default: true
+            index_select_reg: {type: string, default: , nullable: True}
+            index_list:
+              type: list
+              schema: 
+                type: dict
+                schema:
+                  index_val: {type: integer, default: 0}
+                  reset-val: {type: integer, default: 0, check_with: max_length}
+                  shadow: {type: string, default: , nullable: True}
+                  shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                  type:
+                    type: dict
+                    oneof:
+                    - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+                    - schema: { warl: *ref_warl }
+                    default:
+                      warl:
+                        dependency_fields: []
+                        legal:
+                        - writeval[31:0] in [0x00000000:0xFFFFFFFF]
+                        wr_illegal:
+                        - unchanged
+          default: {accessible: false}
+
+        rv64:
+          type: dict
+          schema:
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible:
+              type: boolean
+              default: true
+            index_select_reg: {type: string, default: , nullable: True}
+            index_list:
+              type: list
+              schema: 
+                type: dict
+                schema:
+                  index_val: {type: integer, default: 0}
+                  reset-val: {type: integer, default: 0, check_with: max_length}
+                  shadow: {type: string, default: , nullable: True}
+                  shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                  type:
+                    type: dict
+                    oneof:
+                    - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+                    - schema: { warl: *ref_warl }
+                    default:
+                      warl:
+                        dependency_fields: []
+                        legal:
+                        - writeval[31:0] in [0x00000000:0xFFFFFFFF]
+                        wr_illegal:
+                        - unchanged
+          default: {accessible: false}
+
     dcsr:
       type: dict
       schema:
