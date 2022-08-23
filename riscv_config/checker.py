@@ -1079,6 +1079,19 @@ def get_fields(node, bitwidth):
     else:
         fields.append(bits)
         return fields
+
+def update_fields(spec, logging=False):
+    for csrname, csrnode in spec.items():
+        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
+            if 'indexing_reg' in csrnode:
+                continue
+            if csrnode['rv32']['accessible']:
+                csrnode['rv32']['fields'] = get_fields(
+                    csrnode['rv32'], 32)
+            if csrnode['rv64']['accessible']:
+                csrnode['rv64']['fields'] = get_fields(
+                    csrnode['rv64'], 64)
+    return spec
         
 def check_fields(spec):
     errors = {} 
@@ -1137,6 +1150,8 @@ def check_shadows(spec, logging = False):
             logger.debug('Checking Shadows for ' + csr)
         error = []
         if isinstance(content, dict) and 'description' in content:
+            if 'indexing_reg' in content:
+                continue
             for rvxlen in _rvxlen:
                 if content[rvxlen]['accessible'] and not content[rvxlen]['fields']:
                     if content[rvxlen]['shadow'] is None: 
@@ -1382,142 +1397,160 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
 
 def check_warl_legality(spec, logging = False):
     errors = {}
+    warlnodes = {}
+    xlen = 64 if 64 in spec['supported_xlen'] else 32
     for csrname, csrnode in spec.items():
-        fields = []
+        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
+            if csrnode[f'rv{xlen}']['accessible']:
+                if 'indexing_reg' in csrnode:
+                    for n in csrnode[f'rv{xlen}']['index_list']:
+                        csrname = f'{csrname}[{n["index_val"]}]'
+                        if 'warl' in n['type'] and n['shadow'] is None:
+                            warlnodes[csrname] = {}
+                            warlnodes[csrname]['warl'] = n['type']['warl']
+                            warlnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
+                            warlnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                elif csrnode[f'rv{xlen}']['fields'] == []:
+                    if csrnode[f'rv{xlen}']['shadow'] is None and \
+                            'warl' in csrnode[f'rv{xlen}']['type']:
+                        warlnodes[csrname] = {}
+                        warlnodes[csrname]['warl'] = csrnode[f'rv{xlen}']['type']['warl']
+                        warlnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
+                        warlnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                else:
+                    for f in csrnode[f'rv{xlen}']['fields']:
+                        if not isinstance(f, list) and csrnode[f'rv{xlen}'][f]['implemented']:
+                            if csrnode[f'rv{xlen}'][f]['shadow'] is None and \
+                                    'warl' in csrnode[f'rv{xlen}'][f]['type']:
+                                warlnodes[f'{csrname}::{f}'] = {}
+                                warlnodes[f'{csrname}::{f}']['warl'] = csrnode[f'rv{xlen}'][f]['type']['warl']
+                                warlnodes[f'{csrname}::{f}']['msb'] = csrnode[f'rv{xlen}'][f]['msb']
+                                warlnodes[f'{csrname}::{f}']['lsb'] = csrnode[f'rv{xlen}'][f]['lsb']
+
+    for csrname, node in warlnodes.items():
+        if logging:
+            logger.debug(f'Checking legality of warl strings for csr: {csrname}')
         err = []
-        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
-            if csrnode['rv64']['accessible']:
-                fields = get_fields(csrnode['rv64'], 64)
-                node = csrnode['rv64']
-            elif csrnode['rv32']['accessible']:
-                fields = get_fields(csrnode['rv32'], 32)
-                node = csrnode['rv32']
-            else:
-                continue
-            if fields == [] and node['shadow'] is None:
-                if 'warl' in node['type']:
-                    if logging:
-                        logger.debug(f'Checking legality of warl strings for csr: {csrname}')
-                    warl_inst = warl_class(node['type']['warl'], csrname, node['msb'], node['lsb'], spec)
-                    err = warl_inst.iserr()
-            elif fields != []:
-                for f in fields:
-                    if not isinstance(f, list) and node[f]['implemented']:
-                        if node[f]['shadow'] is None and 'warl' in node[f]['type']:
-                            if logging:
-                                logger.debug(f'Checking legality of warl strings for : {csrname}.{f}')
-                            warl_inst = warl_class(node[f]['type']['warl'], f'{csrname}::{f}', node[f]['msb'], node[f]['lsb'], spec)
-                            err_f = warl_inst.iserr()
-                            if err_f:
-                                err.append(err_f)
-        if err:
-            errors[csrname] = err
+        warl_inst = warl_class(node['warl'], csrname, node['msb'],node['lsb'], spec)
+        err_f = warl_inst.iserr()
+        if err_f:
+            errors[csrname] = err_f
 
-    return spec, errors
+    return errors
                 
-
-
-def check_reset_fill_fields(spec, logging= False):
-    '''The check_reset_fill_fields function fills the field node with the names of the sub-fields of the register and then checks whether the reset-value of the register is a legal value. To do so, it iterates over all the subfields and extracts the corresponding field value from the reset-value. Then it checks the legality of the value according to the given field description. If the fields is implemented i.e accessible in both 64 bit and 32 bit modes, the 64 bit mode is given preference. '''
+def check_reset(spec, logging=False):
     errors = {}
+    resetnodes = {}
+    xlen = 64 if 64 in spec['supported_xlen'] else 32
     for csrname, csrnode in spec.items():
-
         if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
-            if csrnode['rv32']['accessible']:
-                csrnode['rv32']['fields'] = get_fields(
-                    csrnode['rv32'], 32)
-            if csrnode['rv64']['accessible']:
-                csrnode['rv64']['fields'] = get_fields(
-                    csrnode['rv64'], 64)
+            if csrnode[f'rv{xlen}']['accessible']:
+                if 'indexing_reg' in csrnode:
+                    for n in csrnode[f'rv{xlen}']['index_list']:
+                        csrname = f'{csrname}[{n["index_val"]}]'
+                        if n['shadow'] is None:
+                            resetnodes[csrname] = {}
+                            resetnodes[csrname]['type'] = n['type']
+                            resetnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
+                            resetnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                            resetnodes[csrname]['val'] = n['reset-val']
+                elif csrnode[f'rv{xlen}']['fields'] == [] and csrnode[f'rv{xlen}']['shadow'] is None:
+                    csr_reset_val = csrnode['reset-val']
+                    resetnodes[csrname] = {}
+                    resetnodes[csrname]['type'] = csrnode[f'rv{xlen}']['type']
+                    resetnodes[csrname]['val'] = csr_reset_val
+                    resetnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
+                    resetnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                elif csrnode[f'rv{xlen}']['fields']:
+                    csr_reset_val = csrnode['reset-val']
+                    for f in csrnode[f'rv{xlen}']['fields']:
+                        if not isinstance(f, list) and csrnode[f'rv{xlen}'][f]['implemented']:
+                            if csrnode[f'rv{xlen}'][f]['shadow'] is None:
+                                submsb = csrnode[f'rv{xlen}'][f]['msb']
+                                sublsb = csrnode[f'rv{xlen}'][f]['lsb']
+                                subbitlen = submsb - sublsb + 1
+                                resetnodes[f'{csrname}::{f}'] = {}
+                                resetnodes[f'{csrname}::{f}']['val'] = \
+                                        (csr_reset_val >> sublsb) & ((1<<subbitlen)-1)
+                                resetnodes[f'{csrname}::{f}']['msb'] = submsb
+                                resetnodes[f'{csrname}::{f}']['lsb'] = sublsb
+                                resetnodes[f'{csrname}::{f}']['type'] = csrnode[f'rv{xlen}'][f]['type']
+                        elif isinstance(f, list):
+                            for entry in f:
+                                low = entry[0]
+                                high = entry[-1]
+                                bitlen = high - low + 1
+                                test_val = (csr_reset_val >> low) & ((1<<bitlen)-1)
+                                if test_val != 0:
+                                    errors[csrname] = [f'WPRI bits [{high}:{low}] should \
+be zero']
 
-            csr_reset_val = csrnode['reset-val']
-            if csrnode['rv64']['accessible']:
-                csrnode = csrnode['rv64']
-            elif csrnode['rv32']['accessible']:
-                csrnode = csrnode['rv32']
-            else:
-                continue
-            if logging:
-                logger.debug(f'Checking Reset fields for: {csrname}')
-            error = []
-            if not csrnode['fields'] and csrnode['shadow'] is None:
-                csrtype = csrnode['type']
-                if 'wlrl' in csrtype:
-                    wlrl_atleast_one_pass = False
-                    for entry in csrtype['wlrl']:
-                        if ":" in entry:
-                            [low, high] = [ int(x,0) for x in entry.split(":")]
-                            if csr_reset_val >= low and csr_reset_val <= high:
-                                wlrl_atleast_one_pass = True
-                                break
-                            elif csr_reset_val == int(entry, 0):
-                                wlrl_atleast_one_pass = True
-                                break
-                    if not wlrl_atleast_one_pass:
-                        error.append("Reset value:{hex(csr_reset_val)} \
-doesn't match the 'wlrl' description :{csrtype['wlrl']} for the register.")
-                elif 'ro_constant' in csrtype:
-                    if csr_reset_val != csrtype['ro_constant']:
-                        error.append("Reset value doesnt match the \
+    for csrname, csrnode in resetnodes.items():
+        error = []
+        logger.debug(f'-- Checking reset values for csr: {csrname}')
+        error = check_values_in_type(csrname, csrnode, spec, logging)
+        if error:
+            errors[csrname]= error
+    return errors
+
+def check_values_in_type(csrname, csrnode, spec, logging=False):
+    error = []
+    val = csrnode['val']
+    if 'wlrl' in csrnode['type']:
+        wlrl_atleast_one_pass = False
+        for entry in csrnode['type']['wlrl']:
+            if ":" in entry:
+                [low, high] = [ int(x,0) for x in entry.split(":")]
+                if val >= low and val <= high:
+                    wlrl_atleast_one_pass = True
+                    break
+                elif val == int(entry, 0):
+                    wlrl_atleast_one_pass = True
+                    break
+        if not wlrl_atleast_one_pass:
+            error.append("Reset value:{hex(val)} \
+doesn't match the 'wlrl' description :{csrnode['type']['wlrl']} for the register.")
+    elif 'ro_constant' in csrnode['type']:
+        if val != csrnode['type']['ro_constant']:
+            error.append("Reset value doesnt match the \
 'ro_constant' description for the register.")
-                elif 'ro_variable' in csrtype:
-                    pass
-                elif "warl" in csrtype:
-                    warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], spec)
-                    legal_err = warl_inst.islegal(csr_reset_val)
-                    if legal_err != []:
-                        logger.error('f{legal_err}')
-                        error.append( " Reset value doesn't match the 'warl' description for the register.")
-                        error = error + legal_err
-            elif csrnode['fields']:
-                for field in csrnode['fields']:
-                    if isinstance(field, list):
-                        for entry in field:
-                            low = entry[0]
-                            high = entry[-1]
-                            bitlen = high - low + 1
-                            test_val = (csr_reset_val >> low) & ((1<<bitlen)-1)
-                            if test_val != 0:
-                                error.append(f'WPRI bits [{high}:{low}] should \
-be zero')
+    elif 'ro_variable' in csrnode['type']:
+        pass
+    elif "warl" in csrnode['type']:
+        warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], spec)
+        legal_err = warl_inst.islegal(val)
+        if legal_err != []:
+            error.append( f" value:{val} doesn't match the 'warl' description for the register {csrname}.")
+            error = error + legal_err
+    return error
+
+
+def check_indexing(spec, logging = False):
+    errors = {}
+    xlen = 64 if 64 in spec['supported_xlen'] else 32
+    for csrname, csrnode in spec.items():
+        if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
+            if csrnode[f'rv{xlen}']['accessible']:
+                if 'indexing_reg' in csrnode:
+                    logger.debug(f'-- Checking legality of indexed register {csrname}')
+                    indexing_reg = csrnode[f'rv{xlen}']['index_select_reg']
+                    if not spec[indexing_reg][f'rv{xlen}']['accessible']:
+                        errors[csrname] = [f'For csr:{csrname} the indexing_reg {indexing_reg} is not accessible']
                     else:
-                        submsb = csrnode[field]['msb']
-                        sublsb = csrnode[field]['lsb']
-                        subbitlen = submsb - sublsb + 1
-                        test_val = (csr_reset_val >> sublsb) & ((1<<subbitlen)-1)
-                        if csrnode[field]['implemented'] and csrnode[field]['shadow'] is None:
-                            logger.debug(' --> Subfield: '+field)
-                            csrtype = csrnode[field]['type']
-                            if 'wlrl' in csrtype:
-                                wlrl_atleast_one_pass = False
-                                for entry in csrtype['wlrl']:
-                                    if ":" in entry:
-                                        [low, high] = [ int(x,0) for x in entry.split(":")]
-                                        if test_val >= low and test_val <= high:
-                                            wlrl_atleast_one_pass = True
-                                            break
-                                        elif test_val == int(entry, 0):
-                                            wlrl_atleast_one_pass = True
-                                            break
-                                if not wlrl_atleast_one_pass:
-                                    error.append("Reset value:{hex(csr_reset_val)} \
-doesn't match the 'wlrl' description :{csrtype['wlrl']} for the subfield: {field}.")
-                            elif 'ro_constant' in csrtype:
-                                if test_val != csrtype['ro_constant']:
-                                    error.append("Reset value doesnt match the \
-'ro_constant' description for the subfield: {field}.")
-                            elif 'ro_variable' in csrtype:
-                                pass
-                            elif "warl" in csrtype:
-                                warl_inst = warl_class(csrnode[field]['type']['warl'], f'{csrname}::{field}', submsb, sublsb, spec)
-                                legal_err = warl_inst.islegal(test_val)
-                                if legal_err != []:
-                                    logger.error('f{legal_err}')
-                                    error.append( " Reset value doesn't match the 'warl' description for the register.")
-                                    error = error + legal_err
-            if error:
-                errors[csrname] = error
-    return spec, errors
+                        for n in csrnode[f'rv{xlen}']['index_list']:
+                            value_for_indexing_reg = n['index_val']
+                            logger.debug(f'--- Checking if index value: {value_for_indexing_reg} is legal for indexing register : {indexing_reg} ')
+                            valuenode = {}
+                            valuenode['msb'] = spec[indexing_reg][f'rv{xlen}']['msb']
+                            valuenode['lsb'] = spec[indexing_reg][f'rv{xlen}']['lsb']
+                            valuenode['val'] = value_for_indexing_reg
+                            valuenode['type'] = spec[indexing_reg][f'rv{xlen}']['type']
+                            error = check_values_in_type(indexing_reg, valuenode, spec, False) 
+                            if error:
+                                errors[csrname] = error
+
+    return errors
+
 
 def check_debug_specs(debug_spec, isa_spec,
                 work_dir,
@@ -1602,14 +1635,30 @@ def check_debug_specs(debug_spec, isa_spec,
         normalized['ISA'] = isa_string
 
         if logging:
+            logger.info(f' Updating fields node for each CSR')
+        normalized = update_fields(normalized, logging)
+
+        if logging:
             logger.info("Initiating WARL legality checks.")
-        normalized, errors = check_warl_legality(normalized, logging)
+        errors = check_warl_legality(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
 
         if logging:
             logger.info("Initiating post processing and reset value checks.")
-        normalized, errors = check_reset_fill_fields(normalized, logging)
+        errors = check_reset(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        
+        if logging:
+            logger.info(f'Initiating validation checks for indexed csrs')
+        errors = check_indexing(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+
+        if logging:
+            logger.info(f'Initiating validation checks for shadow fields')
+        errors = check_shadows(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
 
@@ -1696,30 +1745,46 @@ def check_isa_specs(isa_spec,
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
+        if logging:
+            logger.info(f' Updating fields node for each CSR')
+        normalized = update_fields(normalized, logging)
 
         if logging:
             logger.info("Initiating WARL legality checks.")
-        normalized, errors = check_warl_legality(normalized, logging)
+        errors = check_warl_legality(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
 
         if logging:
             logger.info("Initiating post processing and reset value checks.")
-        normalized, errors = check_reset_fill_fields(normalized, logging)
+        errors = check_reset(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+
         if normalized['mhartid']['reset-val'] != x:
             raise ValidationError('Error in ' + foo + ".", 
                     {'mhartid': ['wrong reset-val of for hart'+str(x)]})
+
+        if logging:
+            logger.info(f'Initiating validation checks for indexed csrs')
+        errors = check_indexing(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+
+        if logging:
+            logger.info(f'Initiating validation checks for shadow fields')
         errors = check_shadows(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+
         errors = check_mhpm(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
+
         errors = check_pmp(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors) 
+
         errors = check_supervisor(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors) 
