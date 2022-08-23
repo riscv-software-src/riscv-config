@@ -108,6 +108,10 @@ class warl_class():
                 lsb = msb
             bitlen = msb - lsb + 1
 
+            if value > ((2**bitlen)-1):
+                err.append(f' for csr "{self.csrname}" the value {value} is out of bounds')
+                continue
+
             # extract the value of the bits for which this particular substring
             # is applicable.
             subval = (value >> lsb) & ((1 << bitlen)-1)
