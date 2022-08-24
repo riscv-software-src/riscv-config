@@ -1566,7 +1566,7 @@ def check_indexing(spec, logging = False):
 def check_triggers(spec, logging):
     error = []
     xlen = 64 if 64 in spec['supported_xlen'] else 32
-    indexed_registers = ['tdata1','tinfo']
+    indexed_registers = ['tdata1','tinfo','tdata1', 'tdata2', 'tcontrol', 'hcontext', 'scontext']
     ind_prop = {}
     
     for i in indexed_registers:
