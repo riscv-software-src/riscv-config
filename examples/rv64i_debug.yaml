@@ -13,9 +13,34 @@ hart0: &hart0
             warl:
                 dependency_fields: []
                 legal:
-                  - tselect[63:0] in [0x00000000:0x2]
+                  - tselect[63:0] in [0x00000000:0x3]
                 wr_illegal:
                   - unchanged
+    tinfo:
+      rv32:
+        accessible: False
+      rv64:
+        accessible: True
+        index_select_reg: tselect
+        index_list:
+          - reset-val: 0x78
+            index_val: 0
+            shadow: 
+            shadow_type:
+            type:
+              ro_constant: 0x78
+          - reset-val: 0x8
+            index_val: 1
+            shadow: 
+            shadow_type:
+            type:
+              ro_constant: 0x8
+          - reset-val: 0x10
+            index_val: 2
+            shadow: 
+            shadow_type:
+            type:
+              ro_constant: 0x10
     tdata1:
       rv32:
         accessible: False

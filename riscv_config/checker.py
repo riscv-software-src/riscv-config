@@ -241,6 +241,13 @@ def add_debug_setters(schema_yaml):
     tselectregsetter = lambda doc: pmpregset()
     schema_yaml['dcsr']['default_setter'] = regsetter
     schema_yaml['tselect']['default_setter'] = tselectregsetter
+    schema_yaml['tinfo']['default_setter'] = tselectregsetter
+    schema_yaml['hcontext']['default_setter'] = tselectregsetter
+    schema_yaml['tdata1']['default_setter'] = tselectregsetter
+    schema_yaml['tdata2']['default_setter'] = tselectregsetter
+    schema_yaml['tdata3']['default_setter'] = tselectregsetter
+    schema_yaml['tcontrol']['default_setter'] = tselectregsetter
+    schema_yaml['scontext']['default_setter'] = tselectregsetter
     return schema_yaml
     
 def add_reset_setters(schema_yaml):
@@ -1447,13 +1454,13 @@ def check_reset(spec, logging=False):
             if csrnode[f'rv{xlen}']['accessible']:
                 if 'indexing_reg' in csrnode:
                     for n in csrnode[f'rv{xlen}']['index_list']:
-                        csrname = f'{csrname}[{n["index_val"]}]'
+                        csrn = f'{csrname}[{n["index_val"]}]'
                         if n['shadow'] is None:
-                            resetnodes[csrname] = {}
-                            resetnodes[csrname]['type'] = n['type']
-                            resetnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
-                            resetnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
-                            resetnodes[csrname]['val'] = n['reset-val']
+                            resetnodes[csrn] = {}
+                            resetnodes[csrn]['type'] = n['type']
+                            resetnodes[csrn]['msb'] = csrnode[f'rv{xlen}']['msb']
+                            resetnodes[csrn]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                            resetnodes[csrn]['val'] = n['reset-val']
                 elif csrnode[f'rv{xlen}']['fields'] == [] and csrnode[f'rv{xlen}']['shadow'] is None:
                     csr_reset_val = csrnode['reset-val']
                     resetnodes[csrname] = {}
@@ -1537,6 +1544,7 @@ def check_indexing(spec, logging = False):
                     if not spec[indexing_reg][f'rv{xlen}']['accessible']:
                         errors[csrname] = [f'For csr:{csrname} the indexing_reg {indexing_reg} is not accessible']
                     else:
+                        index_val_list = []
                         for n in csrnode[f'rv{xlen}']['index_list']:
                             value_for_indexing_reg = n['index_val']
                             logger.debug(f'--- Checking if index value: {value_for_indexing_reg} is legal for indexing register : {indexing_reg} ')
@@ -1546,11 +1554,46 @@ def check_indexing(spec, logging = False):
                             valuenode['val'] = value_for_indexing_reg
                             valuenode['type'] = spec[indexing_reg][f'rv{xlen}']['type']
                             error = check_values_in_type(indexing_reg, valuenode, spec, False) 
+                            if value_for_indexing_reg in index_val_list:
+                                error.append(f'Founding repeating index-val {value_for_indexing_reg} for indexed csr : {csrname}')
+                            else:
+                                index_val_list.append(value_for_indexing_reg)
                             if error:
                                 errors[csrname] = error
 
     return errors
 
+def check_triggers(spec, logging):
+    error = []
+    xlen = 64 if 64 in spec['supported_xlen'] else 32
+    indexed_registers = ['tdata1','tinfo']
+    ind_prop = {}
+    
+    for i in indexed_registers:
+        ind_prop[i] = {}
+        ind_prop[i]['accessible'] = spec[i][f'rv{xlen}']['accessible']
+        if ind_prop[i]['accessible']:
+            ind_prop[i]['size'] = len(spec[i][f'rv{xlen}']['index_list'])
+            ind_prop[i]['index_vals'] = []
+            for x in spec[i][f'rv{xlen}']['index_list']:
+                ind_prop[i]['index_vals'].append(x['index_val'])
+        else:
+            ind_prop[i]['size'] = 0
+            ind_prop[i]['index_vals'] = []
+
+
+    for i in ind_prop:
+        for j in ind_prop:
+            if j != i and ind_prop[i]['accessible'] and \
+                    ind_prop[j]['accessible']:
+                if ind_prop[j]['size'] != ind_prop[i]['size']:
+                    error.append(f"The size of indexed registers {i} and {j} do not match")
+                if ind_prop[j]['index_vals'] != ind_prop[i]['index_vals']:
+                    error.append(f"The index_vals of indexed registers {i} and {j} do not match")
+    errors = {}
+    if error:
+        errors["TRIGGERS"] = error
+    return errors
 
 def check_debug_specs(debug_spec, isa_spec,
                 work_dir,
@@ -1653,6 +1696,12 @@ def check_debug_specs(debug_spec, isa_spec,
         if logging:
             logger.info(f'Initiating validation checks for indexed csrs')
         errors = check_indexing(normalized, logging)
+        if errors:
+            raise ValidationError("Error in " + foo + ".", errors)
+        
+        if logging:
+            logger.info(f'Initiating validation checks for trigger csrs')
+        errors = check_triggers(normalized, logging)
         if errors:
             raise ValidationError("Error in " + foo + ".", errors)
 
