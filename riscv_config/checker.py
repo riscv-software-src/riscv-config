@@ -1411,12 +1411,12 @@ def check_warl_legality(spec, logging = False):
             if csrnode[f'rv{xlen}']['accessible']:
                 if 'indexing_reg' in csrnode:
                     for n in csrnode[f'rv{xlen}']['index_list']:
-                        csrname = f'{csrname}[{n["index_val"]}]'
+                        _csrname = f'{csrname}[{n["index_val"]}]'
                         if 'warl' in n['type'] and n['shadow'] is None:
-                            warlnodes[csrname] = {}
-                            warlnodes[csrname]['warl'] = n['type']['warl']
-                            warlnodes[csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
-                            warlnodes[csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
+                            warlnodes[_csrname] = {}
+                            warlnodes[_csrname]['warl'] = n['type']['warl']
+                            warlnodes[_csrname]['msb'] = csrnode[f'rv{xlen}']['msb']
+                            warlnodes[_csrname]['lsb'] = csrnode[f'rv{xlen}']['lsb']
                 elif csrnode[f'rv{xlen}']['fields'] == []:
                     if csrnode[f'rv{xlen}']['shadow'] is None and \
                             'warl' in csrnode[f'rv{xlen}']['type']:
