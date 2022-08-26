@@ -260,7 +260,8 @@ which is not supported')
                             renamed_csr = self.csrname
                             subfield = ''
                     else:
-                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csrname}\s*$').match, self.dependencies))[0]
+                        _csrname = re.sub('{\d*}','',csrname)
+                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{_csrname}\s*$').match, self.dependencies))[0]
                         if '::' in renamed_csr:
                             subfield = renamed_csr.split('::')[1]
                         else:
@@ -282,7 +283,16 @@ the value of dependency field {csrname} not present in dependency_vals')
                     # dependency field is a subfield, then the reset-val of the
                     # subfield has to be extracted from the reset-val of the csr
                     elif self.spec is not None:
-                        dep_csr_val = self.spec[renamed_csr]['reset-val']
+                        if '{' in csrname:
+                            index_val = int(re.findall('{(\d*?)}',csrname)[0],0)
+                            logger.debug(f'dependent csr is indexed with val {index_val}')
+                            for i in self.spec[renamed_csr][self.isa]['index_list']:
+                                logger.debug(f'parsing {i["index_val"]}')
+                                if index_val == i['index_val']:
+                                    dep_csr_val = i['reset-val']
+                                    break
+                        else:
+                            dep_csr_val = self.spec[renamed_csr]['reset-val']
                         if subfield != '':
                             msb = self.spec[renamed_csr][self.isa][subfield]['msb']
                             lsb = self.spec[renamed_csr][self.isa][subfield]['lsb']
@@ -377,7 +387,7 @@ is non empty')
 subfield {depcsrname}::{subfield} which does not exist as per spec')
                             # if subfield is valid, but is not implemented, then
                             # its another pointless dependency
-                            elif not self.spec[depcsrname][self.isa][subfield]['implemented']:
+                            elif subfield !='' and not self.spec[depcsrname][self.isa][subfield]['implemented']:
                                 err.append(f' warl for csr {csrname} depends \
 on subfield {depcsrname}::{subfield} which is not implemented')
 
@@ -386,6 +396,7 @@ on subfield {depcsrname}::{subfield} which is not implemented')
                     # of the warl node.
                     for matches in dep_str_matches:
                         (csr, ind, op, val) = matches
+                        csr = re.sub('{\d*}','', csr)
                         csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csr}\s*$').match, dependencies))
                         if csr_in_dependencies == []:
                             err.append(f' dependency_vals string "{depstr}" for csr \
