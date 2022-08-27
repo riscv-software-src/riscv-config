@@ -344,7 +344,7 @@ input value {value} as legal')
         # start checking legality of all legal strings
         for legalstr in self.node['legal']:
             depstr = legalstr.split('->')[0]
-            raw_depstr = re.sub('\(|\)|and|or','',depstr)
+            raw_depstr = re.sub('\(|\)|and|or|\&\&|\|\|','',depstr)
             dep_str_matches = self.regex_dep_legal.findall(raw_depstr)
 
             # if there are no dependencies then "->" should never be used in the
