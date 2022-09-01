@@ -935,7 +935,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['hgatp']['default_setter'] = hregsetter
     schema_yaml['htimedelta']['default_setter'] = hregsetter
     schema_yaml['htimedeltah']['default_setter'] = hreghsetter
-    schema_yaml['hcounteren']['default_setter'] = uregsetter
+    schema_yaml['hcounteren']['default_setter'] = hregsetter
     
     schema_yaml['hie']['schema']['rv32']['schema']['sgeie'][
         'default_setter'] = hsetter
