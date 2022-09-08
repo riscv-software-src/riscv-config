@@ -3,6 +3,7 @@ import os
 import logging
 import riscv_config.utils as utils
 import textwrap
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -162,6 +163,139 @@ which is not supported')
                 break
 
         return err
+
+    def getlegal(self, dependency_vals=[]):
+        '''
+        This function is used to return a legal value for a given set of
+        dependency_vals. If the dependency_vals is empty and self.dependencies
+        is not empty, then the first legal string is picked and the
+        assignment-string substring is dierctly evaluated to get a legal value.
+
+        :param dependency_vals: This is dictionary of csr:value pairs which
+            indicates the current value of csrs/subfields present in the
+            dependency_fields of the warl node.
+        :type dependency_vals: dict
+
+        :return: A single integer value which is considered legal for the csr
+            under the provided dependency_vals arg
+        :rtype: int
+        '''
+        logger.debug(f'Deriving a legal value for csr:{self.csrname}')
+        err = []
+        value = 0
+        index = -1
+        if self.dependencies and dependency_vals:
+            for legalstr in self.node['legal']:
+                index = index + 1
+                depstr = legalstr.split('->')[0]
+                # we replace all boolean operators first to simple parse and the
+                # check if the (in|not in|bitmask) operators are infact legal or
+                # not.
+                raw_depstr = re.sub('\(|\)|and|or','',depstr)
+
+                # implicitly assume it passes - in case of writeval and currval.
+                dep_pass = False
+                for m in self.regex_dep_legal.finditer(raw_depstr):
+                    (csrname, indices, op, vals) = m.groups()
+                    matchstr = m.group()
+
+                    # in case the dependency is on writeval then we
+                    # assume the condition is always true.
+                    if csrname in ['writeval']:
+                        depstr = depstr.replace(matchstr, 'True')
+                        continue
+                    # in case the dependency is on the current val of the same
+                    # csr (before performing the write), then we continue by
+                    # replacing the currval string with the csrname::subfield
+                    # syntax
+                    if csrname == 'currval':
+                        if '::' in self.csrname:
+                            renamed_csr = self.csrname.split('::')[0]
+                            subfield = self.csrname.split('::')[1]
+                        else:
+                            renamed_csr = self.csrname
+                            subfield = ''
+                    else:
+                        _csrname = re.sub('{\d*}','',csrname)
+                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{_csrname}\s*$').match, self.dependencies))[0]
+                        if '::' in renamed_csr:
+                            subfield = renamed_csr.split('::')[1]
+                        else:
+                            subfield = ''
+                        renamed_csr = renamed_csr.split('::')[0]
+                    # if the dependency_vals dict is not empty, then pick the
+                    # values of the csrs/subfields from there. Here we expect
+                    # the key in the dependency_vals dict to be a subfield
+                    # name without the `::` delimiter.
+                    if csrname not in dependency_vals:
+                        err.append(f'in warl string of {self.csrname}, \
+the value of dependency field {csrname} not present in dependency_vals')
+                        return err, value
+                    else:
+                        dep_csr_val = dependency_vals[csrname]
+                    step_err = self.check_subval_legal(matchstr, dep_csr_val)
+                    err = err + step_err
+                    step_pass = True if step_err == [] else False
+                    depstr = depstr.replace(matchstr, str(step_pass))
+                dep_pass = eval(depstr)
+                if not dep_pass:
+                    continue
+                else:
+                    break
+        else:
+            index = 0
+            dep_pass = True
+
+        if not dep_pass:
+            err.append(f'Cannot find a single legal string for which dependencies are satisfied')
+            return err, value
+
+        lstr = self.node['legal'][index].split('->')[-1]
+        for assigns in self.regex_legal.findall(lstr):
+            (indices, operation, vals) = assigns
+
+            msb = int(indices.split(':')[0], 0)
+            if ':' in indices:
+                lsb = int(indices.split(':')[1], 0)
+            else:
+                # if its a single value, then lsb and msb are the same
+                lsb = msb
+            bitlen = msb - lsb + 1
+            if operation == 'in':
+                v = random.choice(vals.split(','))
+                base = int(v.split(':')[0], 0)
+                if ':' in v:
+                    bound = int(v.split(':')[1], 0)
+                else:
+                    bound = base
+                myval = random.randrange(base, bound+1)
+                value = value | (myval << lsb)
+            elif operation == 'not in':
+                exclude_list = []
+                for v in vals.split(','):
+                    base = int(v.split(':')[0], 0)
+                    if ':' in v:
+                        bound = int(v.split(':')[1], 0)
+                    else:
+                        bound = base
+                    exclude_list += list(range(base, bound+1))
+
+                full_list = range(0,2**bitlen)
+                select_list = list(set(full_list) - set(exclude_list))
+                if not select_list:
+                    err.append(f'Cannot find a legal value since \
+{assigns} uses a not-in operation across the entire range')
+                    return err,value
+                myval = random.choice(select_list)
+                value = value | (myval << lsb)
+            elif operation == 'bitmask':
+                mask = int(vals.split(',')[0], 0)
+                fixedval = int(vals.split(',')[1], 0)
+                myval = random.randrange(0,2**bitlen)
+                myval = (myval & mask) | (~mask & fixedval)
+                value = (myval << lsb)
+        return err, value
+
 
     def islegal(self, value, dependency_vals=None):
         """This function is used to check if an input value is a legal value for

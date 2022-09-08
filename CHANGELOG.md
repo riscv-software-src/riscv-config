@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2022-09-07
+  - adding new function to get a legal value from a warl node
+
 ## [3.1.2] - 2022-08-23
   - if the value being tested is out of bounds, then skip with error immediately
 
