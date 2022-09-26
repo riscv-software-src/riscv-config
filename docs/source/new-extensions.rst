@@ -14,25 +14,34 @@ This chapter will descrive how one can go about RISC-V achieving the above tasks
 Updates to the ISA string
 =========================
 
-Modifications in Schema_isa.yaml
+Modifications in constants.py
 ----------------------------------------
 
 As shown in the example below, any new extensions and sub extensions have to be enabled by adding them in 
-the regex expression of the `ISA <https://github.com/riscv/riscv-config/blob/master/riscv_config/schemas/schema_isa.yaml>`_ node. Following is an instance of the node
+the regex expression of the `isa_regex <https://github.com/riscv/riscv-config/blob/master/riscv_config/constants.py>`_ node. Following is an instance of the node
 for reference:
 
-.. code-block:: yaml
-   
-   
-   
-   ISA: { type: string, required: true, check_with: capture_isa_specifics, 
-           regex: "^RV(32|64|128)[IE]+[ABCDEFGIJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpause|Zam|Ztso|Zkne|Zknd|Zknh|Zkse|Zksh|Zkg|Zkb|Zkr|Zks|Zkn|Zbc|Zbb|Zbp|Zbm|Zbe|Zbf){,1}(_Zicsr){,1}(_Zifencei){,1}(_Zihintpause){,1}(_Zam){,1}(_Ztso){,1}(_Zkne){,1}(_Zknd){,1}(_Zknh){,1}(_Zkse){,1}(_Zksh){,1}(_Zkg){,1}(_Zkb){,1}(_Zkr){,1}(_Zks){,1}(_Zkn){,1}(_Zbc){,1}(_Zbb){,1}(_Zbp){,1}(_Zbm){,1}(_Zbe){,1}(_Zbf){,1}$" }
+.. code-block:: python
 
-    
-.. note:: If you are adding a new Z extension, note that it must be added in 2 places in the regex.
-   The first immediately after the standard extension in the format `|Zgargle`. This is to support
+Z_extensions = [
+        "Zicbom", "Zicbop", "Zicboz", "Zicsr", "Zifencei", "Zihintpause",
+        "Zam",
+        "Zfh",
+        "Zfinx", "Zdinx", "Zhinx", "Zhinxmin",
+        "Ztso",
+        "Zba", "Zbb", "Zbc", "Zbe", "Zbf", "Zbkb", "Zbkc", "Zbkx", "Zbm", "Zbp", "Zbr", "Zbs", "Zbt",
+        "Zk", "Zkn", "Zknd", "Zkne", "Zknh", "Zkr", "Zks", "Zksed", "Zksh", "Zkt",
+        "Zmmul",
+        "Svnapot"
+]
+isa_regex = \
+        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUVX]*(("+'|'.join(Z_extensions)+")(_("+'|'.join(Z_extensions)+"))*){,1}$")
+
+.. note:: If you are adding a new Z extension, note that it must be added to the list (Z_extensions) above the regex.
+   This list will be used to generate the correct matching regex, with two instances of each Z extension; first one
+   immediately after the standard extension in the format `|Zgargle`. This is to support
    that fact that the new Z extension could start immediately after the standard extensions which an
-   underscore. The second will be after the first set of Z extensions in the format `{,1}(_Zgargle)`.
+   underscore. The second will be after the first set of Z extensions in the format `(_(...|Zgargle)`.
 
 
 Adding constraints in the SchemaValidator.py file
