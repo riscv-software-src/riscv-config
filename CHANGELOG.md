@@ -2,6 +2,14 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.1] - 2022-09-26
+  - documentation cleanup for adding new extensions in riscv-config
+  - disabled pdf asset generation for each release.
+
+## [3.3.0] - 2022-09-24
+  - rewrote regular expression for determining legal ISA/extension strings to fix bugs and simplify maintenance. (#104)
+  - updated example and regex in new-extensions.rst to match
+
 ## [3.2.0] - 2022-09-07
   - adding new function to get a legal value from a warl node
 
