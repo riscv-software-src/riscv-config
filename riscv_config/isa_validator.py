@@ -1,4 +1,5 @@
 import riscv_config.constants as constants
+from collections import Counter
 import re
 
 def get_extension_list(isa):
@@ -28,6 +29,14 @@ def get_extension_list(isa):
             extension_list.append(sext)
         if xext != '':
             extension_list.append(xext)
+    # check for duplicates
+    counts = Counter(extension_list)
+    duplicate_list = list([item for item in counts if counts[item]>1])
+    if duplicate_list:
+        err = True
+        err_list.append(f'Found duplicate extensions in ISA string: {duplicate_list}')
+        return (extension_list, err, err_list)
+
     # check ordering of ISA
     canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
     order_index = {c: i for i, c in enumerate(canonical_ordering)}
