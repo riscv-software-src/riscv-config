@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2022-10-13
+  - support x-extension parsing in ISA string
+  - added check to capture duplicates in the extensions present in the isa string
+
 ## [3.3.1] - 2022-09-26
   - documentation cleanup for adding new extensions in riscv-config
   - disabled pdf asset generation for each release.
