@@ -18,4 +18,4 @@ Z_extensions = [
         "Svnapot"
 ]
 isa_regex = \
-        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUVX]*(("+'|'.join(Z_extensions)+")(_("+'|'.join(Z_extensions)+"))*){,1}$")
+        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUV]*(("+'|'.join(Z_extensions)+")(_("+'|'.join(Z_extensions)+"))*){,1}(X[a-z0-9]*)*(_X[a-z0-9]*)*$")
