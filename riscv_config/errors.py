@@ -12,7 +12,10 @@ class ValidationError(Exception):
         error = ''
         for key in foo.keys():
             error += space + str(key) + ":"
-            if isinstance(foo[key][0], dict):
+            if isinstance(foo[key], list):
+                for e in foo[key]:
+                    error += f'\n{space} - {e}'
+            elif isinstance(foo[key][0], dict):
                 error += "\n" + self.__errPrint__(foo[key][0], space + space)
             elif isinstance(foo[key][0], list):
                 for e in foo[key][0]:

@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class warl_class():
     """This is a class for handling various operations and checks for the WARL
-    type of registers and/or subfields as defined by the riscv-config spec<TODO: 
+    type of registers and/or subfields as defined by the riscv-config spec<TODO:
     link here>. While riscv-config remains to be the major user of this package,
     this class can be used as an importable python package as well in several
     other scenarios to perform checks on a particular WARL string.
@@ -17,7 +17,7 @@ class warl_class():
     The basic WARL node should be dict adhering to the following syntax:
 
     .. code-block:: yaml
-        
+
         warl:
            dependency_fields: [list]
            legal: [list of warl-string]
@@ -41,7 +41,7 @@ class warl_class():
     :type spec: dict
 
     """
-    
+
     def __init__(self, node, csrname, f_msb, f_lsb, spec=None):
         """Constructor Method
         """
@@ -68,7 +68,7 @@ class warl_class():
         :param value: The value whose legality to be checked against the
             warl-legal string
         :type value: int
-        :return: A list of error strings encountered while performing the 
+        :return: A list of error strings encountered while performing the
             checks on a legal string
         :rtype: list(str)
 
@@ -315,19 +315,19 @@ the value of dependency field {csrname} not present in dependency_vals')
         :py:func:`check_subval_legal` and result of which is simply returned as
         is.
 
-        However, if the dependency_fields is not empty, then for each legal 
+        However, if the dependency_fields is not empty, then for each legal
         string we check if both dependency_vals substring is satisfied and the
         assignment substring is also satisfied, else an error is generated.
 
-        for the dependency_vals substring the values of the csrs in the 
+        for the dependency_vals substring the values of the csrs in the
         dependency_fields if obtained either from the input dependency_vals
         argument or else the reset-vals of the csr in the isa spec (self.spec)
         are used. If neither is available, then an error is posted about the
         same.
 
         The dependency_vals substring is again split further down to process
-        each condition individually. The checks for the dependency_vals 
-        substring include: 
+        each condition individually. The checks for the dependency_vals
+        substring include:
 
             - checking is the csrs in the substring are indeed present in the
               dependency_fields list of the warl node
@@ -342,7 +342,7 @@ the value of dependency field {csrname} not present in dependency_vals')
         True, then the input value is considered legal.
 
         Things this function does not do:
-            
+
             - this does not check if the warl strings are valid. It is assumed
               that they are valid. If not, pass them through the function iserr
               to check for validity.
@@ -350,7 +350,7 @@ the value of dependency field {csrname} not present in dependency_vals')
               doesn't check if the possible values of the dependency
               csrs/subfields are indeed legal for them. This causes a nesting
               problem, which is probably doesn't warrant an immediate solution ??
-            - 
+            -
         """
         logger.debug(f'---- WARL Value Legality Check: value:{value} csr:{self.csrname} dependency_vals:{dependency_vals}')
         err = []
@@ -394,7 +394,8 @@ the value of dependency field {csrname} not present in dependency_vals')
                             renamed_csr = self.csrname
                             subfield = ''
                     else:
-                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csrname}\s*$').match, self.dependencies))[0]
+                        _csrname = re.sub('{\d*}','',csrname)
+                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{_csrname}\s*$').match, self.dependencies))[0]
                         if '::' in renamed_csr:
                             subfield = renamed_csr.split('::')[1]
                         else:
@@ -416,7 +417,16 @@ the value of dependency field {csrname} not present in dependency_vals')
                     # dependency field is a subfield, then the reset-val of the
                     # subfield has to be extracted from the reset-val of the csr
                     elif self.spec is not None:
-                        dep_csr_val = self.spec[renamed_csr]['reset-val']
+                        if '{' in csrname:
+                            index_val = int(re.findall('{(\d*?)}',csrname)[0],0)
+                            logger.debug(f'dependent csr is indexed with val {index_val}')
+                            for i in self.spec[renamed_csr][self.isa]['index_list']:
+                                logger.debug(f'parsing {i["index_val"]}')
+                                if index_val == i['index_val']:
+                                    dep_csr_val = i['reset-val']
+                                    break
+                        else:
+                            dep_csr_val = self.spec[renamed_csr]['reset-val']
                         if subfield != '':
                             msb = self.spec[renamed_csr][self.isa][subfield]['msb']
                             lsb = self.spec[renamed_csr][self.isa][subfield]['lsb']
@@ -431,7 +441,7 @@ check the values of the csrs in the dependency_fields of csr {self.csrname}')
                     step_err = self.check_subval_legal(matchstr, dep_csr_val)
                     err = err + step_err
                     step_pass = True if step_err == [] else False
-                    depstr = depstr.replace(matchstr, str(step_pass))
+                    depstr = depstr.replace(matchstr.strip(), str(step_pass))
                 dep_pass = eval(depstr)
 
                 assignstr = legalstr.split('->')[1]
@@ -468,7 +478,7 @@ input value {value} as legal')
         # start checking legality of all legal strings
         for legalstr in self.node['legal']:
             depstr = legalstr.split('->')[0]
-            raw_depstr = re.sub('\(|\)|and|or','',depstr)
+            raw_depstr = re.sub('\(|\)|and|or|\&\&|\|\|','',depstr)
             dep_str_matches = self.regex_dep_legal.findall(raw_depstr)
 
             # if there are no dependencies then "->" should never be used in the
@@ -511,7 +521,7 @@ is non empty')
 subfield {depcsrname}::{subfield} which does not exist as per spec')
                             # if subfield is valid, but is not implemented, then
                             # its another pointless dependency
-                            elif not self.spec[depcsrname][self.isa][subfield]['implemented']:
+                            elif subfield !='' and not self.spec[depcsrname][self.isa][subfield]['implemented']:
                                 err.append(f' warl for csr {csrname} depends \
 on subfield {depcsrname}::{subfield} which is not implemented')
 
@@ -520,6 +530,7 @@ on subfield {depcsrname}::{subfield} which is not implemented')
                     # of the warl node.
                     for matches in dep_str_matches:
                         (csr, ind, op, val) = matches
+                        csr = re.sub('{\d*}','', csr)
                         csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csr}\s*$').match, dependencies))
                         if csr_in_dependencies == []:
                             err.append(f' dependency_vals string "{depstr}" for csr \
@@ -540,7 +551,7 @@ operations only')
                         lsb = int(indices.split(':')[1], 0)
                     else:
                         lsb = msb
-                    # for range value strings, indices msb::lsb syntax to be 
+                    # for range value strings, indices msb::lsb syntax to be
                     # followed where msb > lsb
                     if msb < lsb:
                         err.append(f'msb < lsb for one of the \
@@ -577,7 +588,7 @@ values in dependency_vals of the warl string "{legalstr}" for csr {csrname}')
             for a in assigns:
                 (indices, op, vals) = a
 
-                # msb lsb checks just as before 
+                # msb lsb checks just as before
                 msb = int(indices.split(':')[0], 0)
                 if ':' in indices:
                     lsb = int(indices.split(':')[1], 0)
@@ -633,7 +644,7 @@ in that string')
                         if base > bound:
                             err.append(f' base > bound for range \
 values in warl string "{legalstr}" for csr {csrname}')
-           
+
             if bitcount < 0:
                 err.append(f' warl string "{legalstr}" defines values for bits \
 outside the size of the register "{reg_bitlen}"')

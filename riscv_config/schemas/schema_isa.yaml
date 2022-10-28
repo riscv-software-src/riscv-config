@@ -1479,7 +1479,7 @@ hart_schema:
               check_with: rv32_check
         rv64:
             type: dict
-            schema: {accessible: {default: False}}
+            schema: {accessible: {type: boolean, default: False, allowed: [False]}}
             default: {accessible: False}      
         
     mvendorid:
