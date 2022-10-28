@@ -1,4 +1,5 @@
 import riscv_config.constants as constants
+from collections import Counter
 import re
 
 def get_extension_list(isa):
@@ -11,12 +12,12 @@ def get_extension_list(isa):
         return (extension_list, err, err_list)
 
     
-    str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(_|$)',isa)
+    str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(?P<xext>X[a-z0-9]*)*(_|$)',isa)
     extension_list= []
     standard_isa = ''
     zext_list = []
     for match in str_match:
-        stdisa, zext, sext, ignore = match
+        stdisa, zext, sext, xext, ignore = match
         if stdisa != '':
             for e in stdisa:
                 extension_list.append(e)
@@ -26,6 +27,16 @@ def get_extension_list(isa):
             zext_list.append(zext)
         if sext != '':
             extension_list.append(sext)
+        if xext != '':
+            extension_list.append(xext)
+    # check for duplicates
+    counts = Counter(extension_list)
+    duplicate_list = list([item for item in counts if counts[item]>1])
+    if duplicate_list:
+        err = True
+        err_list.append(f'Found duplicate extensions in ISA string: {duplicate_list}')
+        return (extension_list, err, err_list)
+
     # check ordering of ISA
     canonical_ordering = 'IEMAFDQLCBJKTPVNSHU'
     order_index = {c: i for i, c in enumerate(canonical_ordering)}
