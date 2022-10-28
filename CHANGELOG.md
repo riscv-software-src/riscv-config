@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2022-10-28
+  - Add support for indexed registers
+  - Add schemas for triggers
+  - Fix bugs in WARL class
+  - Add function to get a legal value from WARL fields.
+
 ## [3.3.1] - 2022-09-26
   - documentation cleanup for adding new extensions in riscv-config
   - disabled pdf asset generation for each release.
