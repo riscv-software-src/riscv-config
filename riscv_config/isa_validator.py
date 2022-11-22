@@ -114,7 +114,29 @@ def get_extension_list(isa):
         err_list.append( "Zhinxmin and Zfh cannot exist together.")
         err = True
 
+    # Check V extensions
+    if 'V' in extension_list and 'D' not in extension_list:
+        err_list.append("V cannot exist without D and F.")
+        err = True
+    if len(set(['V'] + constants.Zve_extensions) & set(extension_list)) > 1:
+        err_list.append(f"V and Zve* cannot exist together.")
+        err = True
+    if (set(constants.Zvl_extensions) & set(extension_list)) and not (
+        set(['V'] + constants.Zve_extensions) & set(extension_list)
+    ):
+        err_list.append("Zvl* cannot exist without V or Zve*.")
+        err = True
+    if set(constants.Zvef_extensions) & set(extension_list) and (
+            {"F", "Zfinx"} & set(extension_list)
+    ):
+        err_list.append("Zve*f cannot exist without F or Zfinx.")
+        err = True
+    if (set(constants.Zved_extensions) & set(extension_list)) and not (
+            {"D", "Zdinx"} & set(extension_list)
+    ):
+        err_list.append("Zve64d cannot exist without D or Zdinx.")
+        err = True
+
     return (extension_list, err, err_list)
 
 
-        
