@@ -176,10 +176,18 @@ def pset():
     '''Function to check and set defaults for all fields which are dependent on
         the presence of P-SIMD sub-extension viz. zpn, zpsf, zbpbo'''
     global inp_yaml
+
+    temp = { 'rv32': {'accessible': False , 'ov': {'implemented': False}},
+             'rv64': {'accessible': False , 'ov': {'implemented': False}}
+           }
     if 'Zpn' in inp_yaml['ISA']:
-        return {'implemented': True}
-    else:
-        return {'implemented': False}
+        if 32 in inp_yaml['supported_xlen']:
+            temp['rv32']['accessible'] = True
+            temp['rv32']['ov']['implemented'] = True
+        else :
+            temp['rv64']['accessible'] = True
+            temp['rv64']['ov']['implemented'] = True
+    return temp
 
 def twset():
     '''Function to check and set value for tw field in misa.'''
