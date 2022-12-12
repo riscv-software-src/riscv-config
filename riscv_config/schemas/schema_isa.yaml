@@ -12943,7 +12943,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                     wlrl:
                     - 0:1
               default: {implemented: false}
-              check_with: n_check
+              check_with: p_check
             accessible:
               type: boolean
               default: true
@@ -12972,7 +12972,7 @@ CSR and the value returned in VS-mode or VU-mode.}
                     wlrl:
                     - 0:1
               default: {implemented: false}
-              check_with: n_check
+              check_with: p_check
             accessible:
               type: boolean
               default: true
