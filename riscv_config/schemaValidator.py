@@ -393,5 +393,12 @@ class schemaValidator(Validator):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
 
     def _check_with_p_check(self, field, value):
-        if not 'Zpn' in self.document['ISA']: #Zpn is mandatory for P-SIMD
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+
+        if not 'Zpn' in self.document['ISA'] : #Zpn is mandatory for P-SIMD
             self._error(field, "Zpn is not present")
+        elif not check:
+            self._error(field, "Check whether 'implemented' field is set to true")
