@@ -2,6 +2,11 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.1] - 2022-12-12
+  - Added Zbpbo, Zpn, Zpsfoperand into constants.py
+  - Added ISA string legality checker for Zp* extension into isa_validator.py
+  - Added vxsat CSR into schema_isa.yaml (Credits: chuanhua)
+
 ## [3.5.0] - 2022-10-28
   - Add support for indexed registers
   - Add schemas for triggers
