@@ -172,6 +172,15 @@ def nuset():
         return {'implemented': False}
 
 
+def pset():
+    '''Function to check and set defaults for all fields which are dependent on
+        the presence of P-SIMD sub-extension viz. zpn, zpsf, zbpbo'''
+    global inp_yaml
+    if 'Zpn' in inp_yaml['ISA']:
+        return {'implemented': True}
+    else:
+        return {'implemented': False}
+
 def twset():
     '''Function to check and set value for tw field in misa.'''
     global inp_yaml
@@ -292,6 +301,7 @@ def add_def_setters(schema_yaml):
     hsetter = lambda doc: hset()
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
+    psetter = lambda doc: pset()
 
     schema_yaml['sstatus']['default_setter'] = sregsetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
@@ -1010,6 +1020,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['vscause']['default_setter'] = sregsetter
     schema_yaml['vsatp']['default_setter'] = sregsetter
     schema_yaml['vsscratch']['default_setter'] = sregsetter
+    schema_yaml['vxsat']['default_setter'] = psetter
     return schema_yaml
 
 
