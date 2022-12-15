@@ -12907,9 +12907,72 @@ CSR and the value returned in VS-mode or VU-mode.}
               check_with:
               - rv64_check
           default: {accessible: false}
-        
-                  
-    
-          
-          
-                  
+    vxsat:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The vxsat register records the overflow saturation condition of P and V instructions.
+        address: {type: integer, default: 9, allowed: [9]}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            ov:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of overflow flag.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0:1
+              default: {implemented: false}
+              check_with: p_check
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv32_check
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            ov:
+              type: dict
+              schema:
+                description: {type: string,  default: Stores the state of overflow flag.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 0, allowed: [0]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  default:
+                    wlrl:
+                    - 0:1
+              default: {implemented: false}
+              check_with: p_check
+            accessible:
+              type: boolean
+              default: true
+              check_with: rv64_check
+          default: {accessible: False}

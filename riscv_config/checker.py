@@ -172,6 +172,23 @@ def nuset():
         return {'implemented': False}
 
 
+def pset():
+    '''Function to check and set defaults for all fields which are dependent on
+        the presence of P-SIMD sub-extension viz. zpn, zpsf, zbpbo'''
+    global inp_yaml
+
+    temp = { 'rv32': {'accessible': False , 'ov': {'implemented': False}},
+             'rv64': {'accessible': False , 'ov': {'implemented': False}}
+           }
+    if 'Zpn' in inp_yaml['ISA']:
+        if 32 in inp_yaml['supported_xlen']:
+            temp['rv32']['accessible'] = True
+            temp['rv32']['ov']['implemented'] = True
+        else :
+            temp['rv64']['accessible'] = True
+            temp['rv64']['ov']['implemented'] = True
+    return temp
+
 def twset():
     '''Function to check and set value for tw field in misa.'''
     global inp_yaml
@@ -292,6 +309,7 @@ def add_def_setters(schema_yaml):
     hsetter = lambda doc: hset()
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
+    psetter = lambda doc: pset()
 
     schema_yaml['sstatus']['default_setter'] = sregsetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
@@ -1010,6 +1028,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['vscause']['default_setter'] = sregsetter
     schema_yaml['vsatp']['default_setter'] = sregsetter
     schema_yaml['vsscratch']['default_setter'] = sregsetter
+    schema_yaml['vxsat']['default_setter'] = psetter
     return schema_yaml
 
 

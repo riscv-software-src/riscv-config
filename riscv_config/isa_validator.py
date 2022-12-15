@@ -113,6 +113,26 @@ def get_extension_list(isa):
     if 'Zhinxmin' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinxmin and Zfh cannot exist together.")
         err = True
+    if 'Zbpbo' in extension_list :
+        if not 'Zpn' in extension_list :
+            err_list.append( "'Zpn' is required.")
+            err = True
+    if 'Zpn' in extension_list :
+        if not 'Zbpbo' in extension_list :
+            err_list.append( "'Zbpbo' is required.")
+            err = True
+        if '64' in isa and not 'Zpsf' in extension_list :
+            err_list.append( "RV64 requires 'Zpsf'.")
+            err = True
+        if not ('M' in extension_list or 'Zmmul' in extension_list):
+            err_list.append("baseline multiplication extension not found.")
+    if 'Zpsf' in extension_list and not err :
+        if not 'Zbpbo' in extension_list :
+            err_list.append( "'Zbpbo' is required.")
+            err = True
+        if not 'Zpn' in extension_list :
+            err_list.append( "'Zpn' is required.")
+            err = True
 
     return (extension_list, err, err_list)
 

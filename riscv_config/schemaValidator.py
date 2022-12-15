@@ -391,3 +391,14 @@ class schemaValidator(Validator):
         s = format(value, '#{}b'.format(supported_xlen[0] + 2))
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
+
+    def _check_with_p_check(self, field, value):
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+
+        if not 'Zpn' in isa_string  and check :
+            self._error(field, "Zpn is not present")
+        elif 'Zpn' in isa_string  and not check :
+            self._error(field, "Check whether 'implemented' field is set to true")
