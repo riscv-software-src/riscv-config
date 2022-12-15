@@ -12934,7 +12934,6 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { warl: *ref_warl }
                   - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
@@ -12963,7 +12962,6 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  check_with: wr_illegal
                   oneof:
                   - schema: { wlrl: *ref_wlrl }
                   - schema: { warl: *ref_warl }

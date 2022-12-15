@@ -398,7 +398,7 @@ class schemaValidator(Validator):
             if value['implemented']:
                 check = True
 
-        if not 'Zpn' in self.document['ISA'] and check :
+        if not 'Zpn' in isa_string  and check :
             self._error(field, "Zpn is not present")
-        elif 'Zpn' in self.document['ISA'] and not check :
+        elif 'Zpn' in isa_string  and not check :
             self._error(field, "Check whether 'implemented' field is set to true")
