@@ -2016,7 +2016,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
@@ -2100,8 +2100,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip , nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -2184,8 +2184,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -2226,23 +2226,16 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.sgeip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default: 
-                   warl:
-                      dependency_fields: []
-                      legal:
-                        - sgeip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
+                  schema: {ro_variable: {type: boolean, allowed: [True]}}
+                  readonly: true
+                  default: {ro_variable: True}
               default: {implemented: False}
             accessible:
               type: boolean
@@ -2301,7 +2294,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
@@ -2385,8 +2378,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -2469,8 +2462,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -2511,23 +2504,16 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: , nullable: True}
+                shadow: {type: string, default: hip.sgeip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default: 
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - sgeip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
+                  schema: {ro_variable: {type: boolean, allowed: [True]}}
+                  readonly: true
+                  default: {ro_variable: True}
               default: {implemented: false}
             accessible:
               type: boolean
@@ -10585,6 +10571,180 @@ hart_schema:
               check_with:
               - rv64_check
           default: {accessible: false}
+    hvip:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The hvip register is an HSXLEN-bit read/write register that a hypervisor can write to indicate virtual interrupts intended for VS-mode.
+        address: {type: integer, default: 1605, allowed: [1605]}
+        priv_mode: {type: string, default: H, allowed: [H]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          check_with: h_check
+          schema:
+            fields: {type: list, default: []}
+            vssip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level Software Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            vstip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level Timer Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            vseip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level External Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check 
+        rv64:
+          type: dict
+          check_with: h_check
+          schema:
+            fields: {type: list, default: []}
+            vssip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level Software Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vssip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            vstip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level Timer Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 6, allowed: [6]}
+                lsb: {type: integer, default: 6, allowed: [6]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vstip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            vseip:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: VS-level External Interrupt Pending.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                      dependency_fields: []
+                      legal:
+                        - vseip[0] in [0x0, 0x1]
+                      wr_illegal:
+                        - unchanged
+              default: {implemented: True}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check    
     hip:
       type: dict
       schema:
@@ -10608,7 +10768,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: mip.vssip, nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
@@ -10633,8 +10793,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: mip.vstip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -10652,8 +10812,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -10672,7 +10832,7 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.sgeip, nullable: True}
+                shadow: {type: string, default: , nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
@@ -10698,7 +10858,7 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: mip.vssip, nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 2, allowed: [2]}
                 lsb: {type: integer, default: 2, allowed: [2]}
@@ -10722,8 +10882,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: mip.vstip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 6, allowed: [6]}
                 lsb: {type: integer, default: 6, allowed: [6]}
                 implemented: {type: boolean, default: true}
@@ -10741,8 +10901,8 @@ hart_schema:
                 description:
                   type: string
                   default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 10, allowed: [10]}
                 lsb: {type: integer, default: 10, allowed: [10]}
                 implemented: {type: boolean, default: true}
@@ -10761,7 +10921,7 @@ hart_schema:
                 description:
                   type: string
                   default: HS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.sgeip, nullable: True}
+                shadow: {type: string, default: , nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 12, allowed: [12]}
                 lsb: {type: integer, default: 12, allowed: [12]}
@@ -10776,180 +10936,6 @@ hart_schema:
               type: boolean
               default: false
               check_with: rv64_check
-    hvip:
-      type: dict
-      schema:
-        description:
-          type: string
-          default: The hvip register is an HSXLEN-bit read/write register that a hypervisor can write to indicate virtual interrupts intended for VS-mode.
-        address: {type: integer, default: 1605, allowed: [1605]}
-        priv_mode: {type: string, default: H, allowed: [H]}
-        reset-val:
-          type: integer
-          check_with: max_length
-          default: 0
-        rv32:
-          type: dict
-          check_with: h_check
-          schema:
-            fields: {type: list, default: []}
-            vssip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: mip.vssip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 2, allowed: [2]}
-                lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vssip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            vstip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: mip.vstip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 6, allowed: [6]}
-                lsb: {type: integer, default: 6, allowed: [6]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vstip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            vseip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 10, allowed: [10]}
-                lsb: {type: integer, default: 10, allowed: [10]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vseip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            accessible:
-              type: boolean
-              default: false
-              check_with: rv32_check 
-        rv64:
-          type: dict
-          check_with: h_check
-          schema:
-            fields: {type: list, default: []}
-            vssip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level Software Interrupt Pending.
-                shadow: {type: string, default: mip.vssip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 2, allowed: [2]}
-                lsb: {type: integer, default: 2, allowed: [2]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vssip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            vstip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level Timer Interrupt Pending.
-                shadow: {type: string, default: mip.vstip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 6, allowed: [6]}
-                lsb: {type: integer, default: 6, allowed: [6]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vstip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            vseip:
-              type: dict
-              schema:
-                description:
-                  type: string
-                  default: VS-level External Interrupt Pending.
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
-                msb: {type: integer, default: 10, allowed: [10]}
-                lsb: {type: integer, default: 10, allowed: [10]}
-                implemented: {type: boolean, default: true}
-                type:
-                  type: dict
-                  oneof:
-                  - schema: { wlrl: *ref_wlrl }
-                  - schema: { warl: *ref_warl }
-                  default:
-                    warl:
-                      dependency_fields: []
-                      legal:
-                        - vseip[0] in [0x0, 0x1]
-                      wr_illegal:
-                        - unchanged
-              default: {implemented: False}
-            accessible:
-              type: boolean
-              default: false
-              check_with: rv64_check    
     hgeip:
       type: dict
       schema:
@@ -12281,7 +12267,7 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mip.vssip, nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
@@ -12291,8 +12277,8 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mip.vstip , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip , nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -12301,8 +12287,8 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
@@ -12320,7 +12306,7 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: {type: string, default: Supervisor Software Interrupt enable.}
-                shadow: {type: string, default: mip.vssip, nullable: True}
+                shadow: {type: string, default: hvip.vssip, nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 1, allowed: [1]}
                 lsb: {type: integer, default: 1, allowed: [1]}
@@ -12330,8 +12316,8 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: { type: string, default: Supervisor Timer Interrupt enable.}
-                shadow: {type: string, default: mip.vstip , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vstip , nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -12340,8 +12326,8 @@ CSR and the value returned in VS-mode or VU-mode.}
               type: dict
               schema:
                 description: { type: string, default: Supervisor External Interrupt enable.}
-                shadow: {type: string, default: mip.vseip, nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow: {type: string, default: hvip.vseip, nullable: True}
+                shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
                 lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
