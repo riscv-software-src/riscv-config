@@ -392,13 +392,29 @@ class schemaValidator(Validator):
         if (s[-11:-8]) != '000' and value >= int("400", 16):
             self._error(field, " 11,10,9 bits should be hardwired to 0")
 
-    def _check_with_p_check(self, field, value):
+    def _check_with_vxsat_check(self, field, value):
         check = False
-        if 'implemented' in value:
-            if value['implemented']:
-                check = True
-
-        if not 'Zpn' in isa_string  and check :
-            self._error(field, "Zpn is not present")
-        elif 'Zpn' in isa_string  and not check :
-            self._error(field, "Check whether 'implemented' field is set to true")
+        xlen_str = 'rv32' if rv32 else 'rv64'
+        if 'Zpn' in isa_string and not value[xlen_str]['accessible']:
+            self._error(field,f'[{xlen_str}] Field should be accessible since Zpn is present')
+        if not 'Zpn' in isa_string and value[xlen_str]['accessible']:
+            self._error(field,f'[{xlen_str}] Field should be accessible only when Zpn is present')
+        if not 'Zpn' in isa_string and value[xlen_str]['ov']['implemented']:
+            self._error(field, f'[{xlen_str}] Subfield ov should not be implemented since Zpn is not present')
+        if 'Zpn' in isa_string and not value[xlen_str]['ov']['implemented']:
+            self._error(field, f'[{xlen_str}] Subfield ov should be implemented since Zpn is present in isa')
+            
+        value[xlen_str]
+#        if 'implemented' in value:
+#            if value['implemented']:
+#                check = True
+#        if rv64 and check:
+#            if not 'Zpn' in isa_string  and check :
+#                self._error(field, "Zpn is not present")
+#            elif 'Zpn' in isa_string  and not check :
+#                self._error(field, "Check whether 'implemented' field is set to true")
+#        elif rv32 and check:
+#            if not 'Zpn' in isa_string  and check :
+#                self._error(field, "Zpn is not present")
+#            elif 'Zpn' in isa_string  and not check :
+#                self._error(field, "Check whether 'implemented' field is set to true")
