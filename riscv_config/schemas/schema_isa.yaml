@@ -12909,6 +12909,7 @@ CSR and the value returned in VS-mode or VU-mode.}
           default: {accessible: false}
     vxsat:
       type: dict
+      check_with: vxsat_check
       schema:
         description:
           type: string
@@ -12942,7 +12943,6 @@ CSR and the value returned in VS-mode or VU-mode.}
                     wlrl:
                     - 0:1
               default: {implemented: false}
-              check_with: p_check
             accessible:
               type: boolean
               default: true
@@ -12970,7 +12970,6 @@ CSR and the value returned in VS-mode or VU-mode.}
                     wlrl:
                     - 0:1
               default: {implemented: false}
-              check_with: p_check
             accessible:
               type: boolean
               default: true

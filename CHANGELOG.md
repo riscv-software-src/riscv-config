@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.2] - 2022-12-26
+  - special checks for vxsat csr added which apply only the max-xlen subsections of the csr
+
 ## [3.5.1] - 2022-12-12
   - Added Zbpbo, Zpn, Zpsfoperand into constants.py
   - Added ISA string legality checker for Zp* extension into isa_validator.py
