@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2023-03-07
+  - add V extensions ISA string constraints check
+
 ## [3.5.2] - 2022-12-26
   - special checks for vxsat csr added which apply only the max-xlen subsections of the csr
 
