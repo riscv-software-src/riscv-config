@@ -1,6 +1,9 @@
 # Changelog
 
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+iThis project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [3.7.0] - 2023-03-13
+  - adding Zicntr and Zihpm extensions
 
 ## [3.6.0] - 2023-03-07
   - add V extensions ISA string constraints check

@@ -19,6 +19,10 @@ Zve_extensions = [
         "Zve32x",  "Zve64x"
 ] + Zvef_extensions + Zved_extensions
 
+Z_count = [
+  'Zicntr', 'Zihpm'
+]
+
 Z_extensions = [
         "Zicbom", "Zicbop", "Zicboz", "Zicsr", "Zifencei", "Zihintpause",
         "Zmmul",
@@ -30,7 +34,7 @@ Z_extensions = [
         "Zk", "Zkn", "Zknd", "Zkne", "Zknh", "Zkr", "Zks", "Zksed", "Zksh", "Zkt",
         "Zpn", "Zpsf",
         "Svnapot"
-] + Zve_extensions + Zvl_extensions
+] + Zve_extensions + Zvl_extensions + Z_count
 
 Zb_extensions = ["Zba", "Zbb", "Zbc", "Zbe", "Zbf", "Zbm", "Zbp", "Zbr", "Zbs", "Zbt"]
 Zp_extensions = ["Zbpbo", "Zpn", "Zpsf"]
