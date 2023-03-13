@@ -20,7 +20,7 @@ Zve_extensions = [
 ] + Zvef_extensions + Zved_extensions
 
 Z_extensions = [
-        "Zicbom", "Zicbop", "Zicboz", "Zicsr", "Zicntr", "Zifencei", "Zihintpause", "Zihpm"
+        "Zicbom", "Zicbop", "Zicboz", "Zicntr", "Zicsr", "Zifencei", "Zihintpause", "Zihpm"
         "Zmmul",
         "Zam",
         "Zfh",
