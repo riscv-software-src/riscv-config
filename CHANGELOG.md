@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.1] - 2023-03-14
+  - change all hpmcounters to be read-only shadows of the corresponding machine mode mhpmcounters.
+
 ## [3.7.0] - 2023-03-13
   - adding Zicntr and Zihpm extensions
 
