@@ -6243,7 +6243,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycle, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [rv32_check]} 
@@ -6254,7 +6254,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycle, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {default: true, check_with: [rv64_check]} 
@@ -6274,7 +6274,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mcycleh, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
@@ -6296,7 +6296,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -6311,7 +6311,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -6335,7 +6335,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: , nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             type:
@@ -6361,7 +6361,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstret, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [rv32_check] }
@@ -6372,7 +6372,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstret, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {default: true, check_with: [rv64_check]} 
@@ -6392,7 +6392,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: minstreth, nullable: True}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean,  default: true,  check_with: [rv32_check]}
@@ -6412,7 +6412,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6423,7 +6423,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6441,7 +6441,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]} 
@@ -6452,7 +6452,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check] }
@@ -6470,7 +6470,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check] }
@@ -6481,7 +6481,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check] }
@@ -6499,7 +6499,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6510,7 +6510,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6528,7 +6528,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6539,7 +6539,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6557,7 +6557,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6568,7 +6568,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6586,7 +6586,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6597,7 +6597,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6615,7 +6615,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6626,7 +6626,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6644,7 +6644,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6655,7 +6655,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6673,7 +6673,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6684,7 +6684,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6702,7 +6702,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6713,7 +6713,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6731,7 +6731,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6742,7 +6742,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6760,7 +6760,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6771,7 +6771,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6789,7 +6789,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6800,7 +6800,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6818,7 +6818,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6829,7 +6829,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6847,7 +6847,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6858,7 +6858,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6876,7 +6876,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6887,7 +6887,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6905,7 +6905,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6916,7 +6916,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6934,7 +6934,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6945,7 +6945,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6963,7 +6963,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -6974,7 +6974,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -6992,7 +6992,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7003,7 +7003,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7021,7 +7021,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7032,7 +7032,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7050,7 +7050,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7061,7 +7061,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7079,7 +7079,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7090,7 +7090,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7108,7 +7108,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7119,7 +7119,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7137,7 +7137,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7148,7 +7148,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7166,7 +7166,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7177,7 +7177,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7195,7 +7195,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7206,7 +7206,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7224,7 +7224,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv32_check]}
@@ -7235,7 +7235,7 @@ hart_schema:
           schema: 
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31, nullable: False}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 63, allowed: [63]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: {type: boolean, default: true, check_with: [ rv64_check]}
@@ -7253,7 +7253,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter3h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7276,7 +7276,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter4h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7299,7 +7299,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter5h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7322,7 +7322,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter6h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7345,7 +7345,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter7h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7368,7 +7368,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter8h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7391,7 +7391,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter9h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7414,7 +7414,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter10h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7437,7 +7437,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter11h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7460,7 +7460,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter12h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7483,7 +7483,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter13h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7506,7 +7506,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter14h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7529,7 +7529,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter15h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7552,7 +7552,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter16h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7575,7 +7575,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter17h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7598,7 +7598,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter18h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7621,7 +7621,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter19h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7644,7 +7644,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter20h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7667,7 +7667,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter21h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7690,7 +7690,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter22h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7713,7 +7713,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter23h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7736,7 +7736,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter24h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7759,7 +7759,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter25h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7782,7 +7782,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter26h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7805,7 +7805,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter27h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7828,7 +7828,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter28h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7851,7 +7851,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter29h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7874,7 +7874,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter30h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
@@ -7897,7 +7897,7 @@ hart_schema:
           schema:
             fields: {type: list, default: []}
             shadow: {type: string, default: mhpmcounter31h, nullable: false}
-            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            shadow_type: {type: string, default: ro, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 31, allowed: [31]}
             lsb: {type: integer, default: 0, allowed: [0]}
             accessible: { type: boolean, default: true, check_with: [rv32_check]}
