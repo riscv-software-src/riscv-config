@@ -113,6 +113,8 @@ def get_extension_list(isa):
     if 'Zhinxmin' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinxmin and Zfh cannot exist together.")
         err = True
+    if 'Zfa' in extension_list and not 'Zfh' in extension_list:
+        err_list.append( "Zfa cannot exist without Zfh.")
     if 'Zbpbo' in extension_list :
         if not 'Zpn' in extension_list :
             err_list.append( "'Zpn' is required.")
