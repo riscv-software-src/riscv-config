@@ -12,6 +12,7 @@ from riscv_config.errors import ValidationError
 from riscv_config.schemaValidator import schemaValidator
 import riscv_config.constants as constants
 from riscv_config.warl import warl_class
+from riscv_config.isa_validator import *
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,10 @@ def reset():
     global extensions
     extension_enc = list("00000000000000000000000000")
     value=inp_yaml['ISA']
+    global extension_list
+    global ext_err
+    global ext_err_list
+    (extension_list, ext_err, ext_err_list) = get_extension_list(value)
     if "32" in value:
        xlen = 32
        ext = value[4:]
@@ -39,36 +44,38 @@ def reset():
     mxl='10'if xlen==64 else '01'
     ext_b = ext_b[:2] + str(mxl) + ext_b[4:]
     return int(ext_b, 2)
-    
+ 
 def resetsu():
     '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
     global inp_yaml
-    if 64 in inp_yaml['supported_xlen'] and 'S' not in inp_yaml['ISA'] and 'U' in inp_yaml['ISA']:
+    global extension_list
+    if 64 in inp_yaml['supported_xlen'] and 'S' not in extension_list and 'U' in extension_list:
       return 8589934592
-    elif 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA'] and 'S' in inp_yaml['ISA']:
+    elif 64 in inp_yaml['supported_xlen'] and 'U' in extension_list and 'S' in extension_list:
       return 42949672960
     else:	
       return 0
 def reset_vsstatus():
     '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
     global inp_yaml
-    if 64 in inp_yaml['supported_xlen'] and 'U' in inp_yaml['ISA']:
+    global extension_list
+    if 64 in inp_yaml['supported_xlen'] and 'U' in extension_list:
       return 8589934592
     else:	
       return 0
 
 def uset():
     '''Function to set defaults based on presence of 'U' extension.'''
-    global inp_yaml
-    if 'U' in inp_yaml['ISA']:
+    global extension_list
+    if 'U' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
    
 def hset():
     '''Function to set defaults based on presence of 'U' extension.'''
-    global inp_yaml
-    if 'H' in inp_yaml['ISA']:
+    global extension_list
+    if 'H' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
@@ -76,16 +83,16 @@ def hset():
 
 def sset():
     '''Function to set defaults based on presence of 'S' extension.'''
-    global inp_yaml
-    if 'S' in inp_yaml['ISA']:
+    global extension_list
+    if 'S' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
         
 def fsset():
     '''Function to set defaults based on presence of 'F' extension.'''
-    global inp_yaml
-    if 'F' in inp_yaml['ISA'] or 'S' in inp_yaml['ISA']:
+    global extension_list
+    if 'F' in extension_list or 'S' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
@@ -94,8 +101,9 @@ def fsset():
 def uregset():
     '''Function to set defaults based on presence of 'U' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'U' in inp_yaml['ISA']:
+    if 'U' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
@@ -105,8 +113,9 @@ def uregset():
 def uregseth():
     '''Function to set defaults based on presence of 'U' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'U' in inp_yaml['ISA']:
+    if 'U' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
     return temp
@@ -114,16 +123,18 @@ def uregseth():
 def hregseth():
     '''Function to set defaults based on presence of 'H' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'H' in inp_yaml['ISA']:
+    if 'H' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
     return temp      
 def sregset():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'S' in inp_yaml['ISA']:
+    if 'S' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
@@ -133,8 +144,9 @@ def sregset():
 def nregset():
     '''Function to set defaults based on presence of 'N' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'N' in inp_yaml['ISA']:
+    if 'N' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
@@ -144,8 +156,9 @@ def nregset():
 def hregset():
     '''Function to set defaults based on presence of 'H' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'H' in inp_yaml['ISA']:
+    if 'H' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
       if 64 in inp_yaml['supported_xlen']:
@@ -155,8 +168,9 @@ def hregset():
 def sregseth():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'S' in inp_yaml['ISA']:
+    if 'S' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
     return temp
@@ -165,22 +179,45 @@ def sregseth():
 def nuset():
     '''Function to check and set defaults for all fields which are dependent on
         the presence of 'U' extension and 'N' extension.'''
-    global inp_yaml
-    if 'U' in inp_yaml['ISA'] and 'N' in inp_yaml['ISA']:
+    global extension_list
+    if 'U' in extension_list and 'N' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
 
+def smrnmi_reset():
+  global inp_yaml
+  if 64 in inp_yaml['supported_xlen']:
+    return 0x8000000000000000
+  else:
+    return 0x80000000
+
+def smrnmi_set():
+    '''Function to check and set defaults for all fields which are dependent on
+        the presence of Smrnmi extension'''
+    global inp_yaml
+    global extension_list
+
+    temp = { 'rv32': {'accessible': False},
+             'rv64': {'accessible': False}
+           }
+    if 'Smrnmi' in extension_list:
+        if 32 in inp_yaml['supported_xlen']:
+            temp['rv32']['accessible'] = True
+        else :
+            temp['rv64']['accessible'] = True
+    return temp
 
 def pset():
     '''Function to check and set defaults for all fields which are dependent on
         the presence of P-SIMD sub-extension viz. zpn, zpsf, zbpbo'''
     global inp_yaml
+    global extension_list
 
     temp = { 'rv32': {'accessible': False , 'ov': {'implemented': False}},
              'rv64': {'accessible': False , 'ov': {'implemented': False}}
            }
-    if 'Zpn' in inp_yaml['ISA']:
+    if 'Zpn' in extension_list:
         if 32 in inp_yaml['supported_xlen']:
             temp['rv32']['accessible'] = True
             temp['rv32']['ov']['implemented'] = True
@@ -191,8 +228,8 @@ def pset():
 
 def twset():
     '''Function to check and set value for tw field in misa.'''
-    global inp_yaml
-    if 'S' not in inp_yaml['ISA'] and 'U' not in inp_yaml['ISA']:
+    global extension_list
+    if 'S' not in extension_list and 'U' not in extension_list:
         return {'implemented': False}
     else:
         return {'implemented': True}
@@ -202,8 +239,9 @@ def delegset():
     '''Function to set "implemented" value for mideleg regisrer.'''
     # return True
     global inp_yaml
+    global extension_list
     var = True
-    if 'S' not in inp_yaml['ISA'] and 'N' not in inp_yaml['ISA']:
+    if 'S' not in extension_list and 'N' not in extension_list:
         var = False
 
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
@@ -216,8 +254,9 @@ def delegset():
 
 def countset():
     global inp_yaml
+    global extension_list
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
-    if 'S' in inp_yaml['ISA'] or 'U' in inp_yaml["ISA"]:
+    if 'S' in extension_list or 'U' in inp_yaml["ISA"]:
         if 32 in inp_yaml['supported_xlen']:
             temp['rv32']['accessible'] = True
         if 64 in inp_yaml['supported_xlen']:
@@ -279,9 +318,10 @@ def add_reset_setters(schema_yaml):
     
 def add_fflags_type_setters(schema_yaml):
     global inp_yaml
+    global extension_list
     xlen=inp_yaml['supported_xlen'][0]
     rvxlen='rv'+str(xlen)
-    if 'F' not in inp_yaml['ISA']:
+    if 'F' not in extension_list:
         schema_yaml['fcsr']['schema'][rvxlen]['schema']['frm']['schema']['type']['default'] = {'ro_constant': 0}
         schema_yaml['fcsr']['schema'][rvxlen]['schema']['fflags']['schema']['type']['default'] = {'ro_constant': 0}
     return schema_yaml
@@ -310,6 +350,8 @@ def add_def_setters(schema_yaml):
     twsetter = lambda doc: twset()
     delegsetter = lambda doc: delegset()
     psetter = lambda doc: pset()
+    smrnmi_setter = lambda doc: smrnmi_set()
+    reset_smrnmi_setter = lambda doc: smrnmi_reset()
 
     schema_yaml['sstatus']['default_setter'] = sregsetter
     schema_yaml['sstatus']['schema']['rv32']['schema']['uie'][
@@ -1029,6 +1071,11 @@ def add_def_setters(schema_yaml):
     schema_yaml['vsatp']['default_setter'] = sregsetter
     schema_yaml['vsscratch']['default_setter'] = sregsetter
     schema_yaml['vxsat']['default_setter'] = psetter
+    schema_yaml['mnscratch']['default_setter'] = smrnmi_setter
+    schema_yaml['mnepc']['default_setter'] = smrnmi_setter
+    schema_yaml['mnstatus']['default_setter'] = smrnmi_setter
+    schema_yaml['mncause']['default_setter'] = smrnmi_setter
+    schema_yaml['mncause']['schema']['reset-val']['default_setter'] = reset_smrnmi_setter
     return schema_yaml
 
 
@@ -1530,11 +1577,11 @@ def check_values_in_type(csrname, csrnode, spec, logging=False):
                 if val >= low and val <= high:
                     wlrl_atleast_one_pass = True
                     break
-                elif val == int(entry, 0):
-                    wlrl_atleast_one_pass = True
-                    break
+            elif val == int(entry, 0):
+                wlrl_atleast_one_pass = True
+                break
         if not wlrl_atleast_one_pass:
-            error.append("Reset value:{hex(val)} \
+            error.append(f"Reset value:{hex(val)} \
 doesn't match the 'wlrl' description :{csrnode['type']['wlrl']} for the register.")
     elif 'ro_constant' in csrnode['type']:
         if val != csrnode['type']['ro_constant']:
