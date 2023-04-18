@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2023-04-18
+  - Add support for Srnmi extension
+  - All extension existence checks to be performed on extension\_list from isa validator.
+
 ## [3.7.2] - 2023-04-06
   - Add support for Zicond extension
 
