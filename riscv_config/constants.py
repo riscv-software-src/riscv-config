@@ -28,12 +28,12 @@ Z_extensions = [
         "Ztso",
         "Zba", "Zbb", "Zbc", "Zbe", "Zbf", "Zbkb", "Zbkc", "Zbkx", "Zbm", "Zbp", "Zbpbo", "Zbr", "Zbs", "Zbt",
         "Zk", "Zkn", "Zknd", "Zkne", "Zknh", "Zkr", "Zks", "Zksed", "Zksh", "Zkt",
-        "Zpn", "Zpsf",
-        "Svnapot"
+        "Zpn", "Zpsf"
 ] + Zve_extensions + Zvl_extensions
 
-Zb_extensions = ["Zba", "Zbb", "Zbc", "Zbe", "Zbf", "Zbm", "Zbp", "Zbr", "Zbs", "Zbt"]
-Zp_extensions = ["Zbpbo", "Zpn", "Zpsf"]
+S_extensions = ['Smrnmi','Svnapot']
+
+sub_extensions = Z_extensions + S_extensions
 
 isa_regex = \
-        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUV]*(("+'|'.join(Z_extensions)+")(_("+'|'.join(Z_extensions)+"))*){,1}(X[a-z0-9]*)*(_X[a-z0-9]*)*$")
+        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUV]*(("+'|'.join(sub_extensions)+")(_("+'|'.join(sub_extensions)+"))*){,1}(X[a-z0-9]*)*(_X[a-z0-9]*)*$")
