@@ -13270,8 +13270,16 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: { wlrl: *ref_wlrl }
-                  default: { wlrl: [0:1] }
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    warl:
+                      dependency_fields: [writeval]
+                      legal:
+                        - writeval[0] in [1] -> nmie[0] bitmask [1,0]
+                      wr_illegal:
+                        - Unchanged
               default: {implemented: true}
             mnpv:
               type: dict
@@ -13339,8 +13347,16 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
-                  schema: { wlrl: *ref_wlrl }
-                  default: { wlrl: [0:1] }
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    warl:
+                      dependency_fields: [writeval]
+                      legal:
+                        - writeval[0] in [1] -> nmie[0] bitmask [1,0]
+                      wr_illegal:
+                        - Unchanged
               default: {implemented: true}
             mnpv:
               type: dict
