@@ -8,7 +8,7 @@ def get_extension_list(isa):
     err_list = []
     if not constants.isa_regex.match(isa):
         err = True
-        err_list.append('Input ISA string does not match accepted canonical ordering')
+        err_list.append(f'Input ISA string : {isa} does not match accepted canonical ordering')
         return (extension_list, err, err_list)
 
     

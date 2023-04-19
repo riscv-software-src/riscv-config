@@ -21,7 +21,8 @@ class schemaValidator(Validator):
         global extension_list
         global ext_err
         global ext_err_list
-        (extension_list, ext_err, ext_err_list) = get_extension_list(isa_string)
+        if isa_string :
+          (extension_list, ext_err, ext_err_list) = get_extension_list(isa_string)
         if 32 in supported_xlen:
             rv32 = True
         else:
