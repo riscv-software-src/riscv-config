@@ -37,7 +37,7 @@ def reset():
        xlen = 128
        ext = value[5:]
     for x in "ABCDEFHIJKLMNPQSTUVX":
-            if (x in ext):
+            if (x in extension_list):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
     extensions = int("".join(extension_enc), 2)
     ext_b=format(extensions, '#0{}b'.format(xlen+2))

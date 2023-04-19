@@ -108,7 +108,7 @@ class schemaValidator(Validator):
 
         #ISA encoding for future use.
         for x in "ABCDEFHIJKLMNPQSTUVX":
-            if (x in ext):
+            if (x in extension_list):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
         extensions = int("".join(extension_enc), 2)
