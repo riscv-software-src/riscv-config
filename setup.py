@@ -35,8 +35,8 @@ setup(name="riscv_config",
       install_package_data=True,
       package_dir={'riscv_config': 'riscv_config/'},
       package_data={'riscv_config': ['schemas/*']},
-      install_requires=['Cerberus>=1.3.1', 'ruamel.yaml>=0.16.0', 'pyyaml>=5.1.1'],
-      python_requires=">=3.6.0",
+      install_requires=['Cerberus>=1.3.1', 'ruamel.yaml>=0.17.16', 'pyyaml==5.2'],
+      python_requires=">=3.7.0",
       entry_points={
           "console_scripts": ["riscv-config=riscv_config.main:main"],
       })
