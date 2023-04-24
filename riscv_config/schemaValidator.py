@@ -18,6 +18,11 @@ class schemaValidator(Validator):
         xlen = 0 if len(supported_xlen)==0 else max(supported_xlen)
         global isa_string
         isa_string = kwargs.get('isa_string')
+        global extension_list
+        global ext_err
+        global ext_err_list
+        if isa_string :
+          (extension_list, ext_err, ext_err_list) = get_extension_list(isa_string)
         if 32 in supported_xlen:
             rv32 = True
         else:
@@ -27,6 +32,14 @@ class schemaValidator(Validator):
         else:
             rv64 = False
         super(schemaValidator, self).__init__(*args, **kwargs)
+
+    def _check_with_smrnmi_check(self, field, value):
+      global extension_list
+      if value and 'Smrnmi' not in extension_list:
+        self._error(field,
+                  "Register cannot be implemented without Smrnmi extension in ISA."
+              )
+
     
     def _check_with_satp_modes64(self, field, value):
 
@@ -72,6 +85,9 @@ class schemaValidator(Validator):
         '''
         global xlen
         global extensions
+        global extension_list
+        global ext_err_list
+        global ext_err
         extension_enc = list("00000000000000000000000000")
         if "32" in value:
             xlen = 32
@@ -87,15 +103,13 @@ class schemaValidator(Validator):
 
         if not constants.isa_regex.match(value):
             self._error(field, 'Input ISA string does not match regex')
-
-        (extension_list, err, err_list) = get_extension_list(value)
-        if err:
-            for e in err_list:
+        if ext_err:
+            for e in ext_err_list:
                 self._error(field, e)
 
         #ISA encoding for future use.
         for x in "ABCDEFHIJKLMNPQSTUVX":
-            if (x in ext):
+            if (x in extension_list):
                 extension_enc[25 - int(ord(x) - ord('A'))] = "1"
         extensions = int("".join(extension_enc), 2)
         extensions = int("".join(extension_enc), 2)
@@ -147,21 +161,21 @@ class schemaValidator(Validator):
     def _check_with_s_exists(self, field, value):
         '''Function to check that the value can be true only when 'S' mode
         exists in the ISA string'''
-        global isa_string
+        global extension_list
 
-        if value and 'S' not in isa_string:
+        if value and 'S' not in extension_list:
             self._error(field, "cannot be set to True without 'S' mode support")
 
     def _check_with_mtval_update(self, field, value):
         '''Function to check if the mtval_update bitmap adhered to the required
         restrictions.
         '''
-        global isa_string
+        global extension_list
         if (((value & 0xFFFF000F4000) != 0) or (value > 0xFFFFFFFFFFFFFFFF)):
             self._error(field, 'Bits corresponding to reserved cause values should not be set')
-        if (value & 0xB000) != 0 and 'S' not in isa_string:
+        if (value & 0xB000) != 0 and 'S' not in extension_list:
             self._error(field, 'Bits corresponding to page-faults can only be set when S mode is supported')
-        if (value & 0xF00000) != 0 and 'H' not in isa_string:
+        if (value & 0xF00000) != 0 and 'H' not in extension_list:
             self._error(field, 'Bits corresponding to guest-page faults can only be set when H mode is supported')
 
     def _check_with_s_check(self, field, value):
@@ -228,9 +242,9 @@ class schemaValidator(Validator):
     def _check_with_s_debug_check(self, field, value):
         ''' Function ensures that the ro_constant is hardwired to zero when S is present in the ISA string
             Used mainly for debug schema'''
-        global isa_string
+        global extension_list
 
-        if 'S' not in isa_string :
+        if 'S' not in extension_list :
           if 'ro_constant' not in value:
               self._error(field, "S is not present to dcsr.v should be ro_constant = 0")
           elif value['ro_constant'] != 0:
@@ -239,9 +253,9 @@ class schemaValidator(Validator):
     def _check_with_u_debug_check(self, field, value):
         ''' Function ensures that the ro_constant is hardwired to zero when U is present in the ISA string
             Used mainly for debug schema'''
-        global isa_string
+        global extension_list
 
-        if 'U' not in isa_string :
+        if 'U' not in extension_list :
           if value['ro_constant'] != 0:
                 self._error(field, "U is not present but ro constant is not hardwired to zero")
 
@@ -340,30 +354,32 @@ class schemaValidator(Validator):
                 self._error(field, "h is not present")
 
     def _check_with_mdeleg_checks(self, field, value):
+        global extension_list
         if rv32:
             if (value['rv32']['accessible'] == True and
-                (not 'S' in self.document['ISA'] and
-                 not 'N' in self.document['ISA'])):
+                (not 'S' in extension_list and
+                 not 'N' in extension_list)):
                 value['rv32']['accessible'] = False
                 self._error(field, "S and N are not present")
 
         if rv64:
             if (value['rv64']['accessible'] == True and
-                (not 'S' in self.document['ISA'] and
-                 not 'N' in self.document['ISA'])):
+                (not 'S' in extension_list and
+                 not 'N' in extension_list)):
                 value['rv64']['accessible'] = False
                 self._error(field, "S and N are not present")
 
     def _check_with_ndeleg_checks(self, field, value):
+        global extension_list
         if rv32:
             if (value['rv32']['accessible'] == True and
-                    not 'N' in self.document['ISA']):
+                    not 'N' in extension_list):
                 value['rv32']['accessible'] = False
                 self._error(field, "should not be implemented since N is not present")
 
         if rv64:
             if (value['rv64']['accessible'] == True and
-                    not 'N' in self.document['ISA']):
+                    not 'N' in extension_list):
                 value['rv64']['accessible'] = False
                 self._error(field, "should not be implemented since N is not present")
 
@@ -395,12 +411,13 @@ class schemaValidator(Validator):
     def _check_with_vxsat_check(self, field, value):
         check = False
         xlen_str = 'rv32' if rv32 else 'rv64'
-        if 'Zpn' in isa_string and not value[xlen_str]['accessible']:
+        global extension_list
+        if 'Zpn' in extension_list and not value[xlen_str]['accessible']:
             self._error(field,f'[{xlen_str}] Field should be accessible since Zpn is present')
-        if not 'Zpn' in isa_string and value[xlen_str]['accessible']:
+        if not 'Zpn' in extension_list and value[xlen_str]['accessible']:
             self._error(field,f'[{xlen_str}] Field should be accessible only when Zpn is present')
-        if not 'Zpn' in isa_string and value[xlen_str]['ov']['implemented']:
+        if not 'Zpn' in extension_list and value[xlen_str]['ov']['implemented']:
             self._error(field, f'[{xlen_str}] Subfield ov should not be implemented since Zpn is not present')
-        if 'Zpn' in isa_string and not value[xlen_str]['ov']['implemented']:
+        if 'Zpn' in extension_list and not value[xlen_str]['ov']['implemented']:
             self._error(field, f'[{xlen_str}] Subfield ov should be implemented since Zpn is present in isa')
             
