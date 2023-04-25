@@ -13244,7 +13244,7 @@ CSR and the value returned in VS-mode or VU-mode.}
 
             Upon reset, NMIE contains the value 0.
 
-        address: {type: integer, default: 0x742, allowed: [0x742]}
+        address: {type: integer, default: 0x744, allowed: [0x744]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer

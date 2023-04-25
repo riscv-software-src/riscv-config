@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [3.9.0] - 2023-04-25
   - Add support to include hidden uarch dependencies in YAML definitions of CSRs.
 
+## [3.8.1] - 2023-04-25
+  - fix the address for mnstatus
+
 ## [3.8.0] - 2023-04-18
   - Add support for Srnmi extension
   - All extension existence checks to be performed on extension\_list from isa validator.
