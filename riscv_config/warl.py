@@ -55,9 +55,11 @@ class warl_class():
         self.regex_legal = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]')
         self.regex_dep_legal = re.compile('(?P<csrname>.*?)\s*\[(?P<indices>.*?)\]\s*(?P<op>in|not in.*?)\s*\[(?P<values>.*?)\]\s*')
         self.dependencies = node['dependency_fields']
+        self.uarch_depends = {'uarch_commonconfig': []}
         self.csrname = csrname
         if spec is not None:
             self.isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
+        self.create_uarch_depends()
 
     def check_subval_legal(self, legalstr, value):
         """This function checks if a given value satifies the conditions present
@@ -377,6 +379,13 @@ the value of dependency field {csrname} not present in dependency_vals')
                     (csrname, indices, op, vals) = m.groups()
                     matchstr = m.group()
 
+                    # in case the dependency is on uArch then we assume the
+                    # condition is always true.
+                    if any(csrname in uarch_subvals for uarch_subvals in self.uarch_depends.values()):
+                        logger.warning(f'csr/subfield {csrname} is a uArch dependency.')
+                        depstr = 'True'
+                        continue
+
                     # in case the dependency is on writeval then we
                     # assume the condition is always true.
                     if csrname in ['writeval']:
@@ -457,6 +466,49 @@ input value {value} as legal')
                     break
         return err
 
+    def create_uarch_depends(self):
+        '''
+        This function populates the uarch_depends dict with the csr/subfield
+        '''
+
+        csrname = self.csrname
+        reg_lsb = 0
+        if self.f_lsb != 0:
+            reg_msb = self.f_msb - self.f_lsb
+        else:
+            reg_msb = self.f_msb
+        reg_bitlen = reg_msb - reg_lsb + 1
+        for legalstr in self.node['legal']:
+            depstr = legalstr.split('->')[0]
+            raw_depstr = re.sub('\(|\)|and|or|\&\&|\|\|','',depstr)
+            dep_str_matches = self.regex_dep_legal.findall(raw_depstr)
+
+            if '->' in legalstr:
+                dependencies = self.node['dependency_fields']
+                if dependencies != [] and self.spec is not None:
+                    for d in dependencies:
+                        subfield = ''
+                        if '::' in d:
+                            depcsrname = d.split('::')[0]
+                            subfield = d.split('::')[1]
+                        else:
+                            depcsrname = d
+                            subfield = None
+
+                        # if the depcsrname has the 'uarch_' prefix, then drop that dependency for all checks entirely
+                        if depcsrname.startswith('uarch_'):
+                            subfield_str = '' if subfield is None else f'{subfield} field from '
+                            logger.warning(f'WARL for csr {csrname} depends on \
+{subfield_str}uarch csr {depcsrname}. Treating this as a uarch dependency and excluding from all further checks.')
+                            if subfield is None:
+                                subfield = depcsrname
+                                depcsrname = 'uarch_commonconfig'
+                            if depcsrname not in self.uarch_depends:
+                                self.uarch_depends[depcsrname] = []
+                            if subfield is not None and subfield not in self.uarch_depends[depcsrname]:
+                                self.uarch_depends[depcsrname].append(subfield)
+                            logger.debug(f'uArch dependencies are: {self.uarch_depends}')
+
     def iserr(self):
         logger.debug(f'---- Checking for Errors in {self.csrname}')
         csrname = self.csrname
@@ -502,9 +554,16 @@ is non empty')
                             subfield = d.split('::')[1]
                         else:
                             depcsrname = d
+                            subfield = None
+
+                        # if the csr is a uarch dependency and also exists in the spec, throw an error
+                        if depcsrname in self.uarch_depends and depcsrname in self.spec:
+                            err.append(f' csr {csrname} depends on uarch csr \
+{depcsrname} which is also present in the spec. This is not allowed.')
+
                         # if the dependency is on writeval or currval of the
-                        # same csr, then no more checks required.
-                        if depcsrname not in ['writeval', 'currval']:
+                        # same csr, or is a uArch dependency, then no more checks required.
+                        if depcsrname not in ['writeval', 'currval'] and depcsrname not in self.uarch_depends and depcsrname not in self.uarch_depends['uarch_commonconfig']:
                             # if the csr doesn't exist then its probably a typo
                             if depcsrname not in self.spec:
                                 err.append(f' warl for csr {csrname} depends on csr \
@@ -530,6 +589,9 @@ on subfield {depcsrname}::{subfield} which is not implemented')
                     # of the warl node.
                     for matches in dep_str_matches:
                         (csr, ind, op, val) = matches
+                        if any(csr in uarch_subvals for uarch_subvals in self.uarch_depends.values()):
+                            logger.warning(f'csr/subfield {csr} is a uArch dependency.')
+                            continue
                         csr = re.sub('{\d*}','', csr)
                         csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csr}\s*$').match, dependencies))
                         if csr_in_dependencies == []:
