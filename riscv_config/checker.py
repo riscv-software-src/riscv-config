@@ -1171,6 +1171,8 @@ def check_fields(spec):
     for csr, node, in spec.items() :
          fault_node = node
          error=[]
+         if csr.startswith('uarch_'):
+             continue
          if node['rv32']['accessible']:
                 node['rv32']['fields'] = get_fields(node['rv32'], 32)
          if node['rv64']['accessible']:
@@ -1948,12 +1950,24 @@ def check_custom_specs(custom_spec,
     if logging:
         logger.info('Loading input file: ' + str(foo))
     master_custom_yaml = utils.load_yaml(foo, no_anchors)
+    schema_yaml = utils.load_yaml(constants.custom_schema, no_anchors)
+    validator = schemaValidator(schema_yaml, xlen=[])
+    validator.allow_unknown = True
 
     outyaml = copy.deepcopy(master_custom_yaml)
+    normalized = {}
     for x in master_custom_yaml['hart_ids']:
         if logging:
             logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_custom_yaml['hart'+str(x)]
+        valid = validator.validate(inp_yaml)
+        if valid:
+            if logging:
+                logger.info('No errors for Hart: '+str(x) + ' :)')
+        else:
+            error_list = validator.errors
+            raise ValidationError("Error in " + foo + ".", error_list)
+        normalized[f'hart{x}'] = validator.normalized(inp_yaml, schema_yaml)
     errors = check_fields(inp_yaml)
     if errors:
             raise ValidationError("Error in " + foo + ".", errors)
