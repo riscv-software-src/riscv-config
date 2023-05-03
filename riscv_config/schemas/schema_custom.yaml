@@ -1,0 +1,29 @@
+hart_schema:
+  type: dict
+  keysrules:
+    type: string
+    regex: '^uarch_'
+    schema:
+      type: dict
+      schema:
+        name:
+          type: string
+          required: true
+        msb:
+          type: integer
+          required: true
+          min: 0
+          max: 62
+        lsb:
+          type: integer
+          required: true
+          min: 1
+          max: 63
+        reset_val:
+          type: integer
+          required: true
+          min: 0
+          max: 0xFFFFFFFFFFFFFFFF
+        legal:
+          type: list
+          required: true
