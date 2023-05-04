@@ -1333,7 +1333,7 @@ def check_mhpm(spec, logging = False):
             errors[csrname] = error
     return errors
    
-def check_supervisor(spec, logging=False):
+def check_supervisor(spec, uarch_signals, logging=False):
     ''' this function includes several supervisor related checks:
 
     - check if pte_ad_hw_update is True, then satp.mode should be able to take
@@ -1355,7 +1355,7 @@ def check_supervisor(spec, logging=False):
         else:
             virtualization_possible = True
     elif 'warl' in satp_mode_type:
-        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
+        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, uarch_signals, spec)
         for x in virt_modes:
             err = warl_inst.islegal(x)
             if not err:
@@ -1470,11 +1470,14 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
             errors[csrname] = error
     return errors
 
-def check_warl_legality(spec, logging = False):
+def check_warl_legality(spec, uarch_signals, logging = False):
     errors = {}
     warlnodes = {}
     xlen = 64 if 64 in spec['supported_xlen'] else 32
     for csrname, csrnode in spec.items():
+        # don't perform any warl legality checks for uarch signal definitions.
+        if csrname == 'uarch_signals':
+            continue
         if isinstance(csrnode, dict) and 'priv_mode' in csrnode:
             if csrnode[f'rv{xlen}']['accessible']:
                 if 'indexing_reg' in csrnode:
@@ -1506,14 +1509,14 @@ def check_warl_legality(spec, logging = False):
         if logging:
             logger.debug(f'Checking legality of warl strings for csr: {csrname}')
         err = []
-        warl_inst = warl_class(node['warl'], csrname, node['msb'],node['lsb'], spec)
+        warl_inst = warl_class(node['warl'], csrname, node['msb'],node['lsb'], uarch_signals, spec)
         err_f = warl_inst.iserr()
         if err_f:
             errors[csrname] = err_f
 
     return errors
                 
-def check_reset(spec, logging=False):
+def check_reset(spec, uarch_signals, logging=False):
     errors = {}
     resetnodes = {}
     xlen = 64 if 64 in spec['supported_xlen'] else 32
@@ -1563,12 +1566,12 @@ be zero']
     for csrname, csrnode in resetnodes.items():
         error = []
         logger.debug(f'-- Checking reset values for csr: {csrname}')
-        error = check_values_in_type(csrname, csrnode, spec, logging)
+        error = check_values_in_type(csrname, csrnode, spec, uarch_signals, logging)
         if error:
             errors[csrname]= error
     return errors
 
-def check_values_in_type(csrname, csrnode, spec, logging=False):
+def check_values_in_type(csrname, csrnode, spec, uarch_signals, logging=False):
     error = []
     val = csrnode['val']
     if 'wlrl' in csrnode['type']:
@@ -1592,7 +1595,7 @@ doesn't match the 'wlrl' description :{csrnode['type']['wlrl']} for the register
     elif 'ro_variable' in csrnode['type']:
         pass
     elif "warl" in csrnode['type']:
-        warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], spec)
+        warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], uarch_signals, spec)
         legal_err = warl_inst.islegal(val)
         if legal_err != []:
             error.append( f" value:{val} doesn't match the 'warl' description for the register {csrname}.")
@@ -1749,48 +1752,18 @@ def check_debug_specs(debug_spec, isa_spec,
             logger.info(f' Updating fields node for each CSR')
         normalized = update_fields(normalized, logging)
 
-        if logging:
-            logger.info("Initiating WARL legality checks.")
-        errors = check_warl_legality(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        if logging:
-            logger.info("Initiating post processing and reset value checks.")
-        errors = check_reset(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-        
-        if logging:
-            logger.info(f'Initiating validation checks for indexed csrs')
-        errors = check_indexing(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-        
-        if logging:
-            logger.info(f'Initiating validation checks for trigger csrs')
-        errors = check_triggers(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        if logging:
-            logger.info(f'Initiating validation checks for shadow fields')
-        errors = check_shadows(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
     output_filename = os.path.join(
         work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
-    ifile = output_filename
+    dfile = output_filename
     outfile = open(output_filename, 'w')
     if logging:
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
-    return ifile
-    
+    return dfile
+
 def check_isa_specs(isa_spec,
                 work_dir,
                 logging=False,
@@ -1866,46 +1839,6 @@ def check_isa_specs(isa_spec,
             logger.info(f' Updating fields node for each CSR')
         normalized = update_fields(normalized, logging)
 
-        if logging:
-            logger.info("Initiating WARL legality checks.")
-        errors = check_warl_legality(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        if logging:
-            logger.info("Initiating post processing and reset value checks.")
-        errors = check_reset(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        if normalized['mhartid']['reset-val'] != x:
-            raise ValidationError('Error in ' + foo + ".", 
-                    {'mhartid': ['wrong reset-val of for hart'+str(x)]})
-
-        if logging:
-            logger.info(f'Initiating validation checks for indexed csrs')
-        errors = check_indexing(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        if logging:
-            logger.info(f'Initiating validation checks for shadow fields')
-        errors = check_shadows(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        errors = check_mhpm(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors)
-
-        errors = check_pmp(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors) 
-
-        errors = check_supervisor(normalized, logging)
-        if errors:
-            raise ValidationError("Error in " + foo + ".", errors) 
-              
         outyaml['hart'+str(x)] = trim(normalized)
     file_name = os.path.split(foo)
     file_name_split = file_name[1].split('.')
@@ -1917,7 +1850,7 @@ def check_isa_specs(isa_spec,
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return ifile
-    
+
 def check_custom_specs(custom_spec,
                 work_dir,
                 logging=False,
@@ -2035,3 +1968,127 @@ def check_platform_specs(platform_spec,
     utils.dump_yaml(trim(normalized), outfile, no_anchors)
 
     return pfile
+
+def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_dir=None, logging=False, no_anchors=True) -> list:
+    '''
+        Merge the isa, custom and debug CSR specs into a single CSR spec file.
+        Perform all warl checks on this merged CSR spec file.
+        This function needs to be called hart-wise.
+
+        :param ispec: The isa spec yaml. Defaults to None.
+        :param customspec: The custom spec yaml. Defaults to None.
+        :param dspec: The debug spec yaml. Defaults to None.
+        :param pspec: The platform spec yaml. Defaults to None.
+        :param work_dir: The working directory. Defaults to None.
+        :param logging: A boolean to indicate whether log is to be printed. Defaults to False.
+        :param no_anchors: A boolean to indicate whether anchors are not to be used. Defaults to True.
+
+        :type ispec: dict
+        :type customspec: dict
+        :type dspec: dict
+        :type pspec: dict
+        :type work_dir: str
+        :type logging: bool
+        :type no_anchors: bool
+
+        :return: List of validated CSR specs. Position holds 'None' if a certain spec was not passed.
+    '''
+
+    if ispec is not None:
+        isa_file = check_isa_specs(ispec, work_dir, logging, no_anchors)
+    else:
+        logger.error("ISA spec not passed. This is mandatory.")
+        isa_file = None
+
+    if customspec is not None:
+        custom_file = check_custom_specs(customspec, work_dir, logging, no_anchors)
+    else:
+        custom_file = None
+
+    if dspec is not None:
+        debug_file = check_debug_specs(dspec, ispec, work_dir, logging, no_anchors)
+    else:
+        debug_file = None
+
+    if pspec is not None:
+        platform_file = check_platform_specs(pspec, work_dir, logging, no_anchors)
+    else:
+        platform_file = None
+
+    specs_list = [isa_file, custom_file, debug_file, platform_file]
+
+    if logging:
+        logger.info("Initiating checks on all CSR specs.")
+
+    # merge the dicts ispec, customspec and dspec after loading the YAMLs into dicts
+    ispec_dict = utils.load_yaml(isa_file, no_anchors)
+    customspec_dict = utils.load_yaml(custom_file, no_anchors)
+    dspec_dict = utils.load_yaml(debug_file, no_anchors)
+
+    merged = {}
+    hart_ids = []
+    for entry in ispec_dict['hart_ids']:
+        hart_ids.append(entry)
+        merged[entry] = {}
+        merged[entry].update(ispec_dict['hart'+str(entry)])
+        merged[entry].update(customspec_dict['hart'+str(entry)])
+        merged[entry].update(dspec_dict['hart'+str(entry)])
+
+        try:
+            uarch_signals = merged[entry]['uarch_signals']
+        except KeyError as e:
+            logger.info("No uarch signals found for hart"+str(entry))
+            uarch_signals = {}
+
+    for entry in hart_ids:
+        csr_db = merged[entry]
+        if logging:
+            logger.info("Initiating WARL legality checks.")
+        errors = check_warl_legality(csr_db, uarch_signals, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        if logging:
+            logger.info("Initiating post processing and reset value checks.")
+        errors = check_reset(csr_db, uarch_signals, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        if csr_db['mhartid']['reset-val'] != entry:
+            raise ValidationError('Error in csr definitions.',
+                    {'mhartid': ['wrong reset-val of for hart'+str(entry)]})
+
+        if logging:
+            logger.info(f'Initiating validation checks for indexed csrs')
+        errors = check_indexing(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        if logging:
+            logger.info(f'Initiating validation checks for shadow fields')
+        errors = check_shadows(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        errors = check_mhpm(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        errors = check_pmp(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        errors = check_supervisor(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+        
+        if logging:
+            logger.info(f'Initiating validation checks for trigger csrs')
+        errors = check_triggers(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
+        if logging:
+            logger.info(f'All checks completed for hart{entry}')
+
+    return specs_list
