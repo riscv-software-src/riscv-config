@@ -4,6 +4,7 @@ import logging
 import riscv_config.utils as utils
 import textwrap
 import random
+import pprint as pp
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ class warl_class():
 
     """
 
-    def __init__(self, node, csrname, f_msb, f_lsb, spec=None):
+    def __init__(self, node, csrname, f_msb, f_lsb, uarch_signals, spec=None):
         """Constructor Method
         """
 
@@ -55,11 +56,12 @@ class warl_class():
         self.regex_legal = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]')
         self.regex_dep_legal = re.compile('(?P<csrname>.*?)\s*\[(?P<indices>.*?)\]\s*(?P<op>in|not in.*?)\s*\[(?P<values>.*?)\]\s*')
         self.dependencies = node['dependency_fields']
-        self.uarch_depends = {'uarch_commonconfig': []}
+        self.uarch_depends = {'uarch_signals': []}
+        self.uarch_signals = uarch_signals
         self.csrname = csrname
         if spec is not None:
             self.isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
-        self.create_uarch_depends()
+        self.create_uarch_depends(uarch_signals)
 
     def check_subval_legal(self, legalstr, value):
         """This function checks if a given value satifies the conditions present
@@ -379,13 +381,6 @@ the value of dependency field {csrname} not present in dependency_vals')
                     (csrname, indices, op, vals) = m.groups()
                     matchstr = m.group()
 
-                    # in case the dependency is on uArch then we assume the
-                    # condition is always true.
-                    if any(csrname in uarch_subvals for uarch_subvals in self.uarch_depends.values()):
-                        logger.warning(f'csr/subfield {csrname} is a uArch dependency.')
-                        depstr = 'True'
-                        continue
-
                     # in case the dependency is on writeval then we
                     # assume the condition is always true.
                     if csrname in ['writeval']:
@@ -404,7 +399,7 @@ the value of dependency field {csrname} not present in dependency_vals')
                             subfield = ''
                     else:
                         _csrname = re.sub('{\d*}','',csrname)
-                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{_csrname}\s*$').match, self.dependencies))[0]
+                        renamed_csr = list(filter(re.compile(f'[a-zA-Z0-9_]*[:]*{_csrname}\s*$').match, self.dependencies))[0]
                         if '::' in renamed_csr:
                             subfield = renamed_csr.split('::')[1]
                         else:
@@ -435,10 +430,17 @@ the value of dependency field {csrname} not present in dependency_vals')
                                     dep_csr_val = i['reset-val']
                                     break
                         else:
-                            dep_csr_val = self.spec[renamed_csr]['reset-val']
+                            if 'uarch_' in renamed_csr:
+                                dep_csr_val = self.uarch_signals[renamed_csr]['reset-val']
+                            else:
+                                dep_csr_val = self.spec[renamed_csr]['reset-val']
                         if subfield != '':
-                            msb = self.spec[renamed_csr][self.isa][subfield]['msb']
-                            lsb = self.spec[renamed_csr][self.isa][subfield]['lsb']
+                            if 'uarch_' in renamed_csr:
+                                msb = self.uarch_signals[renamed_csr]['subfields'][subfield]['msb']
+                                lsb = self.uarch_signals[renamed_csr]['subfields'][subfield]['lsb']
+                            else:
+                                msb = self.spec[renamed_csr][self.isa][subfield]['msb']
+                                lsb = self.spec[renamed_csr][self.isa][subfield]['lsb']
                             bitlen = msb - lsb + 1
                             dep_csr_val = (dep_csr_val >> lsb) & \
                                 ((1 << bitlen)-1)
@@ -466,7 +468,7 @@ input value {value} as legal')
                     break
         return err
 
-    def create_uarch_depends(self):
+    def create_uarch_depends(self, uarch_signals):
         '''
         This function populates the uarch_depends dict with the csr/subfield
         '''
@@ -499,15 +501,37 @@ input value {value} as legal')
                         if depcsrname.startswith('uarch_'):
                             subfield_str = '' if subfield is None else f'{subfield} field from '
                             logger.warning(f'WARL for csr {csrname} depends on \
-{subfield_str}uarch csr {depcsrname}. Treating this as a uarch dependency and excluding from all further checks.')
+{subfield_str}uarch csr {depcsrname}. Treating this as a uarch dependency.')
                             if subfield is None:
                                 subfield = depcsrname
-                                depcsrname = 'uarch_commonconfig'
+                                depcsrname = 'uarch_signals'
                             if depcsrname not in self.uarch_depends:
                                 self.uarch_depends[depcsrname] = []
                             if subfield is not None and subfield not in self.uarch_depends[depcsrname]:
                                 self.uarch_depends[depcsrname].append(subfield)
                             logger.debug(f'uArch dependencies are: {self.uarch_depends}')
+
+        for entry, signode in self.uarch_depends.items():
+            if signode == []:
+                continue
+            else:
+                # grouped uarch signals
+                if entry in uarch_signals:
+                    for subfield in signode:
+                        if subfield in uarch_signals[entry]['subfields']:
+                            logger.debug(f'found csr {csrname} to depend on uArch signal {entry} \
+for the following subfields: {signode}.')
+                        else:
+                            logger.error(f'csr {csrname} depends on uArch signal {entry} \
+for the following subfields: {signode} but the uArch signal is not defined.')
+                # ungrouped uarch signals
+                else:
+                    for entry in signode:
+                        if entry in uarch_signals:
+                            logger.debug(f'found csr {csrname} to depend on uArch signal {entry}.')
+                        else:
+                            logger.error(f'csr {csrname} depends on uArch signal {entry} \
+but the uArch signal is not defined.')
 
     def iserr(self):
         logger.debug(f'---- Checking for Errors in {self.csrname}')
@@ -563,7 +587,7 @@ is non empty')
 
                         # if the dependency is on writeval or currval of the
                         # same csr, or is a uArch dependency, then no more checks required.
-                        if depcsrname not in ['writeval', 'currval'] and depcsrname not in self.uarch_depends and depcsrname not in self.uarch_depends['uarch_commonconfig']:
+                        if depcsrname not in ['writeval', 'currval'] and depcsrname not in self.uarch_depends and depcsrname not in self.uarch_depends['uarch_signals']:
                             # if the csr doesn't exist then its probably a typo
                             if depcsrname not in self.spec:
                                 err.append(f' warl for csr {csrname} depends on csr \
