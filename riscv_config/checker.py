@@ -2029,8 +2029,8 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
 
     # merge the dicts ispec, customspec and dspec after loading the YAMLs into dicts
     ispec_dict = utils.load_yaml(isa_file, no_anchors)
-    customspec_dict = utils.load_yaml(custom_file, no_anchors)
-    dspec_dict = utils.load_yaml(debug_file, no_anchors)
+    customspec_dict = utils.load_yaml(custom_file, no_anchors) if custom_file is not None else {}
+    dspec_dict = utils.load_yaml(debug_file, no_anchors) if debug_file is not None else {}
 
     merged = {}
     hart_ids = []
