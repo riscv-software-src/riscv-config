@@ -2054,6 +2054,10 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
+        errors = check_supervisor(csr_db, logging)
+        if errors:
+            raise ValidationError("Error in csr definitions", errors)
+
         if logging:
             logger.info("Initiating post processing and reset value checks.")
         errors = check_reset(csr_db, logging)
@@ -2084,10 +2088,6 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
-        errors = check_supervisor(csr_db, logging)
-        if errors:
-            raise ValidationError("Error in csr definitions", errors)
-        
         if logging:
             logger.info(f'Initiating validation checks for trigger csrs')
         errors = check_triggers(csr_db, logging)
