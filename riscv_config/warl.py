@@ -620,11 +620,14 @@ on subfield {depcsrname}::{subfield} which is not implemented')
                     # of the warl node.
                     for matches in dep_str_matches:
                         (csr, ind, op, val) = matches
-                        if any(csr in uarch_subvals for uarch_subvals in self.uarch_depends.values()):
-                            logger.warning(f'csr/subfield {csr} is a uArch dependency.')
-                            continue
                         csr = re.sub('{\d*}','', csr)
-                        csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9]*[:]*{csr}\s*$').match, dependencies))
+                        csr_in_dependencies = list(filter(re.compile(f'[a-zA-Z0-9_]*[:]*{csr}\s*$').match, dependencies))
+                        if csr_in_dependencies == []:
+                            for entry, subfields in self.uarch_signals.items():
+                                if csr == entry:
+                                    csr_in_dependencies.append(csr)
+                                elif csr in subfields['subfields']:
+                                    csr_in_dependencies.append(f'{csr}::{subfield}')
                         if csr_in_dependencies == []:
                             err.append(f' dependency_vals string "{depstr}" for csr \
 {csrname} is dependent on field {csr} which is not present in the \
