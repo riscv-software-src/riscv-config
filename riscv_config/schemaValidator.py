@@ -44,7 +44,7 @@ class schemaValidator(Validator):
     def _check_with_satp_modes64(self, field, value):
 
         if 'warl' in value:
-            warl = warl_class(value['warl'], 'satp::mode',63, 60, uarch_signals={})
+            warl = warl_class(value['warl'], 'satp::mode',63, 60)
             for x in [1,2,3,4,5,6,7,11,12,13]:
                 err = warl.islegal(x)
                 if not err:
