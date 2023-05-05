@@ -1333,7 +1333,7 @@ def check_mhpm(spec, logging = False):
             errors[csrname] = error
     return errors
    
-def check_supervisor(spec, uarch_signals, logging=False):
+def check_supervisor(spec, logging=False):
     ''' this function includes several supervisor related checks:
 
     - check if pte_ad_hw_update is True, then satp.mode should be able to take
@@ -1355,7 +1355,7 @@ def check_supervisor(spec, uarch_signals, logging=False):
         else:
             virtualization_possible = True
     elif 'warl' in satp_mode_type:
-        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, uarch_signals, spec)
+        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
         for x in virt_modes:
             err = warl_inst.islegal(x)
             if not err:
@@ -1470,7 +1470,7 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
             errors[csrname] = error
     return errors
 
-def check_warl_legality(spec, uarch_signals, logging = False):
+def check_warl_legality(spec, logging = False):
     errors = {}
     warlnodes = {}
     xlen = 64 if 64 in spec['supported_xlen'] else 32
@@ -1509,14 +1509,14 @@ def check_warl_legality(spec, uarch_signals, logging = False):
         if logging:
             logger.debug(f'Checking legality of warl strings for csr: {csrname}')
         err = []
-        warl_inst = warl_class(node['warl'], csrname, node['msb'],node['lsb'], uarch_signals, spec)
+        warl_inst = warl_class(node['warl'], csrname, node['msb'],node['lsb'], spec)
         err_f = warl_inst.iserr()
         if err_f:
             errors[csrname] = err_f
 
     return errors
                 
-def check_reset(spec, uarch_signals, logging=False):
+def check_reset(spec, logging=False):
     errors = {}
     resetnodes = {}
     xlen = 64 if 64 in spec['supported_xlen'] else 32
@@ -1566,12 +1566,12 @@ be zero']
     for csrname, csrnode in resetnodes.items():
         error = []
         logger.debug(f'-- Checking reset values for csr: {csrname}')
-        error = check_values_in_type(csrname, csrnode, spec, uarch_signals, logging)
+        error = check_values_in_type(csrname, csrnode, spec, logging)
         if error:
             errors[csrname]= error
     return errors
 
-def check_values_in_type(csrname, csrnode, spec, uarch_signals, logging=False):
+def check_values_in_type(csrname, csrnode, spec, logging=False):
     error = []
     val = csrnode['val']
     if 'wlrl' in csrnode['type']:
@@ -1595,7 +1595,7 @@ doesn't match the 'wlrl' description :{csrnode['type']['wlrl']} for the register
     elif 'ro_variable' in csrnode['type']:
         pass
     elif "warl" in csrnode['type']:
-        warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], uarch_signals, spec)
+        warl_inst = warl_class(csrnode['type']['warl'], f'{csrname}', csrnode['msb'], csrnode['lsb'], spec)
         legal_err = warl_inst.islegal(val)
         if legal_err != []:
             error.append( f" value:{val} doesn't match the 'warl' description for the register {csrname}.")
@@ -1995,23 +1995,23 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
     '''
 
     if ispec is not None:
-        isa_file = check_isa_specs(ispec, work_dir, logging, no_anchors)
+        isa_file = check_isa_specs(os.path.abspath(ispec), work_dir, logging, no_anchors)
     else:
         logger.error("ISA spec not passed. This is mandatory.")
         isa_file = None
 
     if customspec is not None:
-        custom_file = check_custom_specs(customspec, work_dir, logging, no_anchors)
+        custom_file = check_custom_specs(os.path.abspath(customspec), work_dir, logging, no_anchors)
     else:
         custom_file = None
 
     if dspec is not None:
-        debug_file = check_debug_specs(dspec, ispec, work_dir, logging, no_anchors)
+        debug_file = check_debug_specs(os.path.abspath(dspec), ispec, work_dir, logging, no_anchors)
     else:
         debug_file = None
 
     if pspec is not None:
-        platform_file = check_platform_specs(pspec, work_dir, logging, no_anchors)
+        platform_file = check_platform_specs(os.path.abspath(pspec), work_dir, logging, no_anchors)
     else:
         platform_file = None
 
@@ -2044,13 +2044,13 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         csr_db = merged[entry]
         if logging:
             logger.info("Initiating WARL legality checks.")
-        errors = check_warl_legality(csr_db, uarch_signals, logging)
+        errors = check_warl_legality(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
         if logging:
             logger.info("Initiating post processing and reset value checks.")
-        errors = check_reset(csr_db, uarch_signals, logging)
+        errors = check_reset(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 

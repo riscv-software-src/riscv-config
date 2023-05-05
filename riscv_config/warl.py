@@ -43,7 +43,7 @@ class warl_class():
 
     """
 
-    def __init__(self, node, csrname, f_msb, f_lsb, uarch_signals, spec=None):
+    def __init__(self, node, csrname, f_msb, f_lsb, spec=None):
         """Constructor Method
         """
 
@@ -57,11 +57,18 @@ class warl_class():
         self.regex_dep_legal = re.compile('(?P<csrname>.*?)\s*\[(?P<indices>.*?)\]\s*(?P<op>in|not in.*?)\s*\[(?P<values>.*?)\]\s*')
         self.dependencies = node['dependency_fields']
         self.uarch_depends = {'uarch_signals': []}
-        self.uarch_signals = uarch_signals
+        try:
+            if spec is not None:
+                self.uarch_signals = spec['uarch_signals']
+            else:
+                self.uarch_signals = {}
+        except KeyError:
+            logger.info(f'No uarch_signals found in spec.')
+            self.uarch_signals = {}
         self.csrname = csrname
         if spec is not None:
             self.isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
-        self.create_uarch_depends(uarch_signals)
+        self.create_uarch_depends(self.uarch_signals)
 
     def check_subval_legal(self, legalstr, value):
         """This function checks if a given value satifies the conditions present
