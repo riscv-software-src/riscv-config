@@ -1355,6 +1355,12 @@ def check_supervisor(spec, logging=False):
         else:
             virtualization_possible = True
     elif 'warl' in satp_mode_type:
+        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode',63, 60)
+        for x in [1,2,3,4,5,6,7,11,12,13]:
+            err = warl_inst.islegal(x)
+            if not err:
+                errors.append(f'warl function for satp::mode accepts \
+"{x}" as a legal value - which is incorrect')
         warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
         for x in virt_modes:
             err = warl_inst.islegal(x)
