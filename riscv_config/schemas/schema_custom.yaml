@@ -140,18 +140,13 @@ hart_schema:
               msb:
                 type: integer
                 required: true
-                min: 0
-                max: 62
               lsb:
                 type: integer
                 required: true
-                min: 1
-                max: 63
               reset-val:
                 type: integer
                 required: true
                 min: 0
-                max: 0xFFFFFFFFFFFFFFFF
               legal:
                 type: list
                 required: false
@@ -165,13 +160,9 @@ hart_schema:
                   msb:
                     type: integer
                     required: true
-                    min: 0
-                    max: 62
                   lsb:
                     type: integer
                     required: true
-                    min: 1
-                    max: 63
                   legal:
                     type: list
                     required: false
@@ -182,4 +173,3 @@ hart_schema:
                 type: integer
                 required: true
                 min: 0
-                max: 0xFFFFFFFFFFFFFFFF
