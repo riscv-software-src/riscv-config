@@ -2005,6 +2005,7 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
     else:
         logger.error("ISA spec not passed. This is mandatory.")
         isa_file = None
+        raise SystemExit
 
     if customspec is not None:
         custom_file = check_custom_specs(os.path.abspath(customspec), work_dir, logging, no_anchors)
