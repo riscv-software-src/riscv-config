@@ -310,9 +310,41 @@ in the riscv-config:
 
   **Micro-Architectural Dependencies**
   
-  riscv-config supports the notion of listing
-  micro-architectural dependencies in the dependency_fields list. These dependencies
-  will always evaluate to true and will not throw any errors during validation.
+  riscv-config supports the notion of listing micro-architectural dependencies
+  in the dependency_fields list.
+
+  **Listing uArch Dependencies**
+
+  All uArch dependencies need to be listed in the custom specification. An example
+  node has been described as follows:
+
+  .. code-block:: yaml
+
+    uarch_signals:
+      uarch_signal_1:
+        msb: integer
+        lsb: integer
+        reset-val: integer
+        legal: list
+      uarch_signal_2:
+        msb: integer
+        lsb: integer
+        reset-val: integer
+        legal: list
+      uarch_group_1:
+        subfields:
+          uarch_signal_3:
+            msb: integer
+            lsb: integer
+            reset-val: integer
+            legal: list
+          uarch_signal_4:
+            msb: integer
+            lsb: integer
+            reset-val: integer
+            legal: list
+
+  .. note:: The custom csr specification is now validated using a custom_schema.yaml
 
   **Restrictions imposed**:
   
@@ -351,17 +383,16 @@ in the riscv-config:
 
     **NOTE**: In the above example, the uArch signals are listed as independent
     signals, not grouped under any name. The riscv-config tool will automatically
-    group them under the name ``uarch_commonconfig`` (internally) for ease of
-    parsing the rest of the YAML.
+    group them under the name ``uarch_signals`` (internally) for ease of
+    parsing the rest of the YAML. These signals would be expected to reside as
+    independent uArch signals in the custom specification.
 
   **Parsing uArch dependencies**
 
     riscv-config internally creates a ``uarch_depends`` dictionary in a ``warl_class``
-    object. This dictionary is used to store the uArch dependencies. All entries
-    in this dictionary are skipped for error checks, and always evaluate to ``true``
-    for legality checks. It is upto the user to ensure that these signals indeed
-    exist in the hardware, and are connected appropriately. None of these
-    dependencies are removed while generating the checked output YAML.
+    object. This dictionary is used to store the uArch dependencies. It performs
+    a lookup on the ``uarch_signals`` node from the custom spec for all checks.
+    None of these dependencies are removed while generating the checked output YAML.
 
 - **legal** : This field is a list of strings which define the warl functions of
   the csr/subfield. Each string needs to adhere to the following warl-syntax:
