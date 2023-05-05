@@ -38,10 +38,10 @@ def main():
         os.mkdir(work_dir)
 
     try:
-        checked_specs = checker.check_csr_specs(ispec=os.path.abspath(args.isa_spec),
-                                customspec=os.path.abspath(args.custom_spec),
-                                dspec=os.path.abspath(args.debug_spec),
-                                pspec=os.path.abspath(args.platform_spec),
+        checked_specs = checker.check_csr_specs(ispec=args.isa_spec,
+                                customspec=args.custom_spec,
+                                dspec=args.debug_spec,
+                                pspec=args.platform_spec,
                                 work_dir=work_dir,
                                 logging=True,
                                 no_anchors=args.no_anchors)
