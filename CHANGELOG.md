@@ -2,8 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.9.0] - 2023-04-25
+## [3.9.0] - 2023-05-06
   - Add support to include hidden uarch dependencies in YAML definitions of CSRs.
+  - Perform checks on all CSRs together instead of handling each spec seperately.
+  - Add a schema for custom CSR specification. Add a node for listing uarch signals.
 
 ## [3.8.1] - 2023-04-25
   - fix the address for mnstatus
