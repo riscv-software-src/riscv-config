@@ -16,6 +16,7 @@ ISA YAML Spec
   Different examples of the input yamls and the generated checked YAMLs can be found here : `Examples <https://github.com/riscv/riscv-config/tree/master/examples>`_
 
 .. include:: schema_isa.rst
+.. include:: schema_custom.rst
 
 CSR Template
 ============
