@@ -2095,7 +2095,7 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
-        if logging:
-            logger.info(f'All checks completed for hart{entry}')
+        if logging and not errors:
+            logger.info(f'All checks completed for hart{entry}. No errors found.')
 
     return specs_list
