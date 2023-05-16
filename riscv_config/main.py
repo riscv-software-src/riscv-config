@@ -38,27 +38,22 @@ def main():
         os.mkdir(work_dir)
 
     try:
-        if args.isa_spec is not None:
-            isa_file= checker.check_isa_specs(os.path.abspath(args.isa_spec),
-                            work_dir, 
-                            True, args.no_anchors)
-        if args.platform_spec is not None:
-            checker.check_platform_specs(os.path.abspath(args.platform_spec),
-                            work_dir, 
-                            True, args.no_anchors)
-        if args.custom_spec is not None:
-            checker.check_custom_specs(os.path.abspath(args.custom_spec),
-                            work_dir, 
-                            True, args.no_anchors)
-        if args.debug_spec is not None:
-            if args.isa_spec is None:
-             logger.error(' Isa spec missing, Compulsory for debug')
-            checker.check_debug_specs(os.path.abspath(args.debug_spec), isa_file,
-                            work_dir, 
-                            True, args.no_anchors)
+        checked_specs = checker.check_csr_specs(ispec=args.isa_spec,
+                                customspec=args.custom_spec,
+                                dspec=args.debug_spec,
+                                pspec=args.platform_spec,
+                                work_dir=work_dir,
+                                logging=True,
+                                no_anchors=args.no_anchors)
+        isa_file = checked_specs[0]
+        custom_file = checked_specs[1]
+        debug_file = checked_specs[2]
+        platform_file = checked_specs[3]
     except ValidationError as msg:
         logger.error(str(msg))
         return 1
+    
+    logger.info('Done.')
 
 
 if __name__ == "__main__":

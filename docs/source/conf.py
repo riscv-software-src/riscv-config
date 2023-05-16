@@ -322,7 +322,7 @@ latex_elements = {
                 \includegraphics[scale=0.2]{incore_logo.png}
             \end{figure}
             \vspace*{40mm} %%% * is used to give space from top
-            \textbf{\Huge {RISC-V Compatibility Test Generator}}
+            \textbf{\Huge {RISC-V Configuration Validator}}
             \vspace*{40mm} %%% * is used to give space from top
 
 
