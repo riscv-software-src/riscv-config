@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [3.9.1] - 2023-06-21
   - Check if YAMLs are None before they're merged for performing CSR checks.
+  - Perform XLEN specific satp checks based on XLEN value.
+  - Check triggers only when debug CSRs are available.
 
 ## [3.9.0] - 2023-05-06
   - Add support to include hidden uarch dependencies in YAML definitions of CSRs.
