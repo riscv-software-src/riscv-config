@@ -2038,8 +2038,10 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         hart_ids.append(entry)
         merged[entry] = {}
         merged[entry].update(ispec_dict['hart'+str(entry)])
-        merged[entry].update(customspec_dict['hart'+str(entry)])
-        merged[entry].update(dspec_dict['hart'+str(entry)])
+        if custom_file is not None:
+            merged[entry].update(customspec_dict['hart'+str(entry)])
+        if debug_file is not None:
+            merged[entry].update(dspec_dict['hart'+str(entry)])
 
         try:
             uarch_signals = merged[entry]['uarch_signals']
