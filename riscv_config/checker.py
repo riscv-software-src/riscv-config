@@ -2095,7 +2095,11 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
 
         if logging:
             logger.info(f'Initiating validation checks for trigger csrs')
-        errors = check_triggers(csr_db, logging)
+        if dspec_dict == {}:
+            if logging:
+                logger.warning(f'No debug spec passed. Skipping trigger checks.')
+        else:
+            errors = check_triggers(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
