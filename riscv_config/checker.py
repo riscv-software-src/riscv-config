@@ -1355,12 +1355,14 @@ def check_supervisor(spec, logging=False):
         else:
             virtualization_possible = True
     elif 'warl' in satp_mode_type:
-        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode',63, 60)
-        for x in [1,2,3,4,5,6,7,11,12,13]:
-            err = warl_inst.islegal(x)
-            if not err:
-                errors.append(f'warl function for satp::mode accepts \
-"{x}" as a legal value - which is incorrect')
+        # these are the checks from _check_with_satp_modes64
+        if xlen == 64:
+            warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode',63, 60)
+            for x in [1,2,3,4,5,6,7,11,12,13]:
+                err = warl_inst.islegal(x)
+                if not err:
+                    errors['satp_mode_checks'] = f'warl function for satp::mode accepts \
+    "{x}" as a legal value - which is incorrect'
         warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
         for x in virt_modes:
             err = warl_inst.islegal(x)
@@ -2038,8 +2040,10 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
         hart_ids.append(entry)
         merged[entry] = {}
         merged[entry].update(ispec_dict['hart'+str(entry)])
-        merged[entry].update(customspec_dict['hart'+str(entry)])
-        merged[entry].update(dspec_dict['hart'+str(entry)])
+        if custom_file is not None:
+            merged[entry].update(customspec_dict['hart'+str(entry)])
+        if debug_file is not None:
+            merged[entry].update(dspec_dict['hart'+str(entry)])
 
         try:
             uarch_signals = merged[entry]['uarch_signals']
@@ -2091,7 +2095,11 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
 
         if logging:
             logger.info(f'Initiating validation checks for trigger csrs')
-        errors = check_triggers(csr_db, logging)
+        if dspec_dict == {}:
+            if logging:
+                logger.warning(f'No debug spec passed. Skipping trigger checks.')
+        else:
+            errors = check_triggers(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
 
