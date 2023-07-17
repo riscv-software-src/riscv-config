@@ -6063,8 +6063,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check]}
-          check_with: u_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check,cannot_be_false_rv32f]}
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6074,8 +6074,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check]}
-          check_with: u_check
+            accessible: {default: true, check_with: [rv64_check,cannot_be_false_rv64f]}
+          check_with: f_check
           default: {accessible: False}
     frm:
       type: dict
@@ -6098,8 +6098,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check]}
-          check_with: u_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check,cannot_be_false_rv32f]}
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6109,8 +6109,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check]}
-          check_with: u_check
+            accessible: {default: true, check_with: [rv64_check,cannot_be_false_rv64f]}
+          check_with: f_check
           default: {accessible: False}
     fcsr:
       type: dict
@@ -6175,8 +6175,8 @@ hart_schema:
             accessible:
               type: boolean
               default: true
-              check_with: rv32_check
-          check_with: u_check
+              check_with: [rv32_check, cannot_be_false_rv32f]
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6228,8 +6228,8 @@ hart_schema:
               default: {implemented: true}
             accessible:
               default: true
-              check_with: rv64_check
-          check_with: u_check
+              check_with: [rv64_check,cannot_be_false_rv64f]
+          check_with: f_check
           default: {accessible: False}
     cycle:
       type: dict

@@ -40,7 +40,7 @@ class schemaValidator(Validator):
                   "Register cannot be implemented without Smrnmi extension in ISA."
               )
 
-    
+
     def _check_with_satp_modes64(self, field, value):
         pass
 
@@ -63,6 +63,15 @@ class schemaValidator(Validator):
     def _check_with_cannot_be_false_rv64(self, field, value):
         ''' Functions ensures that the field cannot be False in rv64 mode'''
         if rv64 and not value:
+            self._error(field, "This field cannot be False")
+    def _check_with_cannot_be_false_rv64f(self, field, value):
+        ''' Functions ensures that the field cannot be False in rv64 mode when F is present'''
+        global extension_list
+        if rv64 and 'F' in extension_list and not value:
+            self._error(field, "This field cannot be False")
+    def _check_with_cannot_be_false_rv32f(self, field, value):
+        ''' Functions ensures that the field cannot be False in rv32 mode when F is present'''
+        if rv32 and 'F' in extension_list and not value:
             self._error(field, "This field cannot be False")
 
     def _check_with_cannot_be_false_rv32(self, field, value):
@@ -132,7 +141,7 @@ class schemaValidator(Validator):
         maxv = max(supported_xlen)
         if value > (2**maxv) - 1:
             self._error(field, "Value exceeds max supported length")
-    
+
     def _check_with_max_length32(self, field, value):
         '''Function to check whether the given value is less than the maximum value that can be stored(2^xlen-1).'''
         maxv = 32
@@ -190,7 +199,7 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1'):
                 self._error(field, "should not be implemented S is not present")
-    
+
     def _check_with_fs_check(self, field, value):
         f = 5
         s = 18
@@ -211,7 +220,26 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') and (mxl[33 - f:34 - f] != '1'):
                 self._error(field, "neither S nor F is present")
-                
+
+
+    def _check_with_f_check(self, field, value):
+        f = 5
+        check = False
+        if 'implemented' in value:
+            if value['implemented']:
+                check = True
+        if 'accessible' in value:
+            if value['accessible']:
+                check = True
+        if rv64 and check:
+            mxl = format(extensions, '#066b')
+            if (mxl[65 - f:66 - f] != '1'):
+                self._error(field, "should not be implemented since F is not present")
+        elif rv32 and check:
+            mxl = format(extensions, '#034b')
+            if (mxl[33 - f:34 - f] != '1'):
+                self._error(field, "should not be implemented since F is not present")
+
 
     def _check_with_u_check(self, field, value):
         u = 20
@@ -231,7 +259,7 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "should not be implemented since U is not present")
-              
+
     def _check_with_s_debug_check(self, field, value):
         ''' Function ensures that the ro_constant is hardwired to zero when S is present in the ISA string
             Used mainly for debug schema'''
@@ -242,7 +270,7 @@ class schemaValidator(Validator):
               self._error(field, "S is not present to dcsr.v should be ro_constant = 0")
           elif value['ro_constant'] != 0:
                 self._error(field, "S is not present but ro constant is not hardwired to zero")
-                
+
     def _check_with_u_debug_check(self, field, value):
         ''' Function ensures that the ro_constant is hardwired to zero when U is present in the ISA string
             Used mainly for debug schema'''
@@ -272,9 +300,9 @@ class schemaValidator(Validator):
             mxl = format(extensions, '#034b')
             if (mxl[33 - s:34 - s] != '1') and (mxl[33 - u:34 - u] != '1'):
                 self._error(field, "neither S nor U is present")
-                
+
     def _check_with_reset_ext(self, field, value):
-        
+
         if rv64:
             mxl = format(extensions, '#066b')
             reset = format(value, '#066b')
@@ -286,7 +314,7 @@ class schemaValidator(Validator):
             reset = format(value, '#034b')
             if (mxl[8:34] != reset[8:34] ):
                 self._error(field, "reset value does not match with extensions enabled")
-                
+
     def _check_with_sn_check(self, field, value):
         s = 18
         n = 13
@@ -413,4 +441,4 @@ class schemaValidator(Validator):
             self._error(field, f'[{xlen_str}] Subfield ov should not be implemented since Zpn is not present')
         if 'Zpn' in extension_list and not value[xlen_str]['ov']['implemented']:
             self._error(field, f'[{xlen_str}] Subfield ov should be implemented since Zpn is present in isa')
-            
+
