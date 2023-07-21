@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.2] - 2023-07-21
+  - Fix Checks for FCSR, FFLAGS and FRM to depend on F instead of U.
+
 ## [3.9.1] - 2023-06-21
   - Check if YAMLs are None before they're merged for performing CSR checks.
   - Perform XLEN specific satp checks based on XLEN value.
