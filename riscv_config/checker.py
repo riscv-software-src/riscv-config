@@ -44,7 +44,7 @@ def reset():
     mxl='10'if xlen==64 else '01'
     ext_b = ext_b[:2] + str(mxl) + ext_b[4:]
     return int(ext_b, 2)
- 
+
 def resetsu():
     '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
     global inp_yaml
@@ -53,7 +53,7 @@ def resetsu():
       return 8589934592
     elif 64 in inp_yaml['supported_xlen'] and 'U' in extension_list and 'S' in extension_list:
       return 42949672960
-    else:	
+    else:
       return 0
 def reset_vsstatus():
     '''Function to set defaults to reset val of mstatus based on the xlen and S, U extensions'''
@@ -61,7 +61,7 @@ def reset_vsstatus():
     global extension_list
     if 64 in inp_yaml['supported_xlen'] and 'U' in extension_list:
       return 8589934592
-    else:	
+    else:
       return 0
 
 def uset():
@@ -71,7 +71,7 @@ def uset():
         return {'implemented': True}
     else:
         return {'implemented': False}
-   
+
 def hset():
     '''Function to set defaults based on presence of 'U' extension.'''
     global extension_list
@@ -88,15 +88,34 @@ def sset():
         return {'implemented': True}
     else:
         return {'implemented': False}
-        
+
 def fsset():
-    '''Function to set defaults based on presence of 'F' extension.'''
+    '''Function to set defaults based on presence of 'F' or 'S' extension.'''
     global extension_list
     if 'F' in extension_list or 'S' in extension_list:
         return {'implemented': True}
     else:
         return {'implemented': False}
-        
+
+def fset():
+    '''Function to set defaults based on presence of 'F' extension.'''
+    global extension_list
+    if 'F' in extension_list:
+        return {'implemented': True}
+    else:
+        return {'implemented': False}
+
+def fregset():
+    '''Function to set defaults based on presence of 'F' extension.'''
+    global inp_yaml
+    global extension_list
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    if 'F' in extension_list:
+      if 32 in inp_yaml['supported_xlen']:
+        temp['rv32']['accessible'] = True
+      if 64 in inp_yaml['supported_xlen']:
+        temp['rv64']['accessible'] = True
+    return temp
 
 def uregset():
     '''Function to set defaults based on presence of 'U' extension.'''
@@ -119,7 +138,7 @@ def uregseth():
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
     return temp
-  
+
 def hregseth():
     '''Function to set defaults based on presence of 'H' extension.'''
     global inp_yaml
@@ -128,7 +147,7 @@ def hregseth():
     if 'H' in extension_list:
       if 32 in inp_yaml['supported_xlen']:
         temp['rv32']['accessible'] = True
-    return temp      
+    return temp
 def sregset():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
@@ -164,7 +183,7 @@ def hregset():
       if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
     return temp
-    
+
 def sregseth():
     '''Function to set defaults based on presence of 'S' extension.'''
     global inp_yaml
@@ -272,17 +291,17 @@ def regset():
     if 64 in inp_yaml['supported_xlen']:
         temp['rv64']['accessible'] = True
     return temp
-    
+
 def pmpregset():
     global inp_yaml
-    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}} 
-    return temp    
+    temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
+    return temp
 
 def pmpregseth():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
     return temp
-    
+
 def counterhset():
     global inp_yaml
     temp = {'rv32': {'accessible': False}, 'rv64': {'accessible': False}}
@@ -293,7 +312,7 @@ def counterhset():
 def add_debug_setters(schema_yaml):
     '''Function to set the default setters for various fields in the debug schema'''
     regsetter = lambda doc: regset()
-    
+
     tselectregsetter = lambda doc: pmpregset()
     schema_yaml['dcsr']['default_setter'] = regsetter
     schema_yaml['tselect']['default_setter'] = tselectregsetter
@@ -305,7 +324,7 @@ def add_debug_setters(schema_yaml):
     schema_yaml['tcontrol']['default_setter'] = tselectregsetter
     schema_yaml['scontext']['default_setter'] = tselectregsetter
     return schema_yaml
-    
+
 def add_reset_setters(schema_yaml):
     '''Function to set the default setters for extension  subfields in the misa'''
     global inp_yaml
@@ -315,7 +334,7 @@ def add_reset_setters(schema_yaml):
     extensions=hex(int(format(reset(), '#0{}b'.format(xlen+2))[(xlen-24):(xlen+2)], 2))
     schema_yaml['misa']['schema'][rvxlen]['schema']['extensions']['schema']['type']['default']['warl']['legal'][0]=schema_yaml['misa']['schema'][rvxlen]['schema']['extensions']['schema']['type']['default']['warl']['legal'][0].replace('0x3FFFFFFF', extensions)
     return schema_yaml
-    
+
 def add_fflags_type_setters(schema_yaml):
     global inp_yaml
     global extension_list
@@ -325,7 +344,7 @@ def add_fflags_type_setters(schema_yaml):
         schema_yaml['fcsr']['schema'][rvxlen]['schema']['frm']['schema']['type']['default'] = {'ro_constant': 0}
         schema_yaml['fcsr']['schema'][rvxlen]['schema']['fflags']['schema']['type']['default'] = {'ro_constant': 0}
     return schema_yaml
-    
+
 def add_def_setters(schema_yaml):
     '''Function to set the default setters for various fields in the schema'''
     regsetter = lambda doc: regset()
@@ -336,9 +355,11 @@ def add_def_setters(schema_yaml):
     counthsetter = lambda doc: counterhset()
     pmpreghsetter = lambda doc: pmpregseth()
     uregsetter = lambda doc: uregset()
+    fregsetter = lambda doc: fregset()
     ureghsetter = lambda doc: uregseth()
     ssetter = lambda doc: sset()
     fssetter = lambda doc: fsset()
+    fsetter = lambda doc: fset()
     sregsetter = lambda doc: sregset()
     nregsetter = lambda doc: nregset()
     hregsetter = lambda doc: hregset()
@@ -452,7 +473,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['stvec']['schema']['rv64']['schema']['mode'][
         'default_setter'] = ssetter
-        
+
     schema_yaml['sepc']['default_setter'] = sregsetter
     schema_yaml['stval']['default_setter'] = sregsetter
     schema_yaml['scause']['default_setter'] = sregsetter
@@ -478,7 +499,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['satp']['schema']['rv64']['schema']['mode'][
         'default_setter'] = ssetter
     schema_yaml['sscratch']['default_setter'] = sregsetter
-    
+
     schema_yaml['ustatus']['default_setter'] = nregsetter
     schema_yaml['ustatus']['schema']['rv32']['schema']['uie'][
         'default_setter'] = nusetter
@@ -538,20 +559,20 @@ def add_def_setters(schema_yaml):
     schema_yaml['uscratch']['default_setter'] = nregsetter
 
     schema_yaml['fcsr']['schema']['rv32']['schema']['frm'][
-        'default_setter'] = usetter
+        'default_setter'] = fsetter
     schema_yaml['fcsr']['schema']['rv64']['schema']['frm'][
-        'default_setter'] = usetter
+        'default_setter'] = fsetter
     schema_yaml['fcsr']['schema']['rv32']['schema']['fflags'][
-        'default_setter'] = usetter
+        'default_setter'] = fsetter
     schema_yaml['fcsr']['schema']['rv64']['schema']['fflags'][
-        'default_setter'] = usetter
+        'default_setter'] = fsetter
 
     schema_yaml['misa']['default_setter'] = regsetter
     schema_yaml['misa']['schema']['reset-val']['default_setter'] = resetsetter
     schema_yaml['mstatus']['default_setter'] = regsetter
     schema_yaml['mstatus']['schema']['reset-val']['default_setter']=reset_susetter
     schema_yaml['vsstatus']['schema']['reset-val']['default_setter']=reset_vsssetter
-    schema_yaml['mstatush']['default_setter'] = counthsetter   
+    schema_yaml['mstatush']['default_setter'] = counthsetter
     schema_yaml['mvendorid']['default_setter'] = regsetter
     schema_yaml['mimpid']['default_setter'] = regsetter
     schema_yaml['marchid']['default_setter'] = regsetter
@@ -818,9 +839,9 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['uxl'][
         'default_setter'] = usetter
-    schema_yaml['fflags']['default_setter'] = uregsetter
-    schema_yaml['frm']['default_setter'] = uregsetter
-    schema_yaml['fcsr']['default_setter'] = uregsetter
+    schema_yaml['fflags']['default_setter'] = fregsetter
+    schema_yaml['frm']['default_setter'] = fregsetter
+    schema_yaml['fcsr']['default_setter'] = fregsetter
     schema_yaml['time']['default_setter'] = uregsetter
     schema_yaml['timeh']['default_setter'] = ureghsetter
     schema_yaml['cycle']['default_setter'] = uregsetter
@@ -947,7 +968,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = hsetter
     schema_yaml['mie']['schema']['rv64']['schema']['sgeie'][
         'default_setter'] = hsetter
-                
+
     schema_yaml['mstatus']['schema']['rv32']['schema']['tw'][
         'default_setter'] = twsetter
     schema_yaml['mstatus']['schema']['rv64']['schema']['tw'][
@@ -964,7 +985,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['mideleg']['default_setter'] = delegsetter
     schema_yaml['sedeleg']['default_setter'] = nregsetter
     schema_yaml['sideleg']['default_setter'] = nregsetter
-    
+
     schema_yaml['hstatus']['schema']['rv32']['schema']['gva'][
         'default_setter'] = hsetter
     schema_yaml['hstatus']['schema']['rv64']['schema']['gva'][
@@ -981,7 +1002,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = hsetter
     schema_yaml['hstatus']['schema']['rv64']['schema']['hu'][
         'default_setter'] = hsetter
-    
+
     schema_yaml['hstatus']['default_setter'] = hregsetter
     schema_yaml['hedeleg']['default_setter'] = hregsetter
     schema_yaml['hideleg']['default_setter'] = hregsetter
@@ -996,7 +1017,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['htimedelta']['default_setter'] = hregsetter
     schema_yaml['htimedeltah']['default_setter'] = hreghsetter
     schema_yaml['hcounteren']['default_setter'] = hregsetter
-    
+
     schema_yaml['hie']['schema']['rv32']['schema']['sgeie'][
         'default_setter'] = hsetter
     schema_yaml['hie']['schema']['rv64']['schema']['sgeie'][
@@ -1005,7 +1026,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = hsetter
     schema_yaml['hip']['schema']['rv64']['schema']['sgeip'][
         'default_setter'] = hsetter
-    
+
     schema_yaml['vsstatus']['default_setter'] = sregsetter
     schema_yaml['vsstatus']['schema']['rv32']['schema']['uie'][
         'default_setter'] = nusetter
@@ -1165,9 +1186,9 @@ def update_fields(spec, logging=False):
                 csrnode['rv64']['fields'] = get_fields(
                     csrnode['rv64'], 64)
     return spec
-        
+
 def check_fields(spec):
-    errors = {} 
+    errors = {}
     for csr, node, in spec.items() :
          fault_node = node
          error=[]
@@ -1181,21 +1202,21 @@ def check_fields(spec):
          if fields:
             error.append("The fields " + "".join(fields) + " are missing")
          if node['rv32']['accessible']:
-            if any(type(e)==list for e in node['rv32']['fields']): 
+            if any(type(e)==list for e in node['rv32']['fields']):
              sub_fields = node['rv32']['fields'][:-1]
             else:
              sub_fields = node['rv32']['fields']
             if not sub_fields :
-             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'shadow_type', 'fields', 'type']) - set(node['rv32'].keys()) )    
+             subfields = list(set(['msb', 'lsb', 'accessible', 'shadow', 'shadow_type', 'fields', 'type']) - set(node['rv32'].keys()) )
              if subfields:
-                error.append("The subfield " + "".join(subfields) + " are not present")         
+                error.append("The subfield " + "".join(subfields) + " are not present")
             else:
               for x in sub_fields :
                 subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv32'][x].keys()) )
-                if subfields :                   
+                if subfields :
                    error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
-         if node['rv64']['accessible']:            
-            if any(type(e)==list for e in node['rv64']['fields']): 
+         if node['rv64']['accessible']:
+            if any(type(e)==list for e in node['rv64']['fields']):
              sub_fields = node['rv64']['fields'][:-1]
             else:
              sub_fields = node['rv64']['fields']
@@ -1206,7 +1227,7 @@ def check_fields(spec):
             else:
               for x in sub_fields :
                 subfields = list(set(['msb', 'lsb', 'implemented', 'description', 'shadow', 'shadow_type', 'type']) - set(node['rv64'][x].keys()) )
-                if subfields :                   
+                if subfields :
                    error.append("The subfields " + "".join(subfields) + " are not present in " + str(x))
          if bin(node['address'])[2:][::-1][6:8] != '11' and bin(node['address'])[2:][::-1][8:12] != '0001':
              error.append('Address is not in custom csr ranges')
@@ -1214,7 +1235,7 @@ def check_fields(spec):
             error.append('Privilege does not match with the address')
          if error:
             errors[csr] = error
-    return errors 
+    return errors
 def check_shadows(spec, logging = False):
     ''' Check if the shadowed fields are implemented and of the same size as the
     source'''
@@ -1229,7 +1250,7 @@ def check_shadows(spec, logging = False):
                 continue
             for rvxlen in _rvxlen:
                 if content[rvxlen]['accessible'] and not content[rvxlen]['fields']:
-                    if content[rvxlen]['shadow'] is None: 
+                    if content[rvxlen]['shadow'] is None:
                         continue
                     else:
                         shadow = content[rvxlen]['shadow'].split('.')
@@ -1259,7 +1280,7 @@ def check_shadows(spec, logging = False):
                             csr_size = spec[csr][rvxlen]['msb'] - spec[csr][rvxlen]['lsb']
                             if scsr_size != csr_size :
                                 error.append('Shadow field '+ scsr +\
-                                        'does not match in size') 
+                                        'does not match in size')
                 elif content[rvxlen]['accessible']:
                     for subfield in content[rvxlen]['fields']:
                         if isinstance(subfield ,list):
@@ -1298,7 +1319,7 @@ def check_shadows(spec, logging = False):
                                 if scsr_size != csr_size :
                                     error.append('Subfield ' + subfield +'shadowing'+ \
                                             scsr + '.' + subscsr + \
-                                            ' does not match in size') 
+                                            ' does not match in size')
 
         if error:
             errors[csr] = error
@@ -1332,7 +1353,7 @@ def check_mhpm(spec, logging = False):
         if error:
             errors[csrname] = error
     return errors
-   
+
 def check_supervisor(spec, logging=False):
     ''' this function includes several supervisor related checks:
 
@@ -1374,9 +1395,9 @@ def check_supervisor(spec, logging=False):
         errors['pte_ad_hw_update'] = ['pte_ad_hw_update should be True only if satp.mode can be \
 set to one of the legal virtualization modes']
     return errors
-        
-    
-     
+
+
+
 def check_pmp(spec, logging = False):
     ''' Check if the pmp csrs are implemented correctly as per spec. The
     following checks are performed:
@@ -1385,9 +1406,9 @@ def check_pmp(spec, logging = False):
         - the number of implemented pmpcfg csrs must be 0, 16 or 64
         - the pmpaddr and pmpcfgs must be implemented implemented from the
           lowest numbered indices and be contiguous
-        - the number of accessible pmpaddr csrs and the implemented pmpcfg csrs 
+        - the number of accessible pmpaddr csrs and the implemented pmpcfg csrs
           must be the same
-        - for each accesible pmpaddr csr the corresponding pmpcfg csr must be 
+        - for each accesible pmpaddr csr the corresponding pmpcfg csr must be
           implemented
         - reset values of the accessible pmpaddr csrs must be coherent with the
           pmp_granularity field.
@@ -1431,14 +1452,14 @@ must be 0, 16 or 64. But found {pmpcfg_count}']
     if pmpcfg_count != pmpaddr_count:
         errors["PMP"] = [f' the number of pmpaddr* csrs [{pmpaddr_count}]and \
 pmp*cfg registers [{pmpcfg_count}] do not match']
-        
+
     for csrname, content, in spec.items():
         error = []
         Grain=int(spec['pmp_granularity'])
         if 'pmpaddr' in csrname:
             index = int(re.findall('\d+',csrname.lower())[0])
-            if content['rv64']['accessible'] :                
-                reset_val_addr = (bin(content['reset-val'])[2:].zfill(64))[::-1] 
+            if content['rv64']['accessible'] :
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(64))[::-1]
                 reset_val_cfg  = (bin(spec['pmpcfg'+str(int(int(index/8)*2))]['reset-val'])[2:].zfill(64))[::-1]
                 if not spec['pmpcfg'+str(int(int(index/8)*2))]['rv64']['accessible']:
                     error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
@@ -1451,7 +1472,7 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
                   if int(content['reset-val']) % (2**Grain) != 0 :
                     error.append(csrname + 'reset value does not adhere with the pmp granularity')
             if content['rv32']['accessible'] :
-                reset_val_addr = (bin(content['reset-val'])[2:].zfill(32))[::-1] 
+                reset_val_addr = (bin(content['reset-val'])[2:].zfill(32))[::-1]
                 reset_val_cfg  = (bin(spec['pmpcfg'+str(int(index/4))]['reset-val'])[2:].zfill(32))[::-1]
                 if not spec['pmpcfg'+str(int(index/4))]['rv32']['accessible']:
                     error.append(csrname + " addr doesn't have the corresponding pmp config register accessible")
@@ -1523,7 +1544,7 @@ def check_warl_legality(spec, logging = False):
             errors[csrname] = err_f
 
     return errors
-                
+
 def check_reset(spec, logging=False):
     errors = {}
     resetnodes = {}
@@ -1632,7 +1653,7 @@ def check_indexing(spec, logging = False):
                             valuenode['lsb'] = spec[indexing_reg][f'rv{xlen}']['lsb']
                             valuenode['val'] = value_for_indexing_reg
                             valuenode['type'] = spec[indexing_reg][f'rv{xlen}']['type']
-                            error = check_values_in_type(indexing_reg, valuenode, spec, False) 
+                            error = check_values_in_type(indexing_reg, valuenode, spec, False)
                             if value_for_indexing_reg in index_val_list:
                                 error.append(f'Founding repeating index-val {value_for_indexing_reg} for indexed csr : {csrname}')
                             else:
@@ -1647,7 +1668,7 @@ def check_triggers(spec, logging):
     xlen = 64 if 64 in spec['supported_xlen'] else 32
     indexed_registers = ['tdata1','tinfo','tdata1', 'tdata2', 'tcontrol', 'hcontext', 'scontext']
     ind_prop = {}
-    
+
     for i in indexed_registers:
         ind_prop[i] = {}
         ind_prop[i]['accessible'] = spec[i][f'rv{xlen}']['accessible']
@@ -1703,7 +1724,7 @@ def check_debug_specs(debug_spec, isa_spec,
 
     if logging:
         logger.info('Input-Debug file')
-    
+
     foo1 = isa_spec
     foo = debug_spec
     schema = constants.debug_schema
@@ -1721,7 +1742,7 @@ def check_debug_specs(debug_spec, isa_spec,
         logger.info('Loading input isa file: ' + str(foo1))
     master_inp_yaml = utils.load_yaml(foo1, no_anchors)
     isa_string = master_inp_yaml['hart0']['ISA']
-    
+
     # instantiate validator
     if logging:
         logger.info('Load Schema ' + str(schema))
@@ -1822,8 +1843,8 @@ def check_isa_specs(isa_spec,
             logger.info('Processing Hart: hart'+str(x))
         inp_yaml = master_inp_yaml['hart'+str(x)]
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
-        schema_yaml = add_reset_setters(master_schema_yaml['hart_schema']['schema']) 
-        schema_yaml = add_fflags_type_setters(master_schema_yaml['hart_schema']['schema']) 
+        schema_yaml = add_reset_setters(master_schema_yaml['hart_schema']['schema'])
+        schema_yaml = add_fflags_type_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
         xlen = inp_yaml['supported_xlen']
         validator = schemaValidator(schema_yaml, xlen=xlen, isa_string=inp_yaml['ISA'])
@@ -1886,7 +1907,7 @@ def check_custom_specs(custom_spec,
         logger.info('Custom CSR Spec')
 
     foo = custom_spec
-    
+
     # Load input YAML file
     if logging:
         logger.info('Loading input file: ' + str(foo))
@@ -1923,7 +1944,7 @@ def check_custom_specs(custom_spec,
         logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return cfile
-    
+
 def check_platform_specs(platform_spec,
                 work_dir,
                 logging=False,
