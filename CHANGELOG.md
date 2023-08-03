@@ -1,6 +1,8 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.9.2] - 2023-08-03
+  - Add support for Svadu extension
 
 ## [3.9.1] - 2023-06-21
   - Check if YAMLs are None before they're merged for performing CSR checks.
