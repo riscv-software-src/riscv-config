@@ -1444,7 +1444,7 @@ hart_schema:
               schema:
                 description: { type: string, default: control the endianness of memory accesses other than instruction fetches for machine mode}
                 shadow: {type: string, default: , nullable: True}
-                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                3hadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
@@ -3688,6 +3688,60 @@ hart_schema:
           type: dict
           schema:
             fields: {type: list, default: []}
+            stce:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Sstc extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 63, allowed: [63]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            pbmte:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Svpbmt extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 62, allowed: [62]}
+                lsb: {type: integer, default: 62, allowed: [62]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            hade:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables H/W updating of PTE A/D bits for single-stage address translation.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 61, allowed: [61]}
+                lsb: {type: integer, default: 61, allowed: [61]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
             cbze:
               type: dict
               schema:
@@ -3753,6 +3807,84 @@ hart_schema:
               default: false
               check_with: rv64_check
           default: {accessible: false}
+    menvcfgh:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: The menvcfgh register stores the information regarding machine environment configuration.
+        address: {type: integer, default: 0x31A, allowed: [0x31A]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            stce:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Sstc extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            pbmte:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Svpbmt extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 30, allowed: [30]}
+                lsb: {type: integer, default: 30, allowed: [30]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            hade:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables H/W updating of PTE A/D bits for single-stage address translation.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 29, allowed: [29]}
+                lsb: {type: integer, default: 29, allowed: [29]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          schema: {accessible: {type: boolean, default: False, allowed: [False]}}
+          default: {accessible: False}
     pmpcfg0:
       type: dict
       schema:
