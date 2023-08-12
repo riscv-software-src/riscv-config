@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.12.-] - 2023-08-12
+## [3.12.0] - 2023-08-12
   - Add support for Svhad extension
 
 ## [3.11.0] - 2023-08-12
