@@ -102,13 +102,13 @@ def get_extension_list(isa):
         err_list.append( "Zdinx cannot exist without Zfinx.")
         err = True
     if 'Zhinx' in extension_list and not 'Zfinx' in extension_list:
-        err_list.append( "Zhinx cannot exist without Zhinx.")
+        err_list.append( "Zhinx cannot exist without Zfinx.")
         err = True
     if 'Zhinx' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinx and Zfh cannot exist together.")
         err = True
     if 'Zhinxmin' in extension_list and not 'Zfinx' in extension_list:
-        err_list.append( "Zhinxmin cannot exist without Zhinx.")
+        err_list.append( "Zhinxmin cannot exist without Zfinx.")
         err = True
     if 'Zhinxmin' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinxmin and Zfh cannot exist together.")
