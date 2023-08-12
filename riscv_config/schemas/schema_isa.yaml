@@ -1444,7 +1444,7 @@ hart_schema:
               schema:
                 description: { type: string, default: control the endianness of memory accesses other than instruction fetches for machine mode}
                 shadow: {type: string, default: , nullable: True}
-                3hadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 5, allowed: [5]}
                 lsb: {type: integer, default: 5, allowed: [5]}
                 implemented: {type: boolean, default: true}
