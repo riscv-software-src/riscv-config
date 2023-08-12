@@ -6063,8 +6063,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check]}
-          check_with: u_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check,cannot_be_false_rv32f]}
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6074,8 +6074,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 4, allowed: [4]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check]}
-          check_with: u_check
+            accessible: {default: true, check_with: [rv64_check,cannot_be_false_rv64f]}
+          check_with: f_check
           default: {accessible: False}
     frm:
       type: dict
@@ -6098,8 +6098,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {type: boolean, default: true, check_with: [rv32_check]}
-          check_with: u_check
+            accessible: {type: boolean, default: true, check_with: [rv32_check,cannot_be_false_rv32f]}
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6109,8 +6109,8 @@ hart_schema:
             shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
             msb: {type: integer, default: 2, allowed: [2]}
             lsb: {type: integer, default: 0, allowed: [0]}
-            accessible: {default: true, check_with: [rv64_check]}
-          check_with: u_check
+            accessible: {default: true, check_with: [rv64_check,cannot_be_false_rv64f]}
+          check_with: f_check
           default: {accessible: False}
     fcsr:
       type: dict
@@ -6175,8 +6175,8 @@ hart_schema:
             accessible:
               type: boolean
               default: true
-              check_with: rv32_check
-          check_with: u_check
+              check_with: [rv32_check, cannot_be_false_rv32f]
+          check_with: f_check
           default: {accessible: False}
         rv64:
           type: dict
@@ -6228,8 +6228,8 @@ hart_schema:
               default: {implemented: true}
             accessible:
               default: true
-              check_with: rv64_check
-          check_with: u_check
+              check_with: [rv64_check,cannot_be_false_rv64f]
+          check_with: f_check
           default: {accessible: False}
     cycle:
       type: dict
@@ -12975,3 +12975,433 @@ CSR and the value returned in VS-mode or VU-mode.}
               default: true
               check_with: rv64_check
           default: {accessible: False}
+    mnscratch:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: |-
+            The mnscratch CSR holds an MXLEN-bit read-write register which enables the NMI trap 
+            handler to save and restore the context that was interrupted.
+        address: {type: integer, default: 0x740, allowed: [0x740]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFF}}
+              - schema: {ro_variable: {type: boolean}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - mnscratch[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv32_check
+                - smrnmi_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              oneof:
+              - schema: {ro_constant: {type: integer, max:  0xFFFFFFFFFFFFFFFF}}
+              - schema: {ro_variable: {type: boolean}}
+              - schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - mnscratch[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              default: false
+              check_with: 
+                - rv64_check
+                - smrnmi_check
+          default: {accessible: false}
+    mnepc:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: |-
+            The mnepc CSR is an MXLEN-bit read-write register which on entry to the NMI trap handler holds
+            the PC of the instruction that took the interrupt.
+
+            The low bit of mnepc (mnepc[0]) is always zero. On implementations that support only
+            IALIGN=32, the two low bits (mnepc[1:0]) are always zero.
+
+            If an implementation allows IALIGN to be either 16 or 32 (by changing CSR misa, for example),
+            then, whenever IALIGN=32, bit mnepc[1] is masked on reads so that it appears to be 0. This
+            masking occurs also for the implicit read by the MRET instruction. Though masked, mnepc[1]
+            remains writable when IALIGN=32.
+
+            mnepc is a WARL register that must be able to hold all valid virtual addresses. It need not be
+            capable of holding all possible invalid addresses. Prior to writing mnepc, implementations may
+            convert an invalid address into some other invalid address that mnepc is capable of holding.
+        address: {type: integer, default: 0x741, allowed: [0x741]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          default: 0
+          check_with: max_length
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - mnepc[31:0] in [0x00000000:0xFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv32_check
+                - smrnmi_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            type:
+              type: dict
+              schema: { warl: *ref_warl }
+              default:
+                warl:
+                  dependency_fields: []
+                  legal:
+                  - mnepc[63:0] in [0x00000000:0xFFFFFFFFFFFFFFFF]
+                  wr_illegal:
+                  - unchanged
+    
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv64_check
+                - smrnmi_check
+          default: {accessible: false}
+    mncause:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: |-
+            The mncause CSR holds the reason for the NMI, with bit MXLEN-1 set to 1, 
+            and the NMI cause encoded in the least-significant bits or zero if NMI causes are not supported.
+        address: {type: integer, default: 0x742,  allowed: [0x742]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            interrupt:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether the trap was due to an interrupt.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 31, allowed: [31]}
+                lsb: {type: integer, default: 31, allowed: [31]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: {ro_constant: {type: integer, max: 0x1, min: 0x1}}
+                  default: {ro_constant: 1 }
+              default: {implemented: true}
+            exception_code:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the exception code.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 30, allowed: [30]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl: 
+                    - 0:15
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv32_check
+                - smrnmi_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            interrupt:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Indicates whether the trap was due to an interrupt.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 63, allowed: [63]}
+                lsb: {type: integer, default: 63, allowed: [63]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: {ro_constant: {type: integer, max: 0x1, min: 0x1}}
+                  default: {ro_constant: 1 }
+              default: {implemented: true}
+            exception_code:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Encodes the exception code.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 62, allowed: [62]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0:15
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+          default: {accessible: false}
+    mnstatus:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: |-
+
+            The mnstatus CSR holds a two-bit field, MNPP, which on entry to the trap handler holds the
+            privilege mode of the interrupted context, encoded in the same manner as mstatus.MPP. It also
+            
+            holds a one-bit field, MNPV, which on entry to the trap handler holds the virtualization mode of
+            the interrupted context, encoded in the same manner as mstatus.MPV.
+            mnstatus also holds the NMIE bit. When NMIE=1, nonmaskable interrupts are enabled. When
+            NMIE=0, all interrupts are disabled.
+            When NMIE=0, the hart behaves as though mstatus.MPRV were clear, regardless of the current
+            setting of mstatus.MPRV.
+
+            Upon reset, NMIE contains the value 0.
+
+        address: {type: integer, default: 0x744, allowed: [0x744]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            nmie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    When NMIE=1, nonmaskable interrupts are enabled. When
+                    NMIE=0, all interrupts are disabled. When NMIE=0, the hart behaves as though mstatus.MPRV were 
+                    clear, regardless of the current setting of mstatus.MPRV.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    warl:
+                      dependency_fields: [writeval]
+                      legal:
+                        - writeval[0] in [1] -> nmie[0] bitmask [1,0]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
+            mnpv:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    on entry to the trap handler holds the virtualization mode of the interrupted 
+                    context, encoded in the same manner as mstatus.MPV.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default: { wlrl: [0:1]}
+              default: {implemented: false}
+              check_with: h_check
+            mnpp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    on entry to the trap handler holds the
+                    privilege mode of the interrupted context, encoded in the same manner as mstatus.MPP.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 12, allowed: [12]}
+                lsb: {type: integer, default: 11, allowed: [11]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv32_check
+                - smrnmi_check
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            nmie:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    When NMIE=1, nonmaskable interrupts are enabled. When
+                    NMIE=0, all interrupts are disabled. When NMIE=0, the hart behaves as though mstatus.MPRV were 
+                    clear, regardless of the current setting of mstatus.MPRV.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: 
+                    warl:
+                      dependency_fields: [writeval]
+                      legal:
+                        - writeval[0] in [1] -> nmie[0] bitmask [1,0]
+                      wr_illegal:
+                        - Unchanged
+              default: {implemented: true}
+            mnpv:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    on entry to the trap handler holds the virtualization mode of
+                    the interrupted context, encoded in the same manner as mstatus.MPV.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 7, allowed: [7]}
+                lsb: {type: integer, default: 7, allowed: [7]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default: { wlrl: [0:1]}
+              default: {implemented: false}
+              check_with: h_check
+            mnpp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: |-
+                    on entry to the trap handler holds the
+                    privilege mode of the interrupted context, encoded in the same manner as mstatus.MPP.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 12, allowed: [12]}
+                lsb: {type: integer, default: 11, allowed: [11]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 3 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: 
+                - rv64_check
+                - smrnmi_check
+          default: {accessible: false}

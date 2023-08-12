@@ -16,6 +16,7 @@ ISA YAML Spec
   Different examples of the input yamls and the generated checked YAMLs can be found here : `Examples <https://github.com/riscv/riscv-config/tree/master/examples>`_
 
 .. include:: schema_isa.rst
+.. include:: schema_custom.rst
 
 CSR Template
 ============
@@ -307,6 +308,92 @@ in the riscv-config:
 
     1. The csrs/subfields mentioned in the list must have their 
        accessible/implemented fields set to True in the isa yaml.
+
+  **Micro-Architectural Dependencies**
+  
+  riscv-config supports the notion of listing micro-architectural dependencies
+  in the dependency_fields list.
+
+  **Listing uArch Dependencies**
+
+  All uArch dependencies need to be listed in the custom specification. An example
+  node has been described as follows:
+
+  .. code-block:: yaml
+
+    uarch_signals:
+      uarch_signal_1:
+        msb: integer
+        lsb: integer
+        reset-val: integer
+        legal: list
+      uarch_signal_2:
+        msb: integer
+        lsb: integer
+        reset-val: integer
+        legal: list
+      uarch_group_1:
+        subfields:
+          uarch_signal_3:
+            msb: integer
+            lsb: integer
+            reset-val: integer
+            legal: list
+          uarch_signal_4:
+            msb: integer
+            lsb: integer
+            reset-val: integer
+            legal: list
+
+  .. note:: The custom csr specification is now validated using a custom_schema.yaml
+
+  **Restrictions imposed**:
+  
+  1. uArch depedencies can be listed in either of the two ways,
+    as a uArch group or as an independent list of uArch signals. While using a uArch
+    group, the name of the group must have a ``uarch_`` prefix. The following is
+    an example of a uArch group listed in the dependencies:
+
+    .. code-block:: yaml
+
+      warl:
+        dependency_fields: [uarch_cachecontrol::global_valid, uarch_cachecontrol::global_dirty]
+        legal:
+          - global_valid[3:0] in [0] and global_dirty[3:0] in [0]
+            -> base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]
+        wr_illegal:
+          - Unchanged
+
+    **NOTE**: The above example shows a dependency string only consisting of uArch
+    signals grouped under the name ``uarch_cachecontrol``. We can also include other
+    spec based dependencies in the same list.
+
+  2. While listing the uArch dependencies as an independent list, the name of the
+    uArch signals must not have a ``uarch_`` prefix. The following is an example
+    of a uArch dependency listed as an independent list:
+
+    .. code-block:: yaml
+
+      warl:
+        dependency_fields: [uarch_global_valid, uarch_global_dirty, mstatus::mpp]
+        legal:
+          - uarch_global_valid[3:0] in [0] and uarch_global_dirty[3:0] in [0]
+            -> base[61:0] bitmask [0x3FFFFFFFFFFFFFFF, 0x0000000000000000]
+        wr_illegal:
+          - Unchanged
+
+    **NOTE**: In the above example, the uArch signals are listed as independent
+    signals, not grouped under any name. The riscv-config tool will automatically
+    group them under the name ``uarch_signals`` (internally) for ease of
+    parsing the rest of the YAML. These signals would be expected to reside as
+    independent uArch signals in the custom specification.
+
+  **Parsing uArch dependencies**
+
+    riscv-config internally creates a ``uarch_depends`` dictionary in a ``warl_class``
+    object. This dictionary is used to store the uArch dependencies. It performs
+    a lookup on the ``uarch_signals`` node from the custom spec for all checks.
+    None of these dependencies are removed while generating the checked output YAML.
 
 - **legal** : This field is a list of strings which define the warl functions of
   the csr/subfield. Each string needs to adhere to the following warl-syntax:

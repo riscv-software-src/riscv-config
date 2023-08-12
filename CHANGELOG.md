@@ -2,8 +2,28 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.7.3] - 2023-04-10
+## [3.10.0] - 2023-04-10
   - Add support for Zfa extension
+
+## [3.9.2] - 2023-07-21
+  - Fix Checks for FCSR, FFLAGS and FRM to depend on F instead of U.
+
+## [3.9.1] - 2023-06-21
+  - Check if YAMLs are None before they're merged for performing CSR checks.
+  - Perform XLEN specific satp checks based on XLEN value.
+  - Check triggers only when debug CSRs are available.
+
+## [3.9.0] - 2023-05-06
+  - Add support to include hidden uarch dependencies in YAML definitions of CSRs.
+  - Perform checks on all CSRs together instead of handling each spec seperately.
+  - Add a schema for custom CSR specification. Add a node for listing uarch signals.
+
+## [3.8.1] - 2023-04-25
+  - fix the address for mnstatus
+
+## [3.8.0] - 2023-04-18
+  - Add support for Srnmi extension
+  - All extension existence checks to be performed on extension\_list from isa validator.
 
 ## [3.7.2] - 2023-04-06
   - Add support for Zicond extension
