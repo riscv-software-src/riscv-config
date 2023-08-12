@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.3] - 2023-08-12
+  - Add support for Svhad extension
+
 ## [3.9.2] - 2023-07-21
   - Fix Checks for FCSR, FFLAGS and FRM to depend on F instead of U.
 
