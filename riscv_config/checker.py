@@ -1027,7 +1027,7 @@ def add_def_setters(schema_yaml):
     schema_yaml['hip']['schema']['rv64']['schema']['sgeip'][
         'default_setter'] = hsetter
 
-    schema_yaml['vsstatus']['default_setter'] = sregsetter
+    schema_yaml['vsstatus']['default_setter'] = hregsetter
     schema_yaml['vsstatus']['schema']['rv32']['schema']['uie'][
         'default_setter'] = nusetter
     schema_yaml['vsstatus']['schema']['rv64']['schema']['uie'][
@@ -1059,7 +1059,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['vsstatus']['schema']['rv64']['schema']['sum'][
         'default_setter'] = ssetter
-    schema_yaml['vsie']['default_setter'] = sregsetter
+    schema_yaml['vsie']['default_setter'] = hregsetter
     schema_yaml['vsie']['schema']['rv32']['schema']['seie'][
         'default_setter'] = ssetter
     schema_yaml['vsie']['schema']['rv64']['schema']['seie'][
@@ -1072,7 +1072,7 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['vsie']['schema']['rv64']['schema']['ssie'][
         'default_setter'] = ssetter
-    schema_yaml['vsip']['default_setter'] = sregsetter
+    schema_yaml['vsip']['default_setter'] = hregsetter
     schema_yaml['vsip']['schema']['rv32']['schema']['seip'][
         'default_setter'] = ssetter
     schema_yaml['vsip']['schema']['rv64']['schema']['seip'][
@@ -1085,12 +1085,12 @@ def add_def_setters(schema_yaml):
         'default_setter'] = ssetter
     schema_yaml['vsip']['schema']['rv64']['schema']['ssip'][
         'default_setter'] = ssetter
-    schema_yaml['vstvec']['default_setter'] = sregsetter
-    schema_yaml['vsepc']['default_setter'] = sregsetter
-    schema_yaml['vstval']['default_setter'] = sregsetter
-    schema_yaml['vscause']['default_setter'] = sregsetter
-    schema_yaml['vsatp']['default_setter'] = sregsetter
-    schema_yaml['vsscratch']['default_setter'] = sregsetter
+    schema_yaml['vstvec']['default_setter'] = hregsetter
+    schema_yaml['vsepc']['default_setter'] = hregsetter
+    schema_yaml['vstval']['default_setter'] = hregsetter
+    schema_yaml['vscause']['default_setter'] = hregsetter
+    schema_yaml['vsatp']['default_setter'] = hregsetter
+    schema_yaml['vsscratch']['default_setter'] = hregsetter
     schema_yaml['vxsat']['default_setter'] = psetter
     schema_yaml['mnscratch']['default_setter'] = smrnmi_setter
     schema_yaml['mnepc']['default_setter'] = smrnmi_setter
