@@ -2,7 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.10.0] - 2023-04-10
+## [3.11.0] - 2023-08-12
+  - Add support for Zacas extension
+
+## [3.10.0] - 2023-08-12
   - Add support for Zfa extension
 
 ## [3.9.2] - 2023-07-21
