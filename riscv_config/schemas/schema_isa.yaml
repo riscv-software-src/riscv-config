@@ -3724,7 +3724,7 @@ hart_schema:
                     wlrl:
                     - 0x0:0x1
               default: {implemented: true}
-            hade:
+            adue:
               type: dict
               schema:
                 description:
@@ -3859,7 +3859,7 @@ hart_schema:
                     wlrl:
                     - 0x0:0x1
               default: {implemented: true}
-            hade:
+            adue:
               type: dict
               schema:
                 description:
