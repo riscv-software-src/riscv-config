@@ -2,6 +2,16 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.0] - 2023-08-14
+  - Fixed issue #110
+  - Fixed issue #108
+  - Fixed issue #114
+  - Fixed issue #127
+  - Fixed issue #82
+  - Fixed issue #103
+  - updated contribution guidelines on versioning
+  - added docs for indexed CSRs
+
 ## [3.12.0] - 2023-08-12
   - Add support for Svadu extension
 

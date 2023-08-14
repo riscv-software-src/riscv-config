@@ -42,8 +42,6 @@ reset:
 #
 #     nmi:
 #        label: nmi_vector
-#   
-#     nmi:
 #        address: 0x8000000
 
 nmi:
@@ -55,7 +53,10 @@ nmi:
     address:
       type: integer
       excludes: ['label']
-  required: True
+  required: False
+  default:
+    label: nmi_vector
+    address: 0x0
 
 ###
 #mtime

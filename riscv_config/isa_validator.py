@@ -90,7 +90,7 @@ def get_extension_list(isa):
         err = True
     if 'Zk' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zkne', 'Zknd',
         'Zknh', 'Zkn','Zkr','Zkt']) & set(extension_list)):
-        err_list.append( "Zkn is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh, Zkn, Zkt, Zkr. In presence of Zkn the subsets must be ignored in the ISA string.")
+        err_list.append( "Zk is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh, Zkn, Zkt, Zkr. In presence of Zk the subsets must be ignored in the ISA string.")
         err = True
     if 'Zfinx' in extension_list and not "Zicsr" in extension_list:
         err_list.append( "Zfinx cannot exist without Zicsr.")
@@ -102,13 +102,13 @@ def get_extension_list(isa):
         err_list.append( "Zdinx cannot exist without Zfinx.")
         err = True
     if 'Zhinx' in extension_list and not 'Zfinx' in extension_list:
-        err_list.append( "Zhinx cannot exist without Zhinx.")
+        err_list.append( "Zhinx cannot exist without Zfinx.")
         err = True
     if 'Zhinx' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinx and Zfh cannot exist together.")
         err = True
     if 'Zhinxmin' in extension_list and not 'Zfinx' in extension_list:
-        err_list.append( "Zhinxmin cannot exist without Zhinx.")
+        err_list.append( "Zhinxmin cannot exist without Zfinx.")
         err = True
     if 'Zhinxmin' in extension_list and 'Zfh' in extension_list:
         err_list.append( "Zhinxmin and Zfh cannot exist together.")

@@ -16,6 +16,7 @@ please refer to the :ref:`Revisions <revisions>` documentation.
  quickstart
  yaml-specs
  new-extensions
+ CONTRIBUTING
  code-doc
  revisions
    

@@ -156,7 +156,7 @@ hart_schema:
 
     physical_addr_sz:
       type: integer
-      max: [56]
+      max: 56
       required: true
       check_with: phy_addr
 

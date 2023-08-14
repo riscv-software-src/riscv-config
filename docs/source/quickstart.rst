@@ -97,24 +97,24 @@ Install RISCV-CONFIG
 
 .. code-block:: bash
 
-  $ pip3 install riscv_config
+  $ pip3 install riscv-config
 
 To update an already installed version of RISCV-CONFIG to the latest version:
 
 .. code-block:: bash
 
-  $ pip3 install -U riscv_config
+  $ pip3 install -U riscv-config
 
-To checkout a specific version of riscv_config:
+To checkout a specific version of riscv-config:
 
 .. code-block:: bash
 
-  $ pip3 install riscv_config--1.x.x
+  $ pip3 install riscv-config--1.x.x
 
-Once you have RISCV_CONFIG installed, executing ``riscv_config --help`` should print the following 
+Once you have RISCV-CONFIG installed, executing ``riscv-config --help`` should print the following 
 output ::
 
-    riscv_config [-h] [--version] [--isa_spec YAML] [--platform_spec YAML]
+    riscv-config [-h] [--version] [--isa_spec YAML] [--platform_spec YAML]
                         [--work_dir DIR] [--verbose]
     
     RISC-V Configuration Validator
@@ -129,7 +129,7 @@ output ::
       --work_dir DIR        The name of the work dir to dump the output files to.
       -h, --help            show this help message and exit
 
-RISCV_CONFIG for Developers
+RISCV-CONFIG for Developers
 ===========================
 
 Clone the repository from git and install required dependencies. 
@@ -141,10 +141,10 @@ Clone the repository from git and install required dependencies.
 .. code-block:: bash
 
   $ git clone https://github.com/riscv/riscv-config.git
-  $ cd riscv_config
+  $ cd riscv-config
   $ pip3 install -r requirements.txt
 
-Executing ``python -m riscv_config.main --help`` should display the same help message as above.
+Executing ``python -m riscv-config.main --help`` should display the same help message as above.
 
 Usage Example
 =============
@@ -159,7 +159,7 @@ Executing the above command should display the following on the terminal:
 
   [INFO]    : Input-ISA file
   [INFO]    : Loading input file: /scratch/git-repo/github/riscv-config/examples/rv32i_isa.yaml
-  [INFO]    : Load Schema /scratch/git-repo/github/riscv-config/riscv_config/schemas/schema_isa.yaml
+  [INFO]    : Load Schema /scratch/git-repo/github/riscv-config/riscv-config/schemas/schema_isa.yaml
   [INFO]    : Initiating Validation
   [INFO]    : No Syntax errors in Input ISA Yaml. :)
   [INFO]    : Initiating post processing and reset value checks.

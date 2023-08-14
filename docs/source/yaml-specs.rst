@@ -52,6 +52,8 @@ CSRs with sub-fields
         description: <text>                 # textual description of the csr
         shadow: <csr-name>::<field>         # which this field shadows,'none' indicates that
                                             # this field does not shadow anything.
+        shadow_type: <text>                 # indicates the type of shadowing used. Can be one of - 
+                                            # rw or ro
         msb: <integer>                      # msb index of the field. max: 31, min:0
         lsb: <integer>                      # lsb index of the field. max: 31, min:0
         implemented: <boolean>              # indicates if the user has implemented this field 
@@ -75,6 +77,8 @@ CSRs with sub-fields
       accessible: <boolean>                 # indicates if this register exists in rv128 mode 
                                             # or not. Same definition as for rv32 node.                          
 
+See register `mstatus` for an example.
+
 CSRs without sub-fields
 -----------------------
 
@@ -95,6 +99,8 @@ CSRs without sub-fields
       fields: []                          # This should be empty always.
       shadow: <csr-name>::<register>      # which this register shadows,'none' indicates that 
                                           # this register does not shadow anything.
+      shadow_type: <text>                 # indicates the type of shadowing used. Can be one of - 
+                                          # rw or ro
       msb: <int>                          # msb index of the csr. max: 31, min:0
       lsb: <int>                          # lsb index of the csr. max: 31, min:0
       type:                               # type of field. Can be only one of the following
@@ -113,6 +119,56 @@ CSRs without sub-fields
     rv128:                                # this node and its subsequent fields can exist if 
                                           # [M/S/U]XL value can be 3
       accessible: <boolean>              # indicates if this register exists in rv128 mode 
+
+See register `mscratch` for an example.
+
+Indexed CSRs
+------------
+
+.. code-block:: yaml
+
+  <name>:                                 # name of the csr
+    description: <text>                   # textual description of the csr
+    address: <hex>                        # address of the csr
+    priv_mode: <D/M/H/S/U>                # privilege mode that owns the register
+    indexing_reg: <true/false>            # indicates that this register is an indexed type CSR
+    rv32:                                 # this node and its subsequent fields can exist 
+                                          # if [M/S/U]XL value can be 1
+      accessible: <boolean>               # indicates if the csr is accessible in rv32 mode or not. 
+                                          # When False, all fields below will be trimmed off 
+                                          # in the checked yaml. False also indicates that 
+                                          # access-exception should be generated
+      msb: <int>                          # msb index of the csr. max: 31, min:0
+      lsb: <int>                          # lsb index of the csr. max: 31, min:0
+      index_select_reg: <text>            # this field should contain the name the CSR that is used
+                                          # as an index select register
+      index_list: <dictionary>            # this field is a list of dictionaries.
+        - index_val:                      # value of the index select register that will select
+                                          # this particular element
+          reset-val:                      # reset value of this element in the list
+          shadow: <csr-name>::<register>  # which this register shadows,'none' indicates that 
+                                          # this register does not shadow anything.
+          shadow_type: <text>             # indicates the type of shadowing used. Can be one of - 
+                                          # rw or ro
+          type:                               # type of field. Can be only one of the following
+            wlrl: [list of value-descriptors] # field is wlrl and the set of legal values.
+            ro_constant: <hex>                # field is readonly and will return the same value.
+            ro_variable: True                 # field is readonly but the value returned depends 
+                                              # on other arch-states
+            warl:                             # field is warl type. Refer to WARL section
+              dependency_fields: [list]    
+              legal: [list of warl-string]
+              wr_illegal: [list of warl-string]           
+    rv64:                                 # this node and its subsequent fields can exist 
+                                          # if [M/S/U]XL value can be 2
+      accessible: <boolean>               # indicates if this register exists in rv64 mode 
+                                          # or not. Same definition as for rv32 node.
+    rv128:                                # this node and its subsequent fields can exist if 
+                                          # [M/S/U]XL value can be 3
+      accessible: <boolean>              # indicates if this register exists in rv128 mode 
+
+See register `tdata` in debug yaml for an example.
+
 
 Constraints
 -----------
