@@ -55,13 +55,38 @@ Ready to contribute? Here's how to set up `riscv_config` for local development.
 
 6. Submit a merge request through the GitHub website.
 
-Deploying
----------
 
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed.
-Then run::
+Versioning
+----------
 
-$ bumpversion --no-tag --config-file setup.cfg patch  # possible: major / minor / patch
-$ git push origin name-of-your-branch
+When issuing pull requests, an entry in the CHANGELOG.md is mandatory. The tool adheres to
+the [`Semantic Versioning`](https://semver.org/spec/v2.0.0.html) scheme. Following guidelines must
+be followed while assigning a new version number :
+
+- Patch-updates: all doc updates (like typos, more clarification,etc).
+- Minor-updates: Fixing bugs in current features, adding new features which do not break current
+  features or working. Adding new extensions.
+- Major-updates: Backward incompatible changes.
+
+Note: You can have either a patch or minor or major update.
+Note: In case of a conflict, the maintainers will decide the final version to be assigned.
+
+To update the version of the python package for deployment you can use `bumpversion` (installed
+using ``pip install bumpversion``)::
+
+$ bumpversion --no-tag --config-file setup.cfg patch # last arg can be: major or minor or patch
+
+If you don't have bumpversion installed you can manually update the version in the following files:
+
+- change the value of variable ``current_version`` in `./setup.cfg`
+- change the value of variable ``__version__`` in `./riscv-config/__init__.py`
+
+
+Merge Request Guidelines
+----------------------------
+
+Before you submit a merge request, check that it meets these guidelines:
+
+1. The merge request should include tests (if any).
+2. If the merge request adds functionality, the docs should be updated. 
 
