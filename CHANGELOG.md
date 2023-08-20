@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.1] - 2023-08-21
+  - Add support for Code Size Reduction (Zce) extension
+
 ## [3.13.0] - 2023-08-14
   - Fixed issue #110
   - Fixed issue #108
