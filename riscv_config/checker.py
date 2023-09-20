@@ -1367,29 +1367,30 @@ def check_supervisor(spec, logging=False):
     msb = 63 if xlen == 64 else 31
     lsb = 60 if xlen == 64 else 31
     virt_modes = [1] if xlen == 32 else [8,9,10,11]
-    satp_mode_impl = spec['satp'][f'rv{xlen}']['mode']['implemented']
-    satp_mode_type = spec['satp'][f'rv{xlen}']['mode']['type']
-    virtualization_possible = False
-    if 'ro_constant' in satp_mode_type:
-        if satp_mode_type['ro_constant'] == 0:
-            virtualization_possible = False
-        else:
-            virtualization_possible = True
-    elif 'warl' in satp_mode_type:
-        # these are the checks from _check_with_satp_modes64
-        if xlen == 64:
-            warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode',63, 60)
-            for x in [1,2,3,4,5,6,7,11,12,13]:
+    if spec['satp'][f'rv{xlen}']['accessible']: # perform satp checks only if it is accessible
+        satp_mode_impl = spec['satp'][f'rv{xlen}']['mode']['implemented']
+        satp_mode_type = spec['satp'][f'rv{xlen}']['mode']['type']
+        virtualization_possible = False
+        if 'ro_constant' in satp_mode_type:
+            if satp_mode_type['ro_constant'] == 0:
+                virtualization_possible = False
+            else:
+                virtualization_possible = True
+        elif 'warl' in satp_mode_type:
+            # these are the checks from _check_with_satp_modes64
+            if xlen == 64:
+                warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode',63, 60)
+                for x in [1,2,3,4,5,6,7,11,12,13]:
+                    err = warl_inst.islegal(x)
+                    if not err:
+                        errors['satp_mode_checks'] = f'warl function for satp::mode accepts \
+        "{x}" as a legal value - which is incorrect'
+            warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
+            for x in virt_modes:
                 err = warl_inst.islegal(x)
                 if not err:
-                    errors['satp_mode_checks'] = f'warl function for satp::mode accepts \
-    "{x}" as a legal value - which is incorrect'
-        warl_inst = warl_class(satp_mode_type['warl'], 'satp::mode', msb, lsb, spec)
-        for x in virt_modes:
-            err = warl_inst.islegal(x)
-            if not err:
-                virtualization_possible = True
-                break
+                    virtualization_possible = True
+                    break
 
     if pte_ad_hw_update and not virtualization_possible:
         errors['pte_ad_hw_update'] = ['pte_ad_hw_update should be True only if satp.mode can be \
