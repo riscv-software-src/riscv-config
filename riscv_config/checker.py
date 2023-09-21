@@ -1521,7 +1521,7 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
                         elif entry[0][1] == 'in':
                             warl_values.extend(entry[0][2])
                         for warl_value in warl_values:
-                            writeval = (bin(int(warl_value, base=16))[2:].zfill(32))[::-1]
+                            writeval = (bin(int(warl_value[2:], base=16))[2:].zfill(32))[::-1]
                             try:
                                 pmp_legal = False if (writeval[xlen-Grain] != '0') else True
                             except IndexError as err:
