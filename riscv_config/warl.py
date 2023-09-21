@@ -63,7 +63,7 @@ class warl_class():
             else:
                 self.uarch_signals = {}
         except KeyError:
-            logger.info(f'No uarch_signals found in spec.')
+            logger.debug(f'No uarch_signals found in spec.')
             self.uarch_signals = {}
         self.csrname = csrname
         if spec is not None:
