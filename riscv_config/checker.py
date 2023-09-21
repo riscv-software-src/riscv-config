@@ -1519,7 +1519,11 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
                         elif entry[0][1] == 'not in':
                             logger.warning(f'warl definition for {csrname} will not be checked as the search space is too large.')
                         elif entry[0][1] == 'in':
-                            warl_values.extend(entry[0][2])
+                            if ':' in entry[0][2]:
+                                warl_values.append(entry[0][2].split(':')[0])
+                                warl_values.append(entry[0][2].split(':')[1])
+                            else:
+                                warl_values.extend(entry[0][2])
                         for warl_value in warl_values:
                             writeval = (bin(int(warl_value[2:], base=16))[2:].zfill(32))[::-1]
                             try:
