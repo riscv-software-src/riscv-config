@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.0] - 2023-09-21
+  - Added PMP grain checks for warl definitions of accessible pmpaddr CSRs.
+  - Moved redundant uarch logging to debug verbosity level.
+
 ## [3.13.2] - 2023-09-20
   - Perform satp checks only when the CSR is accessible.
 
