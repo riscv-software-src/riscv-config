@@ -1413,10 +1413,12 @@ def check_pmp(spec, logging = False):
           implemented
         - reset values of the accessible pmpaddr csrs must be coherent with the
           pmp_granularity field.
+        - warl field of the accessible pmpaddr csrs must adhere to pmp grain.
     '''
     logger.info('Performing Checks on PMP CSRs')
     errors = {}
-    isa = 'rv32' if '32' in spec['ISA'] else 'rv64'
+    xlen = 32 if '32' in spec['ISA'] else 64
+    isa = 'rv32' if xlen == 32 else 'rv64'
     pmpaddr_count = 0
     pmpcfg_count = 0
     pmpaddr_reg = []
@@ -1472,6 +1474,27 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
                 elif Grain >= 1: #TOR
                   if int(content['reset-val']) % (2**Grain) != 0 :
                     error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                if 'warl' in content['rv64']['type']:
+                    warl_entries = [warl_entry.split('->')[1] if '->' in warl_entry else warl_entry
+                                    for warl_entry in content['rv64']['type']['warl']['legal']]
+                    for _entry in warl_entries:
+                        warl_values = []
+                        entry = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]').findall(_entry)
+                        if entry[0][1] == 'bitmask':
+                            warl_values.append(entry[0][2].split(',')[0])
+                        elif entry[0][1] == 'not in':
+                            logger.warning(f'warl definition for {csrname} will not be checked as the search space is too large.')
+                        elif entry[0][1] == 'in':
+                            warl_values.extend(entry[0][2])
+                        for warl_value in warl_values:
+                            writeval = (bin(int(warl_value, base=16))[2:].zfill(32))[::-1]
+                            try:
+                                pmp_legal = False if (writeval[xlen-Grain] != '0') else True
+                            except IndexError as err:
+                                logger.warning(f'All values would be legal for WARL CSR {csrname} when grain is {Grain} (NA4).')
+                                pmp_legal = True
+                            if not pmp_legal:
+                                error.append(f"WARL definition in {csrname} does not adhere to PMP grain {Grain}")
             if content['rv32']['accessible'] :
                 reset_val_addr = (bin(content['reset-val'])[2:].zfill(32))[::-1]
                 reset_val_cfg  = (bin(spec['pmpcfg'+str(int(index/4))]['reset-val'])[2:].zfill(32))[::-1]
@@ -1485,6 +1508,27 @@ pmp*cfg registers [{pmpcfg_count}] do not match']
                 elif Grain >= 1: #TOR
                   if int(content['reset-val']) % (2**Grain) != 0 :
                     error.append(csrname + 'reset value does not adhere with the pmp granularity')
+                if 'warl' in content['rv32']['type']:
+                    warl_entries = [warl_entry.split('->')[1] if '->' in warl_entry else warl_entry
+                                    for warl_entry in content['rv32']['type']['warl']['legal']]
+                    for _entry in warl_entries:
+                        warl_values = []
+                        entry = re.compile('\[(.*?)\]\s*(bitmask|in|not in)\s*\[(.*?)\]').findall(_entry)
+                        if entry[0][1] == 'bitmask':
+                            warl_values.append(entry[0][2].split(',')[0])
+                        elif entry[0][1] == 'not in':
+                            logger.warning(f'warl definition for {csrname} will not be checked as the search space is too large.')
+                        elif entry[0][1] == 'in':
+                            warl_values.extend(entry[0][2])
+                        for warl_value in warl_values:
+                            writeval = (bin(int(warl_value, base=16))[2:].zfill(32))[::-1]
+                            try:
+                                pmp_legal = False if (writeval[xlen-Grain] != '0') else True
+                            except IndexError as err:
+                                logger.warning(f'All values would be legal for WARL CSR {csrname} when grain is {Grain} (NA4).')
+                                pmp_legal = True
+                            if not pmp_legal:
+                                error.append(f"WARL definition in {csrname} does not adhere to PMP grain {Grain}")
         if 'pmpcfg' in csrname:
             if content['rv64']['accessible'] :
                 for subfield in content['rv64']['fields']:
