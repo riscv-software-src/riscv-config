@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.4] - 2023-09-22
+  - Add Zcmop extension.
+
 ## [3.13.2] - 2023-09-20
   - Perform satp checks only when the CSR is accessible.
 
