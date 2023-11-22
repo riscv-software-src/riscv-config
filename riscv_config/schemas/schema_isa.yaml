@@ -891,6 +891,32 @@ hart_schema:
                          - unchanged
               default: {implemented: false}
               check_with: s_check
+            spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - spelp[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: false}
+              check_with: s_check
             sd:
               type: dict
               schema:
@@ -1280,6 +1306,32 @@ hart_schema:
                          - unchanged
               default: {implemented: false}
               check_with: s_check
+           spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - spelp[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: false}
+              check_with: s_check
             sxl:
               type: dict
               schema:
@@ -1358,6 +1410,31 @@ hart_schema:
                   default: {ro_constant: 0}
               default: {implemented: False} 
               check_with: h_check
+           mpelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Machine mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 41, allowed: [41]}
+                lsb: {type: integer, default: 41, allowed: [41]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { wlrl: *ref_wlrl }
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                       dependency_fields: []
+                       legal:
+                         - mpelp[0] in [0x0]
+                       wr_illegal:
+                         - unchanged
+              default: {implemented: false}
             sd:
               type: dict
               schema:
@@ -1464,6 +1541,23 @@ hart_schema:
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 4, allowed: [4]}
                 lsb: {type: integer, default: 4, allowed: [4]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: false}
+            mpelp:
+              type: dict
+              schema:
+                description: { type: string, default:Machine mode previous expected-landing-pad (ELP) state.}
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 9, allowed: [9]}
+                lsb: {type: integer, default: 9, allowed: [9]}
                 implemented: {type: boolean, default: true}
                 type:
                   type: dict
@@ -8247,6 +8341,19 @@ hart_schema:
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: s_check
+            spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: mstatus.spelp, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
             sd:
               type: dict
               schema:
@@ -8383,6 +8490,19 @@ hart_schema:
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 19, allowed: [19]}
                 lsb: {type: integer, default: 19, allowed: [19]}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
+            spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: mstatus.spelp, nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: s_check
@@ -12270,6 +12390,26 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
               default: {implemented: false}
               check_with: s_check
+            spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Virtual Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
             sd:
               type: dict
               schema:
@@ -12495,6 +12635,26 @@ CSR and the value returned in VS-mode or VU-mode.}
                 implemented: {type: boolean, default: true}
               default: {implemented: true}
               check_with: u_check
+            spelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Virtual Supervisor mode previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 23, allowed: [23]}
+                lsb: {type: integer, default: 23, allowed: [23]}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: { warl: *ref_warl }
+                  - schema: {ro_constant: {type: integer, max: 0 , min : 0}}
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+                implemented: {type: boolean, default: true}
+              default: {implemented: false}
+              check_with: s_check
             sd:
               type: dict
               schema:
