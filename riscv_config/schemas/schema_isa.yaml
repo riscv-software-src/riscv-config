@@ -3680,6 +3680,42 @@ hart_schema:
                        wr_illegal:
                          - unchanged
               default: {implemented: true}
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
             accessible:
               type: boolean
               default: false
@@ -3801,6 +3837,42 @@ hart_schema:
                          - cbie[1:0] in [0x0, 0x1, 0x3]
                        wr_illegal:
                          - unchanged
+              default: {implemented: true}
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
               default: {implemented: true}
             accessible:
               type: boolean
@@ -9186,6 +9258,44 @@ hart_schema:
                          - unchanged
               default: {implemented: true}
               check_with: s_check
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
             accessible:
               type: boolean
               check_with:
@@ -9257,6 +9367,44 @@ hart_schema:
                          - cbie[1:0] in [0x0, 0x1, 0x3]
                        wr_illegal:
                          - unchanged
+              default: {implemented: true}
+              check_with: s_check
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+              check_with: s_check
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
               default: {implemented: true}
               check_with: s_check
             accessible:
@@ -11271,6 +11419,42 @@ hart_schema:
                        wr_illegal:
                          - unchanged
               default: {implemented: true}
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
             accessible:
               type: boolean
               default: true
@@ -11340,6 +11524,42 @@ hart_schema:
                          - cbie[1:0] in [0x0, 0x1, 0x3]
                        wr_illegal:
                          - unchanged
+              default: {implemented: true}
+            sse:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfiss extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 3, allowed: [3]}
+                lsb: {type: integer, default: 3, allowed: [3]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            lpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 2, allowed: [2]}
+                lsb: {type: integer, default: 2, allowed: [2]}
+                implemented: {type: boolean, default: false, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
               default: {implemented: true}
             accessible:
               type: boolean
