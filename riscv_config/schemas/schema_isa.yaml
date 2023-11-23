@@ -14043,3 +14043,68 @@ CSR and the value returned in VS-mode or VU-mode.}
                        wr_illegal:
                          - "Unchanged"
               default: {implemented: true}
+    mseccfg:
+      type: dict
+      schema:
+        description:
+          type: string
+          default: Machine Security Configuration Register
+        address: {type: integer, default: 0x747, allowed: [0x747]}
+        priv_mode: {type: string, default: M, allowed: [M]}
+        reset-val:
+          type: integer
+          check_with: max_length
+          default: 0
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            mlpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension in M-mode.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv32_check
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            mlpe:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Enables use of Zicfilp extension in M-mode.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 10, allowed: [10]}
+                lsb: {type: integer, default: 10, allowed: [10]}
+                implemented: {type: boolean, default: true, allowed: [true]}
+                type:
+                  type: dict
+                  schema: { wlrl: *ref_wlrl }
+                  default:
+                    wlrl:
+                    - 0x0:0x1
+              default: {implemented: true}
+            accessible:
+              type: boolean
+              default: false
+              check_with: rv64_check
+          default: {accessible: false}
