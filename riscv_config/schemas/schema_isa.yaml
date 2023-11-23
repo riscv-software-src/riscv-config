@@ -1306,7 +1306,7 @@ hart_schema:
                          - unchanged
               default: {implemented: false}
               check_with: s_check
-           spelp:
+            spelp:
               type: dict
               schema:
                 description:
@@ -1410,7 +1410,7 @@ hart_schema:
                   default: {ro_constant: 0}
               default: {implemented: False} 
               check_with: h_check
-           mpelp:
+            mpelp:
               type: dict
               schema:
                 description:
@@ -1553,7 +1553,7 @@ hart_schema:
             mpelp:
               type: dict
               schema:
-                description: { type: string, default:Machine mode previous expected-landing-pad (ELP) state.}
+                description: { type: string, default: Machine mode previous expected-landing-pad (ELP) state.}
                 shadow: {type: string, default: , nullable: True}
                 shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
                 msb: {type: integer, default: 9, allowed: [9]}
@@ -6528,6 +6528,35 @@ hart_schema:
               default: true
               check_with: [rv64_check,cannot_be_false_rv64f]
           check_with: f_check
+          default: {accessible: False}
+    ssp:
+      type: dict
+      schema:
+        description: {type: string, default: Shadow stack pointer.}
+        priv_mode: {type: string, default: U, allowed: [U]}
+        address: {type: integer, default: 0x011, allowed: [0x011]}
+        reset-val: {type: integer, default: 0,  check_with: [max_length]}
+        rv32:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 31, allowed: [31]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {type: boolean, default: true, check_with: [rv32_check, zicfiss_check]}
+          check_with: u_check
+          default: {accessible: False}
+        rv64:
+          type: dict
+          schema:
+            fields: {type: list, default: []}
+            shadow: {type: string, default: , nullable: True}
+            shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+            msb: {type: integer, default: 63, allowed: [63]}
+            lsb: {type: integer, default: 0, allowed: [0]}
+            accessible: {default: true, check_with: [rv64_check, zicfiss_check]}
+          check_with: u_check
           default: {accessible: False}
     cycle:
       type: dict

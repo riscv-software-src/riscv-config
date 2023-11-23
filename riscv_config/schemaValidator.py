@@ -40,6 +40,12 @@ class schemaValidator(Validator):
                   "Register cannot be implemented without Smrnmi extension in ISA."
               )
 
+    def _check_with_zicfiss_check(self, field, value):
+      global extension_list
+      if value and 'Zicfiss' not in extension_list:
+        self._error(field,
+                  "Register cannot be implemented without Zicfiss extension in ISA."
+              )
 
     def _check_with_satp_modes64(self, field, value):
         pass
