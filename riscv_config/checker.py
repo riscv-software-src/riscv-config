@@ -2061,21 +2061,21 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
     hart_ids = []
     for entry in ispec_dict['hart_ids']:
         hart_ids.append(entry)
-        merged[entry] = {}
-        merged[entry].update(ispec_dict['hart'+str(entry)])
+        merged[f'hart{entry}'] = {}
+        merged[f'hart{entry}'].update(ispec_dict['hart'+str(entry)])
         if custom_file is not None:
-            merged[entry].update(customspec_dict['hart'+str(entry)])
+            merged[f'hart{entry}'].update(customspec_dict['hart'+str(entry)])
         if debug_file is not None:
-            merged[entry].update(dspec_dict['hart'+str(entry)])
+            merged[f'hart{entry}'].update(dspec_dict['hart'+str(entry)])
 
         try:
-            uarch_signals = merged[entry]['uarch_signals']
+            uarch_signals = merged[f'hart{entry}']['uarch_signals']
         except KeyError as e:
-            logger.info("No uarch signals found for hart"+str(entry))
+            logger.info(f"No uarch signals found for hart:{entry}")
             uarch_signals = {}
-
+    
     for entry in hart_ids:
-        csr_db = merged[entry]
+        csr_db = merged[f'hart{entry}']
         if logging:
             logger.info(f"Initiating WARL legality checks for hart:{entry}.")
         errors = check_warl_legality(csr_db, logging)
