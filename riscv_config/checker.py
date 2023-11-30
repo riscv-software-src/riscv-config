@@ -1505,6 +1505,7 @@ def check_warl_legality(spec, logging = False):
     warlnodes = {}
     xlen = 64 if 64 in spec['supported_xlen'] else 32
     for csrname, csrnode in spec.items():
+        logger.debug(f'Checking legality of warl strings for csr: {csrname}')
         # don't perform any warl legality checks for uarch signal definitions.
         if csrname == 'uarch_signals':
             continue
@@ -1723,9 +1724,6 @@ def check_debug_specs(debug_spec, isa_spec,
             and the second being the absolute path to the platform spec file.
     '''
 
-    if logging:
-        logger.info('Input-Debug file')
-
     foo1 = isa_spec
     foo = debug_spec
     schema = constants.debug_schema
@@ -1735,24 +1733,24 @@ def check_debug_specs(debug_spec, isa_spec,
     """
     # Load input YAML file
     if logging:
-        logger.info('Loading input file: ' + str(foo))
+        logger.info('DebugCheck: Loading input Debug file: ' + str(foo))
     master_inp_debug_yaml = utils.load_yaml(foo, no_anchors)
 
     # Load input YAML file
     if logging:
-        logger.info('Loading input isa file: ' + str(foo1))
+        logger.info('DebugCheck: Loading input isa file for debug: ' + str(foo1))
     master_inp_yaml = utils.load_yaml(foo1, no_anchors)
     isa_string = master_inp_yaml['hart0']['ISA']
 
     # instantiate validator
     if logging:
-        logger.info('Load Schema ' + str(schema))
+        logger.info('DebugCheck: Load Debug Schema ' + str(schema))
     master_schema_yaml = utils.load_yaml(schema, no_anchors)
 
     outyaml = copy.deepcopy(master_inp_debug_yaml)
     for x in master_inp_debug_yaml['hart_ids']:
         if logging:
-            logger.info('Processing Hart: hart'+str(x))
+            logger.info(f'DebugCheck: Processing Hart:{x}')
         inp_debug_yaml = master_inp_debug_yaml['hart'+str(x)]
         schema_yaml = add_debug_setters(master_schema_yaml['hart_schema']['schema'])
         #Extract xlen
@@ -1765,13 +1763,13 @@ def check_debug_specs(debug_spec, isa_spec,
 
         # Perform Validation
         if logging:
-            logger.info('Initiating Validation')
+            logger.info(f'DebugCheck: Initiating Validation for hart:{x}')
         valid = validator.validate(normalized)
 
         # Print out errors
         if valid:
             if logging:
-                logger.info('No errors for Hart: '+str(x) + ' :)')
+                logger.info(f'DebugCheck: No errors for Hart:{x}')
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
@@ -1779,7 +1777,7 @@ def check_debug_specs(debug_spec, isa_spec,
         normalized['ISA'] = isa_string
 
         if logging:
-            logger.info(f' Updating fields node for each CSR')
+            logger.info(f'DebugCheck: Updating fields node for each CSR in Hart:{x}')
         normalized = update_fields(normalized, logging)
 
         outyaml['hart'+str(x)] = trim(normalized)
@@ -1790,7 +1788,7 @@ def check_debug_specs(debug_spec, isa_spec,
     dfile = output_filename
     outfile = open(output_filename, 'w')
     if logging:
-        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+        logger.info('DebugCheck: Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return dfile
 
@@ -1830,18 +1828,18 @@ def check_isa_specs(isa_spec,
     """
     # Load input YAML file
     if logging:
-        logger.info('Loading input file: ' + str(foo))
+        logger.info('ISACheck: Loading input file: ' + str(foo))
     master_inp_yaml = utils.load_yaml(foo, no_anchors)
 
     # instantiate validator
     if logging:
-        logger.info('Load Schema ' + str(schema))
+        logger.info('ISACheck: Load Schema ' + str(schema))
     master_schema_yaml = utils.load_yaml(schema, no_anchors)
 
     outyaml = copy.deepcopy(master_inp_yaml)
     for x in master_inp_yaml['hart_ids']:
         if logging:
-            logger.info('Processing Hart: hart'+str(x))
+            logger.info(f'ISACheck: Processing Hart:{x}')
         inp_yaml = master_inp_yaml['hart'+str(x)]
         schema_yaml = add_def_setters(master_schema_yaml['hart_schema']['schema'])
         schema_yaml = add_reset_setters(master_schema_yaml['hart_schema']['schema'])
@@ -1855,18 +1853,18 @@ def check_isa_specs(isa_spec,
 
         # Perform Validation
         if logging:
-            logger.info('Initiating Validation')
+            logger.info(f'ISACheck: Initiating Validation for Hart:{x}')
         valid = validator.validate(normalized)
 
         # Print out errors
         if valid:
             if logging:
-                logger.info('No errors for Hart: '+str(x) + ' :)')
+                logger.info(f'ISACheck: No errors for Hart:{x}')
         else:
             error_list = validator.errors
-            raise ValidationError("Error in " + foo + ".", error_list)
+            raise ValidationError(f"ISACheck: Error in " + foo + ".", error_list)
         if logging:
-            logger.info(f' Updating fields node for each CSR')
+            logger.info(f'ISACheck:  Updating fields node for each CSR in Hart:{x}')
         normalized = update_fields(normalized, logging)
 
         outyaml['hart'+str(x)] = trim(normalized)
@@ -1877,7 +1875,7 @@ def check_isa_specs(isa_spec,
     ifile = output_filename
     outfile = open(output_filename, 'w')
     if logging:
-        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+        logger.info('ISACheck: Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return ifile
 
@@ -1911,7 +1909,7 @@ def check_custom_specs(custom_spec,
 
     # Load input YAML file
     if logging:
-        logger.info('Loading input file: ' + str(foo))
+        logger.info('CustomCheck: Loading input file: ' + str(foo))
     master_custom_yaml = utils.load_yaml(foo, no_anchors)
     schema_yaml = utils.load_yaml(constants.custom_schema, no_anchors)
     validator = schemaValidator(schema_yaml, xlen=[])
@@ -1921,12 +1919,12 @@ def check_custom_specs(custom_spec,
     normalized = {}
     for x in master_custom_yaml['hart_ids']:
         if logging:
-            logger.info('Processing Hart: hart'+str(x))
+            logger.info(f'CustomCheck: Processing Hart:{x}')
         inp_yaml = master_custom_yaml['hart'+str(x)]
         valid = validator.validate(inp_yaml)
         if valid:
             if logging:
-                logger.info('No errors for Hart: '+str(x) + ' :)')
+                logger.info('CustomCheck: No errors for Hart:{x}')
         else:
             error_list = validator.errors
             raise ValidationError("Error in " + foo + ".", error_list)
@@ -1942,7 +1940,7 @@ def check_custom_specs(custom_spec,
     cfile = output_filename
     outfile = open(output_filename, 'w')
     if logging:
-        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+        logger.info('CustomCheck: Dumping out Normalized Checked YAML: ' + output_filename)
     utils.dump_yaml(outyaml, outfile, no_anchors )
     return cfile
 
@@ -2076,7 +2074,7 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
     for entry in hart_ids:
         csr_db = merged[entry]
         if logging:
-            logger.info("Initiating WARL legality checks.")
+            logger.info(f"Initiating WARL legality checks for hart:{entry}.")
         errors = check_warl_legality(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
@@ -2086,7 +2084,7 @@ def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_di
             raise ValidationError("Error in csr definitions", errors)
 
         if logging:
-            logger.info("Initiating post processing and reset value checks.")
+            logger.info(f"Initiating post processing and reset value checks for hart{entry}.")
         errors = check_reset(csr_db, logging)
         if errors:
             raise ValidationError("Error in csr definitions", errors)
