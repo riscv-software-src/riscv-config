@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.0] - 2023-11-30
+  - Include Sdext in the list of S extensions
+
 ## [3.13.4] - 2023-10-30
   - Add support for Zabha extension
 
