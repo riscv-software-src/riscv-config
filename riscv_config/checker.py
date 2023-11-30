@@ -1916,7 +1916,6 @@ def check_custom_specs(custom_spec,
     validator.allow_unknown = True
 
     outyaml = copy.deepcopy(master_custom_yaml)
-    normalized = {}
     for x in master_custom_yaml['hart_ids']:
         if logging:
             logger.info(f'CustomCheck: Processing Hart:{x}')
@@ -1927,8 +1926,12 @@ def check_custom_specs(custom_spec,
                 logger.info('CustomCheck: No errors for Hart:{x}')
         else:
             error_list = validator.errors
-            raise ValidationError("Error in " + foo + ".", error_list)
-        normalized[f'hart{x}'] = validator.normalized(inp_yaml, schema_yaml)
+            raise ValidationError("CustomCheck: Error in " + foo + ".", error_list)
+        normalized = validator.normalized(inp_yaml, schema_yaml)
+        if logging:
+            logger.info(f'CustomCheck: Updating fields node for each CSR Hart:{x}')
+        normalized = update_fields(normalized, logging)
+        outyaml['hart'+str(x)] = trim(normalized)
     errors = check_fields(inp_yaml)
     if errors:
             raise ValidationError("Error in " + foo + ".", errors)
