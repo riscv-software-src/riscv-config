@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.1] - 2023-12-01
+  - Add support for Zicfilp and Zicfiss extensions
+
 ## [3.14.0] - 2023-11-30
   - Include Sdext in the list of S extensions
 
