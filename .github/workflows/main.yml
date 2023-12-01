@@ -52,7 +52,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPIPASSWORD }}
         run: |
           python setup.py sdist bdist_wheel
-          twine upload dist/*
+          twine upload dist/* --verbose
           
       - name: Extract release notes
         id: extract-release-notes
