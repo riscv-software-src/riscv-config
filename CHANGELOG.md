@@ -2,8 +2,22 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.13.4] - 2023-09-22
+
+## [3.14.2] - 2023-12-01
   - Add Zcmop extension.
+
+## [3.14.1] - 2023-12-01
+  - Add support for Zicfilp and Zicfiss extensions
+
+## [3.14.0] - 2023-11-30
+  - Include Sdext in the list of S extensions
+
+## [3.13.4] - 2023-10-30
+  - Add support for Zabha extension
+
+## [3.13.3] - 2023-09-23
+  - do not assign subfield to None
+
 
 ## [3.13.2] - 2023-09-20
   - Perform satp checks only when the CSR is accessible.

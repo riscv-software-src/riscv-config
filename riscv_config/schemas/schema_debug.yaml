@@ -942,6 +942,27 @@ hart_schema:
                   - schema: { wlrl: *ref_wlrl }
                   default: {ro_constant: 0}
               default: {implemented: false}
+            pelp:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: previous expected-landing-pad (ELP) state.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 18, allowed: [18]}
+                lsb: {type: integer, default: 18, allowed: [18]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  check_with:
+                    - s_debug_check
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 1 , min : 0}}
+                  - schema: { warl: *ref_warl }
+                  - schema: { wlrl: *ref_wlrl }
+                  default: {ro_constant: 0}
+              default: {implemented: false}
             debugver:
               type: dict
               schema:
