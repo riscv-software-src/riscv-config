@@ -502,19 +502,18 @@ input value {value} as legal')
                             subfield = d.split('::')[1]
                         else:
                             depcsrname = d
-                            subfield = None
 
                         # if the depcsrname has the 'uarch_' prefix, then drop that dependency for all checks entirely
                         if depcsrname.startswith('uarch_'):
-                            subfield_str = '' if subfield is None else f'{subfield} field from '
+                            subfield_str = '' if subfield == '' else f'{subfield} field from '
                             logger.warning(f'WARL for csr {csrname} depends on \
 {subfield_str}uarch csr {depcsrname}. Treating this as a uarch dependency.')
-                            if subfield is None:
+                            if subfield == '':
                                 subfield = depcsrname
                                 depcsrname = 'uarch_signals'
                             if depcsrname not in self.uarch_depends:
                                 self.uarch_depends[depcsrname] = []
-                            if subfield is not None and subfield not in self.uarch_depends[depcsrname]:
+                            if subfield != '' and subfield not in self.uarch_depends[depcsrname]:
                                 self.uarch_depends[depcsrname].append(subfield)
                             logger.debug(f'uArch dependencies are: {self.uarch_depends}')
 
@@ -585,7 +584,6 @@ is non empty')
                             subfield = d.split('::')[1]
                         else:
                             depcsrname = d
-                            subfield = None
 
                         # if the csr is a uarch dependency and also exists in the spec, throw an error
                         if depcsrname in self.uarch_depends and depcsrname in self.spec:
