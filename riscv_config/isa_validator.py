@@ -82,6 +82,9 @@ def get_extension_list(isa):
     if 'S' in extension_list and not 'U' in extension_list:
         err_list.append( "S cannot exist without U.")
         err = True
+    if 'Zilsd' in extension_list and 'Zcf' in extension_list:
+        err_list.append( "Zilsd includes compressed encodings that are mutually exclusive with Zcf.")
+        err = True        
     if 'Zkn' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zkne', 'Zknd', 'Zknh']) & set(extension_list)):
         err_list.append( "Zkn is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh. In presence of Zkn the subsets must be ignored in the ISA string.")
         err = True
