@@ -1,6 +1,10 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [3.18.3] - 2024-05-14
+  - allow yaml python pkg requirements to install newer versions #142
+
 ## [3.18.2] - 2024-04-16
   - added yaml dump_flag which provides for the functions that dump yaml.
 
