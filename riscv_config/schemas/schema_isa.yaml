@@ -9733,6 +9733,131 @@ hart_schema:
               check_with:
               - rv64_check
           default: {accessible: false}
+    srmcfg:
+      type: dict
+      schema:
+        description: { type: string, default: SXLEN-bit register which provides supervisor-mode resource management configurations }
+        address: {type: integer, default: 0x181, allowed: [0x181]}
+        priv_mode: {type: string, default: S, allowed: [S]}
+        reset-val: { type: integer, check_with: max_length , default: 0}
+        rv32:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            rcid:
+              type: dict
+              schema:
+                description: { type: string , default: Resource Control Identifier. }
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 11, allowed: [11]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  4095}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - rcid[11:0] in [0x0:0xFFF]
+                        wr_illegal:
+                          - Unchanged
+              default: {implemented: False}
+              check_with: s_check
+            mcid:
+              type: dict
+              schema:
+                description: { type: string, default: Monitoring counter identifier. }
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 27, allowed: [27]}
+                lsb: {type: integer, default: 16, allowed: [16]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 4095 }}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - mcid[11:0] in [0x0:0xFFF]
+                        wr_illegal:
+                          - Unchanged
+              default: {implemented: False}
+              check_with: s_check
+            accessible:
+              type: boolean
+              check_with:
+              - rv32_check
+              - ssqosid_check
+          default: {accessible: false}
+        rv64:
+          type: dict
+          check_with: s_check
+          schema:
+            fields: {type: list, default: []}
+            rcid:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Resource control identifier
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 11, allowed: [11]}
+                lsb: {type: integer, default: 0, allowed: [0]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max:  4095}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - rcid[13:0] in [0x0:0xFFF]
+                        wr_illegal:
+                          - Unchanged
+              default: {implemented: False}
+              check_with: s_check
+            mcid:
+              type: dict
+              schema:
+                description:
+                  type: string
+                  default: Monitoring counter identifier.
+                shadow: {type: string, default: , nullable: True}
+                shadow_type: {type: string, default: rw, nullable: True, allowed: ['rw','ro']}
+                msb: {type: integer, default: 27, allowed: [27]}
+                lsb: {type: integer, default: 16, allowed: [16]}
+                implemented: {type: boolean, default: true}
+                type:
+                  type: dict
+                  oneof:
+                  - schema: {ro_constant: {type: integer, max: 4095}}
+                  - schema: { warl: *ref_warl }
+                  default:
+                    warl:
+                        dependency_fields: []
+                        legal:
+                          - mcid[11:0] in [0x0:0xFFF]
+                        wr_illegal:
+                          - Unchanged
+              default: {implemented: False}
+              check_with: s_check
+            accessible:
+              type: boolean
+              check_with:
+              - rv64_check
+              - ssqosid_check
+          default: {accessible: false}
     ustatus:
       type: dict
       schema:

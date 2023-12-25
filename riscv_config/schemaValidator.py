@@ -47,6 +47,13 @@ class schemaValidator(Validator):
                   "Register cannot be implemented without Zicfiss extension in ISA."
               )
 
+    def _check_with_ssqosid_check(self, field, value):
+      global extension_list
+      if value and 'Ssqosid' not in extension_list:
+        self._error(field,
+                  "Register cannot be implemented without Ssqosid extension in ISA."
+              )
+
     def _check_with_satp_modes64(self, field, value):
         pass
 

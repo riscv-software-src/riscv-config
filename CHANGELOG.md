@@ -3,6 +3,9 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.14.4] - 2023-12-25
+  - Add support for Ssqosid extension
+
 ## [3.14.3] - 2023-12-01
   - Add support for Zimop extension
 
