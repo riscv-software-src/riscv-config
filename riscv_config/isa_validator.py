@@ -187,33 +187,42 @@ def get_march_mabi (isa : str):
 
     # extensions to be nullified
     null_ext = [
+        # privilege modes
+        'U',
+        'S',
+
         # rnmi
-        'smrnmi_',
+        'Smrnmi',
 
         # debug mode
-        'sdext_',
+        'Sdext',
 
         # performance counter
-        'zicntr_',
-        'zihpm_',
+        'Zicntr',
+        'Zihpm',
         
         # unratified Zb* extensions
-        'zbe_',
-        'zbf_',
-        'zbm_',
-        'zbr_',
+        'Zbe',
+        'Zbf',
+        'Zbm',
+        'Zbr',
     ]
 
-    # nullify all extensions present in null_ext
-    for each in null_ext:
-        march = march.replace(each, '')
+    # add Zbp and Zbt to null_ext if Zbpbo is present
+    if 'Zbpbo' in ext_list:
+        null_ext += ['Zbp', 'Zbt']
 
-    # handle special cases here
-
-    # remove zbp and zbt if zbpbo is present
-    if 'zbpbo_' in march:
-        march = march.replace('zbp_', '')
-        march = march.replace('zbt_', '')
+    # construct march
+    for ext in ext_list:
+        if ext not in null_ext:
+            if len(ext) == 1:
+                march += ext.lower()
+            else:
+                # suffix multiline extensions with '_' 
+                march = march + ext.lower() + '_'
+    
+    # trim final underscore if exists
+    march = march[0:-1] if march[-1] == '_' else march
 
     # mabi generation
     mabi = 'ilp32'
