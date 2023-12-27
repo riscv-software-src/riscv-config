@@ -185,10 +185,30 @@ def get_march_mabi (isa : str):
 
     march = march.lower()
 
-    march = march.replace('smrnmi_', '')    # remove smrnmi
-    march = march.replace('sdext_',  '')    # remove sdext
-    march = march.replace('zicntr_', '')    # remove zicntr
-    march = march.replace('zihpm_',  '')    # remove zihpm
+    # extensions to be nullified
+    null_ext = [
+        # rnmi
+        'smrnmi_',
+
+        # debug mode
+        'sdext_',
+
+        # performance counter
+        'zicntr_',
+        'zihpm_',
+        
+        # unratified Zb* extensions
+        'zbe_',
+        'zbf_',
+        'zbm_',
+        'zbr_',
+    ]
+
+    # nullify all extensions present in null_ext
+    for each in null_ext:
+        march = march.replace(each, '')
+
+    # handle special cases here
 
     # remove zbp and zbt if zbpbo is present
     if 'zbpbo_' in march:
