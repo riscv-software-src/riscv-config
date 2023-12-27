@@ -217,7 +217,12 @@ def get_march_mabi (isa : str):
 
     # mabi generation
     mabi = 'ilp32'
+    if 'FD' in isa:
+        mabi += 'd'
+    elif 'F' in isa:
+        mabi += 'f'
+    
     if 'rv64' in march:
-        mabi = 'ilp64d'
+        mabi = mabi.replace('ilp32', 'lp64')
  
     return march, mabi
