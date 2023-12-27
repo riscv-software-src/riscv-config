@@ -161,4 +161,43 @@ def get_extension_list(isa):
 
     return (extension_list, err, err_list)
 
+def get_march_mabi (isa : str):
+    '''
+    This function returns the corresponding march and mabi argument values
+    for RISC-V GCC
 
+    arguments:
+        isa:    (string) this is the isa string in canonical order
+    
+    returns:
+        march:  (string) this is the string to be passed to -march to gcc for a given isa
+        mabi:   (string) this is the string to be passed to -mabi for given isa
+    '''
+
+    # march generation
+
+    march = isa
+    # remove privilege modes
+    if 'SU' in march:
+        march = march.replace('SU', '')       # remove supervisor
+    elif 'U'in march:
+        march = march.replace('U', '')        # remove user mode
+
+    march = march.lower()
+
+    march = march.replace('smrnmi_', '')    # remove smrnmi
+    march = march.replace('sdext_',  '')    # remove sdext
+    march = march.replace('zicntr_', '')    # remove zicntr
+    march = march.replace('zihpm_',  '')    # remove zihpm
+
+    # remove zbp and zbt if zbpbo is present
+    if 'zbpbo_' in march:
+        march = march.replace('zbp_', '')
+        march = march.replace('zbt_', '')
+
+    # mabi generation
+    mabi = 'ilp32'
+    if 'rv64' in march:
+        mabi = 'ilp64d'
+ 
+    return march, mabi
