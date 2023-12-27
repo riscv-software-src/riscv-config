@@ -172,18 +172,20 @@ def get_march_mabi (isa : str):
     returns:
         march:  (string) this is the string to be passed to -march to gcc for a given isa
         mabi:   (string) this is the string to be passed to -mabi for given isa
+
+        None:   if ISA validation throws error
     '''
 
     # march generation
 
-    march = isa
-    # remove privilege modes
-    if 'SU' in march:
-        march = march.replace('SU', '')       # remove supervisor
-    elif 'U'in march:
-        march = march.replace('U', '')        # remove user mode
+    march = 'rv32' if '32' in isa else 'rv64'
 
-    march = march.lower()
+    # get extension list
+    (ext_list, err, err_list) = get_extension_list(isa)
+
+    # if isa validation throws errors, return None
+    if err:
+        return None
 
     # extensions to be nullified
     null_ext = [
