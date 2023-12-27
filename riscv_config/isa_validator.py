@@ -217,6 +217,7 @@ def get_march_mabi (isa : str):
     # construct march
     for ext in ext_list:
         if ext not in null_ext:
+            # suffix multicharacter extensions with '_' 
             if len(ext) == 1:
                 march += ext.lower()
             else:
