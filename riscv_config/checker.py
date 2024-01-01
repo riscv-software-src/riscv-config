@@ -1923,7 +1923,7 @@ def check_custom_specs(custom_spec,
         valid = validator.validate(inp_yaml)
         if valid:
             if logging:
-                logger.info('CustomCheck: No errors for Hart:{x}')
+                logger.info(f'CustomCheck: No errors for Hart:{x}')
         else:
             error_list = validator.errors
             raise ValidationError("CustomCheck: Error in " + foo + ".", error_list)
