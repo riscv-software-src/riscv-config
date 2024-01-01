@@ -179,6 +179,8 @@ def get_march_mabi (isa : str):
     # march generation
 
     march = 'rv32' if '32' in isa else 'rv64'
+    march_list = []
+    march_list.append(march)
 
     # get extension list
     (ext_list, err, err_list) = get_extension_list(isa)
@@ -213,28 +215,25 @@ def get_march_mabi (isa : str):
     # add Zbp and Zbt to null_ext if Zbpbo is present
     if 'Zbpbo' in ext_list:
         null_ext += ['Zbp', 'Zbt']
-
     # construct march
     for ext in ext_list:
         if ext not in null_ext:
+            march_list.append(ext.lower())
             # suffix multicharacter extensions with '_' 
             if len(ext) == 1:
                 march += ext.lower()
             else:
                 # suffix multiline extensions with '_' 
-                march = march + ext.lower() + '_'
-    
-    # trim final underscore if exists
-    march = march[0:-1] if march[-1] == '_' else march
+                march = march + '_' + ext.lower()
 
     # mabi generation
     mabi = 'ilp32'
-    if 'FD' in isa:
+    if 'F' in ext_list and 'D' in ext_list:
         mabi += 'd'
-    elif 'F' in isa:
+    elif 'F' in ext_list:
         mabi += 'f'
     
     if 'rv64' in march:
         mabi = mabi.replace('ilp32', 'lp64')
  
-    return march, mabi
+    return (march, mabi, march_list)
