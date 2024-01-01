@@ -170,10 +170,10 @@ def get_march_mabi (isa : str):
         isa:    (string) this is the isa string in canonical order
     
     returns:
-        march:  (string) this is the string to be passed to -march to gcc for a given isa
-        mabi:   (string) this is the string to be passed to -mabi for given isa
-
-        None:   if ISA validation throws error
+        march:      (string) this is the string to be passed to -march to gcc for a given isa
+        mabi:       (string) this is the string to be passed to -mabi for given isa
+        march_list: (list) gives march as a list of all extensions as elements
+        None:       if ISA validation throws error
     '''
 
     # march generation
