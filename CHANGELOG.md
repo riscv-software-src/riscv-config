@@ -2,10 +2,17 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-## [3.14.4] - 2023-12-25
+## [3.16.1] - 2023-12-25
   - Add support for Ssqosid extension
 
+## [3.16.0] - 2024-01-03
+  - use the "hartX" naming for the merged dict
+  - improve logging statements
+  - update the "fields" node of each csr in the normalized custom yaml
+
+## [3.15.0] - 2024-01-01
+  - Added function that returns the march and mabi for gcc from a given ISA
+  
 ## [3.14.3] - 2023-12-01
   - Add support for Zimop extension
 

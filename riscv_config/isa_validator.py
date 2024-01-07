@@ -161,4 +161,79 @@ def get_extension_list(isa):
 
     return (extension_list, err, err_list)
 
+def get_march_mabi (isa : str):
+    '''
+    This function returns the corresponding march and mabi argument values
+    for RISC-V GCC
 
+    arguments:
+        isa:    (string) this is the isa string in canonical order
+    
+    returns:
+        march:      (string) this is the string to be passed to -march to gcc for a given isa
+        mabi:       (string) this is the string to be passed to -mabi for given isa
+        march_list: (list) gives march as a list of all extensions as elements
+        None:       if ISA validation throws error
+    '''
+
+    # march generation
+
+    march = 'rv32' if '32' in isa else 'rv64'
+    march_list = []
+    march_list.append(march)
+
+    # get extension list
+    (ext_list, err, err_list) = get_extension_list(isa)
+
+    # if isa validation throws errors, return None
+    if err:
+        return None
+
+    # extensions to be nullified
+    null_ext = [
+        # privilege modes
+        'U',
+        'S',
+
+        # rnmi
+        'Smrnmi',
+
+        # debug mode
+        'Sdext',
+
+        # performance counter
+        'Zicntr',
+        'Zihpm',
+        
+        # unratified Zb* extensions
+        'Zbe',
+        'Zbf',
+        'Zbm',
+        'Zbr',
+    ]
+
+    # add Zbp and Zbt to null_ext if Zbpbo is present
+    if 'Zbpbo' in ext_list:
+        null_ext += ['Zbp', 'Zbt']
+    # construct march
+    for ext in ext_list:
+        if ext not in null_ext:
+            march_list.append(ext.lower())
+            # suffix multicharacter extensions with '_' 
+            if len(ext) == 1:
+                march += ext.lower()
+            else:
+                # suffix multiline extensions with '_' 
+                march = march + '_' + ext.lower()
+
+    # mabi generation
+    mabi = 'ilp32'
+    if 'F' in ext_list and 'D' in ext_list:
+        mabi += 'd'
+    elif 'F' in ext_list:
+        mabi += 'f'
+    
+    if 'rv64' in march:
+        mabi = mabi.replace('ilp32', 'lp64')
+ 
+    return (march, mabi, march_list)
