@@ -38,4 +38,4 @@ S_extensions = ['Smrnmi','Svnapot','Svadu', 'Sdext']
 sub_extensions = Z_extensions + S_extensions
 
 isa_regex = \
-        re.compile("^RV(32|64|128)[IE][ACDFGHJLMNPQSTUV]*(("+'|'.join(sub_extensions)+")(_("+'|'.join(sub_extensions)+"))*){,1}(X[a-z0-9]*)*(_X[a-z0-9]*)*$")
+        re.compile("^RV(32|64|128)[IE][ABCDFGHJLMNPQSTUV]*(("+'|'.join(sub_extensions)+")(_("+'|'.join(sub_extensions)+"))*){,1}(X[a-z0-9]*)*(_X[a-z0-9]*)*$")
