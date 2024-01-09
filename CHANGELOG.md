@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.17.0] - 2024-01-09
+  - support march generation without custom extensions
+
 ## [3.16.0] - 2024-01-03
   - use the "hartX" naming for the merged dict
   - improve logging statements
