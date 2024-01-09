@@ -161,7 +161,7 @@ def get_extension_list(isa):
 
     return (extension_list, err, err_list)
 
-def get_march_mabi (isa : str):
+def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
     '''
     This function returns the corresponding march and mabi argument values
     for RISC-V GCC
@@ -215,6 +215,13 @@ def get_march_mabi (isa : str):
     # add Zbp and Zbt to null_ext if Zbpbo is present
     if 'Zbpbo' in ext_list:
         null_ext += ['Zbp', 'Zbt']
+
+    # remove all custom extensions
+    for ext in ext_list:
+        if ext.startswith('X'):
+            if opt_remove_custom_exts:
+                ext_list.remove(ext)
+
     # construct march
     for ext in ext_list:
         if ext not in null_ext:
