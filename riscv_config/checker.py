@@ -1700,7 +1700,8 @@ def check_triggers(spec, logging):
 def check_debug_specs(debug_spec, isa_spec,
                 work_dir,
                 logging=False,
-                no_anchors=False):
+                no_anchors=False,
+                yaml_dump=True):
     '''
         Function to perform ensure that the isa and debug specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -1713,15 +1714,20 @@ def check_debug_specs(debug_spec, isa_spec,
 
         :param logging: A boolean to indicate whether log is to be printed.
 
+        :param yaml_dump: A boolean to indicate whether the dictionary has to be dumped into a yaml or returns a dict 
+
         :type logging: bool
 
         :type isa_spec: str
+
+        :type yaml_dump: bool
 
         :raise ValidationError: It is raised when the specifications violate the
             schema rules. It also contains the specific errors in each of the fields.
 
         :return: A tuple with the first entry being the absolute path to normalized isa file
-            and the second being the absolute path to the platform spec file.
+        and the second being the absolute path to the platform spec file (if yaml_dump = True) or 
+        returns the yaml as dictionary(if yaml_dump = False).
     '''
 
     foo1 = isa_spec
@@ -1781,16 +1787,20 @@ def check_debug_specs(debug_spec, isa_spec,
         normalized = update_fields(normalized, logging)
 
         outyaml['hart'+str(x)] = trim(normalized)
-    file_name = os.path.split(foo)
-    file_name_split = file_name[1].split('.')
-    output_filename = os.path.join(
-        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
-    dfile = output_filename
-    outfile = open(output_filename, 'w')
-    if logging:
-        logger.info('DebugCheck: Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(outyaml, outfile, no_anchors )
-    return dfile
+    
+    if yaml_dump == True:
+        file_name = os.path.split(foo)
+        file_name_split = file_name[1].split('.')
+        output_filename = os.path.join(
+            work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+        dfile = output_filename
+        outfile = open(output_filename, 'w')
+        if logging:
+            logger.info('DebugCheck: Dumping out Normalized Checked YAML: ' + output_filename)
+        utils.dump_yaml(outyaml, outfile, no_anchors )
+        return dfile
+    else:
+        return outyaml
 
 def check_isa_specs(isa_spec,
                 work_dir,
