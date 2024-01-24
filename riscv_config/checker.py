@@ -1805,7 +1805,8 @@ def check_debug_specs(debug_spec, isa_spec,
 def check_isa_specs(isa_spec,
                 work_dir,
                 logging=False,
-                no_anchors=False):
+                no_anchors=False,
+                dump_yaml=True):
     '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -1815,6 +1816,8 @@ def check_isa_specs(isa_spec,
 
         :param logging: A boolean to indicate whether log is to be printed.
 
+        :param dump_yaml: A boolean to indicate if the yaml has to be dumped or has to be returned as adict
+
         :type logging: bool
 
         :type isa_spec: str
@@ -1823,7 +1826,8 @@ def check_isa_specs(isa_spec,
             schema rules. It also contains the specific errors in each of the fields.
 
         :return: A tuple with the first entry being the absolute path to normalized isa file
-            and the second being the absolute path to the platform spec file.
+            and the second being the absolute path to the platform spec file (when dump_yaml=True) or 
+            returns a yaml dict(when dump_yaml=False).
     '''
     global inp_yaml
 
@@ -1878,21 +1882,25 @@ def check_isa_specs(isa_spec,
         normalized = update_fields(normalized, logging)
 
         outyaml['hart'+str(x)] = trim(normalized)
-    file_name = os.path.split(foo)
-    file_name_split = file_name[1].split('.')
-    output_filename = os.path.join(
-        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
-    ifile = output_filename
-    outfile = open(output_filename, 'w')
-    if logging:
-        logger.info('ISACheck: Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(outyaml, outfile, no_anchors )
-    return ifile
-
+    if dump_yaml==True:
+        file_name = os.path.split(foo)
+        file_name_split = file_name[1].split('.')
+        output_filename = os.path.join(
+            work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+        ifile = output_filename
+        outfile = open(output_filename, 'w')
+        if logging:
+            logger.info('ISACheck: Dumping out Normalized Checked YAML: ' + output_filename)
+        utils.dump_yaml(outyaml, outfile, no_anchors )
+        return ifile
+    else:
+        return outyaml
+    
 def check_custom_specs(custom_spec,
                 work_dir,
                 logging=False,
-                no_anchors=False):
+                no_anchors=False,
+                yaml_dump=True):
     '''
         Function to perform ensure that the isa and platform specifications confirm
         to their schemas. The :py:mod:`Cerberus` module is used to validate that the
@@ -1901,10 +1909,15 @@ def check_custom_specs(custom_spec,
         :param isa_spec: The path to the DUT isa specification yaml file.
 
         :param logging: A boolean to indicate whether log is to be printed.
+        
+        :param yaml_dump: A boolean to idicate whether the log has to be dumped into a yaml
+        or has to return a dictionary. By default the yaml_dump is `True`
 
         :type logging: bool
 
         :type isa_spec: str
+
+        :type yaml_dump: bool
 
         :raise ValidationError: It is raised when the specifications violate the
             schema rules. It also contains the specific errors in each of the fields.
@@ -1946,21 +1959,25 @@ def check_custom_specs(custom_spec,
     if errors:
             raise ValidationError("Error in " + foo + ".", errors)
     outyaml['hart'+str(x)] = trim(inp_yaml)
-    file_name = os.path.split(foo)
-    file_name_split = file_name[1].split('.')
-    output_filename = os.path.join(
-        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
-    cfile = output_filename
-    outfile = open(output_filename, 'w')
-    if logging:
-        logger.info('CustomCheck: Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(outyaml, outfile, no_anchors )
-    return cfile
-
+    if yaml_dump==True:
+        file_name = os.path.split(foo)
+        file_name_split = file_name[1].split('.')
+        output_filename = os.path.join(
+            work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+        cfile = output_filename
+        outfile = open(output_filename, 'w')
+        if logging:
+            logger.info('CustomCheck: Dumping out Normalized Checked YAML: ' + output_filename)
+        utils.dump_yaml(outyaml, outfile, no_anchors )
+        return cfile
+    else:
+        return outyaml
+    
 def check_platform_specs(platform_spec,
                 work_dir,
                 logging=False,
-                no_anchors=False):
+                no_anchors=False,
+                yaml_dump=True):
     foo = platform_spec
     schema = constants.platform_schema
     if logging:
@@ -1998,18 +2015,21 @@ def check_platform_specs(platform_spec,
         error_list = validator.errors
         raise ValidationError("Error in " + foo + ".", error_list)
 
-    file_name = os.path.split(foo)
-    file_name_split = file_name[1].split('.')
-    output_filename = os.path.join(
-        work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
-    pfile = output_filename
-    outfile = open(output_filename, 'w')
-    if logging:
-        logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
-    utils.dump_yaml(trim(normalized), outfile, no_anchors)
+    if yaml_dump == True:
+        file_name = os.path.split(foo)
+        file_name_split = file_name[1].split('.')
+        output_filename = os.path.join(
+            work_dir, file_name_split[0] + '_checked.' + file_name_split[1])
+        pfile = output_filename
+        outfile = open(output_filename, 'w')
+        if logging:
+            logger.info('Dumping out Normalized Checked YAML: ' + output_filename)
+        utils.dump_yaml(trim(normalized), outfile, no_anchors)
 
-    return pfile
-
+        return pfile
+    else:
+        return trim(normalized)
+    
 def check_csr_specs(ispec=None, customspec=None, dspec=None, pspec=None, work_dir=None, logging=False, no_anchors=True) -> list:
     '''
         Merge the isa, custom and debug CSR specs into a single CSR spec file.
