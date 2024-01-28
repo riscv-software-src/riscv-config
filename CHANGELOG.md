@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.17.1] - 2024-01-28
+ - Add Zawrs extension
+
 ## [3.17.0] - 2024-01-09
   - support march generation without custom extensions
 
