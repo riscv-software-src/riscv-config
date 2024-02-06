@@ -523,7 +523,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The mstatus register keeps track of and controls the hart’s current
+          default: The mstatus register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 768, allowed: [768]}
         priv_mode: {type: string, default: M, allowed: [M]}
@@ -1468,7 +1468,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The mstatush register keeps track of and controls the hart’s current
+          default: The mstatush register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 768, allowed: [768]}
         priv_mode: {type: string, default: M, allowed: [M]}
@@ -8242,7 +8242,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The sstatus register keeps track of the processor’s current operating state.
+          default: The sstatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x100, allowed: [0x100]}
         priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
@@ -9738,7 +9738,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The ustatus register keeps track of the processor’s current operating state.
+          default: The ustatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x000, allowed: [0x000]}
         priv_mode: {type: string, default: U, allowed: [U]}
         reset-val:
@@ -10501,7 +10501,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The hstatus register keeps track of and controls the hart’s current
+          default: The hstatus register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 1536, allowed: [1536]}
         priv_mode: {type: string, default: H, allowed: [H]}
@@ -12229,7 +12229,7 @@ CSR and the value returned in VS-mode or VU-mode.}
       schema:
         description:
           type: string
-          default: The vsstatus register keeps track of the processor’s current operating state.
+          default: The vsstatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x200, allowed: [0x200]}
         priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
