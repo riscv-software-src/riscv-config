@@ -33,7 +33,7 @@ Z_extensions = [
         "Zpn", "Zpsf"
 ] + Zve_extensions + Zvl_extensions
 
-S_extensions = ['Smrnmi','Svnapot','Svadu', 'Sdext']
+S_extensions = ['Smrnmi','Svnapot','Svadu','Sdext','Smclint','Ssclint','Smclic','Ssclic','Smclicshv','Smcsrind','Sscsrind']
 
 sub_extensions = Z_extensions + S_extensions
 
