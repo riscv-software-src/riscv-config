@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.18.0] - 2024-04-02
+  - mabi generation to account for E extension
+
 ## [3.17.1] - 2024-02-25
   - add unratified Ssdbltrp, Smdbltrp, and Sddbltrp extensions
 

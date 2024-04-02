@@ -235,6 +235,8 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
 
     # mabi generation
     mabi = 'ilp32'
+    if 'E' in ext_list:
+      mabi += 'e'
     if 'F' in ext_list and 'D' in ext_list:
         mabi += 'd'
     elif 'F' in ext_list:
