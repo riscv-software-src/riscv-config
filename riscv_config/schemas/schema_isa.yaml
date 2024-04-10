@@ -760,11 +760,11 @@ hart_schema:
                     warl:
                        dependency_fields: []
                        legal:
-                         - mprv[0] in [0x0]
+                         - mprv[0] in [0x0, 0x1]
                        wr_illegal:
                          - unchanged
               default: {implemented: false}
-              check_with: s_check
+              check_with: u_check
             sum:
               type: dict
               schema:
@@ -1175,11 +1175,11 @@ hart_schema:
                     warl:
                        dependency_fields: []
                        legal:
-                         - mprv[0] in [0x0]
+                         - mprv[0] in [0x0, 0x1]
                        wr_illegal:
                          - unchanged
               default: {implemented: false}
-              check_with: s_check
+              check_with: u_check
             sum:
               type: dict
               schema:
