@@ -24,7 +24,7 @@ Z_extensions = [
         "Zicbom", "Zicbop", "Zicboz", "Zicntr", "Zicsr", "Zicond", "Zicfilp", "Zicfiss", "Zifencei", "Zihintpause", "Zihpm", "Zilsd", "Zimop",
         "Zmmul",
         "Zam", "Zabha", "Zacas",
-        "Zca", "Zcb", "Zcf", "Zcd" , "Zcmp", "Zcmt", "Zcmop", 
+        "Zca", "Zcb", "Zcf", "Zcd" , "Zcmp", "Zcmt", "Zcmop", "Zcmlsd",
         "Zfh", "Zfa",
         "Zfinx", "Zdinx", "Zhinx", "Zhinxmin",
         "Ztso",
