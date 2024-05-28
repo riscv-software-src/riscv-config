@@ -210,6 +210,9 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
         'Zbf',
         'Zbm',
         'Zbr',
+
+        # supervisor address translations
+        'Svnapot',
     ]
 
     # add Zbp and Zbt to null_ext if Zbpbo is present
