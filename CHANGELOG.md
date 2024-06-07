@@ -1,8 +1,8 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [3.18.4] - 2024-06-01 (WIP)
+## [3.19.0] - 2024-06-07 (WIP)
+  - added support for Zalasr unratified extesion
   - isa\_string variable in debug spec now depends on the hartid (instead of always depending on
     `hart0`)
   - allow yaml python pkg requirements to install newer versions #142
