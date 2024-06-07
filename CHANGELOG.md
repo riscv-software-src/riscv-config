@@ -1,11 +1,13 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [3.19.0] - 2024-06-07 (WIP)
   - added support for Zalasr unratified extesion
   - isa\_string variable in debug spec now depends on the hartid (instead of always depending on
     `hart0`)
   - allow yaml python pkg requirements to install newer versions #142
+  - Fixing yaml parsing issue by replacing special characters in schema_isa.yaml.
 
 ## [3.18.3] - 2024-05-28
   - exclude Svnapot from march generation. fixes #178.
@@ -22,9 +24,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [3.17.1] - 2024-02-25
   - add unratified Ssdbltrp, Smdbltrp, and Sddbltrp extensions
-
-## [3.17.1] - 2024-02-07
-  - Fixing yaml parsing issue by replacing special characters in schema_isa.yaml.
 
 ## [3.17.0] - 2024-01-09
   - support march generation without custom extensions
