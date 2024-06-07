@@ -23,6 +23,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [3.17.1] - 2024-02-25
   - add unratified Ssdbltrp, Smdbltrp, and Sddbltrp extensions
 
+## [3.17.1] - 2024-02-07
+  - Fixing yaml parsing issue by replacing special characters in schema_isa.yaml.
+
 ## [3.17.0] - 2024-01-09
   - support march generation without custom extensions
 
