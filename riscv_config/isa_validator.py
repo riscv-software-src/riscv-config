@@ -82,6 +82,12 @@ def get_extension_list(isa):
     if 'S' in extension_list and not 'U' in extension_list:
         err_list.append( "S cannot exist without U.")
         err = True
+    if 'Zcmlsd' in extension_list and 'Zcf' in extension_list:
+        err_list.append( "Zcmlsd encodings are mutually exclusive with Zcf.")
+        err = True
+    if 'Zcmlsd' in extension_list and 'Zilsd' not in extension_list:
+        err_list.append( "Zcmlsd cannot exist without Zilsd.")
+        err = True
     if 'Zkn' in extension_list and ( set(['Zbkb', 'Zbkc', 'Zbkx', 'Zkne', 'Zknd', 'Zknh']) & set(extension_list)):
         err_list.append( "Zkn is a superset of Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh. In presence of Zkn the subsets must be ignored in the ISA string.")
         err = True
@@ -210,6 +216,9 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
         'Zbf',
         'Zbm',
         'Zbr',
+
+        # supervisor address translations
+        'Svnapot',
     ]
 
     # add Zbp and Zbt to null_ext if Zbpbo is present
@@ -235,6 +244,8 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
 
     # mabi generation
     mabi = 'ilp32'
+    if 'E' in ext_list:
+      mabi += 'e'
     if 'F' in ext_list and 'D' in ext_list:
         mabi += 'd'
     elif 'F' in ext_list:

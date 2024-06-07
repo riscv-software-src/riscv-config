@@ -45,8 +45,7 @@ def load_yaml(foo, no_anchors=False):
             return yaml.load(file)
     except ruamel.yaml.constructor.DuplicateKeyError as msg:
         logger = logging.getLogger(__name__)
-        error = "\n".join(str(msg).split("\n")[2:-7])
-        logger.error(error)
+        logger.error(msg)
         raise SystemExit
 
 
