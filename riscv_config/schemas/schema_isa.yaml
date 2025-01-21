@@ -123,23 +123,40 @@ hart_schema:
       check_with: isa_xlen
       
     ###
-    #pmp_granularity
+    #PMPs Configurations
     #---------------
     #
-    # - **Description**: Granularity of pmps
-    # - **Default**: 0
+    # - **Description**: Granularity of pmps and count of implemented pmp csrs.
+    # - **Default implemented**: False
+    # - **Default pmp-grain**: 0
+    # - **Default pmp-count**: 16
     # - **Constraints**: None
     # - **Examples**:
     #
     #   .. code-block:: yaml
-    #
-    #     pmp_granularity : 2
-    #     pmp_granularity : 4
+    #   PMP:
+    #     implemented: true
+    #     pmp-grain : 0
+    #     pmp-count : 16
 
-    pmp_granularity:
-      type: integer
-      min: 0
-      default: 0
+    PMP:
+      type: dict
+      schema:
+        implemented:
+          type: integer
+          default: False
+        pmp-grain:
+          type: integer
+          max: [4096]
+          default: 0
+        pmp-count:
+          type: integer
+          max: [64]
+          default: 16
+      default:
+        implemented: False
+        pmp-grain: 0
+        pmp-count: 16
       
     ###
     #physical_addr_sz
