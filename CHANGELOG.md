@@ -1,6 +1,9 @@
 # Changelog
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.18.4] - 2025-03-16
+  - Add unratified Svrsw60t59b extension
+
 ## [3.18.3] - 2024-05-28
   - exclude Svnapot from march generation. fixes #178.
   - log raw error messages from ruamel while loading yamls. fixes #179.
