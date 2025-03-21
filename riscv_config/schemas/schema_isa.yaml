@@ -153,6 +153,10 @@ hart_schema:
           type: integer
           max: [64]
           default: 16
+	pmp-writable:
+          type: integer
+          max: [64]
+          default: 7
       default:
         implemented: False
         pmp-grain: 0
