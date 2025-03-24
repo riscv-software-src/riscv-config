@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.21.0] - 2025-03-27
+  - Rename zcmlsd to zclas
+
 ## [3.20.0] - 2024-07-08
   - Add Sdtrig support
 
