@@ -8,7 +8,7 @@ debug_schema = os.path.join(root, 'schemas/schema_debug.yaml')
 platform_schema = os.path.join(root, 'schemas/schema_platform.yaml')
 custom_schema = os.path.join(root, 'schemas/schema_custom.yaml')
 Zvl_extensions = [
-        "Zvl32b", "Zvl64b", "Zvl128b", "Zvl256b", "Zve512b", "Zvl1024b"
+        "Zvl32b", "Zvl64b", "Zvl128b", "Zvl256b", "Zvl512b", "Zvl1024b"
 ]
 Zvef_extensions = [
         "Zve32f", "Zve64f"
