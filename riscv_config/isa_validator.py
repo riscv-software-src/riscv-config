@@ -11,7 +11,7 @@ def get_extension_list(isa):
         err_list.append(f'Input ISA string : {isa} does not match accepted canonical ordering')
         return (extension_list, err, err_list)
 
-    
+
     str_match = re.findall('(?P<stdisa>[^\d]*?)(?!_)*(?P<zext>Z.*?)*(?P<sext>S[a-z]*)*(?P<xext>X[a-z0-9]*)*(_|$)',isa)
     extension_list= []
     standard_isa = ''
@@ -43,7 +43,7 @@ def get_extension_list(isa):
     for i in range(len(standard_isa)-1):
         a1 = standard_isa[i]
         a2 = standard_isa[i+1]
-    
+
         if order_index[a1] > order_index[a2]:
             err = True
             err_list.append( "Alphabet '" + a1 + "' should occur after '" + a2)
@@ -52,15 +52,18 @@ def get_extension_list(isa):
     for i in range(len(zext_list)-1):
         a1 = zext_list[i][1].upper()
         a2 = zext_list[i+1][1].upper()
-        a3 = zext_list[i][2]
-        a4 = zext_list[i+1][2]
+        a3 = a4 = 'a'
+        if len(zext_list[i]) > 2:
+            a3 = zext_list[i][2]
+        if len(zext_list[i+1]) > 2:
+            a4 = zext_list[i+1][2]
         if order_index[a1] > order_index[a2]:
             err = True
             err_list.append( f"Z extension {zext_list[i]} must occur after {zext_list[i+1]}")
         elif a1 == a2 and a3 > a4:
             err = True
             err_list.append( f"Within the Z{a1.lower()} category extension {zext_list[i]} must occur after {zext_list[i+1]}")
-        
+
     if 'I' not in extension_list and 'E' not in extension_list:
         err_list.append( 'Either of I or E base extensions need to be present in the ISA string')
         err = True
@@ -174,7 +177,7 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
 
     arguments:
         isa:    (string) this is the isa string in canonical order
-    
+
     returns:
         march:      (string) this is the string to be passed to -march to gcc for a given isa
         mabi:       (string) this is the string to be passed to -mabi for given isa
@@ -210,7 +213,7 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
         # performance counter
         'Zicntr',
         'Zihpm',
-        
+
         # unratified Zb* extensions
         'Zbe',
         'Zbf',
@@ -235,11 +238,11 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
     for ext in ext_list:
         if ext not in null_ext:
             march_list.append(ext.lower())
-            # suffix multicharacter extensions with '_' 
+            # suffix multicharacter extensions with '_'
             if len(ext) == 1:
                 march += ext.lower()
             else:
-                # suffix multiline extensions with '_' 
+                # suffix multiline extensions with '_'
                 march = march + '_' + ext.lower()
 
     # mabi generation
@@ -250,8 +253,8 @@ def get_march_mabi (isa : str, opt_remove_custom_exts: bool = False):
         mabi += 'd'
     elif 'F' in ext_list:
         mabi += 'f'
-    
+
     if 'rv64' in march:
         mabi = mabi.replace('ilp32', 'lp64')
- 
+
     return (march, mabi, march_list)
