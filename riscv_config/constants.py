@@ -23,7 +23,7 @@ Zve_extensions = [
 Z_extensions = [
         "Zicbom", "Zicbop", "Zicboz", "Zicntr", "Zicsr", "Zicond", "Zicfilp", "Zicfiss", "Zifencei", "Zihintpause", "Zihpm", "Zilsd", "Zimop",
         "Zmmul",
-        "Zam", "Zabha", "Zacas", "Zalasr",
+        "Zam", "Zabha", "Zacas", "Zalasr", "Zalrsc", "Zaamo",
         "Zca", "Zcb", "Zcf", "Zcd" , "Zcmp", "Zcmt", "Zcmop", "Zcmlsd",
         "Zfh", "Zfa",
         "Zfinx", "Zdinx", "Zfhmin", "Zhinx", "Zhinxmin",
