@@ -30,7 +30,8 @@ Z_extensions = [
         "Ztso",
         "Zba", "Zbb", "Zbc", "Zbe", "Zbf", "Zbkb", "Zbkc", "Zbkx", "Zbm", "Zbp", "Zbpbo", "Zbr", "Zbs", "Zbt",
         "Zk", "Zkn", "Zknd", "Zkne", "Zknh", "Zkr", "Zks", "Zksed", "Zksh", "Zkt",
-        "Zpn", "Zpsf"
+        "Zpn", "Zpsf",
+        "Zvzip"
 ] + Zve_extensions + Zvl_extensions
 
 S_extensions = ['Smrnmi','Smdbltrp', 'Ssdbltrp', 'Svnapot','Svadu', 'Sddbltrp', 'Sdext']
