@@ -2,8 +2,20 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.18.4] - 2026-01-19
+
+## [3.21.0] - 2026-01-19
   - Add unratified Ziccid extension
+
+## [3.20.0] - 2024-07-08
+  - Add Sdtrig support
+
+## [3.19.0] - 2024-06-07 (WIP)
+  - added support for Zalasr unratified extesion
+  - isa\_string variable in debug spec now depends on the hartid (instead of always depending on
+    `hart0`)
+  - allow yaml python pkg requirements to install newer versions #142
+  - Fixing yaml parsing issue by replacing special characters in schema_isa.yaml.
+
 
 ## [3.18.3] - 2024-05-28
   - exclude Svnapot from march generation. fixes #178.

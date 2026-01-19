@@ -21,10 +21,10 @@ Zve_extensions = [
 ] + Zvef_extensions + Zved_extensions
 
 Z_extensions = [
-        "Zicbom", "Zicbop", "Zicboz", "Zicntr", "Zicsr", "Zicond", "Zicfilp", "Zicfiss", "Zifencei", "Zihintpause", "Zihpm", "Zimop",
+        "Zicbom", "Zicbop", "Zicboz", "Zicntr", "Zicsr", "Zicond", "Zicfilp", "Zicfiss", "Zifencei", "Zihintpause", "Zihpm", "Zilsd", "Zimop",
         "Zmmul",
-        "Zam", "Zabha", "Zacas",
-        "Zca", "Zcb", "Zcf", "Zcd" , "Zcmp", "Zcmt", "Zcmop", 
+        "Zam", "Zabha", "Zacas", "Zalasr",
+        "Zca", "Zcb", "Zcf", "Zcd" , "Zcmp", "Zcmt", "Zcmop", "Zcmlsd",
         "Zfh", "Zfa",
         "Zfinx", "Zdinx", "Zhinx", "Zhinxmin",
         "Ztso",
@@ -34,7 +34,7 @@ Z_extensions = [
         "Ziccid"
 ] + Zve_extensions + Zvl_extensions
 
-S_extensions = ['Smrnmi','Smdbltrp', 'Ssdbltrp', 'Svnapot','Svadu', 'Sddbltrp', 'Sdext']
+S_extensions = ['Smrnmi','Smdbltrp', 'Ssdbltrp', 'Svnapot','Svadu', 'Sddbltrp', 'Sdext', 'Sdtrig']
 
 sub_extensions = Z_extensions + S_extensions
 

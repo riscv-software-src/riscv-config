@@ -123,23 +123,44 @@ hart_schema:
       check_with: isa_xlen
       
     ###
-    #pmp_granularity
+    #PMPs Configurations
     #---------------
     #
-    # - **Description**: Granularity of pmps
-    # - **Default**: 0
+    # - **Description**: Granularity of pmps and count of implemented pmp csrs.
+    # - **Default implemented**: False
+    # - **Default pmp-grain**: 0
+    # - **Default pmp-count**: 16
     # - **Constraints**: None
     # - **Examples**:
     #
     #   .. code-block:: yaml
-    #
-    #     pmp_granularity : 2
-    #     pmp_granularity : 4
+    #   PMP:
+    #     implemented: true
+    #     pmp-grain : 0
+    #     pmp-count : 16
 
-    pmp_granularity:
-      type: integer
-      min: 0
-      default: 0
+    PMP:
+      type: dict
+      schema:
+        implemented:
+          type: integer
+          default: False
+        pmp-grain:
+          type: integer
+          max: [4096]
+          default: 0
+        pmp-count:
+          type: integer
+          max: [64]
+          default: 16
+        pmp-writable:
+          type: integer
+          max: [64]
+          default: 7
+      default:
+        implemented: False
+        pmp-grain: 0
+        pmp-count: 16
       
     ###
     #physical_addr_sz
@@ -523,7 +544,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The mstatus register keeps track of and controls the hart’s current
+          default: The mstatus register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 768, allowed: [768]}
         priv_mode: {type: string, default: M, allowed: [M]}
@@ -1468,7 +1489,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The mstatush register keeps track of and controls the hart’s current
+          default: The mstatush register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 768, allowed: [768]}
         priv_mode: {type: string, default: M, allowed: [M]}
@@ -8242,7 +8263,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The sstatus register keeps track of the processor’s current operating state.
+          default: The sstatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x100, allowed: [0x100]}
         priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:
@@ -9738,7 +9759,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The ustatus register keeps track of the processor’s current operating state.
+          default: The ustatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x000, allowed: [0x000]}
         priv_mode: {type: string, default: U, allowed: [U]}
         reset-val:
@@ -10501,7 +10522,7 @@ hart_schema:
       schema:
         description:
           type: string
-          default: The hstatus register keeps track of and controls the hart’s current
+          default: The hstatus register keeps track of and controls the hart's current
             operating state.
         address: {type: integer, default: 1536, allowed: [1536]}
         priv_mode: {type: string, default: H, allowed: [H]}
@@ -12229,7 +12250,7 @@ CSR and the value returned in VS-mode or VU-mode.}
       schema:
         description:
           type: string
-          default: The vsstatus register keeps track of the processor’s current operating state.
+          default: The vsstatus register keeps track of the processor's current operating state.
         address: {type: integer, default: 0x200, allowed: [0x200]}
         priv_mode: {type: string, default: S, allowed: [S]}
         reset-val:

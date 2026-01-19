@@ -110,7 +110,8 @@ class schemaValidator(Validator):
             self._error(field, "Invalid width in ISA.")
 
         if not constants.isa_regex.match(value):
-            self._error(field, 'Input ISA string does not match regex')
+            self._error(field, 'Input ISA string %r does not match regex from %s' % (
+                value, constants.__file__))
         if ext_err:
             for e in ext_err_list:
                 self._error(field, e)

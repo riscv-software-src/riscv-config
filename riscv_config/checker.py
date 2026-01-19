@@ -1746,7 +1746,6 @@ def check_debug_specs(debug_spec, isa_spec,
     if logging:
         logger.info('DebugCheck: Loading input isa file for debug: ' + str(foo1))
     master_inp_yaml = utils.load_yaml(foo1, no_anchors)
-    isa_string = master_inp_yaml['hart0']['ISA']
 
     # instantiate validator
     if logging:
@@ -1755,6 +1754,7 @@ def check_debug_specs(debug_spec, isa_spec,
 
     outyaml = copy.deepcopy(master_inp_debug_yaml)
     for x in master_inp_debug_yaml['hart_ids']:
+        isa_string = master_inp_yaml[f'hart{x}']['ISA']
         if logging:
             logger.info(f'DebugCheck: Processing Hart:{x}')
         inp_debug_yaml = master_inp_debug_yaml['hart'+str(x)]
