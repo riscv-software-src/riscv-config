@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.20.1] - 2025-07-04
+  - Fix ISA regex pattern to properly handle sub-extensions like 'RV32I_Zicsr' and add comprehensive test suite
+
 ## [3.20.0] - 2024-07-08
   - Add Sdtrig support
 
