@@ -52,14 +52,19 @@ def get_extension_list(isa):
     for i in range(len(zext_list)-1):
         a1 = zext_list[i][1].upper()
         a2 = zext_list[i+1][1].upper()
-        a3 = zext_list[i][2]
-        a4 = zext_list[i+1][2]
         if order_index[a1] > order_index[a2]:
             err = True
             err_list.append( f"Z extension {zext_list[i]} must occur after {zext_list[i+1]}")
-        elif a1 == a2 and a3 > a4:
-            err = True
-            err_list.append( f"Within the Z{a1.lower()} category extension {zext_list[i]} must occur after {zext_list[i+1]}")
+        elif a1 == a2:
+            if (len(zext_list[i]) > 2) and (len(zext_list[i]) == 2):
+                err = True
+                err_list.append( f"Within the Z{a1.lower()} category extension {zext_list[i]} must occur after {zext_list[i+1]}")
+            elif (len(zext_list[i]) > 2) and (len(zext_list[i]) > 2):
+                a3 = zext_list[i][2]
+                a4 = zext_list[i+1][2]
+                if a3 > a4:
+                    err = True
+                    err_list.append( f"Within the Z{a1.lower()} category extension {zext_list[i]} must occur after {zext_list[i+1]}")
         
     if 'I' not in extension_list and 'E' not in extension_list:
         err_list.append( 'Either of I or E base extensions need to be present in the ISA string')
