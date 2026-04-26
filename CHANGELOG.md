@@ -2,10 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.20.0] - 2024-07-08
+## [3.19.0] - 2024-08-23 (WIP)
+  - change the address for mstatush to 784 (issue #185)
   - Add Sdtrig support
-
-## [3.19.0] - 2024-06-07 (WIP)
   - added support for Zalasr unratified extesion
   - isa\_string variable in debug spec now depends on the hartid (instead of always depending on
     `hart0`)

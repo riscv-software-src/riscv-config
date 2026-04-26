@@ -1491,7 +1491,7 @@ hart_schema:
           type: string
           default: The mstatush register keeps track of and controls the hart's current
             operating state.
-        address: {type: integer, default: 768, allowed: [768]}
+        address: {type: integer, default: 784, allowed: [784]}
         priv_mode: {type: string, default: M, allowed: [M]}
         reset-val:
           type: integer
